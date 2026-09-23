@@ -1,0 +1,171 @@
+/* State of Kuwait - Ministry of Higher Education (MoHE)
+ * Official Executive Portal Stylesheet
+ * Architectural Standard: Serious, Institutional, High-Legibility
+ */
+
+:root {
+  --kw-navy-dark: #0a192f;
+  --kw-navy-primary: #0f2b48;
+  --kw-navy-surface: #16385d;
+  --kw-green: #007a3d;
+  --kw-green-dark: #005a2d;
+  --kw-green-light: #e8f5e9;
+  --kw-gold: #b45309;
+  --kw-gold-light: #fffbeb;
+  --kw-border: #e2e8f0;
+  --kw-slate-bg: #f8fafc;
+  --kw-card-bg: #ffffff;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #1e293b;
+  background-color: var(--kw-slate-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Institutional Header Gradient */
+.gov-header-gradient {
+  background: linear-gradient(135deg, #0a192f 0%, #0d2847 60%, #10335c 100%);
+  border-bottom: 3px solid var(--kw-green);
+}
+
+.gov-hero-gradient {
+  background: linear-gradient(180deg, #0a192f 0%, #0d2847 100%);
+}
+
+/* Official State Emblem / Badge */
+.gov-seal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Merit Universities Distinction (جامعات التميز) */
+.merit-tag {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #78350f;
+  border: 1px solid #f59e0b;
+  font-weight: 700;
+}
+
+.merit-card-accent {
+  border-left: 4px solid #d97706 !important;
+}
+
+.merit-badge-pill {
+  background-color: #0f2b48;
+  color: #fbbf24;
+  border: 1px solid #d97706;
+}
+
+/* Salary / Stipend Badge */
+.salary-badge {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  font-weight: 700;
+}
+
+/* Input Bubble Cards */
+.filter-bubble-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1.5px solid #cbd5e1;
+  background-color: #ffffff;
+}
+
+.filter-bubble-card:hover {
+  border-color: #0f2b48;
+  box-shadow: 0 4px 12px rgba(15, 43, 72, 0.08);
+}
+
+.filter-bubble-card.has-value {
+  border-color: #007a3d;
+  background-color: #fcfdfc;
+  box-shadow: 0 2px 8px rgba(0, 122, 61, 0.08);
+}
+
+.bubble-number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.filter-bubble-card.has-value .bubble-number-badge {
+  background-color: #007a3d;
+  color: #ffffff;
+}
+
+/* Program Cards */
+.gov-program-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.gov-program-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(15, 43, 72, 0.12);
+  border-color: #0f2b48;
+}
+
+/* Modal Overlay & Tabs */
+.modal-overlay {
+  background-color: rgba(10, 25, 47, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.modal-tab-btn {
+  transition: all 0.15s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.modal-tab-btn.active {
+  color: #0f2b48;
+  border-color: #0f2b48;
+  font-weight: 700;
+  background-color: #ffffff;
+}
+
+/* Calculator Card */
+.calculator-box {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  border: 1.5px solid #cbd5e1;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for Modal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

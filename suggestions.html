@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Suggestions & Portals Guide | Kuwait MoHE</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <!-- Institutional Top Header -->
+  <header class="gov-header-gradient text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Ministry Identity -->
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-amber-400 font-bold shadow-inner">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs tracking-wider uppercase font-bold text-amber-400">State of Kuwait</span>
+            <span class="text-[11px] text-slate-400">|</span>
+            <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
+          </div>
+          <span class="text-base sm:text-lg font-extrabold tracking-tight block">Ministry of Higher Education</span>
+          <span class="text-[11px] text-slate-400 font-medium -mt-0.5 block" dir="rtl">دليل المنصات وتطبيقات القبول الجامعي الموصى بها</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
+        <a href="index.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition">Search & Eligibility</a>
+        <a href="results.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition">Program Directory</a>
+        <a href="suggestions.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-emerald-500">Suggestions & Portals</a>
+        <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition">Kuwait Universities</a>
+        <a href="guidelines.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition">Regulations & FAQ</a>
+        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition">About Portal</a>
+      </nav>
+
+      <div class="hidden sm:block">
+        <a href="results.html?merit=1" class="px-3 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition">
+          Merit List
+        </a>
+      </div>
+
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded text-slate-300 hover:text-white focus:outline-none" aria-label="Toggle navigation">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Nav Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
+      <a href="index.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white">Search & Eligibility</a>
+      <a href="results.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white">Program Directory</a>
+      <a href="suggestions.html" class="block px-3 py-2 rounded text-white bg-slate-800">Suggestions & Portals</a>
+      <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white">Kuwait Universities</a>
+      <a href="guidelines.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white">Regulations & FAQ</a>
+      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white">About Portal</a>
+    </div>
+  </header>
+
+  <!-- Page Main Content -->
+  <main class="flex-grow py-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Title -->
+      <div class="mb-10 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-200 text-slate-800 text-xs font-bold uppercase tracking-wider mb-2">
+          Admissions Onboarding Launchpad
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          Essential Application Portals & Setup Guide
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl mx-auto">
+          Recommended digital platforms every Kuwaiti high school student must create and link to secure university admissions and MoHE sponsorship approval.
+        </p>
+      </div>
+
+      <!-- Category 1: Global College Application Portals -->
+      <section class="mb-10">
+        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          1. International University Application Platforms
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- CommonApp -->
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-extrabold text-base text-slate-900">Common Application (CommonApp)</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200">United States</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                The centralized portal for applying to over 1,000 universities in the US (including Harvard, Stanford, NYU, Michigan, and Georgia Tech).
+              </p>
+              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+                <li>Create account in Summer before Grade 12 (opens August 1).</li>
+                <li>Write the 650-word Common App essay.</li>
+                <li>Invite your high school counselor and teachers for recommendation letters.</li>
+                <li>Sign the FERPA rights waiver (waiving rights shows colleges confidentiality).</li>
+              </ul>
+            </div>
+            <a href="https://www.commonapp.org" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-bold text-center transition">
+              commonapp.org &rarr;
+            </a>
+          </div>
+
+          <!-- UCAS -->
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-extrabold text-base text-slate-900">UCAS Hub (Universities & Colleges)</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-800 border border-rose-200">United Kingdom</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                The sole unified application service for all UK higher education institutions (Oxford, Cambridge, Imperial, UCL, Manchester).
+              </p>
+              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+                <li>Enables selecting up to <strong>5 university courses</strong> (max 4 for Medicine/Dentistry).</li>
+                <li>Requires linking with your school's <strong>UCAS Buzzword</strong>.</li>
+                <li>Upload 4,000-character Personal Statement.</li>
+                <li>Key deadlines: October 15 (Medicine/Oxbridge) | January 29 (General).</li>
+              </ul>
+            </div>
+            <a href="https://www.ucas.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-bold text-center transition">
+              ucas.com &rarr;
+            </a>
+          </div>
+
+          <!-- BridgeU -->
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-extrabold text-base text-slate-900">BridgeU / MaiaLearning</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-200">School Guidance</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Used by international private schools in Kuwait to manage university shortlists, match qualifications, and transmit official transcripts.
+              </p>
+              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+                <li>Link CommonApp account with BridgeU for automatic transcript dispatch.</li>
+                <li>Track teacher recommendation letter submissions.</li>
+                <li>Explore university acceptance analytics for Kuwaiti alumni.</li>
+              </ul>
+            </div>
+            <a href="https://bridge-u.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded text-xs font-bold text-center transition">
+              bridge-u.com &rarr;
+            </a>
+          </div>
+
+          <!-- Direct Portals (Canada / Australia) -->
+          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-extrabold text-base text-slate-900">Regional Portals (OUAC / VTAC / UAC)</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Canada & Australia</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                Specific centralized application systems for Ontario universities (OUAC 105) and Australian state admission centers (VTAC / UAC / QTAC).
+              </p>
+              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+                <li><strong>OUAC 105 (Ontario, Canada):</strong> Toronto, Waterloo, McMaster.</li>
+                <li><strong>VTAC & UAC (Australia):</strong> Melbourne, Monash, Sydney, UNSW.</li>
+                <li>Direct university applications are also accepted at most Australian institutions.</li>
+              </ul>
+            </div>
+            <div class="text-[11px] text-slate-500 font-semibold p-2 bg-slate-50 rounded border border-slate-200 text-center">
+              Direct Application Available at Most Canadian & Australian Faculties
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Category 2: Standardized Testing Portals -->
+      <section class="mb-10">
+        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+          2. Standardized Testing & Language Portals
+        </h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          
+          <div class="bg-white p-4 rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">College Board (Digital SAT)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">Book Digital SAT exam slots at authorized test centers in Kuwait. Use code for score sending.</p>
+            <a href="https://www.collegeboard.org" target="_blank" class="text-emerald-700 font-bold hover:underline">collegeboard.org &rarr;</a>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">British Council / IDP (IELTS)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">Register for <strong>UKVI Academic IELTS</strong> or Standard Academic IELTS. Locations in Kuwait City & Hawally.</p>
+            <a href="https://takeielts.britishcouncil.org" target="_blank" class="text-emerald-700 font-bold hover:underline">britishcouncil.org &rarr;</a>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">Pearson VUE (UCAT & LNAT)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">Mandatory for UK clinical medicine (UCAT) and top law faculties (LNAT). Administered at Pearson centers in Kuwait.</p>
+            <a href="https://www.pearsonvue.com" target="_blank" class="text-emerald-700 font-bold hover:underline">pearsonvue.com &rarr;</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Category 3: Kuwait Government & Verification Services -->
+      <section class="mb-12">
+        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          3. State of Kuwait Mandatory Authentication Portals
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          
+          <div class="p-4 bg-white rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">Kuwait Mobile ID (تطبيق هويتي)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">Digital civil identity certification used for logging into MoHE registration and verifying graduation certificates.</p>
+            <span class="text-[11px] font-semibold text-slate-500">PACI Certified Digital ID</span>
+          </div>
+
+          <div class="p-4 bg-white rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">Sahel App (تطبيق سهل الموحد)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">Request ministerial certificate equivalency (معادلة الثانوية), release civil records, and monitor scholarship updates.</p>
+            <span class="text-[11px] font-semibold text-slate-500">Government Electronic Gateway</span>
+          </div>
+
+          <div class="p-4 bg-white rounded-xl border border-slate-200">
+            <strong class="font-bold text-slate-900 block mb-1">MoHE Portal (mohe.edu.kw)</strong>
+            <p class="text-slate-600 text-[11px] mb-2">The official portal for annual scholarship registration, financial guarantee downloads, and cultural mission file setup.</p>
+            <a href="https://www.mohe.edu.kw" target="_blank" class="text-emerald-700 font-bold hover:underline">mohe.edu.kw &rarr;</a>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Official Footer -->
+  <footer class="bg-slate-950 text-slate-400 text-xs py-10 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div>
+        <span class="text-white font-bold text-sm block">State of Kuwait &bull; Ministry of Higher Education</span>
+        <span class="text-slate-500 text-[11px] block mt-0.5">
+          General Administration of Foreign Scholarships &bull; الإدارة العامة للبعثات والعلاقات الثقافية
+        </span>
+      </div>
+      <div class="flex items-center gap-6 text-[11px] font-medium">
+        <a href="index.html" class="hover:text-white transition">Home</a>
+        <a href="results.html" class="hover:text-white transition">Program Directory</a>
+        <a href="suggestions.html" class="hover:text-white transition">Suggestions</a>
+        <a href="local-universities.html" class="hover:text-white transition">Kuwait Unis</a>
+        <a href="guidelines.html" class="hover:text-white transition">Regulations</a>
+        <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
