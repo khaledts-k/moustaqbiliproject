@@ -4,17 +4,23 @@
  */
 
 :root {
-  --kw-navy-dark: #0a192f;
-  --kw-navy-primary: #0f2b48;
-  --kw-navy-surface: #16385d;
-  --kw-green: #007a3d;
-  --kw-green-dark: #005a2d;
-  --kw-green-light: #e8f5e9;
+  --kw-navy-dark: #141c12;
+  --kw-navy-primary: #222d1d;
+  --kw-navy-surface: #2d3e29;
+  --kw-green: #384f33;
+  --kw-green-dark: #222d1d;
+  --kw-green-light: #eef3ed;
   --kw-gold: #b45309;
   --kw-gold-light: #fffbeb;
   --kw-border: #e2e8f0;
   --kw-slate-bg: #f8fafc;
   --kw-card-bg: #ffffff;
+
+  --kw-olive-dark: #141c12;
+  --kw-olive-primary: #222d1d;
+  --kw-olive-surface: #2d3e29;
+  --kw-olive-light: #476340;
+  --kw-olive-accent: #556b2f;
 }
 
 body {
@@ -27,12 +33,12 @@ body {
 
 /* Institutional Header Gradient */
 .gov-header-gradient {
-  background: linear-gradient(135deg, #0a192f 0%, #0d2847 60%, #10335c 100%);
-  border-bottom: 3px solid var(--kw-green);
+  background: linear-gradient(135deg, #141c12 0%, #222d1d 60%, #2d3e29 100%);
+  border-bottom: 3px solid var(--kw-olive-accent);
 }
 
 .gov-hero-gradient {
-  background: linear-gradient(180deg, #0a192f 0%, #0d2847 100%);
+  background: linear-gradient(180deg, #141c12 0%, #222d1d 100%);
 }
 
 /* Official State Emblem / Badge */
@@ -63,7 +69,7 @@ body {
 }
 
 .merit-badge-pill {
-  background-color: #0f2b48;
+  background-color: #222d1d;
   color: #fbbf24;
   border: 1px solid #d97706;
 }
@@ -84,14 +90,14 @@ body {
 }
 
 .filter-bubble-card:hover {
-  border-color: #0f2b48;
-  box-shadow: 0 4px 12px rgba(15, 43, 72, 0.08);
+  border-color: #222d1d;
+  box-shadow: 0 4px 12px rgba(34, 45, 29, 0.12);
 }
 
 .filter-bubble-card.has-value {
-  border-color: #007a3d;
-  background-color: #fcfdfc;
-  box-shadow: 0 2px 8px rgba(0, 122, 61, 0.08);
+  border-color: #384f33;
+  background-color: #f6f8f5;
+  box-shadow: 0 2px 8px rgba(56, 79, 51, 0.12);
 }
 
 .bubble-number-badge {
@@ -108,7 +114,7 @@ body {
 }
 
 .filter-bubble-card.has-value .bubble-number-badge {
-  background-color: #007a3d;
+  background-color: #384f33;
   color: #ffffff;
 }
 
@@ -121,13 +127,13 @@ body {
 
 .gov-program-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -4px rgba(15, 43, 72, 0.12);
-  border-color: #0f2b48;
+  box-shadow: 0 12px 24px -4px rgba(34, 45, 29, 0.14);
+  border-color: #222d1d;
 }
 
 /* Modal Overlay & Tabs */
 .modal-overlay {
-  background-color: rgba(10, 25, 47, 0.75);
+  background-color: rgba(20, 28, 18, 0.8);
   backdrop-filter: blur(6px);
 }
 
@@ -137,8 +143,8 @@ body {
 }
 
 .modal-tab-btn.active {
-  color: #0f2b48;
-  border-color: #0f2b48;
+  color: #222d1d;
+  border-color: #222d1d;
   font-weight: 700;
   background-color: #ffffff;
 }

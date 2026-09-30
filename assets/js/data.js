@@ -678,39 +678,115 @@ const MOUSTAQBILI_PROGRAMS = [
 // Kuwait MoHE Filter Configuration
 const MOUSTAQBILI_FILTERS = {
   countries: [
-    { value: "United States", label: "United States (أمريكا)", flagCode: "US" },
-    { value: "United Kingdom", label: "United Kingdom (بريطانيا)", flagCode: "GB" },
-    { value: "Ireland", label: "Republic of Ireland (أيرلندا)", flagCode: "IE" },
-    { value: "Australia", label: "Australia (أستراليا)", flagCode: "AU" },
-    { value: "Bahrain", label: "Bahrain / GCC (مملكة البحرين - AGU)", flagCode: "BH" },
-    { value: "Malta", label: "Malta (جمهورية مالطا)", flagCode: "MT" },
-    { value: "Canada", label: "Canada (كندا)", flagCode: "CA" },
-    { value: "New Zealand", label: "New Zealand (نيوزيلندا)", flagCode: "NZ" }
+    { value: "United States", label: "United States", flagCode: "US" },
+    { value: "United Kingdom", label: "United Kingdom", flagCode: "GB" },
+    { value: "Ireland", label: "Republic of Ireland", flagCode: "IE" },
+    { value: "Australia", label: "Australia", flagCode: "AU" },
+    { value: "Bahrain", label: "Bahrain", flagCode: "BH" },
+    { value: "Malta", label: "Malta", flagCode: "MT" },
+    { value: "Canada", label: "Canada", flagCode: "CA" },
+    { value: "New Zealand", label: "New Zealand", flagCode: "NZ" }
   ],
   percentageRanges: [
-    { value: "97.0+", label: "97.0% - 100% (Ireland & Bahrain Medicine Floor)", minPct: 97.0, minGpa: 3.85 },
-    { value: "95.0-96.9", label: "95.0% - 96.9% (UK, Australia, US & Malta Medicine Floor)", minPct: 95.0, minGpa: 3.75 },
-    { value: "90.0-94.9", label: "90.0% - 94.9% (US Engineering, Pharmacy & Radiography)", minPct: 90.0, minGpa: 3.50 },
-    { value: "85.0-89.9", label: "85.0% - 89.9% (Computer Science, AI, Urban Planning)", minPct: 85.0, minGpa: 3.25 },
-    { value: "80.0-84.9", label: "80.0% - 84.9% (Basic Sciences: Physics, Chem, Math, Biology)", minPct: 80.0, minGpa: 3.00 }
+    { value: "97.0+", label: "97.0% - 100%", minPct: 97.0, minGpa: 3.85 },
+    { value: "95.0-96.9", label: "95.0% - 96.9%", minPct: 95.0, minGpa: 3.75 },
+    { value: "90.0-94.9", label: "90.0% - 94.9%", minPct: 90.0, minGpa: 3.50 },
+    { value: "85.0-89.9", label: "85.0% - 89.9%", minPct: 85.0, minGpa: 3.25 },
+    { value: "80.0-84.9", label: "80.0% - 84.9%", minPct: 80.0, minGpa: 3.00 }
   ],
   majors: [
-    { value: "Medicine & Surgery (MBChB)", label: "Human Medicine & Surgery (الطب البشري والجراحة)", category: "Medical & Health" },
-    { value: "Dentistry (BDS)", label: "Dentistry & Oral Surgery (طب وجراحة الأسنان)", category: "Medical & Health" },
-    { value: "Pharmacy (MPharm)", label: "Pharmacy & Biopharmaceuticals (الصيدلة والعلوم الصيدلانية)", category: "Medical & Health" },
-    { value: "Computer Science", label: "Computer Science, AI & Cyber Security (علوم الحاسوب والأمن السيبراني)", category: "Engineering & Computing" },
-    { value: "Cyber Security Engineering", label: "Cyber Security Engineering (هندسة الأمن السيبراني)", category: "Engineering & Computing" },
-    { value: "Biomedical Engineering", label: "Biomedical Engineering (هندسة طبية حيوية)", category: "Engineering & Computing" }
+    { value: "Medicine & Surgery (MBChB)", label: "Human Medicine & Surgery", category: "Medical & Health" },
+    { value: "Dentistry (BDS)", label: "Dentistry & Oral Surgery", category: "Medical & Health" },
+    { value: "Pharmacy (MPharm)", label: "Pharmacy & Biopharmaceuticals", category: "Medical & Health" },
+    { value: "Computer Science", label: "Computer Science, AI & Cyber Security", category: "Engineering & Computing" },
+    { value: "Cyber Security Engineering", label: "Cyber Security Engineering", category: "Engineering & Computing" },
+    { value: "Biomedical Engineering", label: "Biomedical Engineering", category: "Engineering & Computing" }
   ]
 };
+
+const KUWAIT_LOCAL_UNIVERSITIES = [
+  {
+    id: "kuwait-university",
+    type: "Public University / جامعة حكومية",
+    typeEn: "Public University",
+    typeAr: "جامعة حكومية",
+    name: "Kuwait University (KU)",
+    nameAr: "جامعة الكويت",
+    campusLocation: "Shadadiya Campus, Sabah Al-Salem University City",
+    campusLocationAr: "مدينة صباح السالم الجامعية - الشدادية",
+    scholarshipFunding: "100% Free Government Tuition + 200 KWD Monthly Social Allowance",
+    scholarshipFundingAr: "تعليم حكومي مجاني 100% + مكافأة اجتماعية شهرياً 200 د.ك",
+    admissionSystem: "Unified Kuwait University Admissions Portal (portal.ku.edu.kw)",
+    admissionSystemAr: "البوابة المركزية لقبول جامعة الكويت (portal.ku.edu.kw)",
+    aptitudeExams: "Mandatory KU Aptitude Exams (English, Math, Chemistry, Physics)",
+    aptitudeExamsAr: "اختبارات القدرات الأكاديمية الإجبارية (إنجليزي، رياضيات، كيمياء، فيزياء)",
+    equivalentFormula: "Equivalent Score = (Thanawiya % × 0.70) + (Aptitude Score × 0.30)",
+    equivalentFormulaAr: "المعدل المكافئ = (نسبة الثانوية × 0.70) + (درجة القدرات × 0.30)",
+    colleges: [
+      { collegeName: "College of Medicine (كلية الطب)", minThanawiya: "85.0% Scientific", equivalentFloor: "Equated Min: 85.0%", equivalentFloorAr: "المعدل المكافئ: 85.0%", seatsNotes: "Direct entrance requires top competitive equivalent rank" },
+      { collegeName: "College of Dentistry (كلية طب الأسنان)", minThanawiya: "85.0% Scientific", equivalentFloor: "Equated Min: 85.0%", equivalentFloorAr: "المعدل المكافئ: 85.0%", seatsNotes: "High competitive seats" },
+      { collegeName: "College of Engineering & Petroleum (كلية الهندسة والبترول)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 78.0%", equivalentFloorAr: "المعدل المكافئ: 78.0%", seatsNotes: "Requires Math & Physics Aptitude" },
+      { collegeName: "College of Allied Health Sciences (العلوم الطبية المساعدة)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 75.0%", equivalentFloorAr: "المعدل المكافئ: 75.0%", seatsNotes: "Radiography, PT, MLT" },
+      { collegeName: "College of Science (كلية العلوم)", minThanawiya: "70.0% Scientific", equivalentFloor: "Min: 70.0%", equivalentFloorAr: "الحد أدنى: 70.0%", seatsNotes: "CS, Chemistry, Physics, Biology" }
+    ]
+  },
+  {
+    id: "aasu",
+    type: "Public University / جامعة حكومية",
+    typeEn: "Public University",
+    typeAr: "جامعة حكومية",
+    name: "Abdullah Al-Salem University (AASU)",
+    nameAr: "جامعة عبد الله السالم",
+    campusLocation: "Khaldiya / Adailiya Campuses",
+    campusLocationAr: "حرم الخالدية والعديلية",
+    scholarshipFunding: "100% Free Government Tuition + 200 KWD Monthly Social Allowance",
+    scholarshipFundingAr: "تعليم حكومي مجاني 100% + مكافأة اجتماعية شهرياً 200 د.ك",
+    admissionSystem: "AASU Direct Admission System (aasu.edu.kw)",
+    admissionSystemAr: "نظام القبول المباشر بجامعة عبد الله السالم (aasu.edu.kw)",
+    aptitudeExams: "Standardized Aptitude & English Proficiency Benchmarks",
+    aptitudeExamsAr: "اختبارات التقييم والقدرات واللغة الإنجليزية",
+    equivalentFormula: "Weighted Composite Admission Score",
+    equivalentFormulaAr: "معادلة المعدل المركب التنافسي",
+    colleges: [
+      { collegeName: "College of Computing & Cybernetics (كلية الحوسبة والأمن السيبراني)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 80.0%", equivalentFloorAr: "المعدل المكافئ: 80.0%", seatsNotes: "AI, Cyber Security, Software Engineering" },
+      { collegeName: "College of Engineering & Applied Sciences (كلية الهندسة والعلوم التطبيقية)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 78.0%", equivalentFloorAr: "المعدل المكافئ: 78.0%", seatsNotes: "Energy, Systems & Environmental Engineering" },
+      { collegeName: "College of Business & Entrepreneurship (كلية الإدارة وريادة الأعمال)", minThanawiya: "75.0% Scientific/Literary", equivalentFloor: "Min: 75.0%", equivalentFloorAr: "الحد أدنى: 75.0%", seatsNotes: "FinTech, Supply Chain, Business Analytics" }
+    ]
+  },
+  {
+    id: "aum-gust-puc",
+    type: "Private PUC Internal Scholarship / بعثات داخلية",
+    typeEn: "PUC Scholarship",
+    typeAr: "بعثة داخلية",
+    name: "Private Universities Council (PUC Internal Scholarships)",
+    nameAr: "مجلس الجامعات الخاصة (البعثات الداخلية)",
+    campusLocation: "AUM (Egaila), GUST (Mishref), AUK (Salmiya), KCST (Doha)",
+    campusLocationAr: "جامعة AUM (العقيلة)، GUST (مشرف)، AUK (السالمية)، KCST (الدوحة)",
+    scholarshipFunding: "100% Government Tuition Sponsorship + 200 KWD Monthly Allowance",
+    scholarshipFundingAr: "تغطية الرسوم الدراسية 100% من الحكومة + 200 د.ك مكافأة شهرية",
+    admissionSystem: "PUC Central Internal Scholarship Portal (puc.edu.kw)",
+    admissionSystemAr: "بوابة البعثات الداخلية بمجلس الجامعات الخاصة (puc.edu.kw)",
+    aptitudeExams: "University Placement Test (Accuplacer / Math & English Placement)",
+    aptitudeExamsAr: "اختبار تحديد المستوى الجامعي (اللغة الإنجليزية والرياضيات)",
+    equivalentFormula: "Direct Thanawiya % Floor (Competitive Allocation)",
+    equivalentFormulaAr: "النسبة الأدنى للتقديم التنافسي",
+    colleges: [
+      { collegeName: "Engineering & Technology (الهندسة والتكنولوجيا - AUM / KCST / ACK)", minThanawiya: "70.0% Scientific", equivalentFloor: "Floor: 70.0%", equivalentFloorAr: "الحد أدنى: 70.0%", seatsNotes: "Mechanical, Civil, Computer, Electrical Engineering" },
+      { collegeName: "Business Administration & Finance (إدارة الأعمال والتمويل - GUST / AUK / AUM)", minThanawiya: "60.0% Scientific / 70% Literary", equivalentFloor: "Floor: 60-70%", equivalentFloorAr: "الحد أدنى: 60-70%", seatsNotes: "Accounting, Finance, Management, Marketing" },
+      { collegeName: "Arts & Mass Communication (الآداب والإعلام - AUK / GUST)", minThanawiya: "65.0% Literary", equivalentFloor: "Floor: 65.0%", equivalentFloorAr: "الحد أدنى: 65.0%", seatsNotes: "Graphic Design, Media, International Relations" }
+    ]
+  }
+];
 
 // Global assignments for moustaqbili
 if (typeof window !== 'undefined') {
   window.MOUSTAQBILI_PROGRAMS = MOUSTAQBILI_PROGRAMS;
   window.MOUSTAQBILI_FILTERS = MOUSTAQBILI_FILTERS;
+  window.KUWAIT_LOCAL_UNIVERSITIES = KUWAIT_LOCAL_UNIVERSITIES;
   // Aliases for backwards compatibility
   window.MOHE_KUWAIT_PROGRAMS = MOUSTAQBILI_PROGRAMS;
   window.MOHE_KUWAIT_FILTERS = MOUSTAQBILI_FILTERS;
   window.MOHE_PROGRAMS = MOUSTAQBILI_PROGRAMS;
   window.MOHE_FILTERS = MOUSTAQBILI_FILTERS;
 }
+
