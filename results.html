@@ -54,7 +54,7 @@
             <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
           </div>
           <span class="text-base sm:text-lg font-extrabold tracking-tight block">moustaqbili | مستقبلي</span>
-          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle">دليل التخصصات المعتمدة والرواتب</span>
+          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle">دليل التخصصات والمخصصات المعتمدة</span>
         </div>
       </a>
 
@@ -62,15 +62,15 @@
       <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
         <a href="index.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_home">Home</a>
         <a href="results.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-olive-500" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
+        <a href="suggestions.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_guide">Application Guide</a>
         <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_local">Local Universities</a>
         <a href="guidelines.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_faq">Regulations & FAQ</a>
-        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_about">About</a>
+        <a href="#contact-mohe-section" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_contact">Contact MoHE</a>
       </nav>
 
       <!-- Language Translate Button (Top Right Header) -->
       <div class="flex items-center gap-3">
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
+        <button id="lang-toggle-btn" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
           <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
           </svg>
@@ -88,16 +88,10 @@
     <div id="mobile-menu" class="hidden md:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
       <a href="index.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_home">Home</a>
       <a href="results.html" class="block px-3 py-2 rounded text-white bg-olive-800" data-i18n="nav_courses">Approved Courses</a>
-      <a href="suggestions.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_guide">Direct Application Guide</a>
+      <a href="suggestions.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_guide">Application Guide</a>
       <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_local">Local Universities</a>
       <a href="guidelines.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_faq">Regulations & FAQ</a>
-      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_about">About</a>
-      <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2 rounded bg-amber-400 text-slate-950 font-bold flex items-center gap-2 cursor-pointer">
-        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-        </svg>
-        <span id="mobile-lang-toggle-text" data-i18n="mobile_lang_toggle">اللغة العربية</span>
-      </button>
+      <a href="#contact-mohe-section" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_contact">Contact MoHE</a>
     </div>
   </header>
 
@@ -114,23 +108,43 @@
             <span class="text-slate-800 font-semibold" data-i18n="results_breadcrumb_current">Approved Courses</span>
           </div>
           <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="results_title">
-            Approved Courses & Scholarships
+            Approved Courses & Living Allowances
           </h1>
           <p class="text-xs text-slate-500 mt-0.5" data-i18n="results_desc">
-            Find approved university courses, required grades, and monthly living stipends for Kuwaiti scholarship students.
+            Browse approved majors and ministerial living allowances in Kuwaiti Dinars (KWD) and local currency.
           </p>
         </div>
 
-        <!-- Controls: Count + Merit Filter Button -->
+        <!-- Controls: Count + Show Merit Button -->
         <div class="flex flex-wrap items-center gap-3">
-          <button id="quick-merit-toggle" type="button" class="px-3.5 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
-            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-            <span data-i18n="btn_quick_merit">Show Merit Universities (+50% Stipend)</span>
+          <button id="quick-merit-toggle" type="button" class="px-4 py-2 bg-white border border-slate-300 text-slate-800 text-xs font-bold rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center gap-2 cursor-pointer">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span id="merit-toggle-label" data-i18n="btn_show_merit">Show Merit Option (+50% Allowance)</span>
           </button>
 
-          <span id="results-count-badge" class="px-3 py-1.5 bg-olive-900 text-white text-xs font-bold rounded-lg shadow-sm" data-i18n="results_count_searching">
+          <span id="results-count-badge" class="px-3 py-2 bg-olive-900 text-white text-xs font-bold rounded-lg shadow-sm" data-i18n="results_count_searching">
             Searching...
           </span>
+        </div>
+      </div>
+
+      <!-- Merit Changes Interactive Explanation Banner (Toggled when Merit is Active) -->
+      <div id="merit-banner" class="hidden mb-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-xs text-amber-950 transition">
+        <div class="flex items-start justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-amber-200 text-amber-900 border border-amber-400">
+                Merit Scholarship Active (قرار 16/2025)
+              </span>
+              <strong class="text-xs font-bold text-slate-900" data-i18n="merit_difference_heading">Changes Applied Under Merit Scholarship:</strong>
+            </div>
+            <p class="text-slate-700 leading-relaxed">
+              When accepted into an approved Merit university, your monthly living allowance is boosted by <strong class="text-emerald-800">+50% in KWD</strong>, tuition is 100% covered, quotas are unrestricted, and placements are prioritized.
+            </p>
+          </div>
+          <button type="button" id="close-merit-banner-btn" class="text-amber-800 hover:text-amber-950 text-sm font-bold p-1">&times;</button>
         </div>
       </div>
 
@@ -152,15 +166,15 @@
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
-            <input type="text" id="keyword-filter" placeholder="Search major, country, exam, or uni..." data-i18n-placeholder="search_placeholder" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none transition">
+            <input type="text" id="keyword-filter" placeholder="Search major, country, or university..." data-i18n-placeholder="search_placeholder" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none transition">
           </div>
         </div>
 
       </div>
 
-      <!-- Program Cards Grid -->
+      <!-- Program Cards Grid (Direct UI: ONLY Major + Salary in KWD + 2 Buttons) -->
       <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-        <!-- Injected dynamically via app.js -->
+        <!-- Rendered dynamically via app.js -->
       </div>
 
       <!-- Empty State -->
@@ -181,6 +195,144 @@
           </a>
         </div>
       </div>
+
+      <!-- NATIONAL APTITUDE TEST (QUDRAT) TESTING DATES WIDGET -->
+      <section id="qudrat-schedule-section" class="mb-16 bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4 mb-6">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-slate-100 text-slate-800 text-[11px] font-bold uppercase tracking-wider mb-1">
+              Kuwait University Testing Schedule
+            </div>
+            <h2 class="text-lg font-extrabold text-slate-900" data-i18n="qudrat_section_title">
+              National Aptitude Test (Qudrat) Testing Dates
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5" data-i18n="qudrat_section_desc">
+              Official dates from Kuwait University Center for Evaluation & Measurement (CEM) for Academic Year 2026/2027.
+            </p>
+          </div>
+
+          <a href="https://portal.ku.edu.kw" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 whitespace-nowrap self-start sm:self-auto shadow-sm">
+            <span data-i18n="btn_qudrat_portal">Open KU Portal (portal.ku.edu.kw)</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+
+        <div id="qudrat-cycles-container" class="overflow-x-auto">
+          <!-- Dynamically populated via app.js from KUWAIT_QUDRAT_SCHEDULE -->
+        </div>
+      </section>
+
+      <!-- CONTACT MINISTRY OF HIGHER EDUCATION SECTION -->
+      <section id="contact-mohe-section" class="mb-16 bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
+        
+        <div class="border-b border-slate-200 pb-4 mb-6">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-900 text-[11px] font-bold uppercase tracking-wider mb-1">
+            Official Inquiries & Support
+          </div>
+          <h2 class="text-lg font-extrabold text-slate-900" data-i18n="contact_section_title">
+            Contact Ministry of Higher Education
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5" data-i18n="contact_section_desc">
+            Direct official inquiry channels, hotline, cultural attachés, and the Kuwait Sahel government platform.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-xs">
+          
+          <!-- Channel 1: Hotline & Call Center -->
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-olive-100 text-olive-900 font-bold flex items-center justify-center mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              </div>
+              <strong class="text-slate-900 text-sm font-bold block mb-1" data-i18n="contact_hotline_title">MoHE Call Center</strong>
+              <span class="text-xl font-black text-slate-900 block my-1">1882020</span>
+              <p class="text-[11px] text-slate-500" data-i18n="contact_hotline_sub">Sunday - Thursday: 8:00 AM - 2:00 PM</p>
+            </div>
+            <a href="tel:1882020" class="mt-4 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded text-center transition">
+              Call Hotline
+            </a>
+          </div>
+
+          <!-- Channel 2: Sahel App -->
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-amber-100 text-amber-900 font-bold flex items-center justify-center mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              </div>
+              <strong class="text-slate-900 text-sm font-bold block mb-1" data-i18n="contact_sahel_title">Kuwait Sahel App (سهل)</strong>
+              <p class="text-[11px] text-slate-600 mt-1" data-i18n="contact_sahel_desc">
+                Submit official scholarship registration, track financial letters, and upload academic certificates.
+              </p>
+            </div>
+            <a href="https://sahel.paci.gov.kw" target="_blank" rel="noopener noreferrer" class="mt-4 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-center transition" data-i18n="contact_sahel_btn">
+              Open Sahel Portal
+            </a>
+          </div>
+
+          <!-- Channel 3: Overseas Cultural Bureaus -->
+          <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded bg-slate-200 text-slate-800 font-bold flex items-center justify-center mb-3">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <strong class="text-slate-900 text-sm font-bold block mb-1" data-i18n="contact_cultural_title">Cultural Attaché Directory</strong>
+              <p class="text-[11px] text-slate-600 mt-1">
+                London: info@kuwaitcultural.org.uk<br>
+                Washington: info@kuwaitculture.com<br>
+                Dublin: dublin@mohe.edu.kw<br>
+                Canberra: admin@kuwaitcultural.org.au
+              </p>
+            </div>
+            <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="mt-4 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded text-center transition">
+              MoHE Directory
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Interactive Direct Inquiry Dispatch Form -->
+        <div class="p-6 bg-slate-50 rounded-xl border border-slate-200">
+          <h3 class="text-sm font-bold text-slate-900 mb-1" data-i18n="contact_form_title">Send Direct Inquiry to MoHE</h3>
+          <p class="text-[11px] text-slate-500 mb-4" data-i18n="contact_form_desc">Compose your inquiry and dispatch directly to the relevant scholarship department.</p>
+
+          <form id="direct-inquiry-form" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label for="inquiry-name" class="block font-bold text-slate-700 mb-1" data-i18n="form_student_name">Student Name</label>
+                <input type="text" id="inquiry-name" required placeholder="Full Name" class="w-full bg-white border border-slate-300 rounded p-2 focus:ring-2 focus:ring-olive-800 focus:outline-none">
+              </div>
+              <div>
+                <label for="inquiry-civilid" class="block font-bold text-slate-700 mb-1" data-i18n="form_civil_id">Civil ID</label>
+                <input type="text" id="inquiry-civilid" required maxlength="12" placeholder="12-digit Civil ID" class="w-full bg-white border border-slate-300 rounded p-2 focus:ring-2 focus:ring-olive-800 focus:outline-none">
+              </div>
+              <div>
+                <label for="inquiry-dept" class="block font-bold text-slate-700 mb-1" data-i18n="form_department">Target Department</label>
+                <select id="inquiry-dept" class="w-full bg-white border border-slate-300 rounded p-2 focus:ring-2 focus:ring-olive-800 focus:outline-none">
+                  <option value="foreign-scholarships@mohe.edu.kw">Foreign Scholarships Administration (إدارة البعثات الخارجية)</option>
+                  <option value="info@kuwaitcultural.org.uk">UK Cultural Office - London</option>
+                  <option value="info@kuwaitculture.com">US Cultural Division - Washington D.C.</option>
+                  <option value="dublin@mohe.edu.kw">Ireland Cultural Office - Dublin</option>
+                  <option value="admin@kuwaitcultural.org.au">Australia Cultural Office - Canberra</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="inquiry-message" class="block font-bold text-slate-700 mb-1" data-i18n="form_message">Your Inquiry Message</label>
+              <textarea id="inquiry-message" rows="3" required placeholder="Detail your university inquiry, GPA equivalency, or visa question..." class="w-full bg-white border border-slate-300 rounded p-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button type="submit" class="px-5 py-2.5 bg-olive-900 hover:bg-olive-800 text-white font-bold rounded-lg transition shadow-sm flex items-center gap-2">
+                <span data-i18n="form_btn_send">Dispatch Inquiry via Email</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </section>
 
       <!-- FEEDBACK SECTION -->
       <section id="helpful-feedback-widget" class="max-w-xl mx-auto my-12 bg-white rounded-xl border border-slate-300 shadow-sm p-6 text-center">
@@ -209,12 +361,10 @@
         </div>
 
         <div id="feedback-comment-section" class="hidden mt-5 pt-4 border-t border-slate-200 text-left">
-          <label for="feedback-text" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="feedback_comment_label">
-            Optional Feedback:
-          </label>
-          <textarea id="feedback-text" rows="3" placeholder="Tell us how we can improve..." data-i18n-placeholder="feedback_comment_placeholder" class="w-full bg-slate-50 border border-slate-300 rounded p-2.5 text-xs focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none"></textarea>
+          <label for="feedback-text" class="block text-xs font-bold text-slate-700 mb-1">Optional Feedback:</label>
+          <textarea id="feedback-text" rows="3" placeholder="Tell us how we can improve..." class="w-full bg-slate-50 border border-slate-300 rounded p-2.5 text-xs focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none"></textarea>
           <div class="mt-2.5 flex justify-end">
-            <button id="feedback-submit-comment" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white font-bold text-xs rounded transition shadow-sm" data-i18n="btn_submit_feedback">
+            <button id="feedback-submit-comment" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white font-bold text-xs rounded transition shadow-sm">
               Submit Feedback
             </button>
           </div>
@@ -229,10 +379,17 @@
     </div>
   </main>
 
-  <!-- Enriched Multi-Tab Modal Dialog Container -->
-  <div id="program-modal" class="modal-overlay fixed inset-0 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl overflow-hidden border border-slate-200" id="modal-dynamic-content">
-      <!-- Populated dynamically via openEnrichedProgramModal in app.js -->
+  <!-- MODAL 1: REQUIREMENTS MODAL -->
+  <div id="requirements-modal" class="modal-overlay fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden border border-slate-200" id="requirements-modal-content">
+      <!-- Populated dynamically via openRequirementsModal in app.js -->
+    </div>
+  </div>
+
+  <!-- MODAL 2: SALARY & BENEFITS MODAL (With Interactive Currency Converter) -->
+  <div id="salary-modal" class="modal-overlay fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden border border-slate-200" id="salary-modal-content">
+      <!-- Populated dynamically via openSalaryBenefitsModal in app.js -->
     </div>
   </div>
 
@@ -248,7 +405,7 @@
       <div class="flex items-center gap-6 text-[11px] font-medium">
         <a href="index.html" class="hover:text-white transition" data-i18n="nav_home">Home</a>
         <a href="results.html" class="hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
+        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Application Guide</a>
         <a href="local-universities.html" class="hover:text-white transition" data-i18n="nav_local">Local Unis</a>
         <a href="guidelines.html" class="hover:text-white transition" data-i18n="nav_faq">Regulations</a>
         <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
@@ -258,6 +415,7 @@
 
   <!-- Scripts -->
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/qudrat_data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
