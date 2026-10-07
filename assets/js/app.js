@@ -293,6 +293,48 @@ function initLandingSearch() {
 // =========================================================================
 // 4. Results Page Directory & Multi-Dimension Filtering
 // =========================================================================
+
+// Translation lookup for dynamically rendered UI (falls back to English, then the key)
+function t(key) {
+  const lang = (typeof getCurrentLanguage === 'function') ? getCurrentLanguage() : 'en';
+  const dict = window.MOUSTAQBILI_TRANSLATIONS || {};
+  return dict[lang]?.[key] ?? dict.en?.[key] ?? key;
+}
+
+function isArabic() {
+  return typeof getCurrentLanguage === 'function' && getCurrentLanguage() === 'ar';
+}
+
+/**
+ * Merge an Arabic overlay (from data-ar.js) onto a base English program object.
+ * The overlay mirrors the program's shape but only contains translated fields;
+ * anything missing from the overlay must fall back to the English base value.
+ * Must not mutate `base` - filtering still reads the original English data.
+ */
+function mergeTranslation(base, overlay) {
+  if (overlay === undefined) return base;
+  if (Array.isArray(base) && Array.isArray(overlay)) {
+    return base.map((item, i) => mergeTranslation(item, overlay[i]));
+  }
+  if (base && typeof base === 'object' && overlay && typeof overlay === 'object') {
+    const merged = { ...base };
+    for (const key of Object.keys(overlay)) merged[key] = mergeTranslation(base[key], overlay[key]);
+    return merged;
+  }
+  return overlay;
+}
+
+// Returns the program in the current display language (English base is never modified)
+function localizeProgram(prog) {
+  if (!isArabic()) return prog;
+  const overlay = window.MOUSTAQBILI_PROGRAMS_AR?.[prog.id];
+  return overlay ? mergeTranslation(prog, overlay) : prog;
+}
+
+// Set once the results page is initialised, so language changes re-render instead of re-binding listeners
+let rerenderResults = null;
+let openModalProgram = null;
+
 function initResultsPage() {
   const container = document.getElementById("results-container");
   const emptyState = document.getElementById("empty-state");
@@ -317,14 +359,14 @@ function initResultsPage() {
       meritToggleBtn.classList.remove("bg-white", "text-slate-700", "border-slate-300");
       meritToggleBtn.innerHTML = `
         <svg class="w-4 h-4 text-slate-900" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-        <span>Merit Universities Active (جامعات التميز مفعلة)</span>
+        <span>${t('merit_toggle_on')}</span>
       `;
     } else {
       meritToggleBtn.classList.remove("bg-amber-500", "text-slate-900", "border-amber-600");
       meritToggleBtn.classList.add("bg-white", "text-slate-700", "border-slate-300");
       meritToggleBtn.innerHTML = `
         <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-        <span>Show Merit Universities Only (+50% Salary)</span>
+        <span>${t('merit_toggle_off')}</span>
       `;
     }
   }
@@ -341,15 +383,15 @@ function initResultsPage() {
     activeFiltersContainer.innerHTML = "";
 
     const chips = [];
-    if (selectedCountry) chips.push({ type: "country", label: `Country: ${selectedCountry}` });
-    if (selectedPercentage) chips.push({ type: "percentage", label: `Kuwait Secondary %: ${selectedPercentage}` });
-    if (selectedMajor) chips.push({ type: "major", label: `Specialization: ${selectedMajor}` });
-    if (isMeritOnly) chips.push({ type: "merit", label: `★ Decree 16/2025 Merit (+50% Salary)` });
-    if (exactPct) chips.push({ type: "exactPct", label: `Exact %: ${exactPct.toFixed(2)}%` });
-    if (aptitudeScore) chips.push({ type: "aptitude", label: `Aptitude: ${aptitudeScore}%` });
+    if (selectedCountry) chips.push({ type: "country", label: `${t('chip_country')}: ${selectedCountry}` });
+    if (selectedPercentage) chips.push({ type: "percentage", label: `${t('chip_percentage')}: ${selectedPercentage}` });
+    if (selectedMajor) chips.push({ type: "major", label: `${t('chip_major')}: ${selectedMajor}` });
+    if (isMeritOnly) chips.push({ type: "merit", label: t('chip_merit') });
+    if (exactPct) chips.push({ type: "exactPct", label: `${t('chip_exact_pct')}: ${exactPct.toFixed(2)}%` });
+    if (aptitudeScore) chips.push({ type: "aptitude", label: `${t('chip_aptitude')}: ${aptitudeScore}%` });
 
     if (chips.length === 0) {
-      activeFiltersContainer.innerHTML = `<span class="text-xs text-slate-500 italic">Showing all accredited programs under the Kuwait MoHE Foreign Scholarship Plan 2025/2026.</span>`;
+      activeFiltersContainer.innerHTML = `<span class="text-xs text-slate-500 italic">${t('chips_none')}</span>`;
       return;
     }
 
@@ -362,7 +404,7 @@ function initResultsPage() {
       }`;
       chipEl.innerHTML = `
         <span>${chip.label}</span>
-        <button type="button" class="text-slate-500 hover:text-red-700 ml-1 font-bold focus:outline-none" aria-label="Remove filter">&times;</button>
+        <button type="button" class="text-slate-500 hover:text-red-700 ml-1 font-bold focus:outline-none" aria-label="${t('chip_remove')}">&times;</button>
       `;
 
       chipEl.querySelector("button").addEventListener("click", () => {
@@ -383,7 +425,7 @@ function initResultsPage() {
     const clearBtn = document.createElement("button");
     clearBtn.type = "button";
     clearBtn.className = "text-xs font-semibold text-red-700 hover:text-red-900 underline ml-2 transition";
-    clearBtn.textContent = "Reset All Criteria";
+    clearBtn.textContent = t('btn_reset_criteria');
     clearBtn.addEventListener("click", () => {
       selectedCountry = "";
       selectedPercentage = "";
@@ -454,7 +496,7 @@ function initResultsPage() {
     });
 
     if (countBadge) {
-      countBadge.textContent = `${filtered.length} ${filtered.length === 1 ? 'Approved Program' : 'Approved Programs'}`;
+      countBadge.textContent = `${filtered.length} ${filtered.length === 1 ? t('results_count_one') : t('results_count_many')}`;
     }
 
     if (!container) return;
@@ -467,7 +509,13 @@ function initResultsPage() {
       if (emptyState) emptyState.classList.add("hidden");
     }
 
-    filtered.forEach(prog => {
+    const isAr = isArabic();
+    // Card shows a shortened value: English strings are cut at a field-specific marker,
+    // Arabic strings in data-ar.js are written so the short form comes before "("
+    const short = (str, enMarker = '(') => (isAr ? str.split('(')[0] : str.split(enMarker)[0]).trim();
+
+    filtered.forEach(baseProg => {
+      const prog = localizeProgram(baseProg);
       const card = document.createElement("div");
       card.className = `gov-program-card rounded-xl p-6 flex flex-col justify-between border ${
         prog.isMerit ? 'merit-card-accent' : ''
@@ -479,33 +527,33 @@ function initResultsPage() {
           <div class="flex items-start justify-between gap-2 mb-3">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200">
               <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-              <span>${prog.country} (${prog.countryAr})</span>
+              <span>${isAr ? `${prog.countryAr} (${prog.country})` : `${prog.country} (${prog.countryAr})`}</span>
             </span>
 
             ${prog.isMerit ? `
               <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-bold merit-tag uppercase tracking-wide">
                 <svg class="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>Decree 16/2025 Merit (+50% Salary)</span>
+                <span>${t('card_merit_badge')}</span>
               </span>
             ` : `
               <span class="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-                MoHE Plan 2025/2026
+                ${t('card_plan_badge')}
               </span>
             `}
           </div>
 
           <!-- Titles -->
           <h3 class="text-lg font-extrabold text-slate-900 leading-snug mb-1">
-            ${prog.title}
+            ${isAr ? prog.titleAr : prog.title}
           </h3>
-          <h4 class="text-xs font-semibold text-slate-500 mb-3" dir="rtl">
-            ${prog.titleAr}
+          <h4 class="text-xs font-semibold text-slate-500 mb-3" dir="${isAr ? 'ltr' : 'rtl'}">
+            ${isAr ? prog.title : prog.titleAr}
           </h4>
 
           <!-- Monthly Ministerial Salary Badge -->
           <div class="salary-badge rounded-lg p-2.5 mb-3 flex items-center justify-between text-xs">
             <div class="flex items-center gap-1.5">
-              <span class="font-bold">💰 MoHE Monthly Stipend:</span>
+              <span class="font-bold">${t('card_stipend_label')}</span>
               <span class="font-extrabold">${prog.monthlySalary.meritAmount !== 'N/A' && prog.isMerit ? prog.monthlySalary.meritAmount : prog.monthlySalary.standardAmount}</span>
             </div>
             <span class="text-[11px] text-emerald-800 font-semibold">${prog.monthlySalary.kwdEquivalent.split('|')[0].trim()}</span>
@@ -514,34 +562,34 @@ function initResultsPage() {
           <!-- Exam & Curriculum Overview -->
           <div class="bg-slate-50 rounded-lg p-3 border border-slate-200 mb-4 text-xs space-y-2">
             <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-              <span class="text-slate-500 font-medium">Public School Floor</span>
-              <span class="font-bold text-slate-900">${prog.schoolGradSplit.publicSchool.minScore.split('(')[0].trim()} (${prog.schoolGradSplit.publicSchool.stream.split('(')[0].trim()})</span>
+              <span class="text-slate-500 font-medium">${t('card_public_floor')}</span>
+              <span class="font-bold text-slate-900">${short(prog.schoolGradSplit.publicSchool.minScore)} (${short(prog.schoolGradSplit.publicSchool.stream)})</span>
             </div>
             <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-              <span class="text-slate-500 font-medium">US GPA / UK System</span>
-              <span class="font-bold text-slate-900">${prog.schoolGradSplit.usDiploma.minScore.split('Cumulative')[0].trim()} | ${prog.schoolGradSplit.ukSystem.minScore.split('with')[0].trim()}</span>
+              <span class="text-slate-500 font-medium">${t('card_us_uk')}</span>
+              <span class="font-bold text-slate-900">${short(prog.schoolGradSplit.usDiploma.minScore, 'Cumulative')} | ${short(prog.schoolGradSplit.ukSystem.minScore, 'with')}</span>
             </div>
             <div class="flex items-center justify-between border-b border-slate-200/60 pb-1.5">
-              <span class="text-slate-500 font-medium">UKVI IELTS Mandatory?</span>
+              <span class="text-slate-500 font-medium">${t('card_ukvi_question')}</span>
               <span class="font-bold ${prog.necessaryExams.ukviIeltsRequired ? 'text-amber-700' : 'text-slate-700'}">
-                ${prog.necessaryExams.ukviIeltsRequired ? 'Yes (Strict UKVI Rule)' : 'No (Standard Accepted)'}
+                ${prog.necessaryExams.ukviIeltsRequired ? t('card_ukvi_yes') : t('card_ukvi_no')}
               </span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-slate-500 font-medium">Deadlines</span>
+              <span class="text-slate-500 font-medium">${t('card_deadlines')}</span>
               <span class="font-semibold text-slate-800 text-[11px] truncate max-w-[200px]" title="${prog.deadlines.earlyAction || prog.deadlines.regularDecision}">
-                ${prog.deadlines.earlyAction ? prog.deadlines.earlyAction.split('(')[0].trim() : prog.deadlines.regularDecision.split('(')[0].trim()}
+                ${prog.deadlines.earlyAction ? short(prog.deadlines.earlyAction) : short(prog.deadlines.regularDecision)}
               </span>
             </div>
           </div>
 
           <!-- Prerequisite Subject Floors -->
           <div class="mb-4">
-            <span class="text-[11px] font-bold text-slate-600 block uppercase tracking-wider mb-1.5">Required Course Minimums:</span>
+            <span class="text-[11px] font-bold text-slate-600 block uppercase tracking-wider mb-1.5">${t('card_course_minimums')}</span>
             <div class="flex flex-wrap gap-1">
               ${prog.courseSubjectFloors.map(c => `
                 <span class="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-800 rounded text-[11px] font-semibold">
-                  ${c.subject.split('(')[0].trim()}: ${c.minGrade.split('(')[0].trim()}
+                  ${short(c.subject)}: ${short(c.minGrade)}
                 </span>
               `).join("")}
             </div>
@@ -551,16 +599,16 @@ function initResultsPage() {
         <!-- Footer Actions -->
         <div class="pt-3 border-t border-slate-200 flex items-center justify-between">
           <span class="text-[11px] text-slate-500 font-medium">
-            Plan 2025/2026 Ref: MOHE-2025
+            ${t('card_ref')}
           </span>
           <button class="px-3.5 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-xs font-bold tracking-wide transition flex items-center gap-1.5 shadow-sm">
-            <span>View Full Requirements</span>
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <span>${t('card_view_full')}</span>
+            <svg class="w-3.5 h-3.5 ${isAr ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           </button>
         </div>
       `;
 
-      card.addEventListener("click", () => openEnrichedProgramModal(prog));
+      card.addEventListener("click", () => openEnrichedProgramModal(baseProg));
       container.appendChild(card);
     });
   }
@@ -574,17 +622,22 @@ function initResultsPage() {
 
   renderResults();
   initFeedbackWidget();
+  rerenderResults = renderResults;
 }
 
 // =========================================================================
 // 5. Enriched Multi-Tab Program Details Modal
 // =========================================================================
-function openEnrichedProgramModal(prog) {
+function openEnrichedProgramModal(baseProg) {
   const modal = document.getElementById("program-modal");
   if (!modal) return;
 
   const content = document.getElementById("modal-dynamic-content");
   if (!content) return;
+
+  openModalProgram = baseProg;
+  const prog = localizeProgram(baseProg);
+  const isAr = isArabic();
 
   content.innerHTML = `
     <!-- Modal Header -->
@@ -592,22 +645,22 @@ function openEnrichedProgramModal(prog) {
       <div>
         <div class="flex items-center gap-2 mb-2">
           <span class="gov-seal-badge">moustaqbili | مستقبلي</span>
-          ${prog.isMerit ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-400 text-slate-950 uppercase">Decree 16/2025 Merit (+50% Salary)</span>` : ''}
-          <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-olive-900 text-slate-200">${prog.country}</span>
+          ${prog.isMerit ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-400 text-slate-950 uppercase">${t('card_merit_badge')}</span>` : ''}
+          <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-olive-900 text-slate-200">${isAr ? prog.countryAr : prog.country}</span>
         </div>
-        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">${prog.title}</h2>
-        <h3 class="text-xs text-slate-300 font-medium mt-1" dir="rtl">${prog.titleAr}</h3>
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight">${isAr ? prog.titleAr : prog.title}</h2>
+        <h3 class="text-xs text-slate-300 font-medium mt-1" dir="${isAr ? 'ltr' : 'rtl'}">${isAr ? prog.title : prog.titleAr}</h3>
       </div>
       <button id="close-modal-btn" class="text-slate-400 hover:text-white text-2xl font-bold p-1 leading-none">&times;</button>
     </div>
 
     <!-- Modal Tabs Navigation -->
     <div class="flex border-b border-slate-200 bg-slate-100 text-xs font-bold overflow-x-auto">
-      <button class="modal-tab-btn active px-4 py-3" data-target="tab-salary">1. Salary & Benefits</button>
-      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-curriculum">2. School Grad Split & Courses</button>
-      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-exams">3. University Exams & Essays</button>
-      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-deadlines">4. Deadlines & Direct Entry</button>
-      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-visa">5. Student Visa Guide</button>
+      <button class="modal-tab-btn active px-4 py-3" data-target="tab-salary">${t('modal_tab_salary')}</button>
+      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-curriculum">${t('modal_tab_curriculum')}</button>
+      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-exams">${t('modal_tab_exams')}</button>
+      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-deadlines">${t('modal_tab_deadlines')}</button>
+      <button class="modal-tab-btn px-4 py-3 text-slate-600" data-target="tab-visa">${t('modal_tab_visa')}</button>
     </div>
 
     <!-- Modal Tab Contents -->
@@ -616,15 +669,15 @@ function openEnrichedProgramModal(prog) {
       <!-- TAB 1: SALARY & BENEFITS -->
       <div id="tab-salary" class="tab-pane space-y-4">
         <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 block mb-1">Official Kuwait MoHE Monthly Stipend:</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 block mb-1">${t('modal_stipend_heading')}</span>
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <span class="text-2xl font-black text-emerald-950">${prog.monthlySalary.meritAmount !== 'N/A' && prog.isMerit ? prog.monthlySalary.meritAmount : prog.monthlySalary.standardAmount}</span>
             <span class="text-sm font-bold text-emerald-800">${prog.monthlySalary.kwdEquivalent}</span>
           </div>
-          <p class="text-xs text-emerald-900 mt-2">Paid directly by the Kuwait Cultural Bureau to the scholar's bank account on the 25th of each month.</p>
+          <p class="text-xs text-emerald-900 mt-2">${t('modal_stipend_note')}</p>
         </div>
 
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Statutory Financial Allowances Provided by Ministry:</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">${t('modal_allowances_heading')}</h4>
         <div class="grid grid-cols-1 gap-2">
           ${prog.monthlySalary.allowancesSummary.map(a => `
             <div class="flex items-start gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800">
@@ -634,7 +687,7 @@ function openEnrichedProgramModal(prog) {
           `).join("")}
         </div>
 
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">Approved Institutions Register (Decree 16/2025 & MoHE Plan):</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">${t('modal_institutions_heading')}</h4>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           ${prog.accreditedUniversities.map(u => `
             <div class="p-2.5 bg-slate-50 border border-slate-200 rounded text-xs font-semibold text-slate-800 flex items-center gap-2">
@@ -647,32 +700,32 @@ function openEnrichedProgramModal(prog) {
 
       <!-- TAB 2: SCHOOL GRAD SPLIT & COURSES -->
       <div id="tab-curriculum" class="tab-pane hidden space-y-4">
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Admission Minimums by School Curriculum:</h4>
-        
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">${t('modal_curriculum_heading')}</h4>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-            <span class="text-xs font-bold text-slate-900 block mb-1">Kuwait Public Schools (التعليم العام)</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_public_school')}</span>
             <span class="text-base font-black text-emerald-800 block">${prog.schoolGradSplit.publicSchool.minScore}</span>
             <span class="text-xs text-slate-600 font-semibold block mt-0.5">${prog.schoolGradSplit.publicSchool.stream}</span>
             <p class="text-[11px] text-slate-500 mt-2">${prog.schoolGradSplit.publicSchool.notes}</p>
           </div>
 
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-            <span class="text-xs font-bold text-slate-900 block mb-1">American Diploma Grads</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_us_diploma')}</span>
             <span class="text-base font-black text-emerald-800 block">${prog.schoolGradSplit.usDiploma.minScore}</span>
             <span class="text-xs text-slate-600 font-semibold block mt-0.5">${prog.schoolGradSplit.usDiploma.coursePrereqs}</span>
             <p class="text-[11px] text-slate-500 mt-2">${prog.schoolGradSplit.usDiploma.standardizedRequirement}</p>
           </div>
 
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-            <span class="text-xs font-bold text-slate-900 block mb-1">British System (IGCSE / A-Levels)</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_uk_system')}</span>
             <span class="text-base font-black text-emerald-800 block">${prog.schoolGradSplit.ukSystem.minScore}</span>
             <span class="text-xs text-slate-600 font-semibold block mt-0.5">${prog.schoolGradSplit.ukSystem.igcseReqs}</span>
             <p class="text-[11px] text-slate-500 mt-2">${prog.schoolGradSplit.ukSystem.aLevelSubjects}</p>
           </div>
         </div>
 
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">Mandatory Course Grade Floors (Chem, Bio, Math):</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">${t('modal_floors_heading')}</h4>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           ${prog.courseSubjectFloors.map(c => `
             <div class="p-3 bg-slate-50 border border-slate-200 rounded text-xs flex items-center justify-between">
@@ -688,7 +741,7 @@ function openEnrichedProgramModal(prog) {
         <div class="p-4 rounded-xl border ${prog.necessaryExams.ukviIeltsRequired ? 'bg-amber-50 border-amber-300' : 'bg-slate-50 border-slate-300'}">
           <div class="flex items-center gap-2 font-bold ${prog.necessaryExams.ukviIeltsRequired ? 'text-amber-900' : 'text-slate-900'} text-xs mb-1">
             <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Official Language Advisory:</span>
+            <span>${t('modal_language_advisory')}</span>
           </div>
           <p class="text-xs ${prog.necessaryExams.ukviIeltsRequired ? 'text-amber-800' : 'text-slate-600'} leading-relaxed">
             ${prog.necessaryExams.ukviIeltsNote}
@@ -697,77 +750,77 @@ function openEnrichedProgramModal(prog) {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="p-3.5 bg-slate-50 rounded border border-slate-200">
-            <span class="text-xs font-bold text-slate-900 block mb-1">SAT / ACT Testing Policy</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_sat_heading')}</span>
             <p class="text-xs text-slate-700">${prog.necessaryExams.satActStatus}</p>
-            ${prog.necessaryExams.satTargetScore !== 'N/A' ? `<span class="text-[11px] font-semibold text-emerald-800 block mt-1">Target SAT: ${prog.necessaryExams.satTargetScore} | ACT: ${prog.necessaryExams.actTargetScore}</span>` : ''}
+            ${baseProg.necessaryExams.satTargetScore !== 'N/A' ? `<span class="text-[11px] font-semibold text-emerald-800 block mt-1">${t('modal_sat_target')}: ${prog.necessaryExams.satTargetScore} | ACT: ${prog.necessaryExams.actTargetScore}</span>` : ''}
           </div>
 
           <div class="p-3.5 bg-slate-50 rounded border border-slate-200">
-            <span class="text-xs font-bold text-slate-900 block mb-1">Standardized English Scores</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_english_heading')}</span>
             <p class="text-xs text-slate-700">${prog.necessaryExams.englishProficiency}</p>
             <span class="text-[11px] text-slate-500 block mt-1">${prog.necessaryExams.otherExams}</span>
           </div>
         </div>
 
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">Personal Statement & Essay Guidelines:</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">${t('modal_essay_heading')}</h4>
         <div class="p-4 bg-slate-50 rounded border border-slate-200 space-y-2 text-xs">
           <div>
-            <strong class="text-slate-900">Platform:</strong> <span>${prog.personalStatementReqs.platform}</span>
+            <strong class="text-slate-900">${t('modal_platform')}</strong> <span>${prog.personalStatementReqs.platform}</span>
           </div>
           <div>
-            <strong class="text-slate-900">Word Count:</strong> <span>${prog.personalStatementReqs.wordCount}</span>
+            <strong class="text-slate-900">${t('modal_word_count')}</strong> <span>${prog.personalStatementReqs.wordCount}</span>
           </div>
           <div>
-            <strong class="text-slate-900">Supplemental Prompts & Interviews:</strong> <span>${prog.personalStatementReqs.supplementalEssays}</span>
+            <strong class="text-slate-900">${t('modal_supplemental')}</strong> <span>${prog.personalStatementReqs.supplementalEssays}</span>
           </div>
           <div>
-            <strong class="text-slate-900">Kuwait Ministry Form:</strong> <span>${prog.personalStatementReqs.moheLetter}</span>
+            <strong class="text-slate-900">${t('modal_mohe_form')}</strong> <span>${prog.personalStatementReqs.moheLetter}</span>
           </div>
         </div>
       </div>
 
       <!-- TAB 4: DEADLINES & DIRECT ENTRY -->
       <div id="tab-deadlines" class="tab-pane hidden space-y-4">
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Application Deadlines Schedule:</h4>
-        
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">${t('modal_deadlines_heading')}</h4>
+
         <div class="space-y-2 text-xs">
           <div class="p-3 bg-slate-50 rounded border border-slate-200 flex justify-between items-center">
             <div>
-              <strong class="text-slate-900 block">Early Action (EA):</strong>
-              <span class="text-slate-500 text-[11px]">Non-binding early decision pathway</span>
+              <strong class="text-slate-900 block">${t('modal_ea')}</strong>
+              <span class="text-slate-500 text-[11px]">${t('modal_ea_desc')}</span>
             </div>
-            <span class="font-bold text-slate-800">${prog.deadlines.earlyAction || 'N/A for this region'}</span>
+            <span class="font-bold text-slate-800">${prog.deadlines.earlyAction || t('modal_na_region')}</span>
           </div>
 
           <div class="p-3 bg-slate-50 rounded border border-slate-200 flex justify-between items-center">
             <div>
-              <strong class="text-slate-900 block">Early Decision (ED):</strong>
-              <span class="text-slate-500 text-[11px]">Binding institutional commitment</span>
+              <strong class="text-slate-900 block">${t('modal_ed')}</strong>
+              <span class="text-slate-500 text-[11px]">${t('modal_ed_desc')}</span>
             </div>
-            <span class="font-bold text-slate-800">${prog.deadlines.earlyDecision || 'N/A for this region'}</span>
+            <span class="font-bold text-slate-800">${prog.deadlines.earlyDecision || t('modal_na_region')}</span>
           </div>
 
           <div class="p-3 bg-slate-50 rounded border border-slate-200 flex justify-between items-center">
             <div>
-              <strong class="text-slate-900 block">Regular Decision / UCAS Deadline:</strong>
-              <span class="text-slate-500 text-[11px]">Final standard submission round</span>
+              <strong class="text-slate-900 block">${t('modal_rd')}</strong>
+              <span class="text-slate-500 text-[11px]">${t('modal_rd_desc')}</span>
             </div>
             <span class="font-bold text-slate-800">${prog.deadlines.regularDecision}</span>
           </div>
 
           <div class="p-3 bg-emerald-50 rounded border border-emerald-200 flex justify-between items-center">
             <div>
-              <strong class="text-emerald-950 block">Kuwait MoHE Scholarship Registration Window:</strong>
+              <strong class="text-emerald-950 block">${t('modal_mohe_window')}</strong>
               <span class="text-emerald-800 text-[11px]">${prog.deadlines.mohePortalWindow}</span>
             </div>
             <span class="font-bold text-emerald-900">${prog.deadlines.moheRegularIntake}</span>
           </div>
         </div>
 
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">Direct Entry vs Foundation Year Pathway:</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mt-4">${t('modal_pathway_heading')}</h4>
         <div class="p-4 bg-slate-50 rounded border border-slate-200 text-xs space-y-1.5">
-          <div><strong class="text-slate-900">Entry Type:</strong> <span>${prog.pathway.entryType}</span></div>
-          <div><strong class="text-slate-900">Foundation Year Required?</strong> <span class="font-bold ${prog.pathway.foundationNeeded ? 'text-amber-800' : 'text-emerald-800'}">${prog.pathway.foundationNeeded ? 'Yes, for Thanawiya graduates' : 'No, direct undergraduate entry'}</span></div>
+          <div><strong class="text-slate-900">${t('modal_entry_type')}</strong> <span>${prog.pathway.entryType}</span></div>
+          <div><strong class="text-slate-900">${t('modal_foundation_question')}</strong> <span class="font-bold ${prog.pathway.foundationNeeded ? 'text-amber-800' : 'text-emerald-800'}">${prog.pathway.foundationNeeded ? t('modal_foundation_yes') : t('modal_foundation_no')}</span></div>
           <p class="text-slate-600 mt-2 leading-relaxed">${prog.pathway.explanation}</p>
         </div>
       </div>
@@ -776,19 +829,19 @@ function openEnrichedProgramModal(prog) {
       <div id="tab-visa" class="tab-pane hidden space-y-4">
         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-3">
           <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-            <span class="font-bold text-slate-900">Target Student Visa Type:</span>
+            <span class="font-bold text-slate-900">${t('modal_visa_type')}</span>
             <span class="font-extrabold text-slate-800 bg-white px-3 py-1 rounded border border-slate-300">${prog.visaRequirements.visaType}</span>
           </div>
           
-          <h5 class="font-bold text-slate-900 uppercase text-[11px] tracking-wider">Mandatory Document Checklist for Embassy Submission:</h5>
+          <h5 class="font-bold text-slate-900 uppercase text-[11px] tracking-wider">${t('modal_visa_docs')}</h5>
           <ul class="space-y-1.5 list-disc list-inside text-slate-700">
             ${prog.visaRequirements.keyDocuments.map(d => `<li>${d}</li>`).join("")}
           </ul>
         </div>
 
         <div class="p-3.5 bg-amber-50 rounded border border-amber-300 text-xs text-amber-950">
-          <strong>Kuwait MoHE Financial Guarantee Letter (الكتاب المالي):</strong>
-          Issued by the supervising Cultural Bureau, verifying full government tuition and monthly allowance coverage, waiving personal bank statement requirements.
+          <strong>${t('modal_guarantee_title')}</strong>
+          ${t('modal_guarantee_desc')}
         </div>
       </div>
 
@@ -796,13 +849,13 @@ function openEnrichedProgramModal(prog) {
 
     <!-- Modal Footer -->
     <div class="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <span class="text-xs text-slate-500 font-medium">moustaqbili | مستقبلي &bull; Ref: MOHE-2025/2026</span>
+      <span class="text-xs text-slate-500 font-medium">moustaqbili | مستقبلي &bull; ${t('modal_footer_ref')}</span>
       <div class="flex items-center gap-2 w-full sm:w-auto">
         <button id="modal-close-btn2" class="px-4 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition w-full sm:w-auto">
-          Close Window
+          ${t('modal_close')}
         </button>
         <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="px-5 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-xs font-bold transition shadow-sm w-full sm:w-auto flex items-center justify-center gap-1.5">
-          <span>Official MoHE Portal (mohe.edu.kw)</span>
+          <span>${t('modal_mohe_portal')}</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
         </a>
       </div>
@@ -836,6 +889,7 @@ function openEnrichedProgramModal(prog) {
   const close = () => {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
+    openModalProgram = null;
   };
 
   closeBtn1?.addEventListener("click", close);
@@ -929,7 +983,9 @@ window.addEventListener("languageChanged", () => {
     // re-initialize or trigger calculation if needed
   }
   if (path.endsWith("results.html")) {
-    initResultsPage();
+    // Re-render only; initResultsPage() binds listeners and must run once (on DOMContentLoaded)
+    rerenderResults?.();
+    if (openModalProgram) openEnrichedProgramModal(openModalProgram);
   }
   if (path.endsWith("local-universities.html")) {
     initLocalUniversitiesPage();
