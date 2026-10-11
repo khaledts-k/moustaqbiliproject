@@ -36,377 +36,143 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-  <!-- Institutional Top Header -->
-  <header class="gov-header-gradient text-white sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Ministry Identity -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded bg-olive-950 border border-olive-800 flex items-center justify-center text-amber-400 font-bold shadow-inner">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs tracking-wider uppercase font-bold text-amber-400" data-i18n="state_kuwait">State of Kuwait</span>
-            <span class="text-[11px] text-slate-400">|</span>
-            <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
-          </div>
-          <span class="text-base sm:text-lg font-extrabold tracking-tight block">moustaqbili | مستقبلي</span>
-          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle"> بوابة البعثات الخارجية الموحدة</span>
-        </div>
-      </a>
+  <div id="site-header"></div>
 
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
-        <a href="index.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-olive-500" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_local">Local Universities</a>
-        <a href="guidelines.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_faq">Regulations & FAQ</a>
-        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_about">About</a>
-      </nav>
-
-      <!-- Language Translate Button (Top Right Header) -->
-      <div class="flex items-center gap-3">
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-          </svg>
-          <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
-        </button>
-      </div>
-
-      <!-- Mobile Hamburger -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800 focus:outline-none" aria-label="Toggle navigation">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-      </button>
-    </div>
-
-    <!-- Mobile Dropdown -->
-    <div id="mobile-menu" class="hidden md:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
-      <a href="index.html" class="block px-3 py-2 rounded text-white bg-olive-800" data-i18n="nav_home">Home</a>
-      <a href="results.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_courses">Approved Courses</a>
-      <a href="suggestions.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_guide">Direct Application Guide</a>
-      <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_local">Local Universities</a>
-      <a href="guidelines.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_faq">Regulations & FAQ</a>
-      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_about">About</a>
-      <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2 rounded bg-amber-400 text-slate-950 font-bold flex items-center gap-2 cursor-pointer">
-        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-        </svg>
-        <span id="mobile-lang-toggle-text" data-i18n="mobile_lang_toggle">اللغة العربية</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Portal Section -->
   <main class="flex-grow">
 
-    <!-- Executive Hero Banner -->
-    <section class="gov-hero-gradient text-white py-14 px-4 sm:px-6 lg:px-8 relative border-b border-slate-800">
-      <div class="max-w-4xl mx-auto text-center">
-        
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-4">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span data-i18n="hero_badge">Official Academic Year 2026/2027 Directory &bull; خطة البعثات الخارجية والداخلية</span>
-        </div>
-
-        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3" data-i18n="hero_title">
-          Moustaqbili For Your University Inquiries
-        </h1>
-        <p class="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_desc">
-          Your one stop shop for all your questions about where to go and if you can
-        </p>
-
+    <!-- Hero -->
+    <section class="gov-hero-gradient text-white pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="inline-block px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-4" data-i18n="hero_badge">Academic Year 2026/2027</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3" data-i18n="hero_title">Find your scholarship, step by step</h1>
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed" data-i18n="hero_desc">Approved majors, monthly allowances, Qudrat dates and Ministry contacts in one place.</p>
       </div>
     </section>
 
-    <!-- Interactive Drop-Down Search Screen -->
+    <!-- Search -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-8">
-      
-      <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-6 sm:p-9">
-        
-        <!-- Screen Header -->
-        <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
-          <div>
-            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-              <span data-i18n="search_card_title">Personal Search Criteria</span>
-            </h2>
-            <p class="text-xs text-slate-600 mt-0.5" data-i18n="search_card_desc">
-              Select at least 1 of the 3 primary input bubbles below to generate your matches.
-            </p>
-          </div>
-          <span class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded border border-slate-300 self-start sm:self-auto" data-i18n="search_min_req">
-            Minimum 1 Requirement
-          </span>
+      <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-6 sm:p-8">
+
+        <div class="mb-5 border-b border-slate-200 pb-4">
+          <h2 class="text-lg font-bold text-slate-900" data-i18n="search_card_title">Search approved programs</h2>
+          <p class="text-xs text-slate-600 mt-0.5" data-i18n="search_card_desc">Choose at least one option below.</p>
         </div>
 
-        <!-- Official Validation Alert -->
-        <div id="validation-alert" class="hidden mb-6 p-4 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs flex items-start gap-3">
-          <svg class="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          <div>
-            <strong class="font-bold text-sm block" data-i18n="validation_error_title">Error:</strong>
-            <span data-i18n="validation_error_msg">You must choose at least 1 criterion from the displayed inputs (Desired Country, High School Percentage, or Specialization).</span>
-          </div>
+        <div id="validation-alert" class="hidden mb-5 p-4 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="alert">
+          <strong class="font-bold block" data-i18n="validation_error_title">Choose at least one option</strong>
+          <span data-i18n="validation_error_msg">Pick a country, a grade bracket, or a specialization to see matching programs.</span>
         </div>
 
-        <!-- Search Form -->
-        <form id="mohe-search-form" class="space-y-6">
+        <form id="mohe-search-form" class="space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <!-- The 3 Displayed Input Bubbles -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-            <!-- BUBBLE 1: Desired Country -->
-            <div id="bubble-country-card" class="filter-bubble-card rounded-lg p-5">
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                  <span id="badge-country" data-num="1" class="bubble-number-badge">1</span>
-                  <label for="select-country" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble1_title">Desired Country</label>
-                </div>
-                <span class="text-[11px] text-slate-500 font-medium" data-i18n="bubble1_sub">بلد الإيفاد</span>
+            <div id="bubble-country-card" class="filter-bubble-card rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="badge-country" data-num="1" class="bubble-number-badge">1</span>
+                <label for="select-country" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble1_title">Country</label>
               </div>
-              <p class="text-[11px] text-slate-500 mb-3" data-i18n="bubble1_desc">Country of study.</p>
-
-              <div class="relative">
-                <select id="select-country" class="w-full bg-white border border-slate-300 text-slate-900 text-xs font-medium rounded-lg px-3 py-2.5 pr-8 focus:ring-2 focus:ring-olive-800 focus:outline-none appearance-none cursor-pointer">
-                  <option value="" data-i18n="bubble1_default">-- All Approved Countries --</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-              </div>
+              <select id="select-country" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none cursor-pointer">
+                <option value="" data-i18n="bubble1_default">All countries</option>
+              </select>
             </div>
 
-            <!-- BUBBLE 2: Kuwait High School Percentage / GPA Band -->
-            <div id="bubble-percentage-card" class="filter-bubble-card rounded-lg p-5">
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                  <span id="badge-percentage" data-num="2" class="bubble-number-badge">2</span>
-                  <label for="select-percentage" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble2_title">High School %</label>
-                </div>
-                <span class="text-[11px] text-slate-500 font-medium" data-i18n="bubble2_sub">النسبة</span>
+            <div id="bubble-percentage-card" class="filter-bubble-card rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="badge-percentage" data-num="2" class="bubble-number-badge">2</span>
+                <label for="select-percentage" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble2_title">High School %</label>
               </div>
-              <p class="text-[11px] text-slate-500 mb-3" data-i18n="bubble2_desc">High school percentage or 4.0 GPA.</p>
-
-              <div class="relative">
-                <select id="select-percentage" class="w-full bg-white border border-slate-300 text-slate-900 text-xs font-medium rounded-lg px-3 py-2.5 pr-8 focus:ring-2 focus:ring-olive-800 focus:outline-none appearance-none cursor-pointer">
-                  <option value="" data-i18n="bubble2_default">-- Select Grade Bracket --</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-              </div>
+              <select id="select-percentage" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none cursor-pointer">
+                <option value="" data-i18n="bubble2_default">Any grade</option>
+              </select>
             </div>
 
-            <!-- BUBBLE 3: Desired Major / Specialization -->
-            <div id="bubble-major-card" class="filter-bubble-card rounded-lg p-5">
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                  <span id="badge-major" data-num="3" class="bubble-number-badge">3</span>
-                  <label for="select-major" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble3_title">Specialization</label>
-                </div>
-                <span class="text-[11px] text-slate-500 font-medium" data-i18n="bubble3_sub">التخصص</span>
+            <div id="bubble-major-card" class="filter-bubble-card rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="badge-major" data-num="3" class="bubble-number-badge">3</span>
+                <label for="select-major" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble3_title">Specialization</label>
               </div>
-              <p class="text-[11px] text-slate-500 mb-3" data-i18n="bubble3_desc">Target academic field approved under the annual scholarship quota.</p>
-
-              <div class="relative">
-                <select id="select-major" class="w-full bg-white border border-slate-300 text-slate-900 text-xs font-medium rounded-lg px-3 py-2.5 pr-8 focus:ring-2 focus:ring-olive-800 focus:outline-none appearance-none cursor-pointer">
-                  <option value="" data-i18n="bubble3_default">-- All Sponsoring Disciplines --</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- DISTINCT OPTION: Merit Universities (جامعات التميز) -->
-          <div id="merit-option-card" class="p-4 rounded-xl border border-slate-300 bg-slate-50 transition">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div class="flex items-start gap-3">
-                <div class="pt-0.5">
-                  <input type="checkbox" id="checkbox-merit-only" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300 cursor-pointer">
-                </div>
-                <div>
-                  <label for="checkbox-merit-only" class="text-xs font-bold text-slate-900 flex items-center gap-2 cursor-pointer">
-                    <span data-i18n="merit_checkbox_label">Filter by Merit Universities (قائمة جامعات التميز)</span>
-                  </label>
-                  <p class="text-[11px] text-slate-600 mt-0.5" data-i18n="merit_checkbox_desc">
-                    Filters exclusively for Merit Universities approved by the Ministry of Higher Education.
-                  </p>
-                </div>
-              </div>
-
-              <a href="guidelines.html#merit-rules" class="text-[11px] font-semibold text-slate-700 hover:text-slate-900 underline whitespace-nowrap self-end sm:self-auto" data-i18n="merit_rules_link">
-                Merit Regulations &rarr;
-              </a>
+              <select id="select-major" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none cursor-pointer">
+                <option value="" data-i18n="bubble3_default">All specializations</option>
+              </select>
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="text-[11px] text-slate-500 flex items-center gap-1.5">
-              <span></span>
-            </div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <label id="merit-option-card" for="checkbox-merit-only" class="flex items-start gap-3 p-3 rounded-lg border border-slate-300 bg-slate-50 cursor-pointer transition">
+              <input type="checkbox" id="checkbox-merit-only" class="mt-0.5 w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300">
+              <span>
+                <span class="text-xs font-bold text-slate-900 block" data-i18n="merit_checkbox_label">Merit universities only</span>
+                <span class="text-xs text-slate-600" data-i18n="merit_checkbox_desc">Universities on the Ministry's merit list.</span>
+              </span>
+            </label>
 
-            <button type="submit" id="btn-find-sponsorships" class="w-full sm:w-auto px-7 py-3 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-xs font-bold tracking-wider uppercase transition flex items-center justify-center gap-2 shadow-md">
-              <span data-i18n="btn_query_sponsorships">Query Eligible Sponsorships</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <button type="submit" id="btn-find-sponsorships" class="w-full sm:w-auto px-7 py-3 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold transition shadow-md">
+              <span data-i18n="btn_query_sponsorships">Show programs</span>
             </button>
           </div>
-
         </form>
-
       </div>
-
     </section>
 
-    <!-- INTERACTIVE TOOLS SECTION: GPA Calculator & Equivalent Score -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Tool 1: 4.0 GPA to Percentage Converter (إدارة التعليم الخاص) -->
-        <div class="bg-white p-6 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3 border-b border-slate-200 pb-2">
-              <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                <span data-i18n="tool1_title">GPA to Percentage Converter (4.0 Scale)</span>
-              </h3>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase" data-i18n="tool1_tag">Private Education</span>
-            </div>
-
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed" data-i18n="tool1_desc">
-              Scale used to change the US school systems GPA to the Kuwaiti percentage (النسبة).
-            </p>
-
-            <div class="space-y-3 mb-4">
-              <div>
-                <label for="gpa-calc-input" class="block text-xs font-bold text-slate-800 mb-1" data-i18n="gpa_input_label">Enter GPA on 4.00 Scale (e.g., 3.85):</label>
-                <div class="flex gap-2">
-                  <input type="number" id="gpa-calc-input" min="1.0" max="4.0" step="0.01" placeholder="3.85" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none">
-                  <button type="button" id="gpa-calc-btn" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_convert">
-                    Convert
-                  </button>
-                </div>
-              </div>
-
-              <!-- Calculation Result Output Box -->
-              <div id="gpa-calc-result" class="hidden p-3.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs animate-fade-in">
-                <div class="flex items-baseline justify-between">
-                  <span class="text-slate-600 font-semibold" data-i18n="gpa_result_label">Equated Percentage:</span>
-                  <span id="gpa-calc-percentage" class="text-xl font-black text-emerald-950">96.75%</span>
-                </div>
-                <span id="gpa-calc-tier" class="text-xs font-semibold text-emerald-800 block mt-1"></span>
-                <button type="button" id="gpa-apply-btn" class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">
-                  Apply This To Search Filters &uarr;
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="text-[11px] text-slate-400 border-t border-slate-100 pt-2" data-i18n="gpa_ref_note">
-            Ref: Kuwait Ministry of Education Equivalency Decree No. 2026/8
-          </div>
-        </div>
-
-        <!-- Tool 2: Kuwait University Aptitude & Equivalent Score Calculator (المعدل المكافئ) -->
-        <div class="bg-white p-6 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-3 border-b border-slate-200 pb-2">
-              <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
-                <span data-i18n="tool2_title">Equivalent Score Calculator (المعدل المكافئ)</span>
-              </h3>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-700 uppercase" data-i18n="tool2_tag">Kuwait University</span>
-            </div>
-
-            <p class="text-xs text-slate-600 mb-4 leading-relaxed" data-i18n="tool2_desc">
-              Computes the mandatory weighted composite score for competitive medical and engineering admissions:
-              <br><code class="text-emerald-800 font-bold">(High School % &times; 0.70) + (Aptitude Score &times; 0.30)</code>
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-              <div>
-                <label for="input-exact-pct" class="block text-[11px] font-bold text-slate-800 mb-1" data-i18n="sec_pct_label">Secondary % (60 - 100):</label>
-                <input type="number" id="input-exact-pct" min="60" max="100" step="0.01" placeholder="e.g. 96.0" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-semibold focus:ring-2 focus:ring-olive-800 focus:outline-none">
-              </div>
-              <div>
-                <label for="input-aptitude-score" class="block text-[11px] font-bold text-slate-800 mb-1" data-i18n="apt_score_label">Aptitude Exam % (0 - 100):</label>
-                <input type="number" id="input-aptitude-score" min="0" max="100" step="0.1" placeholder="e.g. 88.0" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-semibold focus:ring-2 focus:ring-olive-800 focus:outline-none">
-              </div>
-            </div>
-
-            <div id="equivalent-score-display" class="hidden p-3 bg-slate-100 border border-slate-300 rounded text-xs font-bold text-slate-900 text-center">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-
-          <div class="text-[11px] text-slate-400 border-t border-slate-100 pt-2 mt-4" data-i18n="tool2_ref_note">
-            Mandatory for KU Medicine, Dentistry, Engineering, and GCC Direct Medical Seats
-          </div>
-        </div>
-
-      </div>
-
+    <!-- Current Qudrat cycle (rendered from qudrat-data.js) -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+      <div id="qudrat-home-banner"></div>
     </section>
 
-    <!-- Quick Navigation to Local Universities & Application Portals -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <div class="bg-olive-900 text-white p-6 rounded-xl shadow-md flex items-center justify-between gap-4">
-          <div>
-            <h3 class="text-base font-extrabold text-white" data-i18n="card_guide_title">Direct Application Websites</h3>
-            <p class="text-xs text-slate-300 mt-1" data-i18n="card_guide_desc">Setup guide for CommonApp, BridgeU, UCAS, College Board, and Kuwait Sahel.</p>
-          </div>
-          <a href="suggestions.html" class="px-4 py-2 bg-olive-700 hover:bg-olive-600 text-white font-bold rounded text-xs transition uppercase tracking-wider whitespace-nowrap" data-i18n="card_guide_btn">
-            Open Guide &rarr;
-          </a>
+    <!-- GPA converter + quick links -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+      <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
+        <h3 class="text-sm font-extrabold text-slate-900 mb-1" data-i18n="tool1_title">GPA to percentage</h3>
+        <p class="text-xs text-slate-600 mb-4" data-i18n="tool1_desc">Convert an American-diploma GPA (4.0 scale) to the Kuwaiti percentage.</p>
+
+        <label for="gpa-calc-input" class="block text-xs font-bold text-slate-800 mb-1" data-i18n="gpa_input_label">GPA (1.00 - 4.00)</label>
+        <div class="flex gap-2">
+          <input type="number" id="gpa-calc-input" min="1.0" max="4.0" step="0.01" placeholder="3.85" class="w-full bg-slate-50 border border-slate-300 rounded px-3 py-2 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-olive-800 focus:bg-white focus:outline-none">
+          <button type="button" id="gpa-calc-btn" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_convert">Convert</button>
         </div>
 
-        <div class="bg-olive-900 text-white p-6 rounded-xl shadow-md flex items-center justify-between gap-4">
-          <div>
-            <h3 class="text-base font-extrabold text-white" data-i18n="card_local_title">Local Universities Directory</h3>
-            <p class="text-xs text-slate-300 mt-1" data-i18n="card_local_desc">Admission rules for universities in Kuwait.</p>
+        <div id="gpa-calc-result" class="hidden mt-3 p-3.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs">
+          <div class="flex items-baseline justify-between">
+            <span class="text-slate-600 font-semibold" data-i18n="gpa_result_label">Percentage</span>
+            <span id="gpa-calc-percentage" class="text-xl font-black text-emerald-950"></span>
           </div>
-          <a href="local-universities.html" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded text-xs transition uppercase tracking-wider whitespace-nowrap" data-i18n="card_local_btn">
-            View Local Unis &rarr;
-          </a>
+          <span id="gpa-calc-tier" class="text-xs font-semibold text-emerald-800 block mt-1"></span>
+          <button type="button" id="gpa-apply-btn" class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">Use in search</button>
         </div>
+        <p class="text-xs text-slate-500 mt-3">
+          <span data-i18n="gpa_ref_note">Approximate guide only. The official equivalency is issued by the Ministry of Education.</span>
+          <span class="flag flag-unverified" data-i18n="flag_unverified" title="Carried over from the previous edition">Not re-verified</span>
+        </p>
+      </div>
 
+      <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <a href="qudrat.html" class="quick-link-card">
+          <span class="quick-link-title" data-i18n="ql_qudrat_title">Qudrat tests</span>
+          <span class="quick-link-desc" data-i18n="ql_qudrat_desc">Current cycle dates, subjects, fees and the equivalent-score calculator.</span>
+        </a>
+        <a href="local-universities.html" class="quick-link-card">
+          <span class="quick-link-title" data-i18n="ql_local_title">Local universities</span>
+          <span class="quick-link-desc" data-i18n="ql_local_desc">Kuwait University, AASU and private-university scholarships.</span>
+        </a>
+        <a href="suggestions.html" class="quick-link-card">
+          <span class="quick-link-title" data-i18n="ql_guide_title">Application guide</span>
+          <span class="quick-link-desc" data-i18n="ql_guide_desc">Common App, UCAS, testing portals and Kuwaiti e-services.</span>
+        </a>
+        <a href="contact.html" class="quick-link-card">
+          <span class="quick-link-title" data-i18n="ql_contact_title">Contact the Ministry</span>
+          <span class="quick-link-desc" data-i18n="ql_contact_desc">Phone, address, hours and cultural offices abroad.</span>
+        </a>
       </div>
     </section>
 
   </main>
 
-  <!-- Official Footer -->
-  <footer class="bg-olive-950 text-slate-400 text-xs py-10 border-t border-olive-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <span class="text-white font-bold text-sm block" data-i18n="footer_app_name">moustaqbili | مستقبلي</span>
-        <span class="text-slate-400 text-[11px] block mt-0.5" data-i18n="footer_desc">
-          Educational application moustaqbili
-        </span>
-      </div>
-      <div class="flex items-center gap-6 text-[11px] font-medium">
-        <a href="index.html" class="hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="hover:text-white transition" data-i18n="nav_local">Local Unis</a>
-        <a href="guidelines.html" class="hover:text-white transition" data-i18n="nav_faq">Regulations</a>
-        <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
-  <!-- Scripts -->
+  <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/qudrat-data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

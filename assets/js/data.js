@@ -5,7 +5,9 @@
  *
  * Sourced directly from:
  * 1. Ministerial Decree No. 16/2025 (قرار وزاري رقم 16/2025 - قوائم مؤسسات التعليم العالي المتميزة بالمملكة المتحدة)
- * 2. Official Annual Foreign Scholarship Plan 2025/2026 (خطة بعثات وزارة التعليم العالي للعام الجامعي 2025/2026)
+ * 2. Foreign Scholarship Plan 2026/2027 (خطة البعثات الخارجية 2026/2027): https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf
+ * 3. Monthly allowance tables (regular + merit), mohe.edu.kw e-services, checked 2026-10-11
+ * 4. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
  */
 
 const MOUSTAQBILI_PROGRAMS = [
@@ -26,13 +28,12 @@ const MOUSTAQBILI_PROGRAMS = [
     majors: ["Medicine & Surgery (MBChB)", "Clinical Medicine", "Anatomy & Physiology"],
     
     // Financial Stipend
+    verifiedAllowances: 2, // monthly amount + merit uplift lines are checked against the 2026/2027 tables
+    stipend: { currency: "GBP", variants: [{ key: "all", standard: 2850, merit: 4275 }] },
     monthlySalary: {
-      standardAmount: "London: £2,150 / mo | Outside: £1,850 / mo",
-      meritAmount: "London: £3,225 / mo | Outside: £2,775 / mo (+50% Merit Bonus)",
-      kwdEquivalent: "~1,290 KWD / mo (London Merit) | ~860 KWD (Standard)",
       allowancesSummary: [
-        "Monthly Living Allowance: £3,225 (London Merit) or £2,775 (Outside London)",
-        "Statutory +50% Monthly Allowance per Article 12 of MoHE Bylaws & Decree 16/2025",
+        "Monthly living allowance: £2,850 (merit students: £4,275)",
+        "Merit students receive an extra 50% each month after the preparatory stage (Decree 197/2025, Art. 25)",
         "Full Clinical NHS Hospital Placement Fees Paid Directly by MoHE",
         "Annual Medical Equipment & Stethoscope Subsidy: £850 / year",
         "Annual Round-trip Flight Tickets to Kuwait",
@@ -48,14 +49,14 @@ const MOUSTAQBILI_PROGRAMS = [
       englishProficiency: "Foundation: IELTS Academic overall 7.0 (no band below 6.5) | Degree entry: IELTS 7.0 (no band below 7.0).",
       ukviIeltsRequired: true,
       ukviIeltsNote: "MANDATORY OFFICIAL RULE: 'على الطلبة الحصول على UKVI ايلتز أكاديمي لجميع التخصصات في المملكة المتحدة'. Standard IELTS is NOT accepted for Foundation year visa issuance.",
-      otherExams: "UCAT (اختبار القدرات الطبية البريطاني): Mandatory score not less than 2,250 points."
+      otherExams: "UCAT: total score of at least 1,650 (Plan 2026/2027)."
     },
 
     deadlines: {
       earlyAction: "N/A",
       earlyDecision: "N/A",
       regularDecision: "October 15, 6:00 PM UK Time (Strict UCAS Medical Deadline)",
-      mohePortalWindow: "Pre-registration opens in June; clinical allocations finalized in July/August.",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "Annual Strict UCAS Quota Cycle (October 15 submission)"
     },
 
@@ -76,7 +77,7 @@ const MOUSTAQBILI_PROGRAMS = [
       usDiploma: {
         minScore: "3.75 Cumulative GPA on 4.0 Scale",
         coursePrereqs: "Must complete science courses (Biology, Chemistry, Mathematics) in Grade 11 or Grade 12 with grade not less than 'A-'.",
-        standardizedRequirement: "UCAT (2250+) + UKVI IELTS 7.0 mandatory."
+        standardizedRequirement: "UCAT 1,650+ and UKVI IELTS 7.0 (no band below 6.5) mandatory."
       },
       ukSystem: {
         minScore: "3 Science subjects at AS-Level or A-Level",
@@ -94,7 +95,7 @@ const MOUSTAQBILI_PROGRAMS = [
     pathway: {
       entryType: "Direct Entry for A-Level grads | Medical Foundation Year required for Thanawiya",
       foundationNeeded: true,
-      explanation: "Per MoHE 2025/2026 Plan: Passing Foundation Year on first attempt is mandatory. UK government & GMC/GDC regulations strictly prohibit repeating the medical foundation year."
+      explanation: "Per the MoHE plan: Passing Foundation Year on first attempt is mandatory. UK government & GMC/GDC regulations strictly prohibit repeating the medical foundation year."
     },
 
     visaRequirements: {
@@ -127,8 +128,8 @@ const MOUSTAQBILI_PROGRAMS = [
       "Newcastle University"
     ],
     deadline: "October 15 (Annual Strict UCAS / MoHE Clinical Deadline)",
-    description: "Official clinical medicine track under Ministerial Decree 16/2025 and 2025/2026 Foreign Scholarship Plan. Covers 100% NHS hospital surcharges, GMC licensing, and +50% monthly living allowance.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Page 3) & Ministerial Decree No. 16/2025 (Pages 12-14)."
+    description: "Official clinical medicine track under Ministerial Decree 16/2025 and 2026/2027 Foreign Scholarship Plan. Covers 100% NHS hospital surcharges, GMC licensing, and +50% monthly living allowance.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   },
 
   // =========================================================================
@@ -147,13 +148,13 @@ const MOUSTAQBILI_PROGRAMS = [
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MB BCh BAO)", "Clinical Medicine"],
 
+    verifiedAllowances: 2, // monthly amount + merit uplift lines are checked against the 2026/2027 tables
+    stipend: { currency: "EUR", variants: [{ key: "all", standard: 3450, merit: 5175 }] },
+
     monthlySalary: {
-      standardAmount: "€2,200 / month",
-      meritAmount: "€3,300 / month (+50% Merit Bonus)",
-      kwdEquivalent: "~1,110 KWD / mo (Merit) | ~740 KWD (Standard)",
       allowancesSummary: [
-        "Monthly Living Allowance: €3,300 (Merit Tier)",
-        "Statutory +50% Monthly Allowance per Article 12 of MoHE Bylaws",
+        "Monthly living allowance: €3,450 (merit students: €5,175)",
+        "Merit students receive an extra 50% each month after the preparatory stage (Decree 197/2025, Art. 25)",
         "Pre-registration Clinical Rotations Covered by MoHE",
         "Annual Flight Tickets to Kuwait",
         "Private Irish Medical Insurance Full Policy"
@@ -174,7 +175,7 @@ const MOUSTAQBILI_PROGRAMS = [
       earlyAction: "N/A",
       earlyDecision: "N/A",
       regularDecision: "February 1 (Direct International / CAO deadline)",
-      mohePortalWindow: "June 1 (Annual Irish Medical Committee Allocation)",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "Summer Cycle: June 15 – July 10"
     },
 
@@ -236,8 +237,8 @@ const MOUSTAQBILI_PROGRAMS = [
       "University of Galway"
     ],
     deadline: "June 1 (Irish Medical Allocation)",
-    description: "Official medicine track under 2025/2026 Foreign Scholarship Plan (Page 9). Requires min 97.0% (GPA 3.85) in Thanawiya, personal essay, CV, and 2 academic recommendations.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Page 9) & Dublin Cultural Office Guidelines."
+    description: "Official medicine track under 2026/2027 Foreign Scholarship Plan. Requires min 97.0% (GPA 3.85) in Thanawiya, personal essay, CV, and 2 academic recommendations.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   },
 
   // =========================================================================
@@ -256,12 +257,11 @@ const MOUSTAQBILI_PROGRAMS = [
     category: "Engineering & Computing",
     majors: ["Cyber Security Engineering", "Computer Engineering", "Computer Science", "Artificial Intelligence"],
 
+    stipend: { currency: "USD", variants: [{ key: "all", standard: 3900, merit: 5850 }] },
+
     monthlySalary: {
-      standardAmount: "$2,550 / month",
-      meritAmount: "$3,825 / month (+50% Merit Bonus)",
-      kwdEquivalent: "~1,180 KWD / mo (Merit) | ~785 KWD (Standard)",
       allowancesSummary: [
-        "Monthly Living Allowance: $3,825 (Merit Tier)",
+        "Monthly living allowance: $3,900 (merit students: $5,850)",
         "Annual Book & Equipment Allowance: $2,000 / year",
         "Annual Technology Subsidy: $1,200 (One-time)",
         "Annual Flights Home to Kuwait",
@@ -283,7 +283,7 @@ const MOUSTAQBILI_PROGRAMS = [
       earlyAction: "November 1 / November 15 (Non-binding early decision)",
       earlyDecision: "November 1 (Binding commitment)",
       regularDecision: "January 1 – January 15",
-      mohePortalWindow: "Open Year-Round for Direct Merit Acceptance",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "Summer Cycle: June 15 – July 10"
     },
 
@@ -349,8 +349,8 @@ const MOUSTAQBILI_PROGRAMS = [
       "University of Michigan - Ann Arbor"
     ],
     deadline: "Open Year-Round for Direct Merit Acceptance",
-    description: "Official Cybersecurity & Computer Engineering track under 2025/2026 Foreign Scholarship Plan (Page 1). Requires min 90.0% (GPA 3.50) for Engineering and 85.0% (GPA 3.25) for CS.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Page 1) & Washington Cultural Division Regulations."
+    description: "Official Cybersecurity & Computer Engineering track under 2026/2027 Foreign Scholarship Plan. Requires min 90.0% (GPA 3.50) for Engineering and 85.0% (GPA 3.25) for CS.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   },
 
   // =========================================================================
@@ -369,13 +369,13 @@ const MOUSTAQBILI_PROGRAMS = [
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MBBS / BMedSci / MD)", "Dentistry (BDS)"],
 
+    verifiedAllowances: 2, // monthly amount + merit uplift lines are checked against the 2026/2027 tables
+    stipend: { currency: "AUD", variants: [{ key: "all", standard: 5850, merit: null }], meritNoteKey: "stipend_merit_unconfirmed" },
+
     monthlySalary: {
-      standardAmount: "AUD $2,600 / month",
-      meritAmount: "AUD $3,900 / month (+50% Merit Bonus)",
-      kwdEquivalent: "~810 KWD / mo (Merit) | ~540 KWD (Standard)",
       allowancesSummary: [
-        "Monthly Living Allowance: AUD $3,900 (Merit Tier)",
-        "Statutory +50% Monthly Allowance per Article 12 of MoHE Bylaws",
+        "Monthly living allowance: A$5,850",
+        "Merit students receive an extra 50% each month after the preparatory stage (Decree 197/2025, Art. 25)",
         "Full Clinical Equipment and Lab Placement Surcharges Covered",
         "Overseas Student Health Cover (OSHC) Full Policy",
         "Annual Flight Tickets to Kuwait"
@@ -396,7 +396,7 @@ const MOUSTAQBILI_PROGRAMS = [
       earlyAction: "N/A",
       earlyDecision: "N/A",
       regularDecision: "August 31 – September 30 (For February Semester 1 Intake)",
-      mohePortalWindow: "July Allocation Window",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "August Cycle"
     },
 
@@ -435,7 +435,7 @@ const MOUSTAQBILI_PROGRAMS = [
     pathway: {
       entryType: "Foundation Year (1 Year) followed by 5-6 Year Clinical Bachelor / MD",
       foundationNeeded: true,
-      explanation: "Per MoHE 2025/2026 Plan (Pages 25-26): Students enter an intensive 1-year medical foundation pathway, achieving required benchmark (e.g. 9.35/10 at Western Sydney or 90% at Monash) to transition into clinical MBBS/MD."
+      explanation: "Per the MoHE plan: Students enter an intensive 1-year medical foundation pathway, achieving required benchmark (e.g. 9.35/10 at Western Sydney or 90% at Monash) to transition into clinical MBBS/MD."
     },
 
     visaRequirements: {
@@ -459,8 +459,8 @@ const MOUSTAQBILI_PROGRAMS = [
       "University of Sydney"
     ],
     deadline: "August 31 (Annual Allocation Cycle)",
-    description: "Official Australian medical tracks under 2025/2026 Foreign Scholarship Plan (Pages 25-26). Details exact progression benchmarks for Monash, Western Sydney, Flinders, and Curtin universities.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Pages 25-26) & Canberra Cultural Office Directives."
+    description: "Official Australian medical tracks under 2026/2027 Foreign Scholarship Plan. Details exact progression benchmarks for Monash, Western Sydney, Flinders, and Curtin universities.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   },
 
   // =========================================================================
@@ -479,12 +479,11 @@ const MOUSTAQBILI_PROGRAMS = [
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MD)", "Medicine & Surgery (MB BCh BAO)"],
 
+    stipend: { currency: "BHD", variants: [{ key: "all", standard: 1219, merit: null }] },
+
     monthlySalary: {
-      standardAmount: "BHD 650 / month",
-      meritAmount: "N/A (GCC Quota Track)",
-      kwdEquivalent: "~530 KWD / month",
       allowancesSummary: [
-        "Monthly Living Allowance: BHD 650 / month",
+        "Monthly living allowance: BD 1,219",
         "100% Direct Tuition Fees Paid to GCC University",
         "Comprehensive Regional Health Coverage in Bahrain & Kuwait",
         "Travel Allowance & Study Books Surcharge",
@@ -506,7 +505,7 @@ const MOUSTAQBILI_PROGRAMS = [
       earlyAction: "N/A",
       earlyDecision: "N/A",
       regularDecision: "June 25 (Annual GCC Quota Allocation)",
-      mohePortalWindow: "Summer Cycle: June 15 – July 10",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "Summer Allocation"
     },
 
@@ -565,8 +564,8 @@ const MOUSTAQBILI_PROGRAMS = [
       "RCSI Bahrain (Royal College of Surgeons in Ireland - Medical University of Bahrain)"
     ],
     deadline: "June 25 (Annual GCC Quota Allocation)",
-    description: "Official GCC direct medical seats under 2025/2026 Foreign Scholarship Plan (Page 37). Requires min 97.0% (GPA 3.85), 90%+ in sciences, and IELTS 5.5 - 6.5.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Page 37) & GCC Manama Cultural Attaché."
+    description: "Official GCC direct medical seats under 2026/2027 Foreign Scholarship Plan. Requires min 97.0% (GPA 3.85), 90%+ in sciences, and IELTS 5.5 - 6.5.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   },
 
   // =========================================================================
@@ -585,12 +584,11 @@ const MOUSTAQBILI_PROGRAMS = [
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MD)", "Medical Foundation Program (MFP)"],
 
+    stipend: { currency: "EUR", variants: [{ key: "all", standard: 3450, merit: null }] },
+
     monthlySalary: {
-      standardAmount: "€2,200 / month",
-      meritAmount: "N/A",
-      kwdEquivalent: "~740 KWD / month",
       allowancesSummary: [
-        "Monthly Living Allowance: €2,200 / month",
+        "Monthly living allowance: €3,450",
         "100% Tuition Fees Paid by Kuwait Ministry of Higher Education",
         "European Health Insurance Card (EHIC) Coverage",
         "Annual Flight Tickets (Kuwait/Malta)"
@@ -611,7 +609,7 @@ const MOUSTAQBILI_PROGRAMS = [
       earlyAction: "N/A",
       earlyDecision: "N/A",
       regularDecision: "July 1 (Maltese Medical Committee Window)",
-      mohePortalWindow: "Summer Cycle: June 15 – July 10",
+      mohePortalWindow: "Plan 2026/2027: general registration ran 14 June - 7 July 2026 (closed). Merit programme applications are open until 24 February 2027.",
       moheRegularIntake: "Summer Allocation"
     },
 
@@ -670,123 +668,194 @@ const MOUSTAQBILI_PROGRAMS = [
       "Medical Foundation Programme (MFP) Centre"
     ],
     deadline: "July 1 (Maltese Medical Intake)",
-    description: "Official Malta medical track under 2025/2026 Foreign Scholarship Plan (Page 36). Requires min 95.0% (GPA 3.75), student must be at least 18 years old, and passing the online interview.",
-    sourceNote: "Kuwait MoHE Plan 2025/2026 (Page 36) & University of Malta Directives."
+    description: "Official Malta medical track under 2026/2027 Foreign Scholarship Plan. Requires min 95.0% (GPA 3.75), student must be at least 18 years old, and passing the online interview.",
+    sourceNote: "MoHE Foreign Scholarship Plan 2026/2027 and allowance tables (mohe.edu.kw), checked 2026-10-11."
   }
 ];
 
-// Kuwait MoHE Filter Configuration
+// Search filters. Only countries that have programs listed above (Canada is not in Plan 2026/2027).
 const MOUSTAQBILI_FILTERS = {
   countries: [
-    { value: "United States", label: "United States", flagCode: "US" },
-    { value: "United Kingdom", label: "United Kingdom", flagCode: "GB" },
-    { value: "Ireland", label: "Republic of Ireland", flagCode: "IE" },
-    { value: "Australia", label: "Australia", flagCode: "AU" },
-    { value: "Bahrain", label: "Bahrain", flagCode: "BH" },
-    { value: "Malta", label: "Malta", flagCode: "MT" },
-    { value: "Canada", label: "Canada", flagCode: "CA" },
-    { value: "New Zealand", label: "New Zealand", flagCode: "NZ" }
+    { value: "United States", label: "United States", labelAr: "الولايات المتحدة" },
+    { value: "United Kingdom", label: "United Kingdom", labelAr: "المملكة المتحدة" },
+    { value: "Ireland", label: "Ireland", labelAr: "أيرلندا" },
+    { value: "Australia", label: "Australia", labelAr: "أستراليا" },
+    { value: "Bahrain", label: "Bahrain", labelAr: "البحرين" },
+    { value: "Malta", label: "Malta", labelAr: "مالطا" }
   ],
+  // minPct/maxPct: a program is shown when its public-school floor is <= maxPct
   percentageRanges: [
-    { value: "97.0+", label: "97.0% - 100%", minPct: 97.0, minGpa: 3.85 },
-    { value: "95.0-96.9", label: "95.0% - 96.9%", minPct: 95.0, minGpa: 3.75 },
-    { value: "90.0-94.9", label: "90.0% - 94.9%", minPct: 90.0, minGpa: 3.50 },
-    { value: "85.0-89.9", label: "85.0% - 89.9%", minPct: 85.0, minGpa: 3.25 },
-    { value: "80.0-84.9", label: "80.0% - 84.9%", minPct: 80.0, minGpa: 3.00 }
+    { value: "97.0+", label: "97% - 100%", minPct: 97.0, maxPct: 100 },
+    { value: "95.0-96.9", label: "95% - 96.9%", minPct: 95.0, maxPct: 96.9 },
+    { value: "90.0-94.9", label: "90% - 94.9%", minPct: 90.0, maxPct: 94.9 },
+    { value: "85.0-89.9", label: "85% - 89.9%", minPct: 85.0, maxPct: 89.9 },
+    { value: "80.0-84.9", label: "80% - 84.9%", minPct: 80.0, maxPct: 84.9 }
   ],
   majors: [
-    { value: "Medicine & Surgery (MBChB)", label: "Human Medicine & Surgery", category: "Medical & Health" },
-    { value: "Dentistry (BDS)", label: "Dentistry & Oral Surgery", category: "Medical & Health" },
-    { value: "Pharmacy (MPharm)", label: "Pharmacy & Biopharmaceuticals", category: "Medical & Health" },
-    { value: "Computer Science", label: "Computer Science, AI & Cyber Security", category: "Engineering & Computing" },
-    { value: "Cyber Security Engineering", label: "Cyber Security Engineering", category: "Engineering & Computing" },
-    { value: "Biomedical Engineering", label: "Biomedical Engineering", category: "Engineering & Computing" }
+    { value: "Medicine & Surgery", label: "Medicine & Surgery", labelAr: "الطب والجراحة", category: "Medical & Health", categoryAr: "التخصصات الطبية والصحية" },
+    { value: "Dentistry (BDS)", label: "Dentistry", labelAr: "طب الأسنان", category: "Medical & Health", categoryAr: "التخصصات الطبية والصحية" },
+    { value: "Computer Science", label: "Computer Science", labelAr: "علوم الكمبيوتر", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
+    { value: "Computer Engineering", label: "Computer Engineering", labelAr: "هندسة الكمبيوتر", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
+    { value: "Cyber Security Engineering", label: "Cyber Security", labelAr: "الأمن السيبراني", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
+    { value: "Artificial Intelligence", label: "Artificial Intelligence", labelAr: "الذكاء الاصطناعي", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" }
+  ]
+};
+
+// Currencies offered in the calculators
+const MOUSTAQBILI_CURRENCIES = {
+  KWD: { nameEn: "Kuwaiti Dinar", nameAr: "دينار كويتي" },
+  USD: { nameEn: "US Dollar", nameAr: "دولار أمريكي" },
+  GBP: { nameEn: "British Pound", nameAr: "جنيه إسترليني" },
+  EUR: { nameEn: "Euro", nameAr: "يورو" },
+  AUD: { nameEn: "Australian Dollar", nameAr: "دولار أسترالي" },
+  NZD: { nameEn: "New Zealand Dollar", nameAr: "دولار نيوزيلندي" },
+  CAD: { nameEn: "Canadian Dollar", nameAr: "دولار كندي" },
+  BHD: { nameEn: "Bahraini Dinar", nameAr: "دينار بحريني" },
+  SAR: { nameEn: "Saudi Riyal", nameAr: "ريال سعودي" },
+  AED: { nameEn: "UAE Dirham", nameAr: "درهم إماراتي" },
+  JOD: { nameEn: "Jordanian Dinar", nameAr: "دينار أردني" },
+  EGP: { nameEn: "Egyptian Pound", nameAr: "جنيه مصري" }
+};
+
+// Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, 2026-10-11.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-11 (CBK does not publish them).
+const MOUSTAQBILI_FX_FALLBACK = {
+  date: "2026-10-11",
+  rates: {
+    KWD: 1,
+    USD: 3.2452, GBP: 2.4524, EUR: 2.8970, SAR: 12.1694, AED: 11.9195, BHD: 1.2204,
+    AUD: 4.6329, NZD: 5.7397, CAD: 4.6053, JOD: 2.2835, EGP: 168.904
+  }
+};
+
+// Key rules of the Foreign Scholarship Plan 2026/2027 (shown on guidelines.html)
+const MOHE_PLAN_2026 = {
+  planUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf",
+  allowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3",
+  meritAllowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3",
+  registrationUrl: "https://reg2.mohe.edu.kw/Account/Login",
+  statusEn: "General registration for 2026/2027 ran 14 June - 7 July 2026 and is closed. 2,704 high-school graduates were accepted. Merit programme applications stay open until 24 February 2027.",
+  statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
+  countriesEn: "United States, United Kingdom, Ireland, Australia, New Zealand, Malta, Bahrain, Saudi Arabia, United Arab Emirates",
+  countriesAr: "الولايات المتحدة، المملكة المتحدة، أيرلندا، أستراليا، نيوزيلندا، مالطا، البحرين، السعودية، الإمارات",
+  rulesEn: [
+    "Age 16 - 23, with a secondary certificate from 2024/2025 or 2025/2026.",
+    "English: IELTS Academic 5.5 overall and in every band, or TOEFL 47, taken in Kuwait. Accepted students then have one calendar year to reach their university's required score.",
+    "Medicine, dentistry, veterinary, pharmacy and engineering applicants must sit the Kuwait University aptitude tests (Qudrat); an equivalent average is used.",
+    "United Kingdom: UKVI IELTS is required. Failing the foundation year or the interview ends a medicine, dentistry or pharmacy placement, and the foundation year cannot be repeated.",
+    "UK medicine: UCAT 1,650 or more, and IELTS 7.0 (no band below 6.5) for the foundation year.",
+    "Merit (excellence) programme: at least 90% for all majors and 95% for medicine, dentistry and pharmacy. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
+  ],
+  rulesAr: [
+    "العمر من 16 إلى 23 سنة، وشهادة ثانوية من العام 2024/2025 أو 2025/2026.",
+    "اللغة الإنجليزية: IELTS أكاديمي 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت. ويُمنح المقبول سنة ميلادية واحدة لتحقيق الدرجة المطلوبة من الجامعة.",
+    "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة أداء اختبارات القدرات بجامعة الكويت، ويُعتمد المعدل المكافئ.",
+    "المملكة المتحدة: يُشترط UKVI IELTS. وعدم اجتياز السنة التأسيسية أو المقابلة يُنهي الإيفاد لتخصصات الطب وطب الأسنان والصيدلة، ولا يجوز إعادة السنة التأسيسية.",
+    "الطب في المملكة المتحدة: UCAT بدرجة 1,650 فأكثر، وIELTS 7.0 (ولا يقل أي قسم عن 6.5) للسنة التأسيسية.",
+    "برنامج التميز: 90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
+  ],
+  // Minimum high-school % by country and major (Plan 2026/2027)
+  floors: [
+    { countryEn: "United Kingdom", countryAr: "المملكة المتحدة", medicine: "95", pharmacy: "-", engineering: "-", otherEn: "Radiography 90, most others 85", otherAr: "الأشعة 90، ومعظم التخصصات الأخرى 85" },
+    { countryEn: "Ireland", countryAr: "أيرلندا", medicine: "97 (Dentistry 96)", medicineAr: "97 (طب الأسنان 96)", pharmacy: "96", engineering: "-", otherEn: "Nursing and allied health 90 - 92, others 85", otherAr: "التمريض والعلوم الصحية 90 - 92، والأخرى 85" },
+    { countryEn: "Australia", countryAr: "أستراليا", medicine: "95", pharmacy: "92", engineering: "90", otherEn: "Physiotherapy and veterinary 95, others 85", otherAr: "العلاج الطبيعي والطب البيطري 95، والأخرى 85" },
+    { countryEn: "New Zealand", countryAr: "نيوزيلندا", medicine: "95", pharmacy: "92", engineering: "-", otherEn: "-", otherAr: "-" },
+    { countryEn: "Malta", countryAr: "مالطا", medicine: "95", pharmacy: "-", engineering: "-", otherEn: "Nursing and podiatry 90", otherAr: "التمريض وعلاج القدم 90" },
+    { countryEn: "Bahrain", countryAr: "البحرين", medicine: "97", pharmacy: "92", engineering: "-", otherEn: "Nursing and allied health 90", otherAr: "التمريض والعلوم الصحية 90" },
+    { countryEn: "Saudi Arabia", countryAr: "السعودية", medicine: "95", pharmacy: "92 (Pharm D)", engineering: "-", otherEn: "Health majors 90", otherAr: "التخصصات الصحية 90" },
+    { countryEn: "United States", countryAr: "الولايات المتحدة", medicine: "-", pharmacy: "-", engineering: "90", otherEn: "No medicine offered; others 85", otherAr: "لا يُطرح الطب؛ والأخرى 85" }
   ]
 };
 
 const KUWAIT_LOCAL_UNIVERSITIES = [
   {
     id: "kuwait-university",
-    type: "Public University / جامعة حكومية",
     typeEn: "Public University",
     typeAr: "جامعة حكومية",
     name: "Kuwait University (KU)",
     nameAr: "جامعة الكويت",
-    campusLocation: "Shadadiya Campus, Sabah Al-Salem University City",
+    campusLocation: "Sabah Al-Salem University City, Shadadiya",
     campusLocationAr: "مدينة صباح السالم الجامعية - الشدادية",
-    scholarshipFunding: "100% Free Government Tuition + 200 KWD Monthly Social Allowance",
-    scholarshipFundingAr: "تعليم حكومي مجاني 100% + مكافأة اجتماعية شهرياً 200 د.ك",
-    admissionSystem: "Unified Kuwait University Admissions Portal (portal.ku.edu.kw)",
-    admissionSystemAr: "البوابة المركزية لقبول جامعة الكويت (portal.ku.edu.kw)",
-    aptitudeExams: "Mandatory KU Aptitude Exams (English, Math, Chemistry, Physics)",
-    aptitudeExamsAr: "اختبارات القدرات الأكاديمية الإجبارية (إنجليزي، رياضيات، كيمياء، فيزياء)",
-    equivalentFormula: "Equivalent Score = (Thanawiya % × 0.70) + (Aptitude Score × 0.30)",
-    equivalentFormulaAr: "المعدل المكافئ = (نسبة الثانوية × 0.70) + (درجة القدرات × 0.30)",
+    scholarshipFunding: "Free tuition for Kuwaiti students",
+    scholarshipFundingAr: "دراسة مجانية للطلبة الكويتيين",
+    admissionSystem: "Kuwait University admission portal (portal.ku.edu.kw). General minimum: 70% science stream, 78% arts stream.",
+    admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي.",
+    aptitudeExams: "Aptitude tests (Qudrat) in English, Math and Arabic, weighted by college.",
+    aptitudeExamsAr: "اختبارات القدرات في الإنجليزي والرياضيات والعربي، بأوزان تختلف حسب الكلية.",
+    floorLabelEn: "Lowest admitted, Fall 2026/27",
+    floorLabelAr: "أدنى معدل مقبول، الفصل الأول 2026/2027",
     colleges: [
-      { collegeName: "College of Medicine (كلية الطب)", minThanawiya: "85.0% Scientific", equivalentFloor: "Equated Min: 85.0%", equivalentFloorAr: "المعدل المكافئ: 85.0%", seatsNotes: "Direct entrance requires top competitive equivalent rank" },
-      { collegeName: "College of Dentistry (كلية طب الأسنان)", minThanawiya: "85.0% Scientific", equivalentFloor: "Equated Min: 85.0%", equivalentFloorAr: "المعدل المكافئ: 85.0%", seatsNotes: "High competitive seats" },
-      { collegeName: "College of Engineering & Petroleum (كلية الهندسة والبترول)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 78.0%", equivalentFloorAr: "المعدل المكافئ: 78.0%", seatsNotes: "Requires Math & Physics Aptitude" },
-      { collegeName: "College of Allied Health Sciences (العلوم الطبية المساعدة)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 75.0%", equivalentFloorAr: "المعدل المكافئ: 75.0%", seatsNotes: "Radiography, PT, MLT" },
-      { collegeName: "College of Science (كلية العلوم)", minThanawiya: "70.0% Scientific", equivalentFloor: "Min: 70.0%", equivalentFloorAr: "الحد أدنى: 70.0%", seatsNotes: "CS, Chemistry, Physics, Biology" }
-    ]
+      { collegeName: "Medicine", collegeNameAr: "الطب", minThanawiya: "94.73%", seatsNotes: "Equivalent average (high school 75% + Qudrat 25%)", seatsNotesAr: "المعدل المكافئ (الثانوية 75% + القدرات 25%)" },
+      { collegeName: "Dentistry", collegeNameAr: "طب الأسنان", minThanawiya: "94.42%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
+      { collegeName: "Pharmacy", collegeNameAr: "الصيدلة", minThanawiya: "92.56%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
+      { collegeName: "Allied Health Sciences", collegeNameAr: "العلوم الطبية المساعدة", minThanawiya: "86.77 - 91.31%", seatsNotes: "Physiotherapy 91.31, Occupational Therapy 90.6, Medical Lab 88.71, Nursing 88.49", seatsNotesAr: "العلاج الطبيعي 91.31، العلاج الوظيفي 90.6، المختبرات الطبية 88.71، التمريض 88.49" },
+      { collegeName: "Public Health", collegeNameAr: "الصحة العامة", minThanawiya: "83.68%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
+      { collegeName: "Engineering & Petroleum", collegeNameAr: "الهندسة والبترول", minThanawiya: "65.38 - 76.56%", seatsNotes: "Computer 76.56, Petroleum 73.26, Civil 71.93, Electrical 71.19, Industrial 65.38", seatsNotesAr: "الكمبيوتر 76.56، البترول 73.26، المدنية 71.93، الكهربائية 71.19، الصناعية 65.38" },
+      { collegeName: "Science", collegeNameAr: "العلوم", minThanawiya: "70 - 95.6%", seatsNotes: "High-school %: Microbiology 95.6, Cybersecurity 90.65, Computer Science 83.06", seatsNotesAr: "نسبة الثانوية: الأحياء الدقيقة 95.6، الأمن السيبراني 90.65، علوم الكمبيوتر 83.06" },
+      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "85.76%", seatsNotes: "No aptitude test required", seatsNotesAr: "لا تشترط اختبارات القدرات" },
+      { collegeName: "Life Sciences", collegeNameAr: "علوم الحياة", minThanawiya: "62.78 - 84.12%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
+      { collegeName: "Business Administration", collegeNameAr: "العلوم الإدارية", minThanawiya: "56.91 - 73.35%", seatsNotes: "Accounting 73.35 (science) / 69 (arts)", seatsNotesAr: "المحاسبة 73.35 (علمي) / 69 (أدبي)" }
+    ],
+    sourceNote: "Source: Kuwait University, minimum averages for Kuwaiti students, Fall 2026/2027 (published 30 July 2026).",
+    sourceNoteAr: "المصدر: جامعة الكويت، الحدود الدنيا للطلبة الكويتيين، الفصل الأول 2026/2027 (نُشر في 30 يوليو 2026)."
   },
   {
     id: "aasu",
-    type: "Public University / جامعة حكومية",
     typeEn: "Public University",
     typeAr: "جامعة حكومية",
     name: "Abdullah Al-Salem University (AASU)",
     nameAr: "جامعة عبد الله السالم",
-    campusLocation: "Khaldiya / Adailiya Campuses",
-    campusLocationAr: "حرم الخالدية والعديلية",
-    scholarshipFunding: "100% Free Government Tuition + 200 KWD Monthly Social Allowance",
-    scholarshipFundingAr: "تعليم حكومي مجاني 100% + مكافأة اجتماعية شهرياً 200 د.ك",
-    admissionSystem: "AASU Direct Admission System (aasu.edu.kw)",
-    admissionSystemAr: "نظام القبول المباشر بجامعة عبد الله السالم (aasu.edu.kw)",
-    aptitudeExams: "Standardized Aptitude & English Proficiency Benchmarks",
-    aptitudeExamsAr: "اختبارات التقييم والقدرات واللغة الإنجليزية",
-    equivalentFormula: "Weighted Composite Admission Score",
-    equivalentFormulaAr: "معادلة المعدل المركب التنافسي",
+    campusLocation: "Al-Firdous Street, Block 3, Khaldiya",
+    campusLocationAr: "شارع الفردوس، قطعة 3، الخالدية",
+    scholarshipFunding: "Free tuition for Kuwaiti students",
+    scholarshipFundingAr: "دراسة مجانية للطلبة الكويتيين",
+    admissionSystem: "AASU admission system (aasu.edu.kw). 1,146 students were admitted for 2026/2027.",
+    admissionSystemAr: "نظام القبول بجامعة عبد الله السالم (aasu.edu.kw). قُبل 1,146 طالباً وطالبة للعام 2026/2027.",
+    aptitudeExams: "Kuwait University aptitude tests (Qudrat) are used for AASU applications.",
+    aptitudeExamsAr: "تُعتمد اختبارات القدرات بجامعة الكويت للتقديم في جامعة عبد الله السالم.",
+    floorLabelEn: "Minimum",
+    floorLabelAr: "الحد الأدنى",
     colleges: [
-      { collegeName: "College of Computing & Cybernetics (كلية الحوسبة والأمن السيبراني)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 80.0%", equivalentFloorAr: "المعدل المكافئ: 80.0%", seatsNotes: "AI, Cyber Security, Software Engineering" },
-      { collegeName: "College of Engineering & Applied Sciences (كلية الهندسة والعلوم التطبيقية)", minThanawiya: "80.0% Scientific", equivalentFloor: "Equated Min: 78.0%", equivalentFloorAr: "المعدل المكافئ: 78.0%", seatsNotes: "Energy, Systems & Environmental Engineering" },
-      { collegeName: "College of Business & Entrepreneurship (كلية الإدارة وريادة الأعمال)", minThanawiya: "75.0% Scientific/Literary", equivalentFloor: "Min: 75.0%", equivalentFloorAr: "الحد أدنى: 75.0%", seatsNotes: "FinTech, Supply Chain, Business Analytics" }
-    ]
+      { collegeName: "Computing & Systems", collegeNameAr: "الحوسبة والنظم", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "AI, cyber security, software engineering", seatsNotesAr: "الذكاء الاصطناعي، الأمن السيبراني، هندسة البرمجيات" },
+      { collegeName: "Engineering & Energy", collegeNameAr: "الهندسة والطاقة", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "Energy, systems and environmental engineering", seatsNotesAr: "هندسة الطاقة والنظم والبيئة" },
+      { collegeName: "Business & Entrepreneurship", collegeNameAr: "الأعمال وريادة الأعمال", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "FinTech, supply chain, business analytics", seatsNotesAr: "التكنولوجيا المالية، سلاسل الإمداد، تحليلات الأعمال" }
+    ],
+    sourceNote: "AASU has not published per-college cutoffs for 2026/2027. Check aasu.edu.kw.",
+    sourceNoteAr: "لم تنشر الجامعة الحدود الدنيا لكل كلية للعام 2026/2027. راجع aasu.edu.kw."
   },
   {
-    id: "aum-gust-puc",
-    type: "Private PUC Internal Scholarship / بعثات داخلية",
-    typeEn: "PUC Scholarship",
-    typeAr: "بعثة داخلية",
-    name: "Private Universities Council (PUC Internal Scholarships)",
-    nameAr: "مجلس الجامعات الخاصة (البعثات الداخلية)",
-    campusLocation: "AUM (Egaila), GUST (Mishref), AUK (Salmiya), KCST (Doha)",
-    campusLocationAr: "جامعة AUM (العقيلة)، GUST (مشرف)، AUK (السالمية)، KCST (الدوحة)",
-    scholarshipFunding: "100% Government Tuition Sponsorship + 200 KWD Monthly Allowance",
-    scholarshipFundingAr: "تغطية الرسوم الدراسية 100% من الحكومة + 200 د.ك مكافأة شهرية",
-    admissionSystem: "PUC Central Internal Scholarship Portal (puc.edu.kw)",
-    admissionSystemAr: "بوابة البعثات الداخلية بمجلس الجامعات الخاصة (puc.edu.kw)",
-    aptitudeExams: "University Placement Test (Accuplacer / Math & English Placement)",
-    aptitudeExamsAr: "اختبار تحديد المستوى الجامعي (اللغة الإنجليزية والرياضيات)",
-    equivalentFormula: "Direct Thanawiya % Floor (Competitive Allocation)",
-    equivalentFormulaAr: "النسبة الأدنى للتقديم التنافسي",
+    id: "puc",
+    typeEn: "Internal Scholarship (PUC)",
+    typeAr: "بعثة داخلية (مجلس الجامعات الخاصة)",
+    name: "Private Universities Council - Internal Scholarships",
+    nameAr: "مجلس الجامعات الخاصة - البعثات الداخلية",
+    campusLocation: "AUM, GUST, AUK, KCST, ACK, AU and other approved private universities",
+    campusLocationAr: "AUM، GUST، AUK، KCST، ACK، AU وغيرها من الجامعات الخاصة المعتمدة",
+    scholarshipFunding: "Tuition paid by the government",
+    scholarshipFundingAr: "الرسوم الدراسية على نفقة الحكومة",
+    admissionSystem: "registration.puc.edu.kw. Registration for 2026/2027 ran 3 - 13 August 2026.",
+    admissionSystemAr: "registration.puc.edu.kw. أُقيم التسجيل للعام 2026/2027 من 3 إلى 13 أغسطس 2026.",
+    aptitudeExams: "Engineering selection: high school 65% + Math test 20% + English test 15%.",
+    aptitudeExamsAr: "المفاضلة للهندسة: الثانوية 65% + اختبار الرياضيات 20% + اختبار الإنجليزي 15%.",
+    floorLabelEn: "Minimum",
+    floorLabelAr: "الحد الأدنى",
     colleges: [
-      { collegeName: "Engineering & Technology (الهندسة والتكنولوجيا - AUM / KCST / ACK)", minThanawiya: "70.0% Scientific", equivalentFloor: "Floor: 70.0%", equivalentFloorAr: "الحد أدنى: 70.0%", seatsNotes: "Mechanical, Civil, Computer, Electrical Engineering" },
-      { collegeName: "Business Administration & Finance (إدارة الأعمال والتمويل - GUST / AUK / AUM)", minThanawiya: "60.0% Scientific / 70% Literary", equivalentFloor: "Floor: 60-70%", equivalentFloorAr: "الحد أدنى: 60-70%", seatsNotes: "Accounting, Finance, Management, Marketing" },
-      { collegeName: "Arts & Mass Communication (الآداب والإعلام - AUK / GUST)", minThanawiya: "65.0% Literary", equivalentFloor: "Floor: 65.0%", equivalentFloorAr: "الحد أدنى: 65.0%", seatsNotes: "Graphic Design, Media, International Relations" }
-    ]
+      { collegeName: "Engineering", collegeNameAr: "الهندسة", minThanawiya: "90%", seatsNotes: "Systems and computer engineering: 85%", seatsNotesAr: "هندسة النظم والكمبيوتر: 85%" },
+      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "90%", seatsNotes: "", seatsNotesAr: "" },
+      { collegeName: "Other bachelor's programmes", collegeNameAr: "برامج البكالوريوس الأخرى", minThanawiya: "78% science / 80% arts", minThanawiyaAr: "78% علمي / 80% أدبي", seatsNotes: "Business, IT, media, design and more", seatsNotesAr: "إدارة الأعمال، تقنية المعلومات، الإعلام، التصميم وغيرها" },
+      { collegeName: "Diploma", collegeNameAr: "الدبلوم", minThanawiya: "70%", seatsNotes: "", seatsNotesAr: "" }
+    ],
+    sourceNote: "Source: PUC announcement for 2026/2027 (Al-Jarida, 30 June 2026).",
+    sourceNoteAr: "المصدر: إعلان مجلس الجامعات الخاصة للعام 2026/2027 (الجريدة، 30 يونيو 2026)."
   }
 ];
 
-// Global assignments for moustaqbili
 if (typeof window !== 'undefined') {
   window.MOUSTAQBILI_PROGRAMS = MOUSTAQBILI_PROGRAMS;
   window.MOUSTAQBILI_FILTERS = MOUSTAQBILI_FILTERS;
+  window.MOUSTAQBILI_CURRENCIES = MOUSTAQBILI_CURRENCIES;
+  window.MOUSTAQBILI_FX_FALLBACK = MOUSTAQBILI_FX_FALLBACK;
+  window.MOHE_PLAN_2026 = MOHE_PLAN_2026;
   window.KUWAIT_LOCAL_UNIVERSITIES = KUWAIT_LOCAL_UNIVERSITIES;
-  // Aliases for backwards compatibility
-  window.MOHE_KUWAIT_PROGRAMS = MOUSTAQBILI_PROGRAMS;
-  window.MOHE_KUWAIT_FILTERS = MOUSTAQBILI_FILTERS;
-  window.MOHE_PROGRAMS = MOUSTAQBILI_PROGRAMS;
-  window.MOHE_FILTERS = MOUSTAQBILI_FILTERS;
 }
-

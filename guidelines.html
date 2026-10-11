@@ -36,70 +36,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-  <!-- Institutional Top Header -->
-  <header class="gov-header-gradient text-white sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Ministry Identity -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded bg-olive-950 border border-olive-800 flex items-center justify-center text-amber-400 font-bold shadow-inner">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs tracking-wider uppercase font-bold text-amber-400" data-i18n="state_kuwait">State of Kuwait</span>
-            <span class="text-[11px] text-slate-400">|</span>
-            <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
-          </div>
-          <span class="text-base sm:text-lg font-extrabold tracking-tight block">moustaqbili | مستقبلي</span>
-          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle">اللائحة التنظيمية للبعثات الخارجية</span>
-        </div>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
-        <a href="index.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_local">Local Universities</a>
-        <a href="guidelines.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-olive-500" data-i18n="nav_faq">Regulations & FAQ</a>
-        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_about">About</a>
-      </nav>
-
-      <!-- Language Translate Button (Top Right Header) -->
-      <div class="flex items-center gap-3">
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-          </svg>
-          <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
-        </button>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800 focus:outline-none" aria-label="Toggle navigation">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-      </button>
-    </div>
-
-    <!-- Mobile Nav Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
-      <a href="index.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_home">Home</a>
-      <a href="results.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_courses">Approved Courses</a>
-      <a href="suggestions.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_guide">Direct Application Guide</a>
-      <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_local">Local Universities</a>
-      <a href="guidelines.html" class="block px-3 py-2 rounded text-white bg-olive-800" data-i18n="nav_faq">Regulations & FAQ</a>
-      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_about">About</a>
-      <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2 rounded bg-amber-400 text-slate-950 font-bold flex items-center gap-2 cursor-pointer">
-        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-        </svg>
-        <span id="mobile-lang-toggle-text" data-i18n="mobile_lang_toggle">اللغة العربية</span>
-      </button>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
   <!-- Page Main Content -->
   <main class="flex-grow py-12">
@@ -120,14 +57,24 @@
 
       <div class="space-y-8 mb-14">
 
-        <!-- 1. UKVI IELTS vs Standard IELTS Advisory -->
+        <!-- 1. Foreign Scholarship Plan 2026/2027 (rendered from data.js) -->
+        <section id="plan-2026" class="bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm scroll-mt-24">
+          <h2 class="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+            <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">1</span>
+            <span data-i18n="plan_title">Foreign Scholarship Plan 2026/2027</span>
+          </h2>
+          <div id="plan-root"></div>
+        </section>
+
+
+        <!-- 2. UKVI IELTS vs Standard IELTS Advisory -->
         <div class="bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
           <div class="flex items-center justify-between mb-3 border-b border-slate-200 pb-3">
             <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-              <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">1</span>
-              <span>UKVI IELTS vs Standard IELTS (ضوابط اختبارات اللغة للفيزا)</span>
+              <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">2</span>
+              <span>UKVI IELTS vs Standard IELTS (ضوابط اختبارات اللغة للفيزا)</span> <span class="flag flag-unverified" data-i18n="flag_unverified" title="Carried over from the previous edition">Not re-verified</span>
             </h2>
-            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
               Important Visa Rule
             </span>
           </div>
@@ -139,18 +86,18 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
               <strong class="text-amber-950 block mb-1 text-xs">UKVI Academic IELTS is Mandatory for Foundation:</strong>
-              <p class="text-amber-900 text-[11px] leading-relaxed mb-2">
+              <p class="text-amber-900 text-xs leading-relaxed mb-2">
                 If enrolling in any International Foundation Programme (IFP) or pre-degree course in the UK, UKVI Academic IELTS is strictly required by UK Immigration law.
               </p>
-              <span class="text-[10px] font-bold text-amber-950">Standard IELTS will lead to automatic UK visa rejection for foundation.</span>
+              <span class="text-xs font-bold text-amber-950">Standard IELTS will lead to automatic UK visa rejection for foundation.</span>
             </div>
 
             <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
               <strong class="text-slate-900 block mb-1 text-xs">Standard Academic IELTS / TOEFL for Direct Entry:</strong>
-              <p class="text-slate-600 text-[11px] leading-relaxed mb-2">
+              <p class="text-slate-600 text-xs leading-relaxed mb-2">
                 For Direct Degree Entry (Year 1 Undergraduate) at UK universities, Standard Academic IELTS or TOEFL is accepted.
               </p>
-              <span class="text-[10px] font-bold text-olive-700">Recommendation: Take UKVI Academic IELTS to cover both pathways.</span>
+              <span class="text-xs font-bold text-olive-700">Recommendation: Take UKVI Academic IELTS to cover both pathways.</span>
             </div>
           </div>
         </div>
@@ -158,8 +105,8 @@
         <!-- 2. Direct Entry vs Foundation Year Requirements -->
         <div class="bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
           <h2 class="text-base font-extrabold text-slate-900 mb-3 flex items-center gap-2">
-            <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">2</span>
-            <span>Direct Entry vs. Foundation Year</span>
+            <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">3</span>
+            <span>Direct Entry vs. Foundation Year</span> <span class="flag flag-unverified" data-i18n="flag_unverified" title="Carried over from the previous edition">Not re-verified</span>
           </h2>
           <p class="text-xs text-slate-600 leading-relaxed mb-4">
             Kuwait high school (Thanawiya) is 12 years, while UK high school is 13 years. Here is how entry works:
@@ -180,67 +127,11 @@
           </div>
         </div>
 
-        <!-- 3. Curriculum Equivalency Matrix -->
-        <div class="bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
-          <h2 class="text-base font-extrabold text-slate-900 mb-3 flex items-center gap-2">
-            <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">3</span>
-            <span>Curriculum Grade Matrix</span>
-          </h2>
-          <p class="text-xs text-slate-600 mb-4">
-            Grade requirements across different school systems:
-          </p>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left border border-slate-200">
-              <thead class="bg-slate-100 text-slate-800 font-bold uppercase text-[10px]">
-                <tr>
-                  <th class="p-2.5">Track</th>
-                  <th class="p-2.5">Public Thanawiya %</th>
-                  <th class="p-2.5">American Diploma GPA</th>
-                  <th class="p-2.5">British A-Levels</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-700">
-                <tr>
-                  <td class="p-2.5 font-bold text-slate-900">Medicine & Surgery</td>
-                  <td class="p-2.5 font-bold text-olive-700">95.0%+ (Scientific)</td>
-                  <td class="p-2.5 font-bold text-olive-700">3.85 - 4.00</td>
-                  <td class="p-2.5 font-bold text-olive-700">A*AA or AAA</td>
-                </tr>
-                <tr>
-                  <td class="p-2.5 font-bold text-slate-900">Dentistry</td>
-                  <td class="p-2.5 font-bold text-olive-700">93.0%+ (Scientific)</td>
-                  <td class="p-2.5 font-bold text-olive-700">3.80 - 4.00</td>
-                  <td class="p-2.5 font-bold text-olive-700">AAA</td>
-                </tr>
-                <tr>
-                  <td class="p-2.5 font-bold text-slate-900">Merit Computer Science / AI</td>
-                  <td class="p-2.5 font-bold text-amber-800">85.0%+ (Scientific)</td>
-                  <td class="p-2.5 font-bold text-amber-800">3.50+ (SAT 1400+)</td>
-                  <td class="p-2.5 font-bold text-amber-800">A*AA or AAA</td>
-                </tr>
-                <tr>
-                  <td class="p-2.5 font-bold text-slate-900">General Engineering</td>
-                  <td class="p-2.5 font-bold text-slate-800">80.0%+ (Scientific)</td>
-                  <td class="p-2.5 font-bold text-slate-800">3.00+ (SAT 1200+)</td>
-                  <td class="p-2.5 font-bold text-slate-800">ABB</td>
-                </tr>
-                <tr>
-                  <td class="p-2.5 font-bold text-slate-900">Business, Finance & Law</td>
-                  <td class="p-2.5 font-bold text-slate-800">75.0% - 80.0%</td>
-                  <td class="p-2.5 font-bold text-slate-800">2.70 - 3.20</td>
-                  <td class="p-2.5 font-bold text-slate-800">BBB or BBC</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
         <!-- 4. Student Visa Protocols & Financial Guarantee -->
         <div class="bg-white rounded-xl border border-slate-300 p-6 sm:p-8 shadow-sm">
           <h2 class="text-base font-extrabold text-slate-900 mb-3 flex items-center gap-2">
             <span class="w-6 h-6 rounded bg-olive-900 text-white flex items-center justify-center font-bold text-xs">4</span>
-            <span>Visas & Financial Guarantee (الكتاب المالي)</span>
+            <span>Visas & Financial Guarantee (الكتاب المالي)</span> <span class="flag flag-unverified" data-i18n="flag_unverified" title="Carried over from the previous edition">Not re-verified</span>
           </h2>
           <p class="text-xs text-slate-600 mb-3 leading-relaxed">
             MoHE provides official Financial Guarantee letters for student visa processing:
@@ -248,7 +139,6 @@
           <ul class="text-xs text-slate-700 space-y-2 list-disc list-inside">
             <li><strong>United States (F-1 Visa):</strong> Submit I-20, DS-160, SEVIS receipt, and MoHE Financial Guarantee.</li>
             <li><strong>United Kingdom (Student Visa):</strong> Submit CAS, UKVI TB test, and MoHE Financial Guarantee.</li>
-            <li><strong>Canada (Study Permit):</strong> Submit Letter of Acceptance (LOA), PAL, and MoHE Guarantee.</li>
             <li><strong>Australia (Subclass 500):</strong> Submit eCoE and OSHC health coverage.</li>
           </ul>
         </div>
@@ -269,27 +159,10 @@
     </div>
   </main>
 
-  <!-- Official Footer -->
-  <footer class="bg-olive-950 text-slate-400 text-xs py-10 border-t border-olive-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <span class="text-white font-bold text-sm block" data-i18n="footer_app_name">moustaqbili | مستقبلي</span>
-        <span class="text-slate-400 text-[11px] block mt-0.5" data-i18n="footer_desc">
-          Educational application moustaqbili
-        </span>
-      </div>
-      <div class="flex items-center gap-6 text-[11px] font-medium">
-        <a href="index.html" class="hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="hover:text-white transition" data-i18n="nav_local">Local Unis</a>
-        <a href="guidelines.html" class="hover:text-white transition" data-i18n="nav_faq">Regulations</a>
-        <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Scripts -->
+  <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>

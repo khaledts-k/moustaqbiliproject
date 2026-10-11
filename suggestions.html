@@ -36,70 +36,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-  <!-- Institutional Top Header -->
-  <header class="gov-header-gradient text-white sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Ministry Identity -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded bg-olive-950 border border-olive-800 flex items-center justify-center text-amber-400 font-bold shadow-inner">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs tracking-wider uppercase font-bold text-amber-400" data-i18n="state_kuwait">State of Kuwait</span>
-            <span class="text-[11px] text-slate-400">|</span>
-            <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
-          </div>
-          <span class="text-base sm:text-lg font-extrabold tracking-tight block">moustaqbili | مستقبلي</span>
-          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle">دليل المنصات وتطبيقات القبول الجامعي</span>
-        </div>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
-        <a href="index.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-olive-500" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_local">Local Universities</a>
-        <a href="guidelines.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_faq">Regulations & FAQ</a>
-        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_about">About</a>
-      </nav>
-
-      <!-- Language Translate Button (Top Right Header) -->
-      <div class="flex items-center gap-3">
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-          </svg>
-          <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
-        </button>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800 focus:outline-none" aria-label="Toggle navigation">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-      </button>
-    </div>
-
-    <!-- Mobile Nav Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
-      <a href="index.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_home">Home</a>
-      <a href="results.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_courses">Approved Courses</a>
-      <a href="suggestions.html" class="block px-3 py-2 rounded text-white bg-olive-800" data-i18n="nav_guide">Direct Application Guide</a>
-      <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_local">Local Universities</a>
-      <a href="guidelines.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_faq">Regulations & FAQ</a>
-      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_about">About</a>
-      <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2 rounded bg-amber-400 text-slate-950 font-bold flex items-center gap-2 cursor-pointer">
-        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-        </svg>
-        <span id="mobile-lang-toggle-text" data-i18n="mobile_lang_toggle">اللغة العربية</span>
-      </button>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
   <!-- Page Main Content -->
   <main class="flex-grow py-12">
@@ -132,12 +69,12 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="font-extrabold text-base text-slate-900">CommonApp</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200">United States</span>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">United States</span>
               </div>
               <p class="text-xs text-slate-600 leading-relaxed mb-3">
                 Centralized platform for US university applications (excluding UC system).
               </p>
-              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
                 <li>Create account before Grade 12.</li>
                 <li>Write the 650-word personal essay.</li>
                 <li>Request counselor & teacher recommendation letters.</li>
@@ -154,16 +91,16 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="font-extrabold text-base text-slate-900">UCAS</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-50 text-rose-800 border border-rose-200">United Kingdom</span>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-50 text-rose-800 border border-rose-200">United Kingdom</span>
               </div>
               <p class="text-xs text-slate-600 leading-relaxed mb-3">
                 Centralized application service for UK universities.
               </p>
-              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
                 <li>Apply to up to 5 courses (max 4 for Medicine).</li>
                 <li>Link with your school's UCAS Buzzword.</li>
                 <li>Upload your 4,000-character Personal Statement.</li>
-                <li>Key deadlines: Oct 15 (Medicine/Oxbridge) | Jan 29 (General).</li>
+                <li>Key deadlines: 15 October (Medicine, Dentistry, Oxbridge) and mid-January for other courses. Confirm the exact date on ucas.com.</li>
               </ul>
             </div>
             <a href="https://www.ucas.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded text-xs font-bold text-center transition">
@@ -176,12 +113,12 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="font-extrabold text-base text-slate-900">BridgeU / MaiaLearning</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-800 border border-purple-200">School Guidance</span>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-purple-50 text-purple-800 border border-purple-200">School Guidance</span>
               </div>
               <p class="text-xs text-slate-600 leading-relaxed mb-3">
                 High school portal used to transmit official transcripts and recommendations.
               </p>
-              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
                 <li>Link CommonApp with BridgeU for automatic transcript sending.</li>
                 <li>Track teacher recommendation letter submissions.</li>
               </ul>
@@ -196,18 +133,18 @@
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="font-extrabold text-base text-slate-900">Regional Portals (OUAC / VTAC / UAC)</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Canada & Australia</span>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Canada & Australia</span>
               </div>
               <p class="text-xs text-slate-600 leading-relaxed mb-3">
                 Centralized systems for Ontario (OUAC) and Australian states (VTAC / UAC / QTAC).
               </p>
-              <ul class="text-[11px] text-slate-600 space-y-1 mb-4 list-disc list-inside">
+              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
                 <li><strong>OUAC (Ontario, Canada):</strong> Toronto, Waterloo, McMaster.</li>
                 <li><strong>VTAC & UAC (Australia):</strong> Melbourne, Monash, Sydney, UNSW.</li>
                 <li>Direct university applications are also accepted at most Australian institutions.</li>
               </ul>
             </div>
-            <div class="text-[11px] text-slate-500 font-semibold p-2 bg-slate-50 rounded border border-slate-200 text-center">
+            <div class="text-xs text-slate-500 font-semibold p-2 bg-slate-50 rounded border border-slate-200 text-center">
               Direct Applications Available for Most Canadian & Australian Universities
             </div>
           </div>
@@ -226,19 +163,19 @@
           
           <div class="bg-white p-4 rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">College Board (Digital SAT)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Book Digital SAT exam slots and send scores to universities.</p>
+            <p class="text-slate-600 text-xs mb-2">Book Digital SAT exam slots and send scores to universities.</p>
             <a href="https://www.collegeboard.org" target="_blank" class="text-olive-700 font-bold hover:underline">collegeboard.org &rarr;</a>
           </div>
 
           <div class="bg-white p-4 rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">British Council / IDP (IELTS)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Register for IELTS Academic or UKVI IELTS tests in Kuwait.</p>
+            <p class="text-slate-600 text-xs mb-2">Register for IELTS Academic or UKVI IELTS tests in Kuwait.</p>
             <a href="https://takeielts.britishcouncil.org" target="_blank" class="text-olive-700 font-bold hover:underline">britishcouncil.org &rarr;</a>
           </div>
 
           <div class="bg-white p-4 rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">Pearson VUE (UCAT & LNAT)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Required exams for UK Medicine (UCAT) and Law (LNAT).</p>
+            <p class="text-slate-600 text-xs mb-2">Required exams for UK Medicine (UCAT) and Law (LNAT).</p>
             <a href="https://www.pearsonvue.com" target="_blank" class="text-olive-700 font-bold hover:underline">pearsonvue.com &rarr;</a>
           </div>
 
@@ -256,19 +193,19 @@
           
           <div class="p-4 bg-white rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">Kuwait Mobile ID (تطبيق هويتي)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Digital civil ID for official authentication and certificate verification.</p>
-            <span class="text-[11px] font-semibold text-slate-500">PACI Digital ID</span>
+            <p class="text-slate-600 text-xs mb-2">Digital civil ID for official authentication and certificate verification.</p>
+            <span class="text-xs font-semibold text-slate-500">PACI Digital ID</span>
           </div>
 
           <div class="p-4 bg-white rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">Sahel App (تطبيق سهل)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Government app to request high school equivalency (معادلة الثانوية) and track applications.</p>
-            <span class="text-[11px] font-semibold text-slate-500">Government Services Gateway</span>
+            <p class="text-slate-600 text-xs mb-2">Government app to request high school equivalency (معادلة الثانوية) and track applications.</p>
+            <span class="text-xs font-semibold text-slate-500">Government Services Gateway</span>
           </div>
 
           <div class="p-4 bg-white rounded-xl border border-slate-200">
             <strong class="font-bold text-slate-900 block mb-1">MoHE Portal (mohe.edu.kw)</strong>
-            <p class="text-slate-600 text-[11px] mb-2">Official Ministry portal for scholarship registration and financial guarantees.</p>
+            <p class="text-slate-600 text-xs mb-2">Official Ministry portal for scholarship registration and financial guarantees.</p>
             <a href="https://www.mohe.edu.kw" target="_blank" class="text-olive-700 font-bold hover:underline">mohe.edu.kw &rarr;</a>
           </div>
 
@@ -278,27 +215,10 @@
     </div>
   </main>
 
-  <!-- Official Footer -->
-  <footer class="bg-olive-950 text-slate-400 text-xs py-10 border-t border-olive-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <span class="text-white font-bold text-sm block" data-i18n="footer_app_name">moustaqbili | مستقبلي</span>
-        <span class="text-slate-400 text-[11px] block mt-0.5" data-i18n="footer_desc">
-          Educational application moustaqbili
-        </span>
-      </div>
-      <div class="flex items-center gap-6 text-[11px] font-medium">
-        <a href="index.html" class="hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="hover:text-white transition" data-i18n="nav_local">Local Unis</a>
-        <a href="guidelines.html" class="hover:text-white transition" data-i18n="nav_faq">Regulations</a>
-        <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Scripts -->
+  <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
