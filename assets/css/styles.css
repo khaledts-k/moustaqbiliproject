@@ -341,3 +341,149 @@ html {
 .contact-note .contact-bubble-icon { width: 2rem; height: 2rem; color: #64748b; border-color: #e2e8f0; }
 .contact-note-label { display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; }
 .contact-note-value { display: block; font-size: 0.875rem; color: #1e293b; line-height: 1.5; }
+
+/* Study in Kuwait: lowest admitted grade pill */
+.grade-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.25rem 0.25rem 0.85rem;
+  border-radius: 9999px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  max-width: 100%;
+}
+[dir="rtl"] .grade-pill { padding: 0.25rem 0.85rem 0.25rem 0.25rem; }
+.grade-pill-label { font-size: 0.75rem; font-weight: 600; color: #065f46; min-width: 0; line-height: 1.35; }
+.grade-pill-value {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #064e3b;
+  background: #ffffff;
+  border: 1px solid #a7f3d0;
+  border-radius: 9999px;
+  padding: 0.15rem 0.7rem;
+}
+.grade-pill.is-missing { background: #f8fafc; border-color: #cbd5e1; }
+.grade-pill.is-missing .grade-pill-label { color: #475569; }
+.grade-pill.is-missing .grade-pill-value { color: #475569; border-color: #cbd5e1; font-weight: 600; }
+
+/* Study in Kuwait: score parts, extra conditions and majors */
+.college-line { display: flex; flex-direction: column; gap: 0.35rem; }
+@media (min-width: 640px) {
+  .college-line { flex-direction: row; align-items: flex-start; gap: 0.75rem; }
+  .college-line-label { flex: 0 0 11rem; padding-top: 0.3rem; }
+}
+.college-line-label { font-size: 0.75rem; font-weight: 700; color: #64748b; }
+
+.req-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 9999px;
+  background: #f4f6f3;
+  border: 1px solid #cbd7c7;
+  font-size: 0.8125rem;
+  color: #2d3e29;
+}
+.req-chip strong { font-weight: 800; color: #222d1d; }
+.req-chip.is-condition { background: #fffbeb; border-color: #fde68a; color: #78350f; }
+
+.major-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.2rem 0.25rem 0.2rem 0.7rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  font-size: 0.8125rem;
+  color: #1e293b;
+}
+[dir="rtl"] .major-pill { padding: 0.2rem 0.7rem 0.2rem 0.25rem; }
+.major-pill:not(:has(.major-pill-grade)) { padding: 0.2rem 0.7rem; }
+.major-pill-name { min-width: 0; }
+.major-pill-grade {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-weight: 800;
+  color: #064e3b;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 9999px;
+  padding: 0.05rem 0.55rem;
+}
+
+/* More Info: highlighted key facts and pills */
+.key-pill {
+  background: #e5ebe3;
+  color: #222d1d;
+  border: 1px solid #a8bfa2;
+  border-radius: 9999px;
+  padding: 0 0.45rem;
+  font-weight: 700;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.must-pill {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.45rem 0.9rem 0.45rem 0.6rem;
+  border-radius: 9999px;
+  background: #f4f6f3;
+  border: 1px solid #a8bfa2;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #222d1d;
+  line-height: 1.35;
+}
+[dir="rtl"] .must-pill { padding: 0.45rem 0.6rem 0.45rem 0.9rem; }
+.date-pill {
+  display: inline-flex;
+  padding: 0.15rem 0.7rem;
+  border-radius: 9999px;
+  background: #222d1d;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.term-pill {
+  display: inline-flex;
+  padding: 0.15rem 0.75rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #a8bfa2;
+  color: #222d1d;
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+.num-pill {
+  display: inline-flex;
+  white-space: nowrap;
+  padding: 0.1rem 0.6rem;
+  border-radius: 9999px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #064e3b;
+  font-weight: 800;
+}
+.link-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #2d3e29;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.link-pill:hover { border-color: #384f33; background: #f4f6f3; }

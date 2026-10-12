@@ -11,6 +11,16 @@
 const MORE_INFO = {
   lastVerified: "2026-10-11",
 
+  // The most important requirements, shown as pills at the top of the page
+  mustKnow: [
+    { en: "IELTS 5.5 in every part (or TOEFL 47), taken in Kuwait", ar: "IELTS 5.5 في كل قسم (أو TOEFL 47)، داخل الكويت" },
+    { en: "Age 16 - 23, certificate from 2024/25 or 2025/26", ar: "العمر 16 - 23، وشهادة 2024/25 أو 2025/26" },
+    { en: "Qudrat needed for medicine, dentistry, pharmacy, vet and engineering", ar: "القدرات مطلوبة للطب والأسنان والصيدلة والبيطري والهندسة" },
+    { en: "Merit applications open until 24 February 2027", ar: "التقديم لبرنامج التميز مفتوح حتى 24 فبراير 2027" },
+    { en: "After acceptance: 60 days to hand in your papers", ar: "بعد القبول: 60 يوماً لتسليم أوراقك" },
+    { en: "Check the university is approved before you apply", ar: "تأكد أن الجامعة معتمدة قبل التقديم" }
+  ],
+
   sections: [
     // ---------------------------------------------------------------------
     {
@@ -55,12 +65,12 @@ const MORE_INFO = {
         {
           type: "steps",
           items: [
-            { whenEn: "October - December", whenAr: "أكتوبر - ديسمبر", whatEn: "Take the Qudrat tests (first round) if you want medicine, dentistry, pharmacy, engineering, Kuwait University or AASU.", whatAr: "أدِّ اختبارات القدرات (الفرصة الأولى) إذا كنت تريد الطب أو طب الأسنان أو الصيدلة أو الهندسة أو جامعة الكويت أو جامعة عبد الله السالم." },
-            { whenEn: "Autumn - winter", whenAr: "الخريف - الشتاء", whatEn: "Take IELTS or TOEFL in Kuwait. Apply to universities abroad if you want (UK medicine closes on 15 October; most UK courses in mid-January).", whatAr: "أدِّ اختبار IELTS أو TOEFL داخل الكويت. وقدّم على الجامعات في الخارج إن رغبت (الطب في بريطانيا يُغلق في 15 أكتوبر، ومعظم التخصصات الأخرى منتصف يناير).", flag: "unverified" },
+            { whenEn: "October - December", whenAr: "أكتوبر - ديسمبر", whatEn: "**Take the Qudrat tests (first round)** if you want medicine, dentistry, pharmacy, engineering, Kuwait University or AASU.", whatAr: "**أدِّ اختبارات القدرات (الفرصة الأولى)** إذا كنت تريد الطب أو طب الأسنان أو الصيدلة أو الهندسة أو جامعة الكويت أو جامعة عبد الله السالم." },
+            { whenEn: "Autumn - winter", whenAr: "الخريف - الشتاء", whatEn: "**Take IELTS or TOEFL in Kuwait**. Apply to universities abroad if you want (**UK medicine closes on 15 October**; **most UK courses in mid-January**).", whatAr: "**أدِّ اختبار IELTS أو TOEFL داخل الكويت**. وقدّم على الجامعات في الخارج إن رغبت (الطب في بريطانيا يُغلق في 15 أكتوبر، ومعظم التخصصات الأخرى منتصف يناير).", flag: "unverified" },
             { whenEn: "January - April", whenAr: "يناير - أبريل", whatEn: "Second Qudrat round, if you need a better score. Not announced yet for 2027.", whatAr: "الفرصة الثانية لاختبارات القدرات إن احتجت درجة أفضل. لم يُعلن عنها بعد لعام 2027.", flag: "unconfirmed" },
-            { whenEn: "June - July", whenAr: "يونيو - يوليو", whatEn: "Register for a scholarship on the Ministry's portal after your results. In 2026 this ran from 14 June to 7 July.", whatAr: "سجّل في البعثة على بوابة الوزارة بعد ظهور نتيجتك. في 2026 كان التسجيل من 14 يونيو إلى 7 يوليو." },
+            { whenEn: "June - July", whenAr: "يونيو - يوليو", whatEn: "Register for a scholarship on the Ministry's portal after your results. **In 2026 this ran from 14 June to 7 July**.", whatAr: "سجّل في البعثة على بوابة الوزارة بعد ظهور نتيجتك. **في 2026 كان التسجيل من 14 يونيو إلى 7 يوليو**." },
             { whenEn: "July - August", whenAr: "يوليو - أغسطس", whatEn: "The Ministry announces who is accepted. Then you get a university offer, the financial guarantee letter and your visa.", whatAr: "تعلن الوزارة أسماء المقبولين، ثم تحصل على قبول الجامعة والكتاب المالي والتأشيرة." },
-            { whenEn: "Until 24 February 2027", whenAr: "حتى 24 فبراير 2027", whatEn: "You can still apply for the merit programme if you get into a merit university.", whatAr: "يمكنك التقديم على برنامج التميز إذا حصلت على قبول في إحدى جامعات التميز." }
+            { whenEn: "Until 24 February 2027", whenAr: "حتى 24 فبراير 2027", whatEn: "**You can still apply for the merit programme** if you get into a merit university.", whatAr: "**يمكنك التقديم على برنامج التميز** إذا حصلت على قبول في إحدى جامعات التميز." }
           ]
         }
       ]
@@ -88,13 +98,13 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Merit students get 50% more each month, but only after the preparatory (foundation) stage.",
-            "If a merit student's GPA drops below 2.67 (below 60% in the UK system), they lose merit status and go back to the normal amount.",
+            "**Merit students get 50% more each month**, but **only after the preparatory (foundation) stage**.",
+            "If a merit student's **GPA drops below 2.67** (below 60% in the UK system), they lose merit status and go back to the normal amount.",
             "The Ministry's tables also include money for books, equipment, clothing and clinical training. The amounts depend on the country and major."
           ],
           ar: [
-            "يحصل طلبة التميز على زيادة 50% شهرياً، ولكن بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط.",
-            "إذا قل معدل طالب التميز عن 2.67 (أو عن 60% في النظام البريطاني) يفقد صفة التميز ويعود إلى المخصص العادي.",
+            "**يحصل طلبة التميز على زيادة 50% شهرياً**، ولكن **بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط**.",
+            "إذا **قل معدل طالب التميز عن 2.67** (أو عن 60% في النظام البريطاني) يفقد صفة التميز ويعود إلى المخصص العادي.",
             "تتضمن جداول الوزارة أيضاً مبالغ للكتب والأجهزة والملابس والتدريب السريري، وتختلف حسب الدولة والتخصص."
           ]
         }
@@ -112,16 +122,16 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Who can apply: at least 90% in high school, or 95% for medicine, dentistry and pharmacy.",
-            "What you get: 50% more monthly allowance after the preparatory stage.",
-            "Deadline for 2026/2027: 24 February 2027.",
+            "Who can apply: **at least 90% in high school, or 95% for medicine, dentistry and pharmacy**.",
+            "What you get: **50% more monthly allowance after the preparatory stage**.",
+            "**Deadline for 2026/2027: 24 February 2027.**",
             "The list of merit universities is kept by the National Bureau for Academic Accreditation. It was last changed in November 2025, when New Zealand and Australia lists were added.",
             "For the UK, the list comes from Ministerial Decree 16/2025. We found no newer decree."
           ],
           ar: [
-            "من يحق له التقديم: 90% على الأقل في الثانوية، أو 95% للطب وطب الأسنان والصيدلة.",
-            "ما تحصل عليه: زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
-            "آخر موعد للعام 2026/2027: 24 فبراير 2027.",
+            "من يحق له التقديم: **90% على الأقل في الثانوية، أو 95% للطب وطب الأسنان والصيدلة**.",
+            "ما تحصل عليه: **زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية**.",
+            "**آخر موعد للعام 2026/2027: 24 فبراير 2027.**",
             "يحتفظ الجهاز الوطني للاعتماد الأكاديمي بقائمة جامعات التميز، وآخر تعديل عليها كان في نوفمبر 2025 بإضافة قوائم نيوزيلندا وأستراليا.",
             "قائمة بريطانيا صادرة بالقرار الوزاري 16/2025، ولم نجد قراراً أحدث."
           ]
@@ -141,9 +151,9 @@ const MORE_INFO = {
         {
           type: "cards",
           items: [
-            { titleEn: "To register for the scholarship", titleAr: "للتسجيل في البعثة", bodyEn: "IELTS Academic (not General) 5.5 overall and in every part, or TOEFL 47. The test must be taken in Kuwait.", bodyAr: "IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، ويجب أداء الاختبار داخل الكويت." },
-            { titleEn: "After you are accepted", titleAr: "بعد القبول", bodyEn: "You have one calendar year to reach the score your university asks for. That is usually higher (often 6.5 or 7.0).", bodyAr: "لديك سنة ميلادية واحدة لتحقيق الدرجة التي تطلبها جامعتك، وهي عادة أعلى (غالباً 6.5 أو 7.0)." },
-            { titleEn: "Studying in the UK", titleAr: "الدراسة في بريطانيا", bodyEn: "The plan requires UKVI IELTS for the UK. It is the same test, booked as the UKVI version. A normal IELTS may not be accepted for a UK student visa, so book the UKVI one.", bodyAr: "تشترط الخطة UKVI IELTS للدراسة في بريطانيا، وهو الاختبار نفسه لكن يُحجز بنسخة UKVI. قد لا يُقبل IELTS العادي لتأشيرة الطالب البريطانية، لذا احجز نسخة UKVI." }
+            { titleEn: "To register for the scholarship", titleAr: "للتسجيل في البعثة", bodyEn: "**IELTS Academic (not General) 5.5 overall and in every part, or TOEFL 47**. **The test must be taken in Kuwait.**", bodyAr: "**IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47**، **ويجب أداء الاختبار داخل الكويت**." },
+            { titleEn: "After you are accepted", titleAr: "بعد القبول", bodyEn: "**You have one calendar year** to reach the score your university asks for. That is usually higher (often 6.5 or 7.0).", bodyAr: "**لديك سنة ميلادية واحدة** لتحقيق الدرجة التي تطلبها جامعتك، وهي عادة أعلى (غالباً 6.5 أو 7.0)." },
+            { titleEn: "Studying in the UK", titleAr: "الدراسة في بريطانيا", bodyEn: "**The plan requires UKVI IELTS for the UK.** It is the same test, booked as the UKVI version. A normal IELTS may not be accepted for a UK student visa, so book the UKVI one.", bodyAr: "**تشترط الخطة UKVI IELTS للدراسة في بريطانيا**، وهو الاختبار نفسه لكن يُحجز بنسخة UKVI. قد لا يُقبل IELTS العادي لتأشيرة الطالب البريطانية، لذا احجز نسخة UKVI." }
           ]
         }
       ]
@@ -161,7 +171,7 @@ const MORE_INFO = {
         {
           type: "cards",
           items: [
-            { titleEn: "UK, Kuwaiti public school", titleAr: "بريطانيا، مدرسة حكومية كويتية", bodyEn: "Usually a 1-year foundation year, then a 3-year degree. Medicine is longer. For medicine and dentistry it cannot be repeated. Other students may repeat it once.", bodyAr: "عادة سنة تأسيسية واحدة ثم 3 سنوات للبكالوريوس، والطب أطول. ولا تجوز إعادتها في الطب وطب الأسنان، ويجوز لغيرهم إعادتها مرة واحدة." },
+            { titleEn: "UK, Kuwaiti public school", titleAr: "بريطانيا، مدرسة حكومية كويتية", bodyEn: "Usually a 1-year foundation year, then a 3-year degree. Medicine is longer. **For medicine and dentistry it cannot be repeated.** Other students may repeat it once.", bodyAr: "عادة سنة تأسيسية واحدة ثم 3 سنوات للبكالوريوس، والطب أطول. **ولا تجوز إعادتها في الطب وطب الأسنان**، ويجوز لغيرهم إعادتها مرة واحدة." },
             { titleEn: "UK, British system (A-Levels)", titleAr: "بريطانيا، النظام البريطاني (A-Levels)", bodyEn: "Students with good A-Level grades usually start the degree directly.", bodyAr: "الطلبة الحاصلون على درجات جيدة في A-Levels يبدأون الدراسة الجامعية مباشرة عادةً." },
             { titleEn: "United States", titleAr: "الولايات المتحدة", bodyEn: "A 4-year degree with no separate foundation year.", bodyAr: "بكالوريوس مدته 4 سنوات دون سنة تأسيسية منفصلة." },
             { titleEn: "Australia, medicine", titleAr: "أستراليا، الطب", bodyEn: "Usually a foundation year first. You must reach a set grade in it to move on to medicine.", bodyAr: "عادة سنة تأسيسية أولاً، ويجب تحقيق درجة محددة فيها للانتقال إلى الطب." }
@@ -203,8 +213,8 @@ const MORE_INFO = {
         {
           type: "cards",
           items: [
-            { titleEn: "Check the university is approved", titleAr: "تأكد أن الجامعة معتمدة", bodyEn: "Before you apply, search the university and programme on the National Bureau for Academic Accreditation website. Studying somewhere not approved can mean your degree is not recognised in Kuwait.", bodyAr: "قبل التقديم، ابحث عن الجامعة والبرنامج في موقع الجهاز الوطني للاعتماد الأكاديمي. الدراسة في جهة غير معتمدة قد تعني عدم الاعتراف بشهادتك في الكويت." },
-            { titleEn: "Private or foreign school certificate", titleAr: "شهادة مدرسة خاصة أو أجنبية", bodyEn: "If you studied in a private, international or foreign school, your high school certificate needs an equivalency from the Ministry of Education before you can use it to apply.", bodyAr: "إذا درست في مدرسة خاصة أو دولية أو أجنبية، فتحتاج شهادتك الثانوية إلى معادلة من وزارة التربية قبل استخدامها في التقديم.", flag: "unverified" },
+            { titleEn: "Check the university is approved", titleAr: "تأكد أن الجامعة معتمدة", bodyEn: "Before you apply, **search the university and programme on the National Bureau for Academic Accreditation website**. Studying somewhere not approved can mean your degree is not recognised in Kuwait.", bodyAr: "قبل التقديم، **ابحث عن الجامعة والبرنامج في موقع الجهاز الوطني للاعتماد الأكاديمي**. الدراسة في جهة غير معتمدة قد تعني عدم الاعتراف بشهادتك في الكويت." },
+            { titleEn: "Private or foreign school certificate", titleAr: "شهادة مدرسة خاصة أو أجنبية", bodyEn: "If you studied in a private, international or foreign school, your high school certificate **needs an equivalency from the Ministry of Education** before you can use it to apply.", bodyAr: "إذا درست في مدرسة خاصة أو دولية أو أجنبية، ف**تحتاج شهادتك الثانوية إلى معادلة من وزارة التربية** قبل استخدامها في التقديم.", flag: "unverified" },
             { titleEn: "University degree from abroad", titleAr: "شهادة جامعية من الخارج", bodyEn: "After you graduate, the Ministry of Higher Education makes the equivalency of your degree. You can request it and track it in the Sahel app.", bodyAr: "بعد تخرجك، تعادل وزارة التعليم العالي شهادتك الجامعية، ويمكنك طلبها ومتابعتها عبر تطبيق سهل." }
           ]
         },
@@ -226,21 +236,21 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Within 60 days of the results, hand in your school certificate and sign the pledge. Your guardian approves it in the Sahel app. If you miss this, the scholarship is cancelled.",
-            "Reach the English score your university asks for within one year, or the scholarship is cancelled.",
+            "**Within 60 days of the results**, hand in your school certificate and sign the pledge. Your guardian approves it in the Sahel app. If you miss this, the scholarship is cancelled.",
+            "Reach the English score your university asks for **within one year**, or the scholarship is cancelled.",
             "Your monthly allowance starts when you arrive in your study country (at most two weeks before classes).",
-            "You can change your major only once, and only after you start studying.",
-            "You can move to another country only once, and only for set reasons (for example a refused visa).",
-            "You can delay the start by one year at most, and only for set reasons (no visa, health, or an exceptional reason).",
+            "You can change your major **only once, and only after you start studying**.",
+            "You can move to another country **only once, and only for set reasons** (for example a refused visa).",
+            "You can delay the start **by one year at most**, and only for set reasons (no visa, health, or an exceptional reason).",
             "Failing a year, missing classes or getting academic warnings reduces your allowance."
           ],
           ar: [
-            "خلال 60 يوماً من إعلان النتائج، قدّم شهادة الثانوية ووقّع التعهد، ويوافق عليه ولي الأمر عبر تطبيق سهل. وإن فاتتك المهلة تُلغى البعثة.",
-            "حقق درجة اللغة الإنجليزية التي تطلبها جامعتك خلال سنة واحدة، وإلا تُلغى البعثة.",
+            "**خلال 60 يوماً من إعلان النتائج**، قدّم شهادة الثانوية ووقّع التعهد، ويوافق عليه ولي الأمر عبر تطبيق سهل. وإن فاتتك المهلة تُلغى البعثة.",
+            "حقق درجة اللغة الإنجليزية التي تطلبها جامعتك **خلال سنة واحدة**، وإلا تُلغى البعثة.",
             "يبدأ المخصص الشهري عند وصولك إلى بلد الدراسة (وبحد أقصى أسبوعين قبل بدء الدراسة).",
-            "يمكنك تغيير التخصص مرة واحدة فقط، وبعد بدء الدراسة.",
-            "يمكنك نقل البعثة إلى دولة أخرى مرة واحدة فقط، ولأسباب محددة (مثل رفض التأشيرة).",
-            "يمكنك تأجيل البدء سنة واحدة كحد أقصى، ولأسباب محددة (عدم صدور التأشيرة، أو سبب صحي، أو سبب استثنائي).",
+            "يمكنك تغيير التخصص **مرة واحدة فقط، وبعد بدء الدراسة**.",
+            "يمكنك نقل البعثة إلى دولة أخرى **مرة واحدة فقط، ولأسباب محددة** (مثل رفض التأشيرة).",
+            "يمكنك تأجيل البدء **سنة واحدة كحد أقصى**، ولأسباب محددة (عدم صدور التأشيرة، أو سبب صحي، أو سبب استثنائي).",
             "الرسوب أو الغياب أو الإنذارات الأكاديمية تخفض مخصصك."
           ]
         },

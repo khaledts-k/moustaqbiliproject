@@ -220,6 +220,8 @@ const MOUSTAQBILI_TRANSLATIONS = {
     // More info page
     more_title: "More information",
     more_desc: "Everything else you may need to know, in simple words. Use the list on the side to jump to a topic.",
+    more_must_know: "Must know",
+    more_must_know_desc: "The most important requirements. Read these first.",
     plan_rules_title: "Main rules",
     plan_floors_title: "Lowest high school % accepted, by country",
     plan_floors_help: "The numbers are the lowest % you need to apply. A higher % gives you a better chance.",
@@ -279,11 +281,16 @@ const MOUSTAQBILI_TRANSLATIONS = {
     local_public_desc: "Kuwait University and Abdullah Al-Salem University. Free for Kuwaiti students. You need Qudrat tests for most colleges.",
     local_private_title: "Private universities (PUC scholarships)",
     local_private_desc: "The government pays your fees at an approved private university in Kuwait. Lowest % for 2026/2027: 78% science stream, 80% arts stream, 90% engineering and law.",
-    local_funding: "Who pays",
+    local_funding: "Who pays?",
     local_admission: "How to apply",
     local_aptitude: "Tests",
     local_qudrat_link: "Qudrat dates and score calculator",
     local_colleges: "Colleges",
+    local_how_counted: "How your score is counted",
+    local_hs_only: "High school % only (no Qudrat weighting)",
+    local_no_qudrat: "High school % only. No Qudrat needed",
+    local_majors: "Majors",
+    local_majors_grades: "Majors and their lowest admitted grade",
 
     // How to apply page
     suggestions_title: "How to apply",
@@ -563,6 +570,8 @@ const MOUSTAQBILI_TRANSLATIONS = {
     // More info page
     more_title: "معلومات أكثر",
     more_desc: "كل ما قد تحتاج معرفته، بكلمات بسيطة. استخدم القائمة الجانبية للانتقال إلى الموضوع.",
+    more_must_know: "يجب أن تعرف",
+    more_must_know_desc: "أهم الشروط. اقرأها أولاً.",
     plan_rules_title: "أهم الشروط",
     plan_floors_title: "أقل نسبة ثانوية مقبولة حسب الدولة",
     plan_floors_help: "الأرقام هي أقل نسبة تحتاجها للتقديم، والنسبة الأعلى تزيد فرصتك.",
@@ -622,11 +631,16 @@ const MOUSTAQBILI_TRANSLATIONS = {
     local_public_desc: "جامعة الكويت وجامعة عبد الله السالم. الدراسة مجانية للطلبة الكويتيين، وتحتاج اختبارات القدرات لمعظم الكليات.",
     local_private_title: "الجامعات الخاصة (بعثات مجلس الجامعات الخاصة)",
     local_private_desc: "تدفع الحكومة رسومك في جامعة خاصة معتمدة داخل الكويت. أقل نسبة للعام 2026/2027: 78% علمي، 80% أدبي، 90% للهندسة والحقوق.",
-    local_funding: "من يدفع",
+    local_funding: "من يدفع؟",
     local_admission: "طريقة التقديم",
     local_aptitude: "الاختبارات",
     local_qudrat_link: "مواعيد القدرات وحاسبة الدرجة",
     local_colleges: "الكليات",
+    local_how_counted: "كيف تُحسب درجتك",
+    local_hs_only: "نسبة الثانوية فقط (دون أوزان القدرات)",
+    local_no_qudrat: "نسبة الثانوية فقط، ولا تحتاج القدرات",
+    local_majors: "التخصصات",
+    local_majors_grades: "التخصصات وأدنى معدل مقبول فيها",
 
     // How to apply page
     suggestions_title: "طريقة التقديم",

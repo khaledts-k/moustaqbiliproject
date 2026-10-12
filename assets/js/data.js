@@ -646,25 +646,25 @@ const MOHE_PLAN_2026 = {
   allowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3",
   meritAllowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3",
   registrationUrl: "https://reg2.mohe.edu.kw/Account/Login",
-  statusEn: "General registration for 2026/2027 ran 14 June - 7 July 2026 and is closed. 2,704 high-school graduates were accepted. Merit programme applications stay open until 24 February 2027.",
-  statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
+  statusEn: "General registration for 2026/2027 **ran 14 June - 7 July 2026 and is closed**. 2,704 high-school graduates were accepted. **Merit programme applications stay open until 24 February 2027**.",
+  statusAr: "أُقيم التسجيل العام للعام 2026/2027 **من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق**، وقُبل 2,704 من خريجي الثانوية. **يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027**.",
   countriesEn: "United States, United Kingdom, Ireland, Australia, New Zealand, Malta, Bahrain, Saudi Arabia, United Arab Emirates",
   countriesAr: "الولايات المتحدة، المملكة المتحدة، أيرلندا، أستراليا، نيوزيلندا، مالطا، البحرين، السعودية، الإمارات",
   rulesEn: [
-    "Age 16 - 23, with a secondary certificate from 2024/2025 or 2025/2026.",
-    "English: IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait. Accepted students then have one calendar year to reach their university's required score.",
-    "Medicine, dentistry, veterinary, pharmacy and engineering applicants must sit the Kuwait University aptitude tests (Qudrat); an equivalent average is used.",
-    "United Kingdom: UKVI IELTS is required. For medicine and dentistry, failing the foundation year or the interview ends the placement, and the foundation year cannot be repeated. Other students may repeat it once.",
-    "UK medicine: UCAT 1,650 or more, and IELTS 7.0 (no band below 6.5) for the foundation year.",
-    "Merit (excellence) programme: at least 90% for all majors and 95% for medicine, dentistry and pharmacy. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
+    "**Age 16 - 23**, with **a secondary certificate from 2024/2025 or 2025/2026**.",
+    "English: **IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait**. Accepted students then have **one calendar year** to reach their university's required score.",
+    "Medicine, dentistry, veterinary, pharmacy and engineering applicants **must sit the Kuwait University aptitude tests (Qudrat)**; an equivalent average is used.",
+    "United Kingdom: **UKVI IELTS is required**. For medicine and dentistry, failing the foundation year or the interview ends the placement, and **the foundation year cannot be repeated**. Other students may repeat it once.",
+    "UK medicine: **UCAT 1,650 or more**, and **IELTS 7.0 (no band below 6.5)** for the foundation year.",
+    "Merit (excellence) programme: **at least 90% for all majors and 95% for medicine, dentistry and pharmacy**. Merit students receive an **extra 50% monthly allowance** after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA **falls below 2.67** (below 60% in the UK system)."
   ],
   rulesAr: [
-    "العمر من 16 إلى 23 سنة، وشهادة ثانوية من العام 2024/2025 أو 2025/2026.",
-    "اللغة الإنجليزية: IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت. ويُمنح المقبول سنة ميلادية واحدة لتحقيق الدرجة المطلوبة من الجامعة.",
-    "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة أداء اختبارات القدرات بجامعة الكويت، ويُعتمد المعدل المكافئ.",
-    "المملكة المتحدة: يُشترط UKVI IELTS. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، ولا تجوز إعادة السنة التأسيسية. ويجوز لغيرهم إعادتها مرة واحدة.",
-    "الطب في المملكة المتحدة: UCAT بدرجة 1,650 فأكثر، وIELTS 7.0 (ولا يقل أي قسم عن 6.5) للسنة التأسيسية.",
-    "برنامج التميز: 90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
+    "**العمر من 16 إلى 23 سنة**، و**شهادة ثانوية من العام 2024/2025 أو 2025/2026**.",
+    "اللغة الإنجليزية: **IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت**. ويُمنح المقبول **سنة ميلادية واحدة** لتحقيق الدرجة المطلوبة من الجامعة.",
+    "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة **أداء اختبارات القدرات بجامعة الكويت**، ويُعتمد المعدل المكافئ.",
+    "المملكة المتحدة: **يُشترط UKVI IELTS**. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، **ولا تجوز إعادة السنة التأسيسية**. ويجوز لغيرهم إعادتها مرة واحدة.",
+    "الطب في المملكة المتحدة: **UCAT بدرجة 1,650 فأكثر**، و**IELTS 7.0 (ولا يقل أي قسم عن 6.5)** للسنة التأسيسية.",
+    "برنامج التميز: **90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة**. يحصل طلبة التميز على **زيادة 50% في المخصص الشهري** بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا **قل المعدل عن 2.67** (أو عن 60% في النظام البريطاني)."
   ],
   // Minimum high-school % by country and major (Plan 2026/2027)
   floors: [
@@ -696,17 +696,50 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     aptitudeExamsAr: "اختبارات القدرات في الإنجليزي والرياضيات والعربي، بأوزان تختلف حسب الكلية.",
     floorLabelEn: "Lowest admitted, Fall 2026/27",
     floorLabelAr: "أدنى معدل مقبول، الفصل الأول 2026/2027",
+    // qudrat: the college's name in KUWAIT_QUDRAT.formulas (qudrat-data.js), used to show how the score is counted
+    // scoring: "hs-only" (high-school % only) or "no-qudrat" when the college does not use Qudrat weights
+    // majors: majors with their own lowest admitted grade, Fall 2026/27
     colleges: [
-      { collegeName: "Medicine", collegeNameAr: "الطب", minThanawiya: "94.73%", seatsNotes: "Equivalent average (high school 75% + Qudrat 25%)", seatsNotesAr: "المعدل المكافئ (الثانوية 75% + القدرات 25%)" },
-      { collegeName: "Dentistry", collegeNameAr: "طب الأسنان", minThanawiya: "94.42%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
-      { collegeName: "Pharmacy", collegeNameAr: "الصيدلة", minThanawiya: "92.56%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
-      { collegeName: "Allied Health Sciences", collegeNameAr: "العلوم الطبية المساعدة", minThanawiya: "86.77 - 91.31%", seatsNotes: "Physiotherapy 91.31, Occupational Therapy 90.6, Medical Lab 88.71, Nursing 88.49", seatsNotesAr: "العلاج الطبيعي 91.31، العلاج الوظيفي 90.6، المختبرات الطبية 88.71، التمريض 88.49" },
-      { collegeName: "Public Health", collegeNameAr: "الصحة العامة", minThanawiya: "83.68%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
-      { collegeName: "Engineering & Petroleum", collegeNameAr: "الهندسة والبترول", minThanawiya: "65.38 - 76.56%", seatsNotes: "Computer 76.56, Petroleum 73.26, Civil 71.93, Electrical 71.19, Industrial 65.38", seatsNotesAr: "الكمبيوتر 76.56، البترول 73.26، المدنية 71.93، الكهربائية 71.19، الصناعية 65.38" },
-      { collegeName: "Science", collegeNameAr: "العلوم", minThanawiya: "70 - 95.6%", seatsNotes: "High-school %: Microbiology 95.6, Cybersecurity 90.65, Computer Science 83.06", seatsNotesAr: "نسبة الثانوية: الأحياء الدقيقة 95.6، الأمن السيبراني 90.65، علوم الكمبيوتر 83.06" },
-      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "85.76%", seatsNotes: "No aptitude test required", seatsNotesAr: "لا تشترط اختبارات القدرات" },
-      { collegeName: "Life Sciences", collegeNameAr: "علوم الحياة", minThanawiya: "62.78 - 84.12%", seatsNotes: "Equivalent average", seatsNotesAr: "المعدل المكافئ" },
-      { collegeName: "Business Administration", collegeNameAr: "العلوم الإدارية", minThanawiya: "56.91 - 73.35%", seatsNotes: "Accounting 73.35 (science) / 69 (arts)", seatsNotesAr: "المحاسبة 73.35 (علمي) / 69 (أدبي)" }
+      { collegeName: "Medicine", collegeNameAr: "الطب", minThanawiya: "94.73%", qudrat: "Medicine" },
+      { collegeName: "Dentistry", collegeNameAr: "طب الأسنان", minThanawiya: "94.42%", qudrat: "Dentistry" },
+      { collegeName: "Pharmacy", collegeNameAr: "الصيدلة", minThanawiya: "92.56%", qudrat: "Pharmacy" },
+      {
+        collegeName: "Allied Health Sciences", collegeNameAr: "العلوم الطبية المساعدة", minThanawiya: "86.77 - 91.31%", qudrat: "Allied Health Sciences",
+        majors: [
+          { en: "Physiotherapy", ar: "العلاج الطبيعي", grade: "91.31%" },
+          { en: "Occupational Therapy", ar: "العلاج الوظيفي", grade: "90.6%" },
+          { en: "Medical Laboratory", ar: "المختبرات الطبية", grade: "88.71%" },
+          { en: "Nursing", ar: "التمريض", grade: "88.49%" }
+        ]
+      },
+      { collegeName: "Public Health", collegeNameAr: "الصحة العامة", minThanawiya: "83.68%", qudrat: "Public Health" },
+      {
+        collegeName: "Engineering & Petroleum", collegeNameAr: "الهندسة والبترول", minThanawiya: "65.38 - 76.56%", qudrat: "Engineering & Petroleum",
+        majors: [
+          { en: "Computer Engineering", ar: "هندسة الكمبيوتر", grade: "76.56%" },
+          { en: "Petroleum Engineering", ar: "هندسة البترول", grade: "73.26%" },
+          { en: "Civil Engineering", ar: "الهندسة المدنية", grade: "71.93%" },
+          { en: "Electrical Engineering", ar: "الهندسة الكهربائية", grade: "71.19%" },
+          { en: "Industrial Engineering", ar: "الهندسة الصناعية", grade: "65.38%" }
+        ]
+      },
+      {
+        collegeName: "Science", collegeNameAr: "العلوم", minThanawiya: "70 - 95.6%", scoring: "hs-only",
+        majors: [
+          { en: "Microbiology", ar: "الأحياء الدقيقة", grade: "95.6%" },
+          { en: "Cybersecurity", ar: "الأمن السيبراني", grade: "90.65%" },
+          { en: "Computer Science", ar: "علوم الكمبيوتر", grade: "83.06%" }
+        ]
+      },
+      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "85.76%", scoring: "no-qudrat" },
+      { collegeName: "Life Sciences", collegeNameAr: "علوم الحياة", minThanawiya: "62.78 - 84.12%", qudrat: "Life Sciences" },
+      {
+        collegeName: "Business Administration", collegeNameAr: "العلوم الإدارية", minThanawiya: "56.91 - 73.35%", qudrat: "Business Administration",
+        majors: [
+          { en: "Accounting (science stream)", ar: "المحاسبة (علمي)", grade: "73.35%" },
+          { en: "Accounting (arts stream)", ar: "المحاسبة (أدبي)", grade: "69%" }
+        ]
+      }
     ],
     sourceNote: "Source: Kuwait University, minimum averages for Kuwaiti students, Fall 2026/2027 (published 30 July 2026).",
     sourceNoteAr: "المصدر: جامعة الكويت، الحدود الدنيا للطلبة الكويتيين، الفصل الأول 2026/2027 (نُشر في 30 يوليو 2026)."
@@ -727,10 +760,32 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     aptitudeExamsAr: "تُعتمد اختبارات القدرات بجامعة الكويت للتقديم في جامعة عبد الله السالم.",
     floorLabelEn: "Minimum",
     floorLabelAr: "الحد الأدنى",
+    // Majors come from the previous edition of this site and have not been re-checked (majorsFlag)
     colleges: [
-      { collegeName: "Computing & Systems", collegeNameAr: "الحوسبة والنظم", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "AI, cyber security, software engineering", seatsNotesAr: "الذكاء الاصطناعي، الأمن السيبراني، هندسة البرمجيات" },
-      { collegeName: "Engineering & Energy", collegeNameAr: "الهندسة والطاقة", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "Energy, systems and environmental engineering", seatsNotesAr: "هندسة الطاقة والنظم والبيئة" },
-      { collegeName: "Business & Entrepreneurship", collegeNameAr: "الأعمال وريادة الأعمال", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", seatsNotes: "FinTech, supply chain, business analytics", seatsNotesAr: "التكنولوجيا المالية، سلاسل الإمداد، تحليلات الأعمال" }
+      {
+        collegeName: "Computing & Systems", collegeNameAr: "الحوسبة والنظم", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        majors: [
+          { en: "Artificial Intelligence", ar: "الذكاء الاصطناعي" },
+          { en: "Cyber Security", ar: "الأمن السيبراني" },
+          { en: "Software Engineering", ar: "هندسة البرمجيات" }
+        ]
+      },
+      {
+        collegeName: "Engineering & Energy", collegeNameAr: "الهندسة والطاقة", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        majors: [
+          { en: "Energy Engineering", ar: "هندسة الطاقة" },
+          { en: "Systems Engineering", ar: "هندسة النظم" },
+          { en: "Environmental Engineering", ar: "الهندسة البيئية" }
+        ]
+      },
+      {
+        collegeName: "Business & Entrepreneurship", collegeNameAr: "الأعمال وريادة الأعمال", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        majors: [
+          { en: "FinTech", ar: "التكنولوجيا المالية" },
+          { en: "Supply Chain", ar: "سلاسل الإمداد" },
+          { en: "Business Analytics", ar: "تحليلات الأعمال" }
+        ]
+      }
     ],
     sourceNote: "AASU has not published per-college cutoffs for 2026/2027. Check aasu.edu.kw.",
     sourceNoteAr: "لم تنشر الجامعة الحدود الدنيا لكل كلية للعام 2026/2027. راجع aasu.edu.kw."
@@ -751,11 +806,24 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     aptitudeExamsAr: "المفاضلة للهندسة: الثانوية 65% + اختبار الرياضيات 20% + اختبار الإنجليزي 15%.",
     floorLabelEn: "Minimum",
     floorLabelAr: "الحد الأدنى",
+    // weights: PUC's own selection formula (not Kuwait University Qudrat); reported by Al-Jarida, 30 June 2026
     colleges: [
-      { collegeName: "Engineering", collegeNameAr: "الهندسة", minThanawiya: "90%", seatsNotes: "Systems and computer engineering: 85%", seatsNotesAr: "هندسة النظم والكمبيوتر: 85%" },
-      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "90%", seatsNotes: "", seatsNotesAr: "" },
-      { collegeName: "Other bachelor's programmes", collegeNameAr: "برامج البكالوريوس الأخرى", minThanawiya: "78% science / 80% arts", minThanawiyaAr: "78% علمي / 80% أدبي", seatsNotes: "Business, IT, media, design and more", seatsNotesAr: "إدارة الأعمال، تقنية المعلومات، الإعلام، التصميم وغيرها" },
-      { collegeName: "Diploma", collegeNameAr: "الدبلوم", minThanawiya: "70%", seatsNotes: "", seatsNotesAr: "" }
+      {
+        collegeName: "Engineering", collegeNameAr: "الهندسة", minThanawiya: "90%",
+        weights: { hs: 0.65, math: 0.20, eng: 0.15 },
+        majors: [ { en: "Systems and Computer Engineering", ar: "هندسة النظم والكمبيوتر", grade: "85%" } ]
+      },
+      { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "90%" },
+      {
+        collegeName: "Other bachelor's programmes", collegeNameAr: "برامج البكالوريوس الأخرى", minThanawiya: "78% science / 80% arts", minThanawiyaAr: "78% علمي / 80% أدبي",
+        majors: [
+          { en: "Business", ar: "إدارة الأعمال" },
+          { en: "Information Technology", ar: "تقنية المعلومات" },
+          { en: "Media", ar: "الإعلام" },
+          { en: "Design", ar: "التصميم" }
+        ]
+      },
+      { collegeName: "Diploma", collegeNameAr: "الدبلوم", minThanawiya: "70%" }
     ],
     sourceNote: "Source: PUC announcement for 2026/2027 (Al-Jarida, 30 June 2026).",
     sourceNoteAr: "المصدر: إعلان مجلس الجامعات الخاصة للعام 2026/2027 (الجريدة، 30 يونيو 2026)."

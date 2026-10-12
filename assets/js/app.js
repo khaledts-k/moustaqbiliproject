@@ -1280,22 +1280,38 @@ function renderContactPage() {
 // =========================================================================
 // 10b. Scholarship plan 2026/2027 (used on the More info page)
 // =========================================================================
+// Turn "**key phrase**" markers in data text into highlighted pills
+function richText(str) {
+  return String(str ?? "").replace(/\*\*(.+?)\*\*/g, '<mark class="key-pill">$1</mark>');
+}
+
+// A number in a table cell as a pill; "-" (not offered) stays a quiet dash
+function numPill(value, suffix = "") {
+  if (!value || value === "-") return `<span class="text-slate-400">-</span>`;
+  return `<span class="num-pill" dir="ltr">${value}${suffix}</span>`;
+}
+
 function planHtml() {
   const plan = window.MOHE_PLAN_2026;
   if (!plan) return "";
   const rules = (isArabic() ? plan.rulesAr : plan.rulesEn) || [];
+  // "97 (Dentistry 96)" -> pill "97%" + small note
+  const floorCell = (v) => {
+    const m = String(v).match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
+    return m ? `${numPill(m[1], "%")}${m[2] ? ` <span class="text-xs text-slate-500">${m[2]}</span>` : ""}` : numPill(v);
+  };
 
   return `
-    <div class="p-4 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-950 mb-5">${L(plan, 'status')}</div>
+    <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-sm text-amber-950 leading-relaxed mb-5">${richText(L(plan, 'status'))}</div>
 
     <h3 class="text-sm font-bold text-slate-900 mb-2">${t('plan_rules_title')}</h3>
-    <ul class="space-y-2 text-sm text-slate-700 mb-6">
-      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${r}</span></li>`).join("")}
+    <ul class="space-y-2.5 text-sm text-slate-700 leading-relaxed mb-6">
+      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${richText(r)}</span></li>`).join("")}
     </ul>
 
     <h3 class="text-sm font-bold text-slate-900 mb-1">${t('plan_floors_title')}</h3>
     <p class="text-xs text-slate-500 mb-2">${t('plan_floors_help')}</p>
-    <div class="overflow-x-auto rounded-lg border border-slate-200 mb-4">
+    <div class="overflow-x-auto rounded-xl border border-slate-200 mb-3">
       <table class="w-full text-sm">
         <thead class="bg-slate-100 text-slate-600 text-xs">
           <tr>
@@ -1310,10 +1326,10 @@ function planHtml() {
           ${plan.floors.map(f => `
             <tr class="border-t border-slate-200">
               <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(f, 'country')}</th>
-              <td class="p-3">${isArabic() && f.medicineAr ? f.medicineAr : f.medicine}</td>
-              <td class="p-3">${f.pharmacy}</td>
-              <td class="p-3">${f.engineering}</td>
-              <td class="p-3 text-slate-600">${L(f, 'other')}</td>
+              <td class="p-3 whitespace-nowrap">${floorCell(isArabic() && f.medicineAr ? f.medicineAr : f.medicine)}</td>
+              <td class="p-3 whitespace-nowrap">${floorCell(f.pharmacy)}</td>
+              <td class="p-3 whitespace-nowrap">${floorCell(f.engineering)}</td>
+              <td class="p-3 text-slate-600 min-w-[12rem]">${L(f, 'other')}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -1335,68 +1351,62 @@ function moreInfoBlock(block) {
   const flagHtml = (item) => item.flag ? ` ${flag(item.flag)}` : '';
   switch (block.type) {
     case "text":
-      return `<p class="text-sm text-slate-700 leading-relaxed">${ar ? block.ar : block.en}</p>`;
+      return `<p class="text-sm text-slate-700 leading-relaxed">${richText(ar ? block.ar : block.en)}</p>`;
 
     case "list":
-      return `<ul class="space-y-2 text-sm text-slate-700">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
+      return `<ul class="space-y-2.5 text-sm text-slate-700 leading-relaxed">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${richText(i)}</span></li>`).join("")}</ul>`;
 
     case "terms":
       return `<dl class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(i => `
-        <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
-          <dt class="text-sm font-bold text-slate-900">${L(i, 'term')}</dt>
-          <dd class="text-sm text-slate-600 mt-0.5 leading-relaxed">${L(i, 'def')}</dd>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <dt><span class="term-pill">${L(i, 'term')}</span></dt>
+          <dd class="text-sm text-slate-600 mt-2 leading-relaxed">${richText(L(i, 'def'))}</dd>
         </div>`).join("")}</dl>`;
 
     case "steps":
       return `<ol class="space-y-3">${block.items.map((s, n) => `
         <li class="flex gap-3">
           <span class="w-7 h-7 rounded-full bg-olive-900 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">${n + 1}</span>
-          <div>
-            <span class="text-xs font-bold text-slate-500 block">${L(s, 'when')}</span>
-            <span class="text-sm text-slate-800 leading-relaxed">${L(s, 'what')}${flagHtml(s)}</span>
+          <div class="min-w-0">
+            <span class="date-pill">${L(s, 'when')}</span>
+            <p class="text-sm text-slate-800 leading-relaxed mt-1.5">${richText(L(s, 'what'))}${flagHtml(s)}</p>
           </div>
         </li>`).join("")}</ol>`;
 
     case "cards":
       return `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(c => `
-        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
-          <h4 class="text-sm font-bold text-slate-900 mb-1">${L(c, 'title')}${flagHtml(c)}</h4>
-          <p class="text-sm text-slate-600 leading-relaxed">${L(c, 'body')}</p>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <h4 class="text-sm font-bold text-slate-900 mb-1.5">${L(c, 'title')}${flagHtml(c)}</h4>
+          <p class="text-sm text-slate-600 leading-relaxed">${richText(L(c, 'body'))}</p>
         </div>`).join("")}</div>`;
 
     case "links":
       return `<ul class="flex flex-wrap gap-2">${block.items.map(l => `
-        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
+        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="link-pill">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
 
     case "plan":
       return planHtml();
 
     case "allowances": {
-      const rows = (window.MORE_INFO?.allowances || []).map(a => {
-        const kwd = (amount) => money(convertAmount(amount, a.currency, "KWD", FX.rates), "KWD");
-        const merit = typeof a.merit === "number"
-          ? `<span class="font-bold text-slate-900 block">${kwd(a.merit)}</span><span class="text-xs text-slate-500">${formatNumber(a.merit)} ${a.currency}</span>`
-          : (a.meritFlag ? flag(a.meritFlag) : `<span class="text-slate-400">${t('allow_no_merit')}</span>`);
-        return `
-          <tr class="border-t border-slate-200">
-            <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(a, 'country')}</th>
-            <td class="p-3"><span class="font-bold text-slate-900 block">${kwd(a.standard)}</span><span class="text-xs text-slate-500">${formatNumber(a.standard)} ${a.currency}</span></td>
-            <td class="p-3">${merit}</td>
-          </tr>`;
-      }).join("");
+      // One row per country (not a table) so it fits a phone without sideways scrolling
+      const amount = (value, currency, label) => `
+        <div>
+          <span class="text-xs text-slate-500 block mb-1">${label}</span>
+          <span class="num-pill" dir="ltr">${money(convertAmount(value, currency, "KWD", FX.rates), "KWD")}</span>
+          <span class="text-xs text-slate-500 block mt-1" dir="ltr">${formatNumber(value)} ${currency}</span>
+        </div>`;
+      const rows = (window.MORE_INFO?.allowances || []).map(a => `
+        <div class="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <strong class="text-sm text-slate-900 sm:w-44 flex-shrink-0">${L(a, 'country')}</strong>
+          <div class="flex flex-wrap gap-x-8 gap-y-2">
+            ${amount(a.standard, a.currency, t('allow_col_standard'))}
+            ${typeof a.merit === "number"
+              ? amount(a.merit, a.currency, t('allow_col_merit'))
+              : `<div><span class="text-xs text-slate-500 block mb-1">${t('allow_col_merit')}</span>${a.meritFlag ? flag(a.meritFlag) : `<span class="text-xs text-slate-400">${t('allow_no_merit')}</span>`}</div>`}
+          </div>
+        </div>`).join("");
       return `
-        <div class="overflow-x-auto rounded-lg border border-slate-200 mb-2">
-          <table class="w-full text-sm">
-            <thead class="bg-slate-100 text-slate-600 text-xs">
-              <tr>
-                <th class="p-3 text-start">${t('plan_col_country')}</th>
-                <th class="p-3 text-start">${t('allow_col_standard')}</th>
-                <th class="p-3 text-start">${t('allow_col_merit')}</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
+        <div class="rounded-xl border border-slate-200 divide-y divide-slate-200 mb-2">${rows}</div>
         <p class="text-xs text-slate-500 mb-4">${t('allow_kwd_note')} ${fxNote()}</p>`;
     }
     default:
@@ -1409,7 +1419,16 @@ function renderMoreInfoPage() {
   const root = document.getElementById("more-root");
   if (!data || !root) return;
 
-  root.innerHTML = data.sections.map(s => `
+  const mustKnow = (data.mustKnow || []).length ? `
+    <section id="must-know" class="rounded-xl border-2 border-olive-700 bg-white shadow-sm p-6 scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900">${t('more_must_know')}</h2>
+      <p class="text-sm text-slate-600 mt-1 mb-4">${t('more_must_know_desc')}</p>
+      <ul class="flex flex-wrap gap-2">
+        ${data.mustKnow.map(m => `<li class="must-pill">${ICON_CHECK}<span>${isArabic() ? m.ar : m.en}</span></li>`).join("")}
+      </ul>
+    </section>` : "";
+
+  root.innerHTML = mustKnow + data.sections.map(s => `
     <section id="${s.id}" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
       <h2 class="text-lg font-extrabold text-slate-900">${L(s, 'title')}${s.flag ? ` ${flag(s.flag)}` : ''}</h2>
       <p class="text-sm text-slate-600 mt-1 mb-4">${L(s, 'intro')}</p>
@@ -1418,7 +1437,7 @@ function renderMoreInfoPage() {
     <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
 
   const toc = document.getElementById("more-toc");
-  if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
+  if (toc) toc.innerHTML = (mustKnow ? `<a href="#must-know" class="font-bold">${t('more_must_know')}</a>` : "") + data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
 }
 
 // =========================================================================
@@ -1545,6 +1564,71 @@ function initAskPage() {
 // =========================================================================
 // 11. Local Kuwait universities
 // =========================================================================
+// Score weights for a college: Kuwait University's official Qudrat table (qudrat-data.js),
+// or the college's own weights (PUC). Returns [{ code, weight }] or null.
+function collegeWeights(c) {
+  if (c.weights) return Object.entries(c.weights);
+  const formula = c.qudrat && window.KUWAIT_QUDRAT?.formulas.find(f => f.collegeEn === c.qudrat);
+  return formula ? Object.entries(formula.weights) : null;
+}
+
+function scorePartName(code) {
+  if (code === "hs") return t('equiv_hs');
+  const s = window.KUWAIT_QUDRAT?.subjects.find(x => x.code === code);
+  return s ? L(s, 'name') : code;
+}
+
+// One college: lowest admitted grade, how the score is counted, extra conditions, majors
+function collegeRow(c, floorLabel) {
+  const ar = isArabic();
+  const weights = collegeWeights(c);
+  const formula = c.qudrat && window.KUWAIT_QUDRAT?.formulas.find(f => f.collegeEn === c.qudrat);
+  const condition = formula ? L(formula, 'condition') : "";
+
+  let scoring = "";
+  if (weights) {
+    scoring = weights.map(([code, w]) => `<span class="req-chip"><span>${scorePartName(code)}</span><strong>${+(w * 100).toFixed(1)}%</strong></span>`).join("");
+  } else if (c.scoring === "hs-only") {
+    scoring = `<span class="req-chip"><span>${t('local_hs_only')}</span></span>`;
+  } else if (c.scoring === "no-qudrat") {
+    scoring = `<span class="req-chip"><span>${t('local_no_qudrat')}</span></span>`;
+  }
+
+  const majors = (c.majors || []).map(m => `
+    <span class="major-pill">
+      <span class="major-pill-name">${ar ? m.ar : m.en}</span>
+      ${m.grade ? `<span class="major-pill-grade" dir="ltr">${m.grade}</span>` : ''}
+    </span>`).join("");
+
+  const line = (label, content, extra = "") => content ? `
+    <div class="college-line">
+      <span class="college-line-label">${label}</span>
+      <div class="flex flex-wrap items-center gap-1.5">${content}${extra}</div>
+    </div>` : "";
+
+  return `
+    <div class="p-4 rounded-xl border border-slate-200 bg-white">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <h4 class="text-base font-bold text-slate-900">${ar ? (c.collegeNameAr || c.collegeName) : c.collegeName}</h4>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="grade-pill ${c.flag ? 'is-missing' : ''}">
+            <span class="grade-pill-label">${floorLabel}</span>
+            <span class="grade-pill-value" dir="auto">${ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya}</span>
+          </span>
+          ${c.flag ? flag(c.flag) : ''}
+        </div>
+      </div>
+      ${(scoring || condition || majors) ? `<div class="mt-3 pt-3 border-t border-slate-100 space-y-2">
+        ${line(t('local_how_counted'), scoring)}
+        ${line(t('equiv_condition'), condition.split(/[;؛]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="req-chip is-condition"><span>${s}</span></span>`).join(""))}
+        ${line(c.majors?.some(m => m.grade) ? t('local_majors_grades') : t('local_majors'), majors, c.majorsFlag ? ` ${flag(c.majorsFlag)}` : "")}
+      </div>` : ''}
+    </div>`;
+}
+
+// =========================================================================
+// 11b. Local Kuwait universities page
+// =========================================================================
 function initLocalUniversitiesPage() {
   const container = document.getElementById("local-unis-container");
   if (!container) return;
@@ -1583,18 +1667,8 @@ function initLocalUniversitiesPage() {
       </div>
 
       <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">${t('local_colleges')}</h3>
-      <div class="space-y-2">
-        ${uni.colleges.map(c => `
-          <div class="p-3 rounded-lg border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div>
-              <strong class="text-slate-900 block">${isAr ? (c.collegeNameAr || c.collegeName) : c.collegeName}</strong>
-              <span class="text-xs text-slate-500">${isAr ? (c.seatsNotesAr || c.seatsNotes) : c.seatsNotes}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-1 bg-slate-100 rounded text-slate-800 font-bold text-xs border border-slate-200 whitespace-nowrap">${pick('floorLabelEn', 'floorLabelAr')}: ${isAr ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya}</span>
-              ${c.flag ? flag(c.flag) : ''}
-            </div>
-          </div>`).join("")}
+      <div class="space-y-3">
+        ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'))).join("")}
       </div>
       ${uni.sourceNote ? `<p class="text-xs text-slate-400 mt-3">${pick('sourceNote', 'sourceNoteAr')}</p>` : ''}
     `;
