@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Direct Application Guide | moustaqbili</title>
+  <title>How to Apply | moustaqbili</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -38,186 +38,128 @@
 
   <div id="site-header"></div>
 
-  <!-- Page Main Content -->
-  <main class="flex-grow py-12">
+  <main class="flex-grow py-8">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <!-- Section Title -->
-      <div class="mb-10 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-200 text-slate-800 text-xs font-bold uppercase tracking-wider mb-2" data-i18n="suggestions_badge">
-          Direct Application
-        </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="suggestions_title">
-          Direct Application Guide
-        </h1>
-        <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl mx-auto" data-i18n="suggestions_desc">
-          Recommended platforms for applying directly to universities worldwide.
-        </p>
+
+      <div class="mb-8 border-b border-slate-200 pb-5">
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="suggestions_title">How to apply</h1>
+        <p class="text-base text-slate-600 mt-1 max-w-3xl" data-i18n="suggestions_desc">The websites you will use to apply to universities, book tests and use government services.</p>
       </div>
 
-      <!-- Category 1: Global College Application Portals -->
+      <!-- 1. University application websites -->
       <section class="mb-10">
-        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-          <span data-i18n="sug_sec1_title">1. University Application Platforms</span>
-        </h2>
-
+        <h2 class="text-lg font-extrabold text-slate-900 mb-1" data-i18n="sug_sec1_title">1. University application websites</h2>
+        <p class="helper-text mb-4" data-i18n="sug_sec1_help">You apply to the university yourself. The Ministry scholarship pays for it once you are accepted.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          <!-- CommonApp -->
-          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+
+          <article class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-extrabold text-base text-slate-900">CommonApp</span>
-                <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">United States</span>
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <h3 class="font-extrabold text-base text-slate-900">Common App</h3>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200" data-i18n="sug_us">United States</span>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed mb-3">
-                Centralized platform for US university applications (excluding UC system).
-              </p>
-              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
-                <li>Create account before Grade 12.</li>
-                <li>Write the 650-word personal essay.</li>
-                <li>Request counselor & teacher recommendation letters.</li>
-                <li>Complete FERPA waiver.</li>
+              <p class="text-sm text-slate-600 mb-3" data-i18n="sug_ca_desc">One website to apply to many US universities.</p>
+              <ul class="text-sm text-slate-700 space-y-1.5 mb-4 list-disc ps-5">
+                <li data-i18n="sug_ca_1">Make your account before grade 12.</li>
+                <li data-i18n="sug_ca_2">Write one main essay of up to 650 words.</li>
+                <li data-i18n="sug_ca_3">Ask your school counsellor and teachers for recommendation letters.</li>
+                <li data-i18n="sug_ca_4">Sign the FERPA waiver. It keeps your teachers' letters private, which universities prefer.</li>
               </ul>
             </div>
-            <a href="https://www.commonapp.org" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded text-xs font-bold text-center transition">
-              commonapp.org &rarr;
-            </a>
-          </div>
+            <a href="https://www.commonapp.org" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold text-center">commonapp.org</a>
+          </article>
 
-          <!-- UCAS -->
-          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+          <article class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-extrabold text-base text-slate-900">UCAS</span>
-                <span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-50 text-rose-800 border border-rose-200">United Kingdom</span>
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <h3 class="font-extrabold text-base text-slate-900">UCAS</h3>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200" data-i18n="sug_uk">United Kingdom</span>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed mb-3">
-                Centralized application service for UK universities.
-              </p>
-              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
-                <li>Apply to up to 5 courses (max 4 for Medicine).</li>
-                <li>Link with your school's UCAS Buzzword.</li>
-                <li>Upload your 4,000-character Personal Statement.</li>
-                <li>Key deadlines: 15 October (Medicine, Dentistry, Oxbridge) and mid-January for other courses. Confirm the exact date on ucas.com.</li>
+              <p class="text-sm text-slate-600 mb-3" data-i18n="sug_ucas_desc">One website to apply to UK universities.</p>
+              <ul class="text-sm text-slate-700 space-y-1.5 mb-4 list-disc ps-5">
+                <li data-i18n="sug_ucas_1">Choose up to 5 courses (up to 4 for medicine).</li>
+                <li data-i18n="sug_ucas_2">Link your account to your school with its UCAS "buzzword" (a code your school gives you).</li>
+                <li data-i18n="sug_ucas_3">Write one personal statement of up to 4,000 characters.</li>
+                <li data-i18n="sug_ucas_4">Deadlines: 15 October for medicine, dentistry, Oxford and Cambridge. Mid-January for most other courses. Check ucas.com for the exact date.</li>
               </ul>
             </div>
-            <a href="https://www.ucas.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded text-xs font-bold text-center transition">
-              ucas.com &rarr;
-            </a>
-          </div>
+            <a href="https://www.ucas.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold text-center">ucas.com</a>
+          </article>
 
-          <!-- BridgeU -->
-          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
+          <article class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-extrabold text-base text-slate-900">BridgeU / MaiaLearning</span>
-                <span class="px-2 py-0.5 rounded text-xs font-bold bg-purple-50 text-purple-800 border border-purple-200">School Guidance</span>
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <h3 class="font-extrabold text-base text-slate-900">BridgeU / MaiaLearning</h3>
+                <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200" data-i18n="sug_school">Your school</span>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed mb-3">
-                High school portal used to transmit official transcripts and recommendations.
-              </p>
-              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
-                <li>Link CommonApp with BridgeU for automatic transcript sending.</li>
-                <li>Track teacher recommendation letter submissions.</li>
+              <p class="text-sm text-slate-600 mb-3" data-i18n="sug_bridge_desc">Tools some schools use to send your grades and teacher letters to universities.</p>
+              <ul class="text-sm text-slate-700 space-y-1.5 mb-4 list-disc ps-5">
+                <li data-i18n="sug_bridge_1">Your school links it to Common App, so your grades are sent for you.</li>
+                <li data-i18n="sug_bridge_2">You can see when your teachers have sent their letters.</li>
               </ul>
             </div>
-            <a href="https://bridge-u.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded text-xs font-bold text-center transition">
-              bridge-u.com &rarr;
-            </a>
-          </div>
+            <a href="https://bridge-u.com" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg text-sm font-bold text-center">bridge-u.com</a>
+          </article>
 
-          <!-- Direct Portals (Canada / Australia) -->
-          <div class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="font-extrabold text-base text-slate-900">Regional Portals (OUAC / VTAC / UAC)</span>
-                <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Canada & Australia</span>
-              </div>
-              <p class="text-xs text-slate-600 leading-relaxed mb-3">
-                Centralized systems for Ontario (OUAC) and Australian states (VTAC / UAC / QTAC).
-              </p>
-              <ul class="text-xs text-slate-600 space-y-1 mb-4 list-disc list-inside">
-                <li><strong>OUAC (Ontario, Canada):</strong> Toronto, Waterloo, McMaster.</li>
-                <li><strong>VTAC & UAC (Australia):</strong> Melbourne, Monash, Sydney, UNSW.</li>
-                <li>Direct university applications are also accepted at most Australian institutions.</li>
-              </ul>
+          <article class="bg-white p-5 rounded-xl border border-slate-300 shadow-sm">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <h3 class="font-extrabold text-base text-slate-900" data-i18n="sug_other_title">Australia and Canada</h3>
             </div>
-            <div class="text-xs text-slate-500 font-semibold p-2 bg-slate-50 rounded border border-slate-200 text-center">
-              Direct Applications Available for Most Canadian & Australian Universities
-            </div>
-          </div>
-
+            <ul class="text-sm text-slate-700 space-y-1.5 list-disc ps-5">
+              <li data-i18n="sug_other_1">Australia: apply on each university's website, or through a state centre (VTAC in Victoria, UAC in New South Wales).</li>
+              <li data-i18n="sug_other_2">Canada: Ontario universities use OUAC. Canada is not in the Ministry's 2026/2027 scholarship plan.</li>
+            </ul>
+          </article>
         </div>
       </section>
 
-      <!-- Category 2: Standardized Testing Portals -->
+      <!-- 2. Test websites -->
       <section class="mb-10">
-        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-          <span data-i18n="sug_sec2_title">2. Standardized Testing & Language Portals</span>
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          
-          <div class="bg-white p-4 rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">College Board (Digital SAT)</strong>
-            <p class="text-slate-600 text-xs mb-2">Book Digital SAT exam slots and send scores to universities.</p>
-            <a href="https://www.collegeboard.org" target="_blank" class="text-olive-700 font-bold hover:underline">collegeboard.org &rarr;</a>
+        <h2 class="text-lg font-extrabold text-slate-900 mb-4" data-i18n="sug_sec2_title">2. Where to book tests</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1">College Board (SAT)</h3>
+            <p class="text-sm text-slate-600 mb-2" data-i18n="sug_sat_desc">Book the SAT and send your scores to universities.</p>
+            <a href="https://www.collegeboard.org" target="_blank" rel="noopener noreferrer" class="text-sm text-olive-900 font-bold underline">collegeboard.org</a>
           </div>
-
-          <div class="bg-white p-4 rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">British Council / IDP (IELTS)</strong>
-            <p class="text-slate-600 text-xs mb-2">Register for IELTS Academic or UKVI IELTS tests in Kuwait.</p>
-            <a href="https://takeielts.britishcouncil.org" target="_blank" class="text-olive-700 font-bold hover:underline">britishcouncil.org &rarr;</a>
+          <div class="bg-white p-4 rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1">British Council / IDP (IELTS)</h3>
+            <p class="text-sm text-slate-600 mb-2" data-i18n="sug_ielts_desc">Book IELTS Academic or UKVI IELTS in Kuwait. The Ministry only accepts tests taken in Kuwait.</p>
+            <a href="https://takeielts.britishcouncil.org" target="_blank" rel="noopener noreferrer" class="text-sm text-olive-900 font-bold underline">britishcouncil.org</a>
           </div>
-
-          <div class="bg-white p-4 rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">Pearson VUE (UCAT & LNAT)</strong>
-            <p class="text-slate-600 text-xs mb-2">Required exams for UK Medicine (UCAT) and Law (LNAT).</p>
-            <a href="https://www.pearsonvue.com" target="_blank" class="text-olive-700 font-bold hover:underline">pearsonvue.com &rarr;</a>
+          <div class="bg-white p-4 rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1">Pearson VUE (UCAT, LNAT)</h3>
+            <p class="text-sm text-slate-600 mb-2" data-i18n="sug_pvue_desc">Book the UCAT (for UK medicine) and the LNAT (for UK law).</p>
+            <a href="https://www.pearsonvue.com" target="_blank" rel="noopener noreferrer" class="text-sm text-olive-900 font-bold underline">pearsonvue.com</a>
           </div>
-
         </div>
       </section>
 
-      <!-- Category 3: Kuwait Government & Verification Services -->
+      <!-- 3. Kuwaiti government services -->
       <section class="mb-12">
-        <h2 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-          <svg class="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <span data-i18n="sug_sec3_title">3. Kuwait Authentication Portals</span>
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          
-          <div class="p-4 bg-white rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">Kuwait Mobile ID (تطبيق هويتي)</strong>
-            <p class="text-slate-600 text-xs mb-2">Digital civil ID for official authentication and certificate verification.</p>
-            <span class="text-xs font-semibold text-slate-500">PACI Digital ID</span>
+        <h2 class="text-lg font-extrabold text-slate-900 mb-4" data-i18n="sug_sec3_title">3. Kuwaiti government services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 bg-white rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1" data-i18n="sug_hawyti_title">Kuwait Mobile ID (Hawyti)</h3>
+            <p class="text-sm text-slate-600" data-i18n="sug_hawyti_desc">Your digital Civil ID. You use it to log in to the scholarship registration portal.</p>
           </div>
-
-          <div class="p-4 bg-white rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">Sahel App (تطبيق سهل)</strong>
-            <p class="text-slate-600 text-xs mb-2">Government app to request high school equivalency (معادلة الثانوية) and track applications.</p>
-            <span class="text-xs font-semibold text-slate-500">Government Services Gateway</span>
+          <div class="p-4 bg-white rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1" data-i18n="sug_sahel_title">Sahel app</h3>
+            <p class="text-sm text-slate-600 mb-2" data-i18n="sug_sahel_desc">The government services app. Book a Ministry appointment, request a degree equivalency, and approve the scholarship pledge (by your guardian).</p>
+            <a href="https://sahel.paci.gov.kw" target="_blank" rel="noopener noreferrer" class="text-sm text-olive-900 font-bold underline">sahel.paci.gov.kw</a>
           </div>
-
-          <div class="p-4 bg-white rounded-xl border border-slate-200">
-            <strong class="font-bold text-slate-900 block mb-1">MoHE Portal (mohe.edu.kw)</strong>
-            <p class="text-slate-600 text-xs mb-2">Official Ministry portal for scholarship registration and financial guarantees.</p>
-            <a href="https://www.mohe.edu.kw" target="_blank" class="text-olive-700 font-bold hover:underline">mohe.edu.kw &rarr;</a>
+          <div class="p-4 bg-white rounded-xl border border-slate-300">
+            <h3 class="font-bold text-slate-900 mb-1" data-i18n="sug_mohe_title">Ministry of Higher Education website</h3>
+            <p class="text-sm text-slate-600 mb-2" data-i18n="sug_mohe_desc">Scholarship registration, allowance tables and news.</p>
+            <a href="https://www.mohe.edu.kw/site/" target="_blank" rel="noopener noreferrer" class="text-sm text-olive-900 font-bold underline">mohe.edu.kw</a>
           </div>
-
         </div>
       </section>
-
     </div>
   </main>
 
   <div id="site-footer"></div>
 
-  <!-- Scripts -->
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>

@@ -38,61 +38,42 @@
 
   <div id="site-header"></div>
 
-  <!-- Page Main Content -->
-  <main class="flex-grow py-12">
+  <main class="flex-grow py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <!-- Section Title -->
-      <div class="mb-10 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-200 text-slate-800 text-xs font-bold uppercase tracking-wider mb-2" data-i18n="about_badge">
-          About Moustaqbili
-        </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight" data-i18n="about_title">
-          One Place for All Your University Questions
-        </h1>
-        <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-xl mx-auto" data-i18n="about_desc">
-          Bringing together foreign and local scholarship information into one simple portal.
-        </p>
+
+      <div class="mb-8 border-b border-slate-200 pb-5">
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="about_title">About this site</h1>
+        <p class="text-base text-slate-600 mt-1" data-i18n="about_desc">A free guide for students about scholarships and university admission in Kuwait.</p>
       </div>
 
-      <!-- Problem & Solution Analysis -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        
-        <div class="bg-white border border-slate-300 rounded-xl p-6 sm:p-7 shadow-sm">
-          <div class="w-8 h-8 rounded bg-red-100 text-red-800 flex items-center justify-center font-bold text-xs mb-3"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-          <h2 class="text-base font-bold text-slate-900 mb-2" data-i18n="about_challenge_title">The Challenge</h2>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="about_challenge_desc">
-            Kuwaiti students previously had to check multiple websites and long PDF documents to get answers:
-          </p>
-          <ul class="mt-3 space-y-2 text-xs text-slate-700 list-disc list-inside">
-            <li>Static MoHE PDF scholarship booklets.</li>
-            <li>Separate websites for each Cultural Office (London, DC, Dublin, Australia).</li>
-            <li>Independent university accreditation lists.</li>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white border border-slate-300 rounded-xl p-6 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2" data-i18n="about_challenge_title">The problem</h2>
+          <p class="text-sm text-slate-600" data-i18n="about_challenge_desc">Scholarship information was spread over many websites and long PDF files:</p>
+          <ul class="mt-3 space-y-2 text-sm text-slate-700 list-disc ps-5">
+            <li data-i18n="about_challenge_1">The Ministry's scholarship plan is a long PDF file.</li>
+            <li data-i18n="about_challenge_2">Each cultural office has its own website.</li>
+            <li data-i18n="about_challenge_3">Approved universities are on separate lists.</li>
           </ul>
         </div>
-
-        <div class="bg-white border border-slate-300 rounded-xl p-6 sm:p-7 shadow-sm">
-          <div class="w-8 h-8 rounded bg-olive-100 text-olive-800 flex items-center justify-center font-bold text-xs mb-3"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div>
-          <h2 class="text-base font-bold text-slate-900 mb-2" data-i18n="about_solution_title">The Solution</h2>
-          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="about_solution_desc">
-            Moustaqbili puts everything in one easy-to-use place:
-          </p>
-          <ul class="mt-3 space-y-2 text-xs text-slate-700 list-disc list-inside">
-            <li><strong>Monthly Stipends & Merit Bonus (+50%):</strong> Clear allowance details.</li>
-            <li><strong>Exams & Requirements:</strong> Details on SAT, IELTS, UCAT, and visas.</li>
-            <li><strong>GPA & Grade Conversions:</strong> Easy grade calculators for US, Thanawiya, and A-Levels.</li>
-            <li><strong>Local Universities:</strong> Rules for KU, AASU, and Private PUC scholarships.</li>
+        <div class="bg-white border border-slate-300 rounded-xl p-6 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2" data-i18n="about_solution_title">What this site does</h2>
+          <p class="text-sm text-slate-600" data-i18n="about_solution_desc">It puts the important parts in one place, in simple words:</p>
+          <ul class="mt-3 space-y-2 text-sm text-slate-700 list-disc ps-5">
+            <li data-i18n="about_solution_1">Monthly allowances, with a currency calculator.</li>
+            <li data-i18n="about_solution_2">The grades, tests and papers you need for each program.</li>
+            <li data-i18n="about_solution_3">Qudrat dates and a score calculator.</li>
+            <li data-i18n="about_solution_4">Answers to common questions, and a way to ask your own.</li>
           </ul>
         </div>
-
       </div>
 
+      <div class="p-4 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-950" data-i18n="about_disclaimer">This site is not part of the Ministry of Higher Education. Always check important decisions with the Ministry.</div>
     </div>
   </main>
 
   <div id="site-footer"></div>
 
-  <!-- Scripts -->
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/i18n.js"></script>

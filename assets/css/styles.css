@@ -258,3 +258,86 @@ html {
 
 /* Comfortable reading: slightly looser lines for small text */
 .text-xs { line-height: 1.6; }
+
+/* Questions page: expandable answers */
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item[open] .faq-chevron { transform: rotate(180deg); }
+.faq-chevron { transition: transform 0.15s ease; }
+.faq-item summary:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.75rem; }
+
+/* Plain-language helper line under headings */
+.helper-text { font-size: 0.875rem; color: #475569; line-height: 1.6; }
+
+/* Contact page: link bubbles and info notes */
+.contact-bubble {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #d6dfd3;
+  background: #f6f8f5;
+  border-radius: 1rem;
+  padding: 0.25rem 0.375rem 0.25rem 0.25rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+[dir="rtl"] .contact-bubble { padding: 0.25rem 0.25rem 0.25rem 0.375rem; }
+.contact-bubble:hover { border-color: #384f33; background: #eef3ec; box-shadow: 0 2px 8px rgba(34, 45, 29, 0.08); }
+.contact-bubble-link {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  border-radius: 0.75rem;
+  color: #0f172a;
+}
+.contact-bubble-link:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.contact-bubble-icon {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #384f33;
+  border: 1px solid #d6dfd3;
+}
+.contact-bubble-label { display: block; font-size: 0.875rem; font-weight: 700; line-height: 1.3; }
+.contact-bubble-value {
+  display: block;
+  font-size: 0.8125rem;
+  color: #475569;
+  line-height: 1.4;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+[dir="rtl"] .contact-bubble-value { text-align: right; }
+.contact-bubble-ext { flex: 0 0 auto; color: #64748b; margin-inline-start: auto; }
+.contact-copy {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #384f33;
+  background: #ffffff;
+  border: 1px solid #d6dfd3;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+.contact-copy:hover { border-color: #384f33; }
+.contact-copy.is-copied { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+
+.contact-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.875rem;
+  padding: 0.6rem 0.75rem;
+}
+.contact-note .contact-bubble-icon { width: 2rem; height: 2rem; color: #64748b; border-color: #e2e8f0; }
+.contact-note-label { display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; }
+.contact-note-value { display: block; font-size: 0.875rem; color: #1e293b; line-height: 1.5; }

@@ -25,7 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "local-universities.html") initLocalUniversitiesPage();
   if (page === "qudrat.html") initQudratPage();
   if (page === "contact.html") initContactPage();
-  if (page === "guidelines.html") initGuidelinesPage();
+  if (page === "more-info.html") initMoreInfoPage();
+  if (page === "clarifications.html") initClarificationsPage();
+  if (page === "ask.html") initAskPage();
 });
 
 // =========================================================================
@@ -1147,14 +1149,93 @@ function initContactPage() {
   window.addEventListener("languageChanged", renderContactPage);
 }
 
+const CONTACT_ICONS = {
+  phone: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>`,
+  email: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>`,
+  url: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>`,
+  text: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>`
+};
+
+function contactIcon(type) {
+  return `<span class="contact-bubble-icon" aria-hidden="true"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">${CONTACT_ICONS[type] || CONTACT_ICONS.text}</svg></span>`;
+}
+
+// Short, readable form of a web address: "https://www.mohe.edu.kw/site/AR/..." -> "mohe.edu.kw"
+function shortHost(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return url; }
+}
+
+// One contact item. Links (phone / email / website) are bubbles; plain facts are soft notes.
 function contactLine(item) {
-  const label = `<span class="text-xs font-bold text-slate-500 block">${L(item, 'label')}</span>`;
-  const value = L(item, 'value') || item.value;
-  let body = `<span class="font-semibold text-slate-900">${value}</span>${item.flag ? ` ${flag(item.flag)}` : ''}`;
-  if (item.type === "phone") body = `<a href="tel:${item.value.replace(/[^\d+]/g, '')}" class="font-bold text-slate-900 hover:underline" dir="ltr">${item.value}</a>`;
-  if (item.type === "email") body = `<a href="mailto:${item.value}" class="font-semibold text-olive-900 hover:underline break-all" dir="ltr">${item.value}</a>`;
-  if (item.type === "url") body = `<a href="${item.value}" target="_blank" rel="noopener noreferrer" class="font-semibold text-olive-900 hover:underline break-all inline-flex items-center gap-1" dir="ltr">${item.value.replace(/^https?:\/\//, '').replace(/\/$/, '')} ${ICON_EXTERNAL}</a>`;
-  return `<div class="py-2 border-t border-slate-100 first:border-t-0">${label}${body}</div>`;
+  const label = L(item, 'label');
+
+  if (item.type === "text") {
+    return `
+      <div class="contact-note">
+        ${contactIcon("text")}
+        <div class="min-w-0">
+          <span class="contact-note-label">${label}</span>
+          <span class="contact-note-value">${L(item, 'value') || item.value}${item.flag ? ` ${flag(item.flag)}` : ''}</span>
+        </div>
+      </div>`;
+  }
+
+  const internal = item.type === "url" && !/^https?:/.test(item.value);
+  const href = item.type === "phone" ? `tel:${item.value.replace(/[^\d+]/g, '')}`
+    : item.type === "email" ? `mailto:${item.value}`
+    : item.value;
+  // Allow long emails to wrap only after "@" or "_", so the domain stays in one piece
+  const shown = item.type === "url" ? (internal ? "" : shortHost(item.value))
+    : item.type === "email" ? item.value.replace(/([@_])/g, "$1<wbr>")
+    : item.value;
+  const external = item.type === "url" && !internal;
+  const copyable = item.type === "phone" || item.type === "email";
+
+  return `
+    <div class="contact-bubble">
+      <a href="${href}" class="contact-bubble-link" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+        ${contactIcon(item.type)}
+        <span class="min-w-0">
+          <span class="contact-bubble-label">${label}</span>
+          ${shown ? `<span class="contact-bubble-value" dir="ltr">${shown}</span>` : ''}
+        </span>
+        ${external ? `<span class="contact-bubble-ext" aria-hidden="true">${ICON_EXTERNAL}</span>` : ''}
+      </a>
+      ${copyable ? `<button type="button" class="contact-copy" data-copy="${item.value}" aria-label="${t('contact_copy')}: ${item.value}">${t('contact_copy')}</button>` : ''}
+    </div>`;
+}
+
+// Copy text, using the older textarea method when the Clipboard API is missing or refused
+function copyText(text) {
+  const legacy = () => {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    area.remove();
+    return ok ? Promise.resolve() : Promise.reject(new Error("copy failed"));
+  };
+  if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text).catch(legacy);
+  return legacy();
+}
+
+function initContactCopyButtons(root) {
+  root.querySelectorAll(".contact-copy").forEach(btn => btn.addEventListener("click", () => {
+    copyText(btn.dataset.copy).then(() => {
+      btn.textContent = t('contact_copied');
+      btn.classList.add("is-copied");
+      setTimeout(() => { btn.textContent = t('contact_copy'); btn.classList.remove("is-copied"); }, 1800);
+    }, () => {
+      // Could not copy: select the address so the student can copy it by hand
+      const value = btn.parentElement.querySelector(".contact-bubble-value");
+      if (value) window.getSelection().selectAllChildren(value);
+    });
+  }));
 }
 
 function renderContactPage() {
@@ -1162,57 +1243,61 @@ function renderContactPage() {
   const root = document.getElementById("contact-root");
   if (!data || !root) return;
 
-  const card = (entry) => `
-    <article class="bg-white rounded-xl border border-slate-300 shadow-sm p-5">
-      <h3 class="text-sm font-extrabold text-slate-900">${L(entry, 'name')}</h3>
-      ${L(entry, 'desc') ? `<p class="text-xs text-slate-500 mt-0.5 mb-2">${L(entry, 'desc')}</p>` : ''}
-      <div class="text-xs mt-2">${entry.items.map(contactLine).join("")}</div>
+  // Notes (plain facts) first, then the clickable bubbles
+  const card = (entry) => {
+    const notes = entry.items.filter(i => i.type === "text");
+    const links = entry.items.filter(i => i.type !== "text");
+    return `
+    <article class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col gap-3">
+      <div>
+        <h3 class="text-base font-extrabold text-slate-900">${L(entry, 'name')}</h3>
+        ${L(entry, 'desc') ? `<p class="text-sm text-slate-600 mt-1 leading-relaxed">${L(entry, 'desc')}</p>` : ''}
+      </div>
+      ${notes.length ? `<div class="space-y-2">${notes.map(contactLine).join("")}</div>` : ''}
+      ${links.length ? `<div class="space-y-2">${links.map(contactLine).join("")}</div>` : ''}
     </article>`;
+  };
 
   root.innerHTML = data.groups.map(group => `
     <section id="${group.id}" class="scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900 mb-1">${L(group, 'title')}</h2>
-      ${L(group, 'desc') ? `<p class="text-xs text-slate-500 mb-4">${L(group, 'desc')}</p>` : '<div class="mb-4"></div>'}
-      <div class="grid grid-cols-1 ${group.entries.length > 1 ? 'md:grid-cols-2' : ''} gap-4">
+      <h2 class="text-xl font-extrabold text-slate-900 mb-1">${L(group, 'title')}</h2>
+      ${L(group, 'desc') ? `<p class="text-sm text-slate-600 mb-5 max-w-3xl leading-relaxed">${L(group, 'desc')}</p>` : '<div class="mb-5"></div>'}
+      <div class="grid grid-cols-1 ${group.entries.length > 1 ? 'md:grid-cols-2' : ''} gap-5 items-start">
         ${group.entries.map(card).join("")}
       </div>
     </section>`).join("") + `
-    <section class="text-xs text-slate-500">
-      <h2 class="text-xs font-bold text-slate-700 mb-1">${t('sources_title')} &middot; ${t('last_verified')} ${formatDate(data.lastVerified)}</h2>
-      <p>${t('contact_disclaimer')}</p>
+    <section class="text-sm text-slate-500 border-t border-slate-200 pt-5">
+      <h2 class="text-sm font-bold text-slate-700 mb-1">${t('sources_title')} &middot; ${t('last_verified')} ${formatDate(data.lastVerified)}</h2>
+      <p class="leading-relaxed">${t('contact_disclaimer')}</p>
     </section>`;
+
+  initContactCopyButtons(root);
 
   const toc = document.getElementById("contact-toc");
   if (toc) toc.innerHTML = data.groups.map(g => `<a href="#${g.id}">${L(g, 'title')}</a>`).join("");
 }
 
 // =========================================================================
-// 10b. Regulations page: Foreign Scholarship Plan 2026/2027
+// 10b. Scholarship plan 2026/2027 (used on the More info page)
 // =========================================================================
-function initGuidelinesPage() {
-  renderPlanSection();
-  window.addEventListener("languageChanged", renderPlanSection);
-}
-
-function renderPlanSection() {
+function planHtml() {
   const plan = window.MOHE_PLAN_2026;
-  const root = document.getElementById("plan-root");
-  if (!plan || !root) return;
+  if (!plan) return "";
   const rules = (isArabic() ? plan.rulesAr : plan.rulesEn) || [];
 
-  root.innerHTML = `
-    <div class="p-4 rounded-lg bg-amber-50 border border-amber-300 text-xs text-amber-950 mb-5">${L(plan, 'status')}</div>
+  return `
+    <div class="p-4 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-950 mb-5">${L(plan, 'status')}</div>
 
     <h3 class="text-sm font-bold text-slate-900 mb-2">${t('plan_rules_title')}</h3>
-    <ul class="space-y-1.5 text-xs text-slate-700 mb-6">
+    <ul class="space-y-2 text-sm text-slate-700 mb-6">
       ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${r}</span></li>`).join("")}
     </ul>
 
     <h3 class="text-sm font-bold text-slate-900 mb-1">${t('plan_floors_title')}</h3>
-    <p class="text-xs text-slate-500 mb-2">${t('plan_countries')}: ${L(plan, 'countries')}</p>
+    <p class="text-xs text-slate-500 mb-2">${t('plan_floors_help')}</p>
     <div class="overflow-x-auto rounded-lg border border-slate-200 mb-4">
-      <table class="w-full text-xs">
-        <thead class="bg-slate-100 text-slate-600">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 text-slate-600 text-xs">
           <tr>
             <th class="p-3 text-start">${t('plan_col_country')}</th>
             <th class="p-3 text-start">${t('plan_col_medicine')}</th>
@@ -1233,12 +1318,229 @@ function renderPlanSection() {
         </tbody>
       </table>
     </div>
-    <div class="flex flex-wrap gap-3 text-xs font-semibold">
-      <a class="inline-flex items-center gap-1 text-olive-900 underline" href="${plan.planUrl}" target="_blank" rel="noopener noreferrer">${t('plan_pdf_link')} ${ICON_EXTERNAL}</a>
-      <a class="inline-flex items-center gap-1 text-olive-900 underline" href="${plan.allowancesUrl}" target="_blank" rel="noopener noreferrer">${t('plan_allowances_link')} ${ICON_EXTERNAL}</a>
-      <a class="inline-flex items-center gap-1 text-olive-900 underline" href="${plan.registrationUrl}" target="_blank" rel="noopener noreferrer">${t('plan_registration_link')} ${ICON_EXTERNAL}</a>
-    </div>`;
+    <p class="text-xs text-slate-500">${t('plan_dash_help')}</p>`;
 }
+
+// =========================================================================
+// 10c. More info page (content from more-info-data.js)
+// =========================================================================
+function initMoreInfoPage() {
+  renderMoreInfoPage();
+  window.addEventListener("languageChanged", renderMoreInfoPage);
+  window.addEventListener("fxUpdated", renderMoreInfoPage);
+}
+
+function moreInfoBlock(block) {
+  const ar = isArabic();
+  const flagHtml = (item) => item.flag ? ` ${flag(item.flag)}` : '';
+  switch (block.type) {
+    case "text":
+      return `<p class="text-sm text-slate-700 leading-relaxed">${ar ? block.ar : block.en}</p>`;
+
+    case "list":
+      return `<ul class="space-y-2 text-sm text-slate-700">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
+
+    case "terms":
+      return `<dl class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(i => `
+        <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">
+          <dt class="text-sm font-bold text-slate-900">${L(i, 'term')}</dt>
+          <dd class="text-sm text-slate-600 mt-0.5 leading-relaxed">${L(i, 'def')}</dd>
+        </div>`).join("")}</dl>`;
+
+    case "steps":
+      return `<ol class="space-y-3">${block.items.map((s, n) => `
+        <li class="flex gap-3">
+          <span class="w-7 h-7 rounded-full bg-olive-900 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">${n + 1}</span>
+          <div>
+            <span class="text-xs font-bold text-slate-500 block">${L(s, 'when')}</span>
+            <span class="text-sm text-slate-800 leading-relaxed">${L(s, 'what')}${flagHtml(s)}</span>
+          </div>
+        </li>`).join("")}</ol>`;
+
+    case "cards":
+      return `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(c => `
+        <div class="p-4 rounded-lg bg-slate-50 border border-slate-200">
+          <h4 class="text-sm font-bold text-slate-900 mb-1">${L(c, 'title')}${flagHtml(c)}</h4>
+          <p class="text-sm text-slate-600 leading-relaxed">${L(c, 'body')}</p>
+        </div>`).join("")}</div>`;
+
+    case "links":
+      return `<ul class="flex flex-wrap gap-2">${block.items.map(l => `
+        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
+
+    case "plan":
+      return planHtml();
+
+    case "allowances": {
+      const rows = (window.MORE_INFO?.allowances || []).map(a => {
+        const kwd = (amount) => money(convertAmount(amount, a.currency, "KWD", FX.rates), "KWD");
+        const merit = typeof a.merit === "number"
+          ? `<span class="font-bold text-slate-900 block">${kwd(a.merit)}</span><span class="text-xs text-slate-500">${formatNumber(a.merit)} ${a.currency}</span>`
+          : (a.meritFlag ? flag(a.meritFlag) : `<span class="text-slate-400">${t('allow_no_merit')}</span>`);
+        return `
+          <tr class="border-t border-slate-200">
+            <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(a, 'country')}</th>
+            <td class="p-3"><span class="font-bold text-slate-900 block">${kwd(a.standard)}</span><span class="text-xs text-slate-500">${formatNumber(a.standard)} ${a.currency}</span></td>
+            <td class="p-3">${merit}</td>
+          </tr>`;
+      }).join("");
+      return `
+        <div class="overflow-x-auto rounded-lg border border-slate-200 mb-2">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-100 text-slate-600 text-xs">
+              <tr>
+                <th class="p-3 text-start">${t('plan_col_country')}</th>
+                <th class="p-3 text-start">${t('allow_col_standard')}</th>
+                <th class="p-3 text-start">${t('allow_col_merit')}</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <p class="text-xs text-slate-500 mb-4">${t('allow_kwd_note')} ${fxNote()}</p>`;
+    }
+    default:
+      return "";
+  }
+}
+
+function renderMoreInfoPage() {
+  const data = window.MORE_INFO;
+  const root = document.getElementById("more-root");
+  if (!data || !root) return;
+
+  root.innerHTML = data.sections.map(s => `
+    <section id="${s.id}" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900">${L(s, 'title')}${s.flag ? ` ${flag(s.flag)}` : ''}</h2>
+      <p class="text-sm text-slate-600 mt-1 mb-4">${L(s, 'intro')}</p>
+      <div class="space-y-4">${s.blocks.map(moreInfoBlock).join("")}</div>
+    </section>`).join("") + `
+    <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
+
+  const toc = document.getElementById("more-toc");
+  if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
+}
+
+// =========================================================================
+// 10d. Questions page (common misconceptions, from clarifications-data.js)
+// =========================================================================
+/**
+ * Does a question match what the student typed in the search box?
+ * `item` has questionEn/questionAr/answerEn/answerAr; `query` is the raw
+ * text from the box (may be Arabic or English, any case, extra spaces).
+ */
+function faqMatches(item, query) {
+  // TODO(human): decide how a search query matches a question
+  return true;
+}
+
+let faqTopic = "all";
+let faqQuery = "";
+
+function initClarificationsPage() {
+  renderClarificationsPage();
+  window.addEventListener("languageChanged", renderClarificationsPage);
+
+  const search = document.getElementById("faq-search");
+  search?.addEventListener("input", () => {
+    faqQuery = search.value;
+    renderFaqList();
+  });
+}
+
+function renderClarificationsPage() {
+  const data = window.CLARIFICATIONS;
+  const topicsBox = document.getElementById("faq-topics");
+  if (!data || !topicsBox) return;
+
+  const topics = ["all", ...data.topics.map(tp => tp.id)];
+  topicsBox.innerHTML = topics.map(id => {
+    const label = id === "all" ? t('faq_topic_all') : L(data.topics.find(tp => tp.id === id), 'label');
+    const active = faqTopic === id;
+    return `<button type="button" data-topic="${id}" aria-pressed="${active}" class="px-3 py-1.5 rounded-full border text-sm font-semibold transition ${active ? 'bg-olive-900 text-white border-olive-900' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}">${label}</button>`;
+  }).join("");
+  topicsBox.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    faqTopic = b.dataset.topic;
+    renderClarificationsPage();
+  }));
+
+  const meta = document.getElementById("faq-meta");
+  if (meta) meta.textContent = `${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
+  renderFaqList();
+}
+
+function renderFaqList() {
+  const data = window.CLARIFICATIONS;
+  const list = document.getElementById("faq-list");
+  const empty = document.getElementById("faq-empty");
+  if (!data || !list) return;
+
+  const items = data.items.filter(i => (faqTopic === "all" || i.topic === faqTopic) && (!faqQuery.trim() || faqMatches(i, faqQuery)));
+  empty?.classList.toggle("hidden", items.length > 0);
+
+  list.innerHTML = items.map(i => `
+    <details class="faq-item bg-white rounded-xl border border-slate-300 shadow-sm group">
+      <summary class="p-4 cursor-pointer list-none flex items-start justify-between gap-3">
+        <span class="text-sm sm:text-base font-bold text-slate-900">${L(i, 'question')}</span>
+        <span class="faq-chevron text-slate-400 flex-shrink-0 mt-0.5" aria-hidden="true">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </span>
+      </summary>
+      <div class="px-4 pb-4 text-sm text-slate-700 leading-relaxed">
+        <p>${L(i, 'answer')}${i.status === "unconfirmed" ? ` ${flag('unconfirmed')}` : ''}</p>
+        ${i.sourceUrl ? `<p class="text-xs text-slate-500 mt-2">${t('faq_source')}: <a class="underline hover:text-slate-800" href="${i.sourceUrl}" target="_blank" rel="noopener noreferrer">${i.sourceLabel}</a></p>` : ''}
+      </div>
+    </details>`).join("");
+}
+
+// =========================================================================
+// 10e. Ask us page
+// =========================================================================
+function initAskPage() {
+  const form = document.getElementById("ask-form");
+  if (!form) return;
+  const email = window.SITE_CONFIG?.askEmail || "";
+  const notice = document.getElementById("ask-email-notice");
+  const status = document.getElementById("ask-status");
+  const question = document.getElementById("ask-question");
+  const topic = document.getElementById("ask-topic");
+  const counter = document.getElementById("ask-counter");
+  const MAX = 1500;
+
+  notice?.classList.toggle("hidden", !!email);
+  question?.setAttribute("maxlength", String(MAX));
+  const updateCounter = () => { if (counter) counter.textContent = `${question.value.length} / ${MAX}`; };
+  question?.addEventListener("input", updateCounter);
+  updateCounter();
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = question.value.trim();
+    if (text.length < 10) {
+      status.textContent = t('ask_too_short');
+      status.className = "text-sm font-semibold text-amber-800";
+      question.focus();
+      return;
+    }
+    const topicLabel = topic.options[topic.selectedIndex]?.text || "";
+    const body = `${t('ask_topic')}: ${topicLabel}\n\n${text}`;
+
+    if (email) {
+      const subject = `${t('ask_email_subject')} - ${topicLabel}`;
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      status.textContent = t('ask_opened_email');
+      status.className = "text-sm font-semibold text-emerald-800";
+      return;
+    }
+
+    // No address yet: let the student keep their question
+    copyText(body).then(
+      () => { status.textContent = t('ask_copied'); status.className = "text-sm font-semibold text-emerald-800"; },
+      () => { status.textContent = t('ask_not_ready'); status.className = "text-sm font-semibold text-amber-800"; }
+    );
+  });
+}
+
 
 // =========================================================================
 // 11. Local Kuwait universities

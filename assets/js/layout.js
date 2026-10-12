@@ -7,14 +7,28 @@
  * markup exists before i18n.js translates [data-i18n] on DOMContentLoaded.
  */
 
+// Site-wide settings
+const SITE_CONFIG = {
+  // Email address for the "Ask us" page. Leave empty until the address exists:
+  // the form then lets students copy their question instead of sending it.
+  askEmail: ""
+};
+
 const SITE_NAV = [
   { href: "index.html", key: "nav_home", label: "Home" },
-  { href: "results.html", key: "nav_courses", label: "Approved Courses" },
+  { href: "results.html", key: "nav_courses", label: "Scholarships" },
   { href: "qudrat.html", key: "nav_qudrat", label: "Qudrat Tests" },
-  { href: "local-universities.html", key: "nav_local", label: "Local Universities" },
-  { href: "suggestions.html", key: "nav_guide", label: "Application Guide" },
-  { href: "guidelines.html", key: "nav_faq", label: "Regulations" },
-  { href: "contact.html", key: "nav_contact", label: "Contact MoHE" }
+  { href: "local-universities.html", key: "nav_local", label: "Study in Kuwait" },
+  { href: "suggestions.html", key: "nav_guide", label: "How to Apply" },
+  { href: "clarifications.html", key: "nav_questions", label: "Questions" },
+  { href: "more-info.html", key: "nav_more", label: "More Info" },
+  { href: "contact.html", key: "nav_contact", label: "Contact" }
+];
+
+// Footer-only links
+const FOOTER_EXTRA = [
+  { href: "ask.html", key: "nav_ask", label: "Ask Us" },
+  { href: "about.html", key: "nav_about", label: "About" }
 ];
 
 const LANG_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>`;
@@ -51,7 +65,7 @@ function renderSiteHeader() {
         </div>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-5 text-xs font-semibold" aria-label="Main">
+      <nav class="hidden xl:flex items-center gap-4 text-xs font-semibold" aria-label="Main">
         ${desktopLinks}
       </nav>
 
@@ -60,13 +74,13 @@ function renderSiteHeader() {
           ${LANG_ICON}
           <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
         </button>
-        <button id="mobile-menu-btn" type="button" class="lg:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800" aria-label="Toggle navigation" aria-expanded="false">
+        <button id="mobile-menu-btn" type="button" class="xl:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800" aria-label="Toggle navigation" aria-expanded="false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
 
-    <div id="mobile-menu" class="hidden lg:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
+    <div id="mobile-menu" class="hidden xl:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
       ${mobileLinks}
     </div>
   </header>`;
@@ -76,7 +90,7 @@ function renderSiteFooter() {
   const slot = document.getElementById("site-footer");
   if (!slot) return;
 
-  const links = SITE_NAV.concat([{ href: "about.html", key: "nav_about", label: "About" }])
+  const links = SITE_NAV.concat(FOOTER_EXTRA)
     .map(item => `<a href="${item.href}" class="hover:text-white transition" data-i18n="${item.key}">${item.label}</a>`)
     .join("");
 
@@ -88,7 +102,7 @@ function renderSiteFooter() {
         <span class="text-slate-400 text-xs block mt-1 max-w-sm" data-i18n="footer_desc">Independent student guide. Always confirm final decisions with the Ministry of Higher Education.</span>
         <div class="mt-4 space-y-1.5 text-xs max-w-md">
           <div><span class="flag flag-unconfirmed" data-i18n="flag_unconfirmed">Not confirmed</span> <span data-i18n="flag_unconfirmed_tip">No official source confirms this yet.</span></div>
-          <div><span class="flag flag-unverified" data-i18n="flag_unverified">Not re-verified</span> <span data-i18n="flag_unverified_tip">Carried over from the previous edition; not yet checked against 2026/2027 sources.</span></div>
+          <div><span class="flag flag-unverified" data-i18n="flag_unverified">Not checked yet</span> <span data-i18n="flag_unverified_tip">Carried over from the previous edition; not yet checked against 2026/2027 sources.</span></div>
         </div>
       </div>
       <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium">
@@ -98,6 +112,8 @@ function renderSiteFooter() {
     </div>
   </footer>`;
 }
+
+window.SITE_CONFIG = SITE_CONFIG;
 
 renderSiteHeader();
 renderSiteFooter();
