@@ -1,4 +1,4 @@
-/**
+/
  * moustaqbili | مستقبلي
  * Scholarship programs, monthly allowances, filters and reference data.
  * Text is written in plain language. Arabic text for each program is in data-ar.js.
@@ -646,25 +646,25 @@ const MOHE_PLAN_2026 = {
   allowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3",
   meritAllowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3",
   registrationUrl: "https://reg2.mohe.edu.kw/Account/Login",
-  statusEn: "General registration for 2026/2027 **ran 14 June - 7 July 2026 and is closed**. 2,704 high-school graduates were accepted. **Merit programme applications stay open until 24 February 2027**.",
-  statusAr: "أُقيم التسجيل العام للعام 2026/2027 **من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق**، وقُبل 2,704 من خريجي الثانوية. **يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027**.",
+  statusEn: "General registration for 2026/2027 ran 14 June - 7 July 2026 and is closed. 2,704 high-school graduates were accepted. Merit programme applications stay open until 24 February 2027.",
+  statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
   countriesEn: "United States, United Kingdom, Ireland, Australia, New Zealand, Malta, Bahrain, Saudi Arabia, United Arab Emirates",
   countriesAr: "الولايات المتحدة، المملكة المتحدة، أيرلندا، أستراليا، نيوزيلندا، مالطا، البحرين، السعودية، الإمارات",
   rulesEn: [
-    "**Age 16 - 23**, with **a secondary certificate from 2024/2025 or 2025/2026**.",
-    "English: **IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait**. Accepted students then have **one calendar year** to reach their university's required score.",
-    "Medicine, dentistry, veterinary, pharmacy and engineering applicants **must sit the Kuwait University aptitude tests (Qudrat)**; an equivalent average is used.",
-    "United Kingdom: **UKVI IELTS is required**. For medicine and dentistry, failing the foundation year or the interview ends the placement, and **the foundation year cannot be repeated**. Other students may repeat it once.",
-    "UK medicine: **UCAT 1,650 or more**, and **IELTS 7.0 (no band below 6.5)** for the foundation year.",
-    "Merit (excellence) programme: **at least 90% for all majors and 95% for medicine, dentistry and pharmacy**. Merit students receive an **extra 50% monthly allowance** after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA **falls below 2.67** (below 60% in the UK system)."
+    "Age 16 - 23, with a secondary certificate from 2024/2025 or 2025/2026.",
+    "English: IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait. Accepted students then have one calendar year to reach their university's required score.",
+    "Medicine, dentistry, veterinary, pharmacy and engineering applicants must sit the Kuwait University aptitude tests (Qudrat); an equivalent average is used.",
+    "United Kingdom: UKVI IELTS is required. For medicine and dentistry, failing the foundation year or the interview ends the placement, and the foundation year cannot be repeated. Other students may repeat it once.",
+    "UK medicine: UCAT 1,650 or more, and IELTS 7.0 (no band below 6.5) for the foundation year.",
+    "Merit (excellence) programme: at least 90% for all majors and 95% for medicine, dentistry and pharmacy. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
   ],
   rulesAr: [
-    "**العمر من 16 إلى 23 سنة**، و**شهادة ثانوية من العام 2024/2025 أو 2025/2026**.",
-    "اللغة الإنجليزية: **IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت**. ويُمنح المقبول **سنة ميلادية واحدة** لتحقيق الدرجة المطلوبة من الجامعة.",
-    "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة **أداء اختبارات القدرات بجامعة الكويت**، ويُعتمد المعدل المكافئ.",
-    "المملكة المتحدة: **يُشترط UKVI IELTS**. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، **ولا تجوز إعادة السنة التأسيسية**. ويجوز لغيرهم إعادتها مرة واحدة.",
-    "الطب في المملكة المتحدة: **UCAT بدرجة 1,650 فأكثر**، و**IELTS 7.0 (ولا يقل أي قسم عن 6.5)** للسنة التأسيسية.",
-    "برنامج التميز: **90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة**. يحصل طلبة التميز على **زيادة 50% في المخصص الشهري** بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا **قل المعدل عن 2.67** (أو عن 60% في النظام البريطاني)."
+    "العمر من 16 إلى 23 سنة، وشهادة ثانوية من العام 2024/2025 أو 2025/2026.",
+    "اللغة الإنجليزية: IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت. ويُمنح المقبول سنة ميلادية واحدة لتحقيق الدرجة المطلوبة من الجامعة.",
+    "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة أداء اختبارات القدرات بجامعة الكويت، ويُعتمد المعدل المكافئ.",
+    "المملكة المتحدة: يُشترط UKVI IELTS. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، ولا تجوز إعادة السنة التأسيسية. ويجوز لغيرهم إعادتها مرة واحدة.",
+    "الطب في المملكة المتحدة: UCAT بدرجة 1,650 فأكثر، وIELTS 7.0 (ولا يقل أي قسم عن 6.5) للسنة التأسيسية.",
+    "برنامج التميز: 90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
   ],
   // Minimum high-school % by country and major (Plan 2026/2027)
   floors: [

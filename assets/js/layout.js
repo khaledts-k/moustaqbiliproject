@@ -101,8 +101,9 @@ function renderSiteFooter() {
         <span class="text-white font-bold text-sm block">moustaqbili | مستقبلي</span>
         <span class="text-slate-400 text-xs block mt-1 max-w-sm" data-i18n="footer_desc">Independent student guide. Always confirm final decisions with the Ministry of Higher Education.</span>
         <div class="mt-4 space-y-1.5 text-xs max-w-md">
-          <div><span class="flag flag-unconfirmed" data-i18n="flag_unconfirmed">Not confirmed</span> <span data-i18n="flag_unconfirmed_tip">No official source confirms this yet.</span></div>
-          <div><span class="flag flag-unverified" data-i18n="flag_unverified">Not checked yet</span> <span data-i18n="flag_unverified_tip">Carried over from the previous edition; not yet checked against 2026/2027 sources.</span></div>
+          <span class="text-slate-300 font-semibold block" data-i18n="footer_flags_title">What the small labels next to some information mean:</span>
+          <div><span class="flag flag-unconfirmed" data-i18n="flag_unconfirmed">Not confirmed</span> <span data-i18n="footer_flag_unconfirmed">The information next to this label (for example a date, amount or phone number) is not on any official website. Treat it as uncertain and check with the Ministry.</span></div>
+          <div><span class="flag flag-unverified" data-i18n="flag_unverified">Not checked yet</span> <span data-i18n="footer_flag_unverified">The information next to this label comes from an older version of this site and has not been checked against the 2026/2027 rules. It may be out of date.</span></div>
         </div>
       </div>
       <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium">

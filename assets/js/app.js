@@ -1280,37 +1280,21 @@ function renderContactPage() {
 // =========================================================================
 // 10b. Scholarship plan 2026/2027 (used on the More info page)
 // =========================================================================
-// Turn "**key phrase**" markers in data text into highlighted pills
-function richText(str) {
-  return String(str ?? "").replace(/\*\*(.+?)\*\*/g, '<mark class="key-pill">$1</mark>');
-}
-
-// A number in a table cell as a pill; "-" (not offered) stays a quiet dash
-function numPill(value, suffix = "") {
-  if (!value || value === "-") return `<span class="text-slate-400">-</span>`;
-  return `<span class="num-pill" dir="ltr">${value}${suffix}</span>`;
-}
-
 function planHtml() {
   const plan = window.MOHE_PLAN_2026;
   if (!plan) return "";
   const rules = (isArabic() ? plan.rulesAr : plan.rulesEn) || [];
-  // "97 (Dentistry 96)" -> pill "97%" + small note
-  const floorCell = (v) => {
-    const m = String(v).match(/^(\d+(?:\.\d+)?)\s*(.*)$/);
-    return m ? `${numPill(m[1], "%")}${m[2] ? ` <span class="text-xs text-slate-500">${m[2]}</span>` : ""}` : numPill(v);
-  };
 
   return `
-    <div class="p-4 rounded-xl bg-amber-50 border border-amber-300 text-sm text-amber-950 leading-relaxed mb-5">${richText(L(plan, 'status'))}</div>
+    <div class="p-5 rounded-xl bg-amber-50 border border-amber-200 text-sm text-amber-950 leading-relaxed mb-8">${L(plan, 'status')}</div>
 
-    <h3 class="text-sm font-bold text-slate-900 mb-2">${t('plan_rules_title')}</h3>
-    <ul class="space-y-2.5 text-sm text-slate-700 leading-relaxed mb-6">
-      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${richText(r)}</span></li>`).join("")}
+    <h3 class="text-base font-bold text-slate-900 mb-3">${t('plan_rules_title')}</h3>
+    <ul class="space-y-3 text-sm text-slate-700 leading-relaxed mb-10">
+      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${r}</span></li>`).join("")}
     </ul>
 
-    <h3 class="text-sm font-bold text-slate-900 mb-1">${t('plan_floors_title')}</h3>
-    <p class="text-xs text-slate-500 mb-2">${t('plan_floors_help')}</p>
+    <h3 class="text-base font-bold text-slate-900 mb-1">${t('plan_floors_title')}</h3>
+    <p class="text-sm text-slate-500 mb-4">${t('plan_floors_help')}</p>
     <div class="overflow-x-auto rounded-xl border border-slate-200 mb-3">
       <table class="w-full text-sm">
         <thead class="bg-slate-100 text-slate-600 text-xs">
@@ -1326,10 +1310,10 @@ function planHtml() {
           ${plan.floors.map(f => `
             <tr class="border-t border-slate-200">
               <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(f, 'country')}</th>
-              <td class="p-3 whitespace-nowrap">${floorCell(isArabic() && f.medicineAr ? f.medicineAr : f.medicine)}</td>
-              <td class="p-3 whitespace-nowrap">${floorCell(f.pharmacy)}</td>
-              <td class="p-3 whitespace-nowrap">${floorCell(f.engineering)}</td>
-              <td class="p-3 text-slate-600 min-w-[12rem]">${L(f, 'other')}</td>
+              <td class="p-3">${isArabic() && f.medicineAr ? f.medicineAr : f.medicine}</td>
+              <td class="p-3">${f.pharmacy}</td>
+              <td class="p-3">${f.engineering}</td>
+              <td class="p-3 text-slate-600">${L(f, 'other')}</td>
             </tr>`).join("")}
         </tbody>
       </table>
@@ -1351,62 +1335,68 @@ function moreInfoBlock(block) {
   const flagHtml = (item) => item.flag ? ` ${flag(item.flag)}` : '';
   switch (block.type) {
     case "text":
-      return `<p class="text-sm text-slate-700 leading-relaxed">${richText(ar ? block.ar : block.en)}</p>`;
+      return `<p class="text-sm text-slate-700 leading-7">${ar ? block.ar : block.en}</p>`;
 
     case "list":
-      return `<ul class="space-y-2.5 text-sm text-slate-700 leading-relaxed">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${richText(i)}</span></li>`).join("")}</ul>`;
+      return `<ul class="space-y-3 text-sm text-slate-700 leading-7">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
 
     case "terms":
-      return `<dl class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(i => `
-        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-          <dt><span class="term-pill">${L(i, 'term')}</span></dt>
-          <dd class="text-sm text-slate-600 mt-2 leading-relaxed">${richText(L(i, 'def'))}</dd>
+      return `<dl class="grid grid-cols-1 md:grid-cols-2 gap-4">${block.items.map(i => `
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-100">
+          <dt class="text-sm font-bold text-slate-900">${L(i, 'term')}</dt>
+          <dd class="text-sm text-slate-600 mt-1.5 leading-relaxed">${L(i, 'def')}</dd>
         </div>`).join("")}</dl>`;
 
     case "steps":
-      return `<ol class="space-y-3">${block.items.map((s, n) => `
+      return `<ol class="space-y-6">${block.items.map((s, n) => `
         <li class="flex gap-3">
           <span class="w-7 h-7 rounded-full bg-olive-900 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">${n + 1}</span>
-          <div class="min-w-0">
-            <span class="date-pill">${L(s, 'when')}</span>
-            <p class="text-sm text-slate-800 leading-relaxed mt-1.5">${richText(L(s, 'what'))}${flagHtml(s)}</p>
+          <div>
+            <span class="text-xs font-bold text-slate-500 block mb-1">${L(s, 'when')}</span>
+            <span class="text-sm text-slate-800 leading-relaxed">${L(s, 'what')}${flagHtml(s)}</span>
           </div>
         </li>`).join("")}</ol>`;
 
     case "cards":
-      return `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${block.items.map(c => `
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <h4 class="text-sm font-bold text-slate-900 mb-1.5">${L(c, 'title')}${flagHtml(c)}</h4>
-          <p class="text-sm text-slate-600 leading-relaxed">${richText(L(c, 'body'))}</p>
+      return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${block.items.map(c => `
+        <div class="p-5 rounded-xl bg-slate-50 border border-slate-100">
+          <h4 class="text-sm font-bold text-slate-900 mb-2">${L(c, 'title')}${flagHtml(c)}</h4>
+          <p class="text-sm text-slate-600 leading-relaxed">${L(c, 'body')}</p>
         </div>`).join("")}</div>`;
 
     case "links":
-      return `<ul class="flex flex-wrap gap-2">${block.items.map(l => `
-        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="link-pill">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
+      return `<ul class="flex flex-wrap gap-3">${block.items.map(l => `
+        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
 
     case "plan":
       return planHtml();
 
     case "allowances": {
-      // One row per country (not a table) so it fits a phone without sideways scrolling
-      const amount = (value, currency, label) => `
-        <div>
-          <span class="text-xs text-slate-500 block mb-1">${label}</span>
-          <span class="num-pill" dir="ltr">${money(convertAmount(value, currency, "KWD", FX.rates), "KWD")}</span>
-          <span class="text-xs text-slate-500 block mt-1" dir="ltr">${formatNumber(value)} ${currency}</span>
-        </div>`;
-      const rows = (window.MORE_INFO?.allowances || []).map(a => `
-        <div class="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-          <strong class="text-sm text-slate-900 sm:w-44 flex-shrink-0">${L(a, 'country')}</strong>
-          <div class="flex flex-wrap gap-x-8 gap-y-2">
-            ${amount(a.standard, a.currency, t('allow_col_standard'))}
-            ${typeof a.merit === "number"
-              ? amount(a.merit, a.currency, t('allow_col_merit'))
-              : `<div><span class="text-xs text-slate-500 block mb-1">${t('allow_col_merit')}</span>${a.meritFlag ? flag(a.meritFlag) : `<span class="text-xs text-slate-400">${t('allow_no_merit')}</span>`}</div>`}
-          </div>
-        </div>`).join("");
+      const rows = (window.MORE_INFO?.allowances || []).map(a => {
+        const kwd = (amount) => money(convertAmount(amount, a.currency, "KWD", FX.rates), "KWD");
+        const merit = typeof a.merit === "number"
+          ? `<span class="font-bold text-slate-900 block">${kwd(a.merit)}</span><span class="text-xs text-slate-500">${formatNumber(a.merit)} ${a.currency}</span>`
+          : (a.meritFlag ? flag(a.meritFlag) : `<span class="text-slate-400">${t('allow_no_merit')}</span>`);
+        return `
+          <tr class="border-t border-slate-200">
+            <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(a, 'country')}</th>
+            <td class="p-3"><span class="font-bold text-slate-900 block">${kwd(a.standard)}</span><span class="text-xs text-slate-500">${formatNumber(a.standard)} ${a.currency}</span></td>
+            <td class="p-3">${merit}</td>
+          </tr>`;
+      }).join("");
       return `
-        <div class="rounded-xl border border-slate-200 divide-y divide-slate-200 mb-2">${rows}</div>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 mb-3">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-100 text-slate-600 text-xs">
+              <tr>
+                <th class="p-3 text-start">${t('plan_col_country')}</th>
+                <th class="p-3 text-start">${t('allow_col_standard')}</th>
+                <th class="p-3 text-start">${t('allow_col_merit')}</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
         <p class="text-xs text-slate-500 mb-4">${t('allow_kwd_note')} ${fxNote()}</p>`;
     }
     default:
@@ -1419,25 +1409,16 @@ function renderMoreInfoPage() {
   const root = document.getElementById("more-root");
   if (!data || !root) return;
 
-  const mustKnow = (data.mustKnow || []).length ? `
-    <section id="must-know" class="rounded-xl border-2 border-olive-700 bg-white shadow-sm p-6 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900">${t('more_must_know')}</h2>
-      <p class="text-sm text-slate-600 mt-1 mb-4">${t('more_must_know_desc')}</p>
-      <ul class="flex flex-wrap gap-2">
-        ${data.mustKnow.map(m => `<li class="must-pill">${ICON_CHECK}<span>${isArabic() ? m.ar : m.en}</span></li>`).join("")}
-      </ul>
-    </section>` : "";
-
-  root.innerHTML = mustKnow + data.sections.map(s => `
-    <section id="${s.id}" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900">${L(s, 'title')}${s.flag ? ` ${flag(s.flag)}` : ''}</h2>
-      <p class="text-sm text-slate-600 mt-1 mb-4">${L(s, 'intro')}</p>
-      <div class="space-y-4">${s.blocks.map(moreInfoBlock).join("")}</div>
+  root.innerHTML = data.sections.map(s => `
+    <section id="${s.id}" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 scroll-mt-24">
+      <h2 class="text-xl font-extrabold text-slate-900">${L(s, 'title')}${s.flag ? ` ${flag(s.flag)}` : ''}</h2>
+      <p class="text-base text-slate-600 mt-2 mb-7 leading-relaxed">${L(s, 'intro')}</p>
+      <div class="space-y-7">${s.blocks.map(moreInfoBlock).join("")}</div>
     </section>`).join("") + `
     <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
 
   const toc = document.getElementById("more-toc");
-  if (toc) toc.innerHTML = (mustKnow ? `<a href="#must-know" class="font-bold">${t('more_must_know')}</a>` : "") + data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
+  if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
 }
 
 // =========================================================================

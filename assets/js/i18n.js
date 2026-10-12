@@ -20,6 +20,9 @@ const MOUSTAQBILI_TRANSLATIONS = {
     nav_about: "About",
     btn_lang_toggle: "العربية",
     footer_desc: "A free student guide. It is not part of the Ministry. Always check important decisions with the Ministry of Higher Education.",
+    footer_flags_title: "What the small labels next to some information mean:",
+    footer_flag_unconfirmed: "The information next to this label (for example a date, amount or phone number) is not on any official website. Treat it as uncertain and check with the Ministry.",
+    footer_flag_unverified: "The information next to this label comes from an older version of this site and has not been checked against the 2026/2027 rules. It may be out of date.",
 
     // Data-status labels
     flag_unconfirmed: "Not confirmed",
@@ -220,8 +223,6 @@ const MOUSTAQBILI_TRANSLATIONS = {
     // More info page
     more_title: "More information",
     more_desc: "Everything else you may need to know, in simple words. Use the list on the side to jump to a topic.",
-    more_must_know: "Must know",
-    more_must_know_desc: "The most important requirements. Read these first.",
     plan_rules_title: "Main rules",
     plan_floors_title: "Lowest high school % accepted, by country",
     plan_floors_help: "The numbers are the lowest % you need to apply. A higher % gives you a better chance.",
@@ -370,6 +371,9 @@ const MOUSTAQBILI_TRANSLATIONS = {
     nav_about: "عن الموقع",
     btn_lang_toggle: "English",
     footer_desc: "دليل مجاني للطلبة، وليس تابعاً للوزارة. تأكد دائماً من القرارات المهمة مع وزارة التعليم العالي.",
+    footer_flags_title: "معنى العلامات الصغيرة بجانب بعض المعلومات:",
+    footer_flag_unconfirmed: "المعلومة بجانب هذه العلامة (مثل تاريخ أو مبلغ أو رقم هاتف) غير موجودة في أي موقع رسمي. اعتبرها غير مؤكدة وتحقق منها مع الوزارة.",
+    footer_flag_unverified: "المعلومة بجانب هذه العلامة منقولة من نسخة سابقة من هذا الموقع ولم نراجعها مع شروط 2026/2027، وقد تكون قديمة.",
 
     // Data-status labels
     flag_unconfirmed: "غير مؤكد",
@@ -570,8 +574,6 @@ const MOUSTAQBILI_TRANSLATIONS = {
     // More info page
     more_title: "معلومات أكثر",
     more_desc: "كل ما قد تحتاج معرفته، بكلمات بسيطة. استخدم القائمة الجانبية للانتقال إلى الموضوع.",
-    more_must_know: "يجب أن تعرف",
-    more_must_know_desc: "أهم الشروط. اقرأها أولاً.",
     plan_rules_title: "أهم الشروط",
     plan_floors_title: "أقل نسبة ثانوية مقبولة حسب الدولة",
     plan_floors_help: "الأرقام هي أقل نسبة تحتاجها للتقديم، والنسبة الأعلى تزيد فرصتك.",
