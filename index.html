@@ -30,6 +30,7 @@
     }
   </script>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -65,7 +66,7 @@
         </div>
 
         <form id="mohe-search-form" class="space-y-5">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
             <div id="bubble-country-card" class="filter-bubble-card rounded-lg p-4">
               <div class="flex items-center gap-2 mb-2">
@@ -87,9 +88,19 @@
               </select>
             </div>
 
+            <div id="bubble-level-card" class="filter-bubble-card rounded-lg p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="badge-level" data-num="3" class="bubble-number-badge">3</span>
+                <label for="select-level" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble_level_title">Level of education</label>
+              </div>
+              <select id="select-level" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none cursor-pointer">
+                <option value="" data-i18n="bubble_level_default">Any level</option>
+              </select>
+            </div>
+
             <div id="bubble-major-card" class="filter-bubble-card rounded-lg p-4">
               <div class="flex items-center gap-2 mb-2">
-                <span id="badge-major" data-num="3" class="bubble-number-badge">3</span>
+                <span id="badge-major" data-num="4" class="bubble-number-badge">4</span>
                 <label for="select-major" class="text-xs font-bold uppercase tracking-wider text-slate-900" data-i18n="bubble3_title">Specialization</label>
               </div>
               <select id="select-major" class="w-full bg-white border border-slate-300 text-slate-900 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-olive-800 focus:outline-none cursor-pointer">
@@ -97,6 +108,8 @@
               </select>
             </div>
           </div>
+
+          <p class="text-xs text-slate-600 -mt-1" data-i18n="level_note">Every scholarship in the Ministry's 2026/2027 plan is for high-school graduates, so master's and doctorate scholarships are not offered.</p>
 
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <label id="merit-option-card" for="checkbox-merit-only" class="flex items-start gap-3 p-3 rounded-lg border border-slate-300 bg-slate-50 cursor-pointer transition">
@@ -187,6 +200,7 @@
 
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/plan-majors-data.js"></script>
   <script src="assets/js/qudrat-data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>

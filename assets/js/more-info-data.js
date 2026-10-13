@@ -112,14 +112,14 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Who can apply: at least 90% in high school, or 95% for medicine, dentistry and pharmacy.",
+            "Who can apply: 95% in high school for medicine, dentistry and pharmacy. For other majors the plan PDF says 90%, while the Ministry's merit page says \"the plan minimum\". {{unconfirmed}}",
             "What you get: 50% more monthly allowance after the preparatory stage.",
             "Deadline for 2026/2027: 24 February 2027.",
             "The list of merit universities is kept by the National Bureau for Academic Accreditation. It was last changed in November 2025, when New Zealand and Australia lists were added.",
             "For the UK, the list comes from Ministerial Decree 16/2025. We found no newer decree."
           ],
           ar: [
-            "من يحق له التقديم: 90% على الأقل في الثانوية، أو 95% للطب وطب الأسنان والصيدلة.",
+            "من يحق له التقديم: 95% في الثانوية للطب وطب الأسنان والصيدلة. ولبقية التخصصات تذكر خطة الوزارة (PDF) 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\". {{unconfirmed}}",
             "ما تحصل عليه: زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
             "آخر موعد للعام 2026/2027: 24 فبراير 2027.",
             "يحتفظ الجهاز الوطني للاعتماد الأكاديمي بقائمة جامعات التميز، وآخر تعديل عليها كان في نوفمبر 2025 بإضافة قوائم نيوزيلندا وأستراليا.",
@@ -177,15 +177,15 @@ const MORE_INFO = {
       titleAr: "تأشيرات الدراسة",
       introEn: "Your university and the cultural office give you the papers you need. These are the main ones per country.",
       introAr: "تعطيك الجامعة والمكتب الثقافي الأوراق التي تحتاجها. هذه أهمها حسب الدولة.",
-      flag: "unverified",
       blocks: [
         {
           type: "cards",
           items: [
-            { titleEn: "United States (F-1 visa)", titleAr: "الولايات المتحدة (تأشيرة F-1)", bodyEn: "Form I-20 from the university, the DS-160 online form, the SEVIS fee receipt, the financial guarantee letter, and an interview at the US Embassy.", bodyAr: "نموذج I-20 من الجامعة، ونموذج DS-160 الإلكتروني، وإيصال رسوم SEVIS، والكتاب المالي، ومقابلة في السفارة الأمريكية." },
-            { titleEn: "United Kingdom (Student visa)", titleAr: "المملكة المتحدة (تأشيرة طالب)", bodyEn: "A CAS number from the university, the financial guarantee letter, UKVI IELTS, and a TB test certificate. The UK now issues visas digitally (eVisa) instead of a residence card.", bodyAr: "رقم CAS من الجامعة، والكتاب المالي، وUKVI IELTS، وشهادة فحص السل. تصدر بريطانيا التأشيرات الآن إلكترونياً (eVisa) بدلاً من بطاقة الإقامة." },
-            { titleEn: "Ireland (study visa)", titleAr: "أيرلندا (تأشيرة دراسة)", bodyEn: "The university offer letter, the financial guarantee letter, and proof of health insurance.", bodyAr: "خطاب القبول من الجامعة، والكتاب المالي، وإثبات التأمين الصحي." },
-            { titleEn: "Australia (Subclass 500)", titleAr: "أستراليا (فئة 500)", bodyEn: "The electronic Confirmation of Enrolment (CoE), student health cover (OSHC), the financial guarantee letter, and a Genuine Student statement.", bodyAr: "تأكيد التسجيل الإلكتروني (CoE)، والتأمين الصحي للطلبة (OSHC)، والكتاب المالي، وبيان الطالب الحقيقي (Genuine Student)." }
+            { titleEn: "United States (F-1 visa)", titleAr: "الولايات المتحدة (تأشيرة F-1)", bodyEn: "Form I-20 from the university, the DS-160 online form, the SEVIS fee receipt ($350), the financial guarantee letter, and an interview at the US Embassy. Since June 2025 you must set all your social media accounts to public.", bodyAr: "نموذج I-20 من الجامعة، ونموذج DS-160 الإلكتروني، وإيصال رسوم SEVIS (350 دولاراً)، والكتاب المالي، ومقابلة في السفارة الأمريكية. ومنذ يونيو 2025 يجب أن تجعل كل حساباتك في وسائل التواصل الاجتماعي عامة." },
+            { titleEn: "United Kingdom (Student visa)", titleAr: "المملكة المتحدة (تأشيرة طالب)", bodyEn: "A CAS number from the university, the financial guarantee letter, UKVI IELTS (for a foundation year), and written consent from both parents if you are under 18. The fee is £558. The UK now gives you a digital visa (eVisa) instead of a residence card. Kuwaitis do not need a TB test.", bodyAr: "رقم CAS من الجامعة، والكتاب المالي، وUKVI IELTS (للسنة التأسيسية)، وموافقة مكتوبة من الوالدين إذا كان عمرك أقل من 18 سنة. الرسوم 558 جنيهاً. وتمنحك بريطانيا الآن تأشيرة إلكترونية (eVisa) بدلاً من بطاقة الإقامة. ولا يحتاج الكويتيون إلى فحص السل." },
+            { titleEn: "Ireland (D study visa)", titleAr: "أيرلندا (تأشيرة دراسة D)", bodyEn: "Applied for through the Irish visa office in Abu Dhabi. You need the university acceptance letter, proof you can access at least €10,000 (the financial guarantee letter), a passport valid for 12 months, and private medical insurance.", bodyAr: "يُقدَّم عليها عبر مكتب التأشيرات الأيرلندي في أبوظبي. تحتاج خطاب القبول من الجامعة، وإثبات أنك تملك 10,000 يورو على الأقل (الكتاب المالي)، وجواز سفر صالح لمدة 12 شهراً، وتأميناً طبياً خاصاً." },
+            { titleEn: "Australia (Subclass 500)", titleAr: "أستراليا (فئة 500)", bodyEn: "The electronic Confirmation of Enrolment (CoE), student health cover (OSHC) and the financial guarantee letter. The Genuine Student questions are answered inside the visa application form.", bodyAr: "تأكيد التسجيل الإلكتروني (CoE)، والتأمين الصحي للطلبة (OSHC)، والكتاب المالي. وتُجيب عن أسئلة الطالب الحقيقي (Genuine Student) داخل نموذج طلب التأشيرة." },
+            { titleEn: "Malta (D visa, then residence permit)", titleAr: "مالطا (تأشيرة D ثم تصريح إقامة)", bodyEn: "A national long-stay visa, then a residence permit from Identità in Malta. You need the acceptance letter, the financial guarantee letter, health insurance with at least €100,000 cover, and proof of accommodation.", bodyAr: "تأشيرة وطنية طويلة المدة، ثم تصريح إقامة من Identità في مالطا. تحتاج خطاب القبول، والكتاب المالي، وتأميناً صحياً بتغطية لا تقل عن 100,000 يورو، وإثبات السكن." }
           ]
         },
         { type: "text", en: "The financial guarantee letter replaces a personal bank statement: it shows the embassy that the government pays for your studies.", ar: "يُغني الكتاب المالي عن كشف الحساب البنكي الشخصي، إذ يثبت للسفارة أن الحكومة تتكفل بدراستك." }

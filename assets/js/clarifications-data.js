@@ -125,8 +125,8 @@ const CLARIFICATIONS = {
       id: "merit-deadline-separate", topic: "merit",
       questionEn: "Registration closed in July. Did I miss the merit programme?",
       questionAr: "أُغلق التسجيل في يوليو، هل فاتني برنامج التميز؟",
-      answerEn: "No. Merit registration for 2026/2027 stays open until 24 February 2027. You need an offer from a university or programme on the merit list, and 90% in high school (95% for medicine, dentistry and pharmacy).",
-      answerAr: "لا. التسجيل في برنامج التميز للعام 2026/2027 مفتوح حتى 24 فبراير 2027. تحتاج إلى قبول في جامعة أو برنامج من قائمة التميز، ونسبة 90% في الثانوية (95% للطب وطب الأسنان والصيدلة).",
+      answerEn: "No. Merit registration for 2026/2027 stays open until 24 February 2027. You need an offer from a university or programme on the merit list, and 95% for medicine, dentistry and pharmacy. For other majors the plan PDF says 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}.",
+      answerAr: "لا. التسجيل في برنامج التميز للعام 2026/2027 مفتوح حتى 24 فبراير 2027. تحتاج إلى قبول في جامعة أو برنامج من قائمة التميز، و95% للطب وطب الأسنان والصيدلة. ولبقية التخصصات تذكر خطة الوزارة (PDF) 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}.",
       status: "confirmed", sourceLabel: "Ministry announcement reported by Al-Rai", sourceUrl: "https://www.alraimedia.com/article/1769447"
     },
     {

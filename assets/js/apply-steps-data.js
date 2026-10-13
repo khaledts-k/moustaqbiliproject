@@ -113,8 +113,8 @@ const APPLY_STEPS = {
     }
   ],
 
-  meritNoteEn: "Merit programme: you can still apply until 24 February 2027 if you get an offer from a university on the merit list and have 90% in high school (95% for medicine, dentistry and pharmacy).",
-  meritNoteAr: "برنامج التميز: يمكنك التقديم حتى 24 فبراير 2027 إذا حصلت على قبول في جامعة من قائمة التميز ونسبتك 90% في الثانوية (95% للطب وطب الأسنان والصيدلة)."
+  meritNoteEn: "Merit programme: you can still apply until 24 February 2027 if you get an offer from a university on the merit list. You need 95% for medicine, dentistry and pharmacy; for other majors the plan PDF says 90% but the Ministry's merit page says \"the plan minimum\", so check with the Ministry.",
+  meritNoteAr: "برنامج التميز: يمكنك التقديم حتى 24 فبراير 2027 إذا حصلت على قبول في جامعة من قائمة التميز. تحتاج 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات تذكر خطة الوزارة (PDF) 90% بينما تذكر صفحة التميز \"الحد الأدنى للخطة\"، فتأكد من الوزارة."
 };
 
 if (typeof window !== 'undefined') {
