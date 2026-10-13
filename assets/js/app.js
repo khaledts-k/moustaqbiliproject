@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "more-info.html") initMoreInfoPage();
   if (page === "clarifications.html") initClarificationsPage();
   if (page === "ask.html") initAskPage();
+  if (page === "suggestions.html") initApplySteps();
+  if (page === "navigate.html") initNavigatePage();
 });
 
 // =========================================================================
@@ -1358,11 +1360,16 @@ function moreInfoBlock(block) {
         </li>`).join("")}</ol>`;
 
     case "cards":
-      return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${block.items.map(c => `
-        <div class="p-5 rounded-xl bg-slate-50 border border-slate-100">
-          <h4 class="text-sm font-bold text-slate-900 mb-2">${L(c, 'title')}${flagHtml(c)}</h4>
+      // A card with a `url` becomes a link to that page
+      return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">${block.items.map(c => {
+        const tag = c.url ? `a href="${c.url}"` : "div";
+        const end = c.url ? "a" : "div";
+        return `
+        <${tag} class="block p-5 rounded-xl bg-slate-50 border border-slate-100 ${c.url ? 'hover:border-olive-700 hover:bg-white transition' : ''}">
+          <h4 class="text-sm font-bold text-slate-900 mb-2">${L(c, 'title')}${flagHtml(c)}${c.url ? ` <span class="flip-rtl inline-block text-olive-900" aria-hidden="true">&rarr;</span>` : ''}</h4>
           <p class="text-sm text-slate-600 leading-relaxed">${L(c, 'body')}</p>
-        </div>`).join("")}</div>`;
+        </${end}>`;
+      }).join("")}</div>`;
 
     case "links":
       return `<ul class="flex flex-wrap gap-3">${block.items.map(l => `
@@ -1405,8 +1412,19 @@ function moreInfoBlock(block) {
 }
 
 function renderMoreInfoPage() {
-  const data = window.MORE_INFO;
-  const root = document.getElementById("more-root");
+  renderSectionPage(window.MORE_INFO, "more-root", "more-toc");
+}
+
+// Navigate Moustaqbili page (navigate-data.js), same layout as More Info
+function initNavigatePage() {
+  const render = () => renderSectionPage(window.NAVIGATE_GUIDE, "nav-root", "nav-toc");
+  render();
+  window.addEventListener("languageChanged", render);
+}
+
+// Shared renderer for pages built from { sections: [{ id, title, intro, blocks }] }
+function renderSectionPage(data, rootId, tocId) {
+  const root = document.getElementById(rootId);
   if (!data || !root) return;
 
   root.innerHTML = data.sections.map(s => `
@@ -1417,7 +1435,7 @@ function renderMoreInfoPage() {
     </section>`).join("") + `
     <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
 
-  const toc = document.getElementById("more-toc");
+  const toc = document.getElementById(tocId);
   if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
 }
 
@@ -1541,6 +1559,85 @@ function initAskPage() {
   });
 }
 
+
+// =========================================================================
+// 10f. How to Apply: Ministry scholarship checklist (apply-steps-data.js)
+// =========================================================================
+const STEPS_KEY = "moustaqbili_apply_steps";
+
+// Ticked step ids, kept in this browser only. Storage can be unavailable (private mode), so never fail.
+function loadTickedSteps() {
+  try { return new Set(JSON.parse(localStorage.getItem(STEPS_KEY) || "[]")); } catch (e) { return new Set(); }
+}
+function saveTickedSteps(set) {
+  try { localStorage.setItem(STEPS_KEY, JSON.stringify([...set])); } catch (e) { /* ignore */ }
+}
+
+function initApplySteps() {
+  if (!window.APPLY_STEPS || !document.getElementById("apply-steps")) return;
+  renderApplySteps();
+  window.addEventListener("languageChanged", renderApplySteps);
+  document.getElementById("steps-reset")?.addEventListener("click", () => {
+    saveTickedSteps(new Set());
+    renderApplySteps();
+  });
+}
+
+function updateStepsProgress(ticked, total) {
+  const done = ticked.size;
+  const progress = document.getElementById("steps-progress");
+  const bar = document.getElementById("steps-bar");
+  if (progress) progress.textContent = t('steps_progress').replace("{done}", done).replace("{total}", total);
+  if (bar) bar.style.width = `${Math.round((done / total) * 100)}%`;
+}
+
+function renderApplySteps() {
+  const data = window.APPLY_STEPS;
+  const list = document.getElementById("apply-steps");
+  if (!data || !list) return;
+  const ar = isArabic();
+  const ticked = loadTickedSteps();
+  // Remember which steps were open so a language switch does not collapse them
+  const open = new Set([...list.querySelectorAll("details[open]")].map(d => d.dataset.step));
+
+  list.innerHTML = data.steps.map((s, i) => {
+    const done = ticked.has(s.id);
+    return `
+      <li class="step-item ${done ? 'is-done' : ''}">
+        <label class="step-check" title="${t('steps_mark_done')}">
+          <input type="checkbox" data-step="${s.id}" ${done ? 'checked' : ''} aria-label="${t('steps_mark_done')}: ${L(s, 'title')}">
+          <span class="step-num" aria-hidden="true">${i + 1}</span>
+        </label>
+        <details class="step-details" data-step="${s.id}" ${open.has(s.id) ? 'open' : ''}>
+          <summary>
+            <span class="step-title">${L(s, 'title')}</span>
+            <span class="step-summary">${L(s, 'summary')}</span>
+          </summary>
+          <ul class="mt-3 space-y-2.5 text-sm text-slate-700 leading-relaxed">
+            ${s.points.map(p => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${ar ? p.ar : p.en}${p.flag ? ` ${flag(p.flag)}` : ''}</span></li>`).join("")}
+          </ul>
+          ${s.links.length ? `<div class="mt-4 flex flex-wrap gap-2">${s.links.map(l => {
+            const external = /^https?:/.test(l.url);
+            return `<a href="${l.url}" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''} class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')}${external ? ` ${ICON_EXTERNAL}` : ''}</a>`;
+          }).join("")}</div>` : ''}
+        </details>
+      </li>`;
+  }).join("");
+
+  list.querySelectorAll('input[type="checkbox"]').forEach(box => box.addEventListener("change", () => {
+    const set = loadTickedSteps();
+    if (box.checked) set.add(box.dataset.step); else set.delete(box.dataset.step);
+    saveTickedSteps(set);
+    box.closest(".step-item").classList.toggle("is-done", box.checked);
+    updateStepsProgress(set, data.steps.length);
+  }));
+
+  const merit = document.getElementById("steps-merit");
+  if (merit) merit.textContent = L(data, 'meritNote');
+  const meta = document.getElementById("steps-meta");
+  if (meta) meta.textContent = `${t('steps_sources')} ${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
+  updateStepsProgress(ticked, data.steps.length);
+}
 
 // =========================================================================
 // 11. Local Kuwait universities

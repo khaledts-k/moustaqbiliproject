@@ -27,6 +27,7 @@ const SITE_NAV = [
 
 // Footer-only links
 const FOOTER_EXTRA = [
+  { href: "navigate.html", key: "nav_navigate", label: "How this site works" },
   { href: "ask.html", key: "nav_ask", label: "Ask Us" },
   { href: "about.html", key: "nav_about", label: "About" }
 ];
