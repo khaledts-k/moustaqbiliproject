@@ -130,7 +130,8 @@ const MOHE_CONTACTS = {
           descAr: "شارع الفردوس، قطعة 3، الخالدية.",
           items: [
             { type: "text", labelEn: "Phone", labelAr: "الهاتف", valueEn: "Not published", valueAr: "غير منشور", flag: "unconfirmed" },
-            { type: "email", labelEn: "Email", labelAr: "البريد الإلكتروني", value: "info@aasu.edu.kw" },
+            { type: "email", labelEn: "Admissions", labelAr: "القبول", value: "admissions@aasu.edu.kw" },
+            { type: "email", labelEn: "General enquiries", labelAr: "الاستفسارات العامة", value: "info@aasu.edu.kw" },
             { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.aasu.edu.kw" }
           ]
         }

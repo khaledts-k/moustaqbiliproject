@@ -11,7 +11,7 @@
 const SITE_CONFIG = {
   // Email address for the "Ask us" page. Leave empty until the address exists:
   // the form then lets students copy their question instead of sending it.
-  askEmail: ""
+  askEmail: "meshoabul@gmail.com"
 };
 
 const SITE_NAV = [
@@ -115,7 +115,42 @@ function renderSiteFooter() {
   </footer>`;
 }
 
+// Uncoloured potato icon for the "Navigate Moustaqbili" page: outline only, takes the text colour
+const POTATO_ICON = `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M7.5 27.5c-1.6-6.6 2.6-12.9 9.6-14.9 4.4-1.3 7.4.6 11.2-.4 5.9-1.6 12.5 1.7 13.9 7.9 1 4.5-1.4 6.6-1.2 10.2.4 6.5-5.4 10.6-12.4 10.4-4.6-.1-6.6-2.3-10.9-2.2-5 .1-9-4.5-10.2-11z"/>
+  <path d="M15.5 22.5l1.6.9"/>
+  <path d="M26.5 18.8l1.7-.5"/>
+  <path d="M34.8 25.6l.8 1.6"/>
+  <path d="M21.5 31.2l1.8-.2"/>
+  <path d="M12.6 30.4h.01"/>
+  <path d="M30.6 33.2h.01"/>
+</svg>`;
+
+// Help button in the bottom corner of every page, linking to the Navigate page.
+// On the home page a "Having trouble?" prompt points at it.
+function renderHelpButton() {
+  const page = currentPageFile();
+  document.querySelectorAll("[data-potato]").forEach(el => { el.innerHTML = POTATO_ICON; });
+  if (page === "navigate.html") return; // already on the help page
+
+  const prompt = page === "index.html" ? `
+    <a href="navigate.html" class="help-callout">
+      <span data-i18n="help_trouble">Having trouble?</span>
+      <span class="help-callout-arrow flip-rtl" aria-hidden="true">&rarr;</span>
+    </a>` : "";
+
+  document.body.insertAdjacentHTML("beforeend", `
+  <div class="help-fab-wrap">
+    ${prompt}
+    <a href="navigate.html" class="potato-fab" title="How this site works">
+      ${POTATO_ICON}
+      <span class="sr-only" data-i18n="nav_navigate">How this site works</span>
+    </a>
+  </div>`);
+}
+
 window.SITE_CONFIG = SITE_CONFIG;
 
 renderSiteHeader();
 renderSiteFooter();
+renderHelpButton();

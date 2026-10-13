@@ -5,13 +5,16 @@
  *
  * Sources:
  * 1. Foreign Scholarship Plan 2026/2027 (خطة البعثات الخارجية 2026/2027): https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf
- * 2. Monthly allowance tables (regular + merit), mohe.edu.kw e-services, checked 2026-10-11
+ * 2. Monthly allowance tables (regular + merit), mohe.edu.kw e-services, checked 2026-10-13
  * 3. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
- * 4. UK merit universities: Ministerial Decree 16/2025
+ * 4. Merit university lists (NBAQ): UK Decree 16/2025, US Decree 15/2025, Ireland Decree 22/2025, Australia Decision 60/2025
+ * 5. University and government pages (UCAS, UCAT, GOV.UK, Irish Immigration, US State Dept / ICE,
+ *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13
  *
- * Only the minimum %, the stream and the allowance amounts are checked against the
- * 2026/2027 sources. Exam, deadline and visa details are carried over from the
- * previous edition and are labelled "Not checked yet" on the site.
+ * verifiedFields lists the details checked against those sources on 2026-10-13. Every other
+ * detail shown in the "What you need" window carries a "Not checked yet" label.
+ * Field keys: minScore, stream, publicNotes, usDiploma, ukSystem, floors, english, ukvi, otherExams,
+ * sat, platform, wordCount, supplemental, mohe, ea, ed, rd, pathway, visaType, visaDocs, universities.
  * Use null for anything that does not apply; the site then hides that line.
  */
 
@@ -31,15 +34,17 @@ const MOUSTAQBILI_PROGRAMS = [
     countryAr: "المملكة المتحدة",
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MBChB)", "Clinical Medicine", "Anatomy & Physiology"],
+    planMajors: ["medicine"],
+    verifiedFields: ["minScore", "stream", "english", "ukvi", "otherExams", "platform", "wordCount", "mohe", "rd", "visaType", "visaDocs", "universities"],
 
-    verifiedAllowances: 2, // first two lines are checked against the 2026/2027 tables
+    verifiedAllowances: 3,
     stipend: { currency: "GBP", variants: [{ key: "all", standard: 2850, merit: 4275 }] },
     monthlySalary: {
       allowancesSummary: [
         "Monthly allowance: £2,850 (merit students: £4,275).",
         MERIT_LINE_EN,
+        "Extra allowances in the Ministry's 2026/2027 table: books £690, equipment £1,285, clothing £495, clinical training £750.",
         "Hospital training fees are paid by the Ministry.",
-        "Yearly money for medical equipment (about £850).",
         "A return flight to Kuwait each year.",
         "The UK health surcharge (IHS) is paid back by the cultural office."
       ]
@@ -47,22 +52,22 @@ const MOUSTAQBILI_PROGRAMS = [
 
     necessaryExams: {
       satActStatus: null,
-      englishProficiency: "Foundation year: IELTS 7.0 overall, at least 6.5 in each part. Starting the degree directly: IELTS 7.0 in every part.",
+      englishProficiency: "Foundation year: IELTS 7.0 overall, at least 6.5 in each part (the Ministry's rule). Starting the degree directly: set by each university.",
       ukviIeltsRequired: true,
-      ukviIeltsNote: "You must take the UKVI version of IELTS for the UK. A normal IELTS may not be accepted for the foundation-year visa.",
-      otherExams: "UCAT (the UK medical admissions test): a total score of at least 1,650."
+      ukviIeltsNote: "The Ministry requires the UKVI version of IELTS for the UK. UK law also requires an approved English test (such as UKVI IELTS) for a foundation year.",
+      otherExams: "UCAT (the UK medical admissions test): a total of at least 1,650 out of 2,700 (the Ministry's rule). In 2026 the average score was 1,918."
     },
 
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "UCAS deadline for medicine: 15 October, 6:00 pm UK time.",
+      regularDecision: "UCAS deadline for medicine: 15 October 2026, 6:00 pm UK time (now passed). Most other UK courses: 13 January 2027, 6:00 pm.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
     personalStatementReqs: {
       platform: "UCAS (the UK application website)",
-      wordCount: "Up to 4,000 characters.",
+      wordCount: "Three questions answered in separate boxes: up to 4,000 characters in total (spaces included), at least 350 characters per answer.",
       supplementalEssays: "Interviews, often several short ones (called MMI), about ethics and why you want medicine."
     },
 
@@ -95,17 +100,17 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     visaRequirements: {
-      visaType: "UK Student visa",
+      visaType: "UK Student visa (fee from outside the UK: £558)",
       keyDocuments: [
         "CAS number from your UK university (it confirms your place)",
-        "Financial guarantee letter from the Ministry",
-        "TB (tuberculosis) test certificate from a UK-approved clinic in Kuwait",
-        "UKVI IELTS result",
-        "The UK now gives you a digital visa (eVisa) instead of a residence card"
+        "Financial guarantee letter from the Ministry (your sponsor's consent)",
+        "UKVI IELTS result (needed for a foundation year)",
+        "Written consent from both parents if you are under 18",
+        "The UK now gives you a digital visa (eVisa) instead of a residence card. Kuwaitis do not need a TB test."
       ]
     },
 
-    // UK merit universities for medicine, from Ministerial Decree 16/2025
+    // UK merit universities for medicine (Clinical & Health list), Ministerial Decree 16/2025
     accreditedUniversities: [
       "University of Oxford",
       "University of Cambridge",
@@ -124,24 +129,26 @@ const MOUSTAQBILI_PROGRAMS = [
   },
 
   // =========================================================================
-  // 2. Ireland - Medicine
+  // 2. Ireland - Medicine (not on Ireland's merit list: Decree 22/2025)
   // =========================================================================
   {
     id: "ire-medicine-2025",
     title: "Medicine (MB BCh BAO)",
     titleAr: "الطب البشري والجراحة - أيرلندا",
-    isMerit: true,
+    isMerit: false,
     country: "Ireland",
     countryAr: "أيرلندا",
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MB BCh BAO)", "Clinical Medicine"],
+    planMajors: ["medicine"],
+    verifiedFields: ["minScore", "stream", "usDiploma", "ukSystem", "english", "ukvi", "otherExams", "mohe", "rd", "visaType", "visaDocs"],
 
     verifiedAllowances: 2,
-    stipend: { currency: "EUR", variants: [{ key: "all", standard: 3450, merit: 5175 }] },
+    stipend: { currency: "EUR", variants: [{ key: "all", standard: 3450, merit: null }] },
     monthlySalary: {
       allowancesSummary: [
-        "Monthly allowance: €3,450 (merit students: €5,175).",
-        MERIT_LINE_EN,
+        "Monthly allowance: €3,450. Ireland's merit list (Decree 22/2025) does not include medicine, so the merit amount does not apply.",
+        "Extra allowances in the Ministry's 2026/2027 table: books €690, equipment €1,285, clothing €495, clinical training €900.",
         "Hospital training is paid by the Ministry.",
         "A return flight to Kuwait each year.",
         "Private health insurance in Ireland."
@@ -150,23 +157,23 @@ const MOUSTAQBILI_PROGRAMS = [
 
     necessaryExams: {
       satActStatus: null,
-      englishProficiency: "IELTS Academic 6.5, with at least 6.5 in each part.",
+      englishProficiency: "RCSI: IELTS 6.5 overall, no part below 6.0, in one sitting. Other universities set their own score.",
       ukviIeltsRequired: false,
       ukviIeltsNote: "A normal IELTS Academic is accepted for Ireland.",
-      otherExams: "An interview, a personal statement, a CV and 2 letters of recommendation from teachers."
+      otherExams: "RCSI: privately funded non-EU applicants sit the Casper test (next sitting 17 January 2027). It is not clear whether Ministry-sponsored students must. {{unconfirmed}}"
     },
 
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "1 February (direct applications or through the CAO website).",
+      regularDecision: "RCSI (non-EU applicants): 1 November 2026 - 15 January 2027. Through CAO (the Irish application system): 1 February 2027, 5:00 pm.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
     personalStatementReqs: {
-      platform: "Each university's own website (RCSI, Trinity, UCD)",
-      wordCount: "A personal statement on why you chose medicine, plus a CV.",
-      supplementalEssays: "An interview about ethics and how you deal with patients."
+      platform: "Each university's own website (RCSI, Trinity, UCD) or CAO",
+      wordCount: "Depends on the university.",
+      supplementalEssays: "Some universities interview applicants; RCSI's page does not mention one."
     },
 
     schoolGradSplit: {
@@ -176,12 +183,12 @@ const MOUSTAQBILI_PROGRAMS = [
         notes: "At least 90% in science subjects. Places are competitive and depend on passing the foundation year."
       },
       usDiploma: {
-        minScore: "GPA 3.85 out of 4.0",
-        coursePrereqs: "Chemistry, biology, and physics or math, with honours."
+        minScore: "RCSI: GPA 3.5 out of 4.0",
+        coursePrereqs: "RCSI 6-year course: GPA 3.5, with 3.0 in biology, chemistry, and physics or math. 5-year course: AP Chemistry, AP Biology and a third AP, with scores of 5, 5 and 4."
       },
       ukSystem: {
-        minScore: "ABB in 3 AS-Levels (RCSI: ABB at A-Level)",
-        aLevelSubjects: "Chemistry, plus two of biology, physics and math. Also 8 IGCSEs with A in sciences."
+        minScore: "RCSI: AAB at A-Level",
+        aLevelSubjects: "Chemistry, plus biology or physics, plus one of biology, physics, math or psychology. Also 6 GCSEs/IGCSEs with English and math at grade 4 (C)."
       }
     },
 
@@ -198,15 +205,17 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     visaRequirements: {
-      visaType: "Irish study visa",
+      visaType: "Irish long-stay study visa (D visa), applied for through the Irish visa office in Abu Dhabi",
       keyDocuments: [
-        "Unconditional offer letter from the university",
-        "Financial guarantee letter from the Ministry",
-        "Police clearance and a medical check",
-        "Proof of private health insurance"
+        "Acceptance letter from the university (full-time course, with the fees stated)",
+        "Proof you can access at least €10,000 (for example the Ministry's financial guarantee letter)",
+        "Passport valid for at least 12 months",
+        "A letter explaining why you want to study in Ireland",
+        "Private medical insurance (needed when you register)"
       ]
     },
 
+    // Not on the merit list for medicine; check each university's approval on the NBAQ search
     accreditedUniversities: [
       "Royal College of Surgeons in Ireland (RCSI), Dublin",
       "Trinity College Dublin",
@@ -217,24 +226,27 @@ const MOUSTAQBILI_PROGRAMS = [
   },
 
   // =========================================================================
-  // 3. United States - Cyber Security, Computer Engineering & AI
+  // 3. United States - Cyber Security, Computer Engineering & Computer Science
   // =========================================================================
   {
     id: "us-engineering-cs-2025",
-    title: "Cyber Security, Computer Engineering & AI",
-    titleAr: "الأمن السيبراني وهندسة الكمبيوتر والذكاء الاصطناعي",
+    title: "Cyber Security, Computer Engineering & Computer Science",
+    titleAr: "الأمن السيبراني وهندسة الحاسوب وعلوم الحاسوب",
     isMerit: true,
     country: "United States",
     countryAr: "الولايات المتحدة",
     category: "Engineering & Computing",
-    majors: ["Cyber Security Engineering", "Computer Engineering", "Computer Science", "Artificial Intelligence"],
+    majors: ["Cyber Security Engineering", "Computer Engineering", "Computer Science"],
+    planMajors: ["computer-engineering", "cyber-security-engineering", "computer-science"],
+    verifiedFields: ["minScore", "stream", "mohe", "platform", "visaType", "visaDocs", "universities", "pathway"],
 
+    verifiedAllowances: 3,
     stipend: { currency: "USD", variants: [{ key: "all", standard: 3900, merit: 5850 }] },
     monthlySalary: {
       allowancesSummary: [
         "Monthly allowance: $3,900 (merit students: $5,850).",
-        "Yearly book and equipment money (about $2,000).",
-        "A one-time technology allowance (about $1,200).",
+        MERIT_LINE_EN,
+        "Extra allowances in the Ministry's 2026/2027 table: books $1,815, equipment $1,285, clothing $1,030, clinical training $950.",
         "A return flight to Kuwait each year.",
         "Tuition is paid directly by the cultural office."
       ]
@@ -242,21 +254,21 @@ const MOUSTAQBILI_PROGRAMS = [
 
     necessaryExams: {
       satActStatus: "Not required by every university, but top universities expect SAT 1400+ or ACT 31+.",
-      englishProficiency: "TOEFL iBT 90+ (at least 22 in each part) or IELTS Academic 7.0+.",
+      englishProficiency: "TOEFL iBT 90+ (at least 22 in each part) or IELTS Academic 7.0+. Each university sets its own score.",
       ukviIeltsRequired: false,
       ukviIeltsNote: "A normal IELTS or TOEFL is accepted for the US.",
       otherExams: "AP Computer Science and AP Calculus help your application."
     },
 
     deadlines: {
-      earlyAction: "1 or 15 November (you can still choose another university)",
-      earlyDecision: "1 November (if accepted, you must go)",
-      regularDecision: "1 - 15 January",
+      earlyAction: "Usually 1 or 15 November (you can still choose another university). Each university sets its own date.",
+      earlyDecision: "Usually 1 November (if accepted, you must go). Each university sets its own date.",
+      regularDecision: "Usually 1 - 15 January. Each university sets its own date.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
     personalStatementReqs: {
-      platform: "Common App and university websites",
+      platform: "Common App (the 2026-27 essay prompts are the same 7 as last year) and university websites",
       wordCount: "Main essay: 250 - 650 words, plus short essays of 150 - 250 words.",
       supplementalEssays: "Short essays about your goals and interests."
     },
@@ -294,21 +306,27 @@ const MOUSTAQBILI_PROGRAMS = [
       keyDocuments: [
         "Form I-20 from your US university",
         "Financial guarantee letter from the Ministry",
-        "SEVIS I-901 fee receipt",
+        "SEVIS I-901 fee receipt ($350)",
         "DS-160 online form confirmation",
-        "Interview at the US Embassy in Kuwait"
+        "Interview at the US Embassy in Kuwait",
+        "All your social media accounts set to public (required since June 2025)"
       ]
     },
 
+    // Merit universities at bachelor's level, Ministerial Decree 15/2025
     accreditedUniversities: [
       "Massachusetts Institute of Technology (MIT)",
-      "Stanford University",
       "Carnegie Mellon University",
       "University of California, Berkeley",
       "Georgia Institute of Technology",
-      "Purdue University",
-      "University of Washington",
-      "University of Michigan - Ann Arbor"
+      "University of Illinois Urbana-Champaign",
+      "University of Michigan - Ann Arbor",
+      "Purdue University (also cyber security)",
+      "University of Texas at Austin (computer engineering)",
+      "Stanford University (computer science)",
+      "Princeton University (computer science)",
+      "Cornell University (computer science)",
+      "California Institute of Technology (computer science)"
     ]
   },
 
@@ -324,13 +342,16 @@ const MOUSTAQBILI_PROGRAMS = [
     countryAr: "أستراليا",
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MBBS / BMedSci / MD)", "Dentistry (BDS)"],
+    planMajors: ["medicine", "dentistry"],
+    verifiedFields: ["minScore", "stream", "publicNotes", "english", "ukvi", "otherExams", "mohe", "rd", "visaType", "visaDocs", "universities"],
 
-    verifiedAllowances: 2,
+    verifiedAllowances: 3,
     stipend: { currency: "AUD", variants: [{ key: "all", standard: 5850, merit: null }], meritNoteKey: "stipend_merit_unconfirmed" },
     monthlySalary: {
       allowancesSummary: [
         "Monthly allowance: A$5,850. The merit amount for Australia is not clear in the Ministry's table.",
         MERIT_LINE_EN,
+        "Extra allowances in the Ministry's 2026/2027 table: books A$1,715, equipment A$2,805, clothing A$1,070, clinical training A$1,400.",
         "Clinical and lab fees are covered.",
         "Student health insurance (OSHC).",
         "A return flight to Kuwait each year."
@@ -339,16 +360,16 @@ const MOUSTAQBILI_PROGRAMS = [
 
     necessaryExams: {
       satActStatus: "Not used for medicine in Australia.",
-      englishProficiency: "Foundation year: IELTS 5.5 in each part. Medicine: IELTS 7.0 in every part, or TOEFL 100.",
+      englishProficiency: "Monash: IELTS 7.0 with no part below 6.5, TOEFL iBT 94, or PTE 65. Curtin: IELTS 7.0 in every part.",
       ukviIeltsRequired: false,
-      ukviIeltsNote: "A normal IELTS, or PTE Academic 65+, is accepted for Australia.",
-      otherExams: "Monash: ISAT test score of 165 or more. Western Sydney and Murdoch: the Casper test."
+      ukviIeltsNote: "A normal IELTS, TOEFL or PTE Academic is accepted for Australia.",
+      otherExams: "Monash: ISAT score of at least 170, and 165 in each section (the 2027 interview cut-off was 178). Western Sydney: ISAT. Curtin: UCAT ANZ and Casper."
     },
 
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "31 August - 30 September (for the February start)",
+      regularDecision: "Monash 2027 entry: applications closed 30 June 2026 (ISAT by 8 May 2026); foundation and VTAC rounds closed 28 September 2026. Western Sydney accepts applications all year.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
@@ -362,7 +383,7 @@ const MOUSTAQBILI_PROGRAMS = [
       publicSchool: {
         minScore: "95% (GPA 3.75)",
         stream: "Science stream only",
-        notes: "Grade needed in the foundation year to move on: Western Sydney 9.35/10 and IELTS 7.0; Monash 90% (75% in English and chemistry) and ISAT 165; Flinders 88%; Curtin 75% (50% in English and chemistry)."
+        notes: "Monash foundation year (MUFY): 92%, with 75% in English and 75% in chemistry, to move on to medicine. Other universities set their own grades."
       },
       usDiploma: {
         minScore: "GPA 3.75 out of 4.0",
@@ -377,7 +398,7 @@ const MOUSTAQBILI_PROGRAMS = [
     courseSubjectFloors: [
       { subject: "Chemistry", minGrade: "A, or 95% in Thanawiya (75% in the Monash foundation year)" },
       { subject: "Biology", minGrade: "A, or 95% in Thanawiya" },
-      { subject: "English", minGrade: "IELTS 7.0 in every part, or TOEFL 100" }
+      { subject: "English", minGrade: "IELTS 7.0 (no part below 6.5 at Monash)" }
     ],
 
     pathway: {
@@ -392,17 +413,20 @@ const MOUSTAQBILI_PROGRAMS = [
         "Electronic Confirmation of Enrolment (CoE) from the university",
         "Financial guarantee letter from the Ministry",
         "Student health insurance (OSHC)",
-        "A Genuine Student (GS) statement"
+        "Genuine Student questions, answered in the visa application form"
       ]
     },
 
+    // Australia merit list (Medical & Health), Decision 60/2025
     accreditedUniversities: [
-      "Monash University",
-      "Western Sydney University",
-      "Flinders University",
-      "Curtin University",
-      "University of Melbourne",
-      "University of Sydney"
+      "Monash University (merit)",
+      "University of Sydney (merit)",
+      "University of Queensland (merit)",
+      "UNSW Sydney (merit)",
+      "University of Melbourne (merit; medicine is for graduates only)",
+      "Western Sydney University (not on the merit list)",
+      "Flinders University (not on the merit list)",
+      "Curtin University (not on the merit list)"
     ]
   },
 
@@ -418,24 +442,28 @@ const MOUSTAQBILI_PROGRAMS = [
     countryAr: "البحرين",
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MD)", "Medicine & Surgery (MB BCh BAO)"],
+    planMajors: ["medicine"],
+    verifiedFields: ["minScore", "stream", "publicNotes", "usDiploma", "ukSystem", "english", "ukvi", "otherExams", "sat", "mohe"],
 
+    verifiedAllowances: 2,
     stipend: { currency: "BHD", variants: [{ key: "all", standard: 1219, merit: null }] },
     monthlySalary: {
       allowancesSummary: [
         "Monthly allowance: BD 1,219.",
+        "Extra allowances in the Ministry's 2026/2027 table: books BD 495, equipment BD 594, clothing BD 247, clinical training BD 350.",
         "Tuition is paid directly to the university.",
         "Health cover in Bahrain and Kuwait.",
-        "Money for travel and books.",
+        "Money for travel.",
         "Hospital training in Kuwait and Bahrain."
       ]
     },
 
     necessaryExams: {
-      satActStatus: "Not needed for AGU. US-diploma students send their SAT scores.",
-      englishProficiency: "AGU: IELTS 5.5 or TOEFL 475. RCSI Bahrain: IELTS 6.5, at least 6.0 in each part.",
+      satActStatus: "Not needed: Kuwaiti students send their Kuwait University Qudrat results instead of the SAT (RCSI Bahrain).",
+      englishProficiency: "AGU: IELTS 5.5 (TOEFL 475 or 500; AGU's own pages differ). RCSI Bahrain: IELTS 6.5, no part below 6.0.",
       ukviIeltsRequired: false,
       ukviIeltsNote: "A normal IELTS is accepted for Bahrain.",
-      otherExams: "Kuwait University Qudrat tests (required for medicine) and a personal interview."
+      otherExams: "Kuwait University Qudrat tests and an interview. Kuwaiti students must be nominated by the Ministry, and AGU also runs its own admission tests."
     },
 
     deadlines: {
@@ -455,15 +483,15 @@ const MOUSTAQBILI_PROGRAMS = [
       publicSchool: {
         minScore: "97% (GPA 3.85)",
         stream: "Science stream only",
-        notes: "At least 90% in science subjects. The course takes 6 - 7 years."
+        notes: "The Ministry's plan asks for 97%. AGU's own minimum is 95%, with at least 90% in biology, chemistry, physics and math. The course takes 6 - 7 years."
       },
       usDiploma: {
-        minScore: "GPA 3.85 out of 4.0",
-        coursePrereqs: "Chemistry, biology, and math or physics."
+        minScore: "RCSI Bahrain: GPA 3.60 (92%)",
+        coursePrereqs: "Chemistry, biology, and math or physics. Kuwaiti students send Qudrat results instead of the SAT."
       },
       ukSystem: {
-        minScore: "AGU: ABB in 3 AS-Levels. RCSI Bahrain: BCC, BBB or ACC at A-Level",
-        aLevelSubjects: "Chemistry and biology, plus physics, math or psychology. Also IGCSE grade C in math and English."
+        minScore: "RCSI Bahrain: ABB or AAC (5-year course), BCC (6-year course)",
+        aLevelSubjects: "AGU sets its own A-Level requirements."
       }
     },
 
@@ -507,29 +535,33 @@ const MOUSTAQBILI_PROGRAMS = [
     countryAr: "مالطا",
     category: "Medical & Health",
     majors: ["Medicine & Surgery (MD)", "Medical Foundation Program (MFP)"],
+    planMajors: ["medicine"],
+    verifiedFields: ["minScore", "stream", "english", "otherExams", "mohe", "rd", "pathway", "visaType", "visaDocs"],
 
+    verifiedAllowances: 2,
     stipend: { currency: "EUR", variants: [{ key: "all", standard: 3450, merit: null }] },
     monthlySalary: {
       allowancesSummary: [
         "Monthly allowance: €3,450.",
+        "Extra allowances in the Ministry's 2026/2027 table: books €690, equipment €1,360, clothing €495, clinical training €900.",
         "Tuition is paid by the Ministry.",
-        "European health insurance card (EHIC).",
+        "Health insurance (Malta requires at least €100,000 cover for the residence permit).",
         "A return flight to Kuwait each year."
       ]
     },
 
     necessaryExams: {
       satActStatus: "Not needed.",
-      englishProficiency: "IELTS Academic 5.5 in each part, or TOEFL iBT 61 (at least 17 in writing).",
+      englishProficiency: "University of Malta: IELTS 6.0 overall, with 6.0 in writing and at least 5.5 in the other parts, or TOEFL iBT 80 with 20 in writing.",
       ukviIeltsRequired: false,
       ukviIeltsNote: "A normal IELTS Academic is accepted for Malta.",
-      otherExams: "An online interview."
+      otherExams: "An interview and/or a written test, if the university's admissions board asks for one."
     },
 
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "1 July",
+      regularDecision: "1 July (the 2026 deadline for students who need a visa; the 2027 date is not posted yet)",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
@@ -558,41 +590,44 @@ const MOUSTAQBILI_PROGRAMS = [
     courseSubjectFloors: [
       { subject: "Chemistry", minGrade: "90% in Thanawiya, or B at AS-Level" },
       { subject: "Biology", minGrade: "90% in Thanawiya, or B at AS-Level" },
-      { subject: "English", minGrade: "IELTS 5.5 in each part, or TOEFL 61" }
+      { subject: "English", minGrade: "IELTS 6.0 (writing 6.0), or TOEFL iBT 80" }
     ],
 
     pathway: {
-      entryType: "One foundation year, then a 5-year medical degree",
+      entryType: "One-year Certificate in Foundation Studies in Medical and Dental Sciences, then the 5-year medical degree",
       foundationNeeded: true,
-      explanation: "You first do the Medical Foundation Programme, then the 5-year medical degree."
+      explanation: "The foundation year runs under the University of Malta's agreement with Kuwait. Passing it guarantees a place in Medicine and Surgery. You also need Medical Maltese (a short language course or certificate)."
     },
 
     visaRequirements: {
-      visaType: "Schengen student visa (Malta)",
+      visaType: "National long-stay study visa (D visa), then a residence permit (Identità e-Residence) in Malta",
       keyDocuments: [
         "Acceptance letter from the University of Malta",
-        "Financial guarantee letter from the Ministry",
-        "Medical check",
+        "Financial guarantee letter from the Ministry (proof of funds)",
+        "Health insurance with at least €100,000 cover",
+        "Proof of accommodation (rental agreement)",
         "Valid Kuwaiti passport"
       ]
     },
 
     accreditedUniversities: [
-      "University of Malta (Msida campus)",
-      "Medical Foundation Programme (MFP) centre"
+      "University of Malta (Msida campus)"
     ]
   }
 ];
 
-// Search filters. Only countries that have programs listed above (Canada is not in Plan 2026/2027).
+// Search filters: the 9 countries in Plan 2026/2027 (Canada is not included).
 const MOUSTAQBILI_FILTERS = {
   countries: [
     { value: "United States", label: "United States", labelAr: "الولايات المتحدة" },
     { value: "United Kingdom", label: "United Kingdom", labelAr: "المملكة المتحدة" },
     { value: "Ireland", label: "Ireland", labelAr: "أيرلندا" },
     { value: "Australia", label: "Australia", labelAr: "أستراليا" },
+    { value: "New Zealand", label: "New Zealand", labelAr: "نيوزيلندا" },
+    { value: "Malta", label: "Malta", labelAr: "مالطا" },
     { value: "Bahrain", label: "Bahrain", labelAr: "البحرين" },
-    { value: "Malta", label: "Malta", labelAr: "مالطا" }
+    { value: "Saudi Arabia", label: "Saudi Arabia", labelAr: "السعودية" },
+    { value: "United Arab Emirates", label: "United Arab Emirates", labelAr: "الإمارات" }
   ],
   // minPct/maxPct: a program is shown when its public-school floor is <= maxPct
   percentageRanges: [
@@ -602,14 +637,7 @@ const MOUSTAQBILI_FILTERS = {
     { value: "85.0-89.9", label: "85% - 89.9%", minPct: 85.0, maxPct: 89.9 },
     { value: "80.0-84.9", label: "80% - 84.9%", minPct: 80.0, maxPct: 84.9 }
   ],
-  majors: [
-    { value: "Medicine & Surgery", label: "Medicine & Surgery", labelAr: "الطب والجراحة", category: "Medical & Health", categoryAr: "التخصصات الطبية والصحية" },
-    { value: "Dentistry (BDS)", label: "Dentistry", labelAr: "طب الأسنان", category: "Medical & Health", categoryAr: "التخصصات الطبية والصحية" },
-    { value: "Computer Science", label: "Computer Science", labelAr: "علوم الكمبيوتر", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
-    { value: "Computer Engineering", label: "Computer Engineering", labelAr: "هندسة الكمبيوتر", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
-    { value: "Cyber Security Engineering", label: "Cyber Security", labelAr: "الأمن السيبراني", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" },
-    { value: "Artificial Intelligence", label: "Artificial Intelligence", labelAr: "الذكاء الاصطناعي", category: "Engineering & Computing", categoryAr: "الهندسة والحوسبة" }
-  ]
+  // Majors come from plan-majors-data.js (every major in the 2026/2027 plan)
 };
 
 // Currencies offered in the calculators
@@ -629,14 +657,14 @@ const MOUSTAQBILI_CURRENCIES = {
 };
 
 // Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
-// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, 2026-10-11.
-// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-11 (CBK does not publish them).
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-12.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-12 (CBK does not publish them).
 const MOUSTAQBILI_FX_FALLBACK = {
-  date: "2026-10-11",
+  date: "2026-10-12",
   rates: {
     KWD: 1,
-    USD: 3.2452, GBP: 2.4524, EUR: 2.8970, SAR: 12.1694, AED: 11.9195, BHD: 1.2204,
-    AUD: 4.6329, NZD: 5.7397, CAD: 4.6053, JOD: 2.2835, EGP: 168.904
+    USD: 3.2452, GBP: 2.4496, EUR: 2.8946, SAR: 12.1694, AED: 11.9195, BHD: 1.2204,
+    AUD: 4.6252, NZD: 5.7471, CAD: 4.5982, JOD: 2.2796, EGP: 169.4706
   }
 };
 
@@ -656,7 +684,7 @@ const MOHE_PLAN_2026 = {
     "Medicine, dentistry, veterinary, pharmacy and engineering applicants must sit the Kuwait University aptitude tests (Qudrat); an equivalent average is used.",
     "United Kingdom: UKVI IELTS is required. For medicine and dentistry, failing the foundation year or the interview ends the placement, and the foundation year cannot be repeated. Other students may repeat it once.",
     "UK medicine: UCAT 1,650 or more, and IELTS 7.0 (no band below 6.5) for the foundation year.",
-    "Merit (excellence) programme: at least 90% for all majors and 95% for medicine, dentistry and pharmacy. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
+    "Merit (excellence) programme: 95% for medicine, dentistry and pharmacy; for other majors the plan PDF says at least 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
   ],
   rulesAr: [
     "العمر من 16 إلى 23 سنة، وشهادة ثانوية من العام 2024/2025 أو 2025/2026.",
@@ -664,7 +692,7 @@ const MOHE_PLAN_2026 = {
     "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة أداء اختبارات القدرات بجامعة الكويت، ويُعتمد المعدل المكافئ.",
     "المملكة المتحدة: يُشترط UKVI IELTS. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، ولا تجوز إعادة السنة التأسيسية. ويجوز لغيرهم إعادتها مرة واحدة.",
     "الطب في المملكة المتحدة: UCAT بدرجة 1,650 فأكثر، وIELTS 7.0 (ولا يقل أي قسم عن 6.5) للسنة التأسيسية.",
-    "برنامج التميز: 90% على الأقل لجميع التخصصات و95% للطب وطب الأسنان والصيدلة. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
+    "برنامج التميز: 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات تذكر خطة الوزارة (PDF) 90% على الأقل، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
   ],
   // Minimum high-school % by country and major (Plan 2026/2027)
   floors: [
@@ -754,41 +782,57 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     campusLocationAr: "شارع الفردوس، قطعة 3، الخالدية",
     scholarshipFunding: "Free tuition for Kuwaiti students",
     scholarshipFundingAr: "دراسة مجانية للطلبة الكويتيين",
-    admissionSystem: "AASU admission system (aasu.edu.kw). 1,146 students were admitted for 2026/2027.",
-    admissionSystemAr: "نظام القبول بجامعة عبد الله السالم (aasu.edu.kw). قُبل 1,146 طالباً وطالبة للعام 2026/2027.",
-    aptitudeExams: "Kuwait University aptitude tests (Qudrat) are used for AASU applications.",
-    aptitudeExamsAr: "تُعتمد اختبارات القدرات بجامعة الكويت للتقديم في جامعة عبد الله السالم.",
-    floorLabelEn: "Minimum",
-    floorLabelAr: "الحد الأدنى",
-    // Majors come from the previous edition of this site and have not been re-checked (majorsFlag)
+    admissionSystem: "Apply on aasu.edu.kw (admissions email: admissions@aasu.edu.kw). 1,146 students were admitted for 2026/2027.",
+    admissionSystemAr: "التقديم عبر aasu.edu.kw (بريد القبول: admissions@aasu.edu.kw). قُبل 1,146 طالباً وطالبة للعام 2026/2027.",
+    aptitudeExams: "Applicants are ranked by high school % plus Kuwait University's English and Math aptitude tests (Qudrat). The weights differ by college.",
+    aptitudeExamsAr: "يُرتب المتقدمون حسب نسبة الثانوية مع اختباري الإنجليزي والرياضيات في القدرات بجامعة الكويت، وتختلف الأوزان حسب الكلية.",
+    floorLabelEn: "Minimum to apply, 2026/27",
+    floorLabelAr: "الحد الأدنى للتقديم 2026/2027",
+    // Official AASU undergraduate admissions page, AY 2026/2027 (checked 2026-10-13).
+    // weights: AASU's own ranking formula (hs = high school, eng/math = Qudrat tests)
     colleges: [
       {
-        collegeName: "Computing & Systems", collegeNameAr: "الحوسبة والنظم", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        collegeName: "Medicine & Health Sciences (MD)", collegeNameAr: "الطب والعلوم الصحية (دكتور في الطب)", minThanawiya: "90% science", minThanawiyaAr: "90% علمي",
+        weights: { hs: 0.75, eng: 0.15, math: 0.10 },
+        conditionEn: "Equivalent average 90% or more; IELTS 6.5 in every band; MMI interview (final rank: equivalent average 80% + interview 20%); Fall intake only, Kuwaiti students only",
+        conditionAr: "معدل مكافئ 90% فأكثر؛ IELTS 6.5 في كل قسم؛ مقابلة MMI (الترتيب النهائي: المعدل المكافئ 80% + المقابلة 20%)؛ القبول في فصل الخريف فقط وللطلبة الكويتيين فقط"
+      },
+      {
+        collegeName: "Computer Systems & Engineering", collegeNameAr: "هندسة وأنظمة الحاسوب", minThanawiya: "80% science", minThanawiyaAr: "80% علمي",
+        weights: { hs: 0.65, eng: 0.15, math: 0.20 },
         majors: [
-          { en: "Artificial Intelligence", ar: "الذكاء الاصطناعي" },
-          { en: "Cyber Security", ar: "الأمن السيبراني" },
-          { en: "Software Engineering", ar: "هندسة البرمجيات" }
+          { en: "Computer Systems Engineering", ar: "هندسة أنظمة الحاسوب" },
+          { en: "Software Engineering", ar: "هندسة البرمجيات" },
+          { en: "Cybersecurity Engineering", ar: "هندسة الأمن السيبراني" },
+          { en: "Data Science & AI", ar: "علم البيانات والذكاء الاصطناعي" }
         ]
       },
       {
-        collegeName: "Engineering & Energy", collegeNameAr: "الهندسة والطاقة", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        collegeName: "Engineering & Energy", collegeNameAr: "الهندسة والطاقة", minThanawiya: "80% science", minThanawiyaAr: "80% علمي",
+        weights: { hs: 0.65, eng: 0.15, math: 0.20 },
         majors: [
-          { en: "Energy Engineering", ar: "هندسة الطاقة" },
-          { en: "Systems Engineering", ar: "هندسة النظم" },
-          { en: "Environmental Engineering", ar: "الهندسة البيئية" }
+          { en: "Agricultural & Bioresources Engineering", ar: "الهندسة الزراعية والموارد الحيوية" },
+          { en: "Biomedical & Instrumentation Engineering", ar: "الهندسة الطبية الحيوية والأجهزة" },
+          { en: "Energy Systems Engineering", ar: "هندسة أنظمة الطاقة" },
+          { en: "Environmental & Sustainability Engineering", ar: "الهندسة البيئية والاستدامة" },
+          { en: "Materials Science & Engineering", ar: "علوم وهندسة المواد" },
+          { en: "Robotics & Mechatronics Engineering", ar: "هندسة الروبوتات والميكاترونكس" }
         ]
       },
       {
-        collegeName: "Business & Entrepreneurship", collegeNameAr: "الأعمال وريادة الأعمال", minThanawiya: "Not published", minThanawiyaAr: "غير منشور", flag: "unconfirmed", majorsFlag: "unverified",
+        collegeName: "Business & Entrepreneurship", collegeNameAr: "الأعمال وريادة الأعمال", minThanawiya: "80% science / 85% arts", minThanawiyaAr: "80% علمي / 85% أدبي",
+        weights: { hs: 0.70, eng: 0.15, math: 0.15 },
+        conditionEn: "Arts stream accepted only for Entrepreneurship & Innovation and Digital Marketing",
+        conditionAr: "يُقبل القسم الأدبي فقط في تخصصي ريادة الأعمال والابتكار والتسويق الرقمي",
         majors: [
-          { en: "FinTech", ar: "التكنولوجيا المالية" },
-          { en: "Supply Chain", ar: "سلاسل الإمداد" },
-          { en: "Business Analytics", ar: "تحليلات الأعمال" }
+          { en: "Entrepreneurship & Innovation", ar: "ريادة الأعمال والابتكار" },
+          { en: "Digital Marketing", ar: "التسويق الرقمي" },
+          { en: "Supply Chain & Logistics Management", ar: "إدارة سلاسل الإمداد والخدمات اللوجستية" }
         ]
       }
     ],
-    sourceNote: "AASU has not published per-college cutoffs for 2026/2027. Check aasu.edu.kw.",
-    sourceNoteAr: "لم تنشر الجامعة الحدود الدنيا لكل كلية للعام 2026/2027. راجع aasu.edu.kw."
+    sourceNote: "Source: Abdullah Al-Salem University undergraduate admissions, AY 2026/2027 (checked 13 October 2026). These are minimums to apply, not the lowest grades admitted.",
+    sourceNoteAr: "المصدر: صفحة القبول للبكالوريوس بجامعة عبد الله السالم للعام 2026/2027 (آخر مراجعة 13 أكتوبر 2026). هذه حدود دنيا للتقديم، وليست أدنى معدلات مقبولة."
   },
   {
     id: "puc",
@@ -800,8 +844,8 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     campusLocationAr: "AUM، GUST، AUK، KCST، ACK، AU وغيرها من الجامعات الخاصة المعتمدة",
     scholarshipFunding: "Tuition paid by the government",
     scholarshipFundingAr: "الرسوم الدراسية على نفقة الحكومة",
-    admissionSystem: "registration.puc.edu.kw. Registration for 2026/2027 ran 3 - 13 August 2026.",
-    admissionSystemAr: "registration.puc.edu.kw. أُقيم التسجيل للعام 2026/2027 من 3 إلى 13 أغسطس 2026.",
+    admissionSystem: "registration.puc.edu.kw. Registration for 2026/2027 ran 3 - 13 August 2026, and 7,989 students were accepted.",
+    admissionSystemAr: "registration.puc.edu.kw. أُقيم التسجيل للعام 2026/2027 من 3 إلى 13 أغسطس 2026، وقُبل 7,989 طالباً وطالبة.",
     aptitudeExams: "Engineering selection: high school 65% + Math test 20% + English test 15%.",
     aptitudeExamsAr: "المفاضلة للهندسة: الثانوية 65% + اختبار الرياضيات 20% + اختبار الإنجليزي 15%.",
     floorLabelEn: "Minimum",

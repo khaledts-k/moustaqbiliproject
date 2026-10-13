@@ -208,6 +208,27 @@ const NAVIGATE_GUIDE = {
           ]
         }
       ]
+    },
+
+    // ---------------------------------------------------------------------
+    {
+      id: "contact",
+      titleEn: "Get in touch",
+      titleAr: "تواصل معنا",
+      introEn: "Email us about this website. For an official answer about your own scholarship, email the Ministry.",
+      introAr: "راسلنا بخصوص هذا الموقع. وللحصول على إجابة رسمية عن بعثتك، راسل الوزارة.",
+      blocks: [
+        {
+          type: "contacts",
+          items: [
+            { type: "email", labelEn: "Moustaqbili: questions about this site, or a mistake to report", labelAr: "مستقبلي: أسئلة عن الموقع أو الإبلاغ عن خطأ", value: "meshoabul@gmail.com" },
+            { type: "email", labelEn: "Ministry of Higher Education: scholarship guidance for new applicants", labelAr: "وزارة التعليم العالي: الإرشاد في البعثات للمتقدمين الجدد", value: "scholarship_guidance_eservice@mohe.edu.kw" }
+          ]
+        },
+        { type: "links", items: [
+          { labelEn: "All Ministry department emails", labelAr: "بريد جميع إدارات الوزارة", url: "contact.html#emails" }
+        ] }
+      ]
     }
   ]
 };

@@ -82,6 +82,11 @@ function flag(kind) {
   return `<span class="flag flag-${kind}" title="${t(`flag_${kind}_tip`)}">${t(`flag_${kind}`)}</span>`;
 }
 
+// Data text can carry "{{unconfirmed}}" / "{{unverified}}" where a status label belongs
+function withFlags(str) {
+  return String(str ?? "").replace(/\s*\{\{(unconfirmed|unverified)\}\}/g, (m, kind) => ` ${flag(kind)}`);
+}
+
 // =========================================================================
 // 2. Exchange rates (live with offline fallback)
 // =========================================================================
@@ -246,17 +251,24 @@ function populateLandingSelects() {
   fill(document.getElementById("select-country"), filters.countries, c => opt(c.value, ar ? c.labelAr : c.label));
   fill(document.getElementById("select-percentage"), filters.percentageRanges, p => opt(p.value, p.label));
 
+  // Every major in the 2026/2027 plan, grouped by discipline and sorted by name
   const majorSelect = document.getElementById("select-major");
-  if (majorSelect) {
-    const groups = {};
-    filters.majors.forEach(m => (groups[m.category] = groups[m.category] || []).push(m));
-    fill(majorSelect, Object.entries(groups), ([cat, majors]) => {
+  if (majorSelect && window.PLAN_MAJORS) {
+    const name = m => ar ? m.ar : m.en;
+    fill(majorSelect, window.PLAN_DISCIPLINES, d => {
       const g = document.createElement("optgroup");
-      g.label = ar ? (majors[0].categoryAr || cat) : cat;
-      majors.forEach(m => g.appendChild(opt(m.value, ar ? m.labelAr : m.label)));
+      g.label = ar ? d.ar : d.en;
+      window.PLAN_MAJORS
+        .filter(m => m.discipline === d.id)
+        .sort((a, b) => name(a).localeCompare(name(b), ar ? "ar" : "en"))
+        .forEach(m => g.appendChild(opt(m.id, name(m))));
       return g;
     });
   }
+}
+
+function planMajorById(id) {
+  return (window.PLAN_MAJORS || []).find(m => m.id === id);
 }
 
 function initLandingSearch() {
@@ -371,6 +383,74 @@ function stipendHostRange(prog, tier) {
   return min === max ? `${formatNumber(min)} ${s.currency}` : `${formatNumber(min)} - ${formatNumber(max)} ${s.currency}`;
 }
 
+// "All majors in the 2026/2027 plan" on the results page (plan-majors-data.js).
+// Uses the same filters as the program cards; returns how many majors are shown.
+function renderPlanMajors(f) {
+  const section = document.getElementById("plan-majors-section");
+  const box = document.getElementById("plan-majors");
+  const countEl = document.getElementById("plan-majors-count");
+  if (!section || !box || !window.PLAN_MAJORS) return 0;
+  const ar = isArabic();
+
+  // Merit status depends on the university, not the major, so the list cannot be filtered by it
+  if (f.isMeritOnly) {
+    box.innerHTML = `<p class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-600">${t('plan_majors_merit_note')}</p>`;
+    if (countEl) countEl.textContent = "";
+    return 0;
+  }
+
+  const range = f.selectedPercentage ? getFilterConfig().percentageRanges.find(r => r.value === f.selectedPercentage) : null;
+  const query = (f.keywordQuery || "").toLowerCase();
+  const countryName = c => ar ? (window.PLAN_COUNTRIES[c] || c) : c;
+
+  const shown = window.PLAN_MAJORS.map(m => {
+    if (f.selectedMajor && m.id !== f.selectedMajor) return null;
+    const countries = Object.entries(m.minPct).filter(([c, pct]) =>
+      (!f.selectedCountry || c === f.selectedCountry) && (!range || pct <= range.maxPct));
+    if (!countries.length) return null;
+    if (query) {
+      const disc = window.PLAN_DISCIPLINES.find(d => d.id === m.discipline);
+      const text = `${m.en} ${m.ar} ${disc?.en} ${disc?.ar} ${countries.map(([c]) => `${c} ${window.PLAN_COUNTRIES[c]}`).join(" ")}`.toLowerCase();
+      if (!text.includes(query)) return null;
+    }
+    return { m, countries };
+  }).filter(Boolean);
+
+  if (countEl) countEl.textContent = (shown.length === 1 ? t('plan_majors_count_one') : t('plan_majors_count').replace("{n}", shown.length));
+  const anyFilter = !!(f.selectedMajor || f.selectedCountry || f.selectedPercentage || query);
+
+  box.innerHTML = window.PLAN_DISCIPLINES.map(d => {
+    const rows = shown.filter(s => s.m.discipline === d.id)
+      .sort((a, b) => (ar ? a.m.ar : a.m.en).localeCompare(ar ? b.m.ar : b.m.en, ar ? "ar" : "en"));
+    if (!rows.length) return "";
+    return `
+      <details class="plan-group" ${anyFilter ? "open" : ""}>
+        <summary>
+          <span class="font-bold text-slate-900">${ar ? d.ar : d.en}</span>
+          <span class="text-sm text-slate-500">${(rows.length === 1 ? t('plan_majors_count_one') : t('plan_majors_count').replace("{n}", rows.length))}</span>
+        </summary>
+        <div class="mt-3 space-y-2">
+          ${rows.map(({ m, countries }) => `
+            <div class="p-4 rounded-xl bg-white border border-slate-200">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h4 class="text-base font-bold text-slate-900">${ar ? m.ar : m.en}</h4>
+                <span class="text-xs text-slate-500">${t(m.stream === "both" ? 'plan_stream_both' : 'plan_stream_science')}</span>
+              </div>
+              <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                ${countries.map(([c, pct]) => `
+                  <span class="major-pill">
+                    <span class="major-pill-name">${countryName(c)}</span>
+                    <span class="major-pill-grade" dir="ltr">${pct}%</span>
+                  </span>${m.unconfirmed.includes(c) ? flag('unconfirmed') : ''}`).join("")}
+              </div>
+            </div>`).join("")}
+        </div>
+      </details>`;
+  }).join("");
+
+  return shown.length;
+}
+
 let rerenderResults = null;
 let openModal = null; // { kind: 'requirements' | 'salary', prog }
 
@@ -418,7 +498,10 @@ function initResultsPage() {
     const chips = [];
     if (selectedCountry) chips.push({ type: "country", label: `${t('chip_country')}: ${labelFor(f.countries, selectedCountry)}` });
     if (selectedPercentage) chips.push({ type: "percentage", label: `${t('chip_percentage')}: ${labelFor(f.percentageRanges, selectedPercentage, "label", "label")}` });
-    if (selectedMajor) chips.push({ type: "major", label: `${t('chip_major')}: ${labelFor(f.majors, selectedMajor)}` });
+    if (selectedMajor) {
+      const m = planMajorById(selectedMajor);
+      chips.push({ type: "major", label: `${t('chip_major')}: ${m ? (isArabic() ? m.ar : m.en) : selectedMajor}` });
+    }
     if (isMeritOnly) chips.push({ type: "merit", label: t('chip_merit') });
 
     if (chips.length === 0) {
@@ -473,10 +556,8 @@ function initResultsPage() {
       if (range && reqMin > range.maxPct) return false;
     }
 
-    if (selectedMajor) {
-      const m = selectedMajor.toLowerCase();
-      if (!prog.majors.some(x => x.toLowerCase().includes(m) || m.includes(x.toLowerCase()))) return false;
-    }
+    // Majors are plan ids (plan-majors-data.js); each detailed program lists the ids it covers
+    if (selectedMajor && !(prog.planMajors || []).includes(selectedMajor)) return false;
 
     if (keywordQuery) {
       const text = `${prog.title} ${prog.titleAr} ${prog.country} ${prog.countryAr} ${prog.category} ${prog.majors.join(" ")} ${prog.accreditedUniversities.join(" ")}`.toLowerCase();
@@ -491,9 +572,11 @@ function initResultsPage() {
 
     const filtered = (window.MOUSTAQBILI_PROGRAMS || []).filter(matches);
     if (countBadge) countBadge.textContent = `${filtered.length} ${filtered.length === 1 ? t('results_count_one') : t('results_count_many')}`;
+    const planShown = renderPlanMajors({ selectedCountry, selectedPercentage, selectedMajor, isMeritOnly, keywordQuery });
     if (!container) return;
     container.innerHTML = "";
-    emptyState?.classList.toggle("hidden", filtered.length > 0);
+    document.getElementById("detailed-heading")?.classList.toggle("hidden", filtered.length === 0);
+    emptyState?.classList.toggle("hidden", filtered.length > 0 || planShown > 0);
 
     const isAr = isArabic();
     filtered.forEach(baseProg => {
@@ -626,10 +709,14 @@ function openRequirementsModal(baseProg) {
   const ex = prog.necessaryExams;
   const dl = prog.deadlines;
 
-  const row = (label, value) => value && value !== 'N/A' && value !== 'غير متاح' ? `
+  // Details not in verifiedFields (data.js) were not re-checked and get a "Not checked yet" label
+  const checked = new Set(baseProg.verifiedFields || []);
+  const mark = (key) => checked.has(key) ? '' : ` ${flag('unverified')}`;
+
+  const row = (label, value, key) => value && value !== 'N/A' && value !== 'غير متاح' ? `
     <div class="p-3 bg-slate-50 rounded border border-slate-200">
       <span class="text-xs font-bold text-slate-500 block mb-0.5">${label}</span>
-      <span class="text-slate-800">${value}</span>
+      <span class="text-slate-800">${withFlags(value)}${mark(key)}</span>
     </div>` : '';
 
   const content = showProgramModal(`
@@ -644,28 +731,28 @@ function openRequirementsModal(baseProg) {
 
     <div class="p-5 max-h-[62vh] overflow-y-auto bg-white text-xs sm:text-sm">
 
-      <p class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded px-3 py-2 mb-4">${t('req_verified_note')} ${flag('unverified')}</p>
+      <p class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded px-3 py-2 mb-4">${t('req_verified_note')}</p>
 
       <div id="tab-grades" class="tab-pane space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
             <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_public_school')}</span>
-            <span class="text-base font-black text-emerald-800 block">${g.publicSchool.minScore}</span>
-            <span class="text-xs text-slate-600 font-semibold block mt-0.5">${g.publicSchool.stream}</span>
-            <p class="text-xs text-slate-500 mt-2">${g.publicSchool.notes}</p>
+            <span class="text-base font-black text-emerald-800 block">${g.publicSchool.minScore}${mark('minScore')}</span>
+            <span class="text-xs text-slate-600 font-semibold block mt-0.5">${g.publicSchool.stream}${mark('stream')}</span>
+            <p class="text-xs text-slate-500 mt-2">${withFlags(g.publicSchool.notes)}${mark('publicNotes')}</p>
           </div>
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_us_diploma')}</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_us_diploma')}${mark('usDiploma')}</span>
             <span class="text-base font-black text-emerald-800 block">${g.usDiploma.minScore}</span>
-            <p class="text-xs text-slate-500 mt-2">${g.usDiploma.coursePrereqs}</p>
+            <p class="text-xs text-slate-500 mt-2">${withFlags(g.usDiploma.coursePrereqs)}</p>
           </div>
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
-            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_uk_system')}</span>
+            <span class="text-xs font-bold text-slate-900 block mb-1">${t('modal_uk_system')}${mark('ukSystem')}</span>
             <span class="text-base font-black text-emerald-800 block">${g.ukSystem.minScore}</span>
-            <p class="text-xs text-slate-500 mt-2">${g.ukSystem.aLevelSubjects}</p>
+            <p class="text-xs text-slate-500 mt-2">${withFlags(g.ukSystem.aLevelSubjects)}</p>
           </div>
         </div>
-        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">${t('modal_floors_heading')}</h4>
+        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">${t('modal_floors_heading')}${mark('floors')}</h4>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           ${prog.courseSubjectFloors.map(c => `
             <div class="p-3 bg-slate-50 border border-slate-200 rounded text-xs">
@@ -678,26 +765,26 @@ function openRequirementsModal(baseProg) {
       <div id="tab-exams" class="tab-pane hidden space-y-3 text-xs">
         <div class="p-4 rounded-xl border ${ex.ukviIeltsRequired ? 'bg-amber-50 border-amber-300 text-amber-950' : 'bg-slate-50 border-slate-200 text-slate-700'}">
           <strong class="block mb-1">${t('modal_language_advisory')}</strong>
-          <span>${ex.ukviIeltsNote}</span>
+          <span>${ex.ukviIeltsNote}${mark('ukvi')}</span>
         </div>
-        ${row(t('modal_english_heading'), ex.englishProficiency)}
-        ${row(t('modal_other_exams'), ex.otherExams)}
-        ${row(t('modal_sat_heading'), ex.satActStatus)}
-        ${row(t('modal_platform'), prog.personalStatementReqs.platform)}
-        ${row(t('modal_word_count'), prog.personalStatementReqs.wordCount)}
-        ${row(t('modal_supplemental'), prog.personalStatementReqs.supplementalEssays)}
+        ${row(t('modal_english_heading'), ex.englishProficiency, 'english')}
+        ${row(t('modal_other_exams'), ex.otherExams, 'otherExams')}
+        ${row(t('modal_sat_heading'), ex.satActStatus, 'sat')}
+        ${row(t('modal_platform'), prog.personalStatementReqs.platform, 'platform')}
+        ${row(t('modal_word_count'), prog.personalStatementReqs.wordCount, 'wordCount')}
+        ${row(t('modal_supplemental'), prog.personalStatementReqs.supplementalEssays, 'supplemental')}
       </div>
 
       <div id="tab-deadlines" class="tab-pane hidden space-y-3 text-xs">
         <div class="p-3 bg-emerald-50 rounded border border-emerald-200">
           <span class="text-xs font-bold text-emerald-900 block mb-0.5">${t('modal_mohe_window')}</span>
-          <span class="text-emerald-950 font-semibold">${dl.mohePortalWindow}</span>
+          <span class="text-emerald-950 font-semibold">${dl.mohePortalWindow}${mark('mohe')}</span>
         </div>
-        ${row(t('modal_ea'), dl.earlyAction)}
-        ${row(t('modal_ed'), dl.earlyDecision)}
-        ${row(t('modal_rd'), dl.regularDecision)}
+        ${row(t('modal_ea'), dl.earlyAction, 'ea')}
+        ${row(t('modal_ed'), dl.earlyDecision, 'ed')}
+        ${row(t('modal_rd'), dl.regularDecision, 'rd')}
         <div class="p-3 bg-slate-50 rounded border border-slate-200">
-          <span class="text-xs font-bold text-slate-500 block mb-0.5">${t('modal_pathway_heading')}</span>
+          <span class="text-xs font-bold text-slate-500 block mb-0.5">${t('modal_pathway_heading')}${mark('pathway')}</span>
           <span class="text-slate-800 block">${prog.pathway.entryType}</span>
           <span class="font-bold block mt-1 ${prog.pathway.foundationNeeded ? 'text-amber-800' : 'text-emerald-800'}">${prog.pathway.foundationNeeded ? t('modal_foundation_yes') : t('modal_foundation_no')}</span>
           <p class="text-slate-600 mt-1">${prog.pathway.explanation}</p>
@@ -705,9 +792,9 @@ function openRequirementsModal(baseProg) {
       </div>
 
       <div id="tab-visa" class="tab-pane hidden space-y-3 text-xs">
-        ${row(t('modal_visa_type'), prog.visaRequirements.visaType)}
+        ${row(t('modal_visa_type'), prog.visaRequirements.visaType, 'visaType')}
         <div class="p-3 bg-slate-50 rounded border border-slate-200">
-          <span class="text-xs font-bold text-slate-500 block mb-1">${t('modal_visa_docs')}</span>
+          <span class="text-xs font-bold text-slate-500 block mb-1">${t('modal_visa_docs')}${mark('visaDocs')}</span>
           <ul class="space-y-1 list-disc ps-5 text-slate-700">${prog.visaRequirements.keyDocuments.map(d => `<li>${d}</li>`).join("")}</ul>
         </div>
         <div class="p-3 bg-amber-50 rounded border border-amber-300 text-amber-950">
@@ -824,7 +911,7 @@ function openSalaryModal(baseProg, keepInputs = false) {
       </section>
 
       <section>
-        <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')} ${flag('unverified')}</h3>
+        <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${(baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`}</h3>
         <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
           ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
@@ -947,7 +1034,7 @@ function renderQudratPage() {
   if (!data || !root) return;
   const c = data.currentCycle;
   const status = qudratStatus(c);
-  const list = (items) => `<ul class="space-y-1.5">${items.map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
+  const list = (items) => `<ul class="space-y-1.5">${items.map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(i)}</span></li>`).join("")}</ul>`;
   const arr = (obj, field) => (isArabic() ? obj[`${field}Ar`] : obj[`${field}En`]) || obj[`${field}En`] || [];
 
   const steps = [
@@ -1292,7 +1379,7 @@ function planHtml() {
 
     <h3 class="text-base font-bold text-slate-900 mb-3">${t('plan_rules_title')}</h3>
     <ul class="space-y-3 text-sm text-slate-700 leading-relaxed mb-10">
-      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${r}</span></li>`).join("")}
+      ${rules.map(r => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(r)}</span></li>`).join("")}
     </ul>
 
     <h3 class="text-base font-bold text-slate-900 mb-1">${t('plan_floors_title')}</h3>
@@ -1337,7 +1424,7 @@ function moreInfoBlock(block) {
   const flagHtml = (item) => item.flag ? ` ${flag(item.flag)}` : '';
   switch (block.type) {
     case "text":
-      return `<p class="text-sm text-slate-700 leading-7">${ar ? block.ar : block.en}</p>`;
+      return `<p class="text-sm text-slate-700 leading-7">${withFlags(ar ? block.ar : block.en)}</p>`;
 
     case "list":
       return `<ul class="space-y-3 text-sm text-slate-700 leading-7">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
@@ -1367,16 +1454,24 @@ function moreInfoBlock(block) {
         return `
         <${tag} class="block p-5 rounded-xl bg-slate-50 border border-slate-100 ${c.url ? 'hover:border-olive-700 hover:bg-white transition' : ''}">
           <h4 class="text-sm font-bold text-slate-900 mb-2">${L(c, 'title')}${flagHtml(c)}${c.url ? ` <span class="flip-rtl inline-block text-olive-900" aria-hidden="true">&rarr;</span>` : ''}</h4>
-          <p class="text-sm text-slate-600 leading-relaxed">${L(c, 'body')}</p>
+          <p class="text-sm text-slate-600 leading-relaxed">${withFlags(L(c, 'body'))}</p>
         </${end}>`;
       }).join("")}</div>`;
 
     case "links":
-      return `<ul class="flex flex-wrap gap-3">${block.items.map(l => `
-        <li><a href="${l.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')} ${ICON_EXTERNAL}</a></li>`).join("")}</ul>`;
+      // Only links to other websites open in a new tab
+      return `<ul class="flex flex-wrap gap-3">${block.items.map(l => {
+        const external = /^https?:/.test(l.url);
+        return `
+        <li><a href="${l.url}" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''} class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')}${external ? ` ${ICON_EXTERNAL}` : ''}</a></li>`;
+      }).join("")}</ul>`;
 
     case "plan":
       return planHtml();
+
+    case "contacts":
+      // Same email/phone bubbles as the Contact page (copy buttons wired after render)
+      return `<div class="space-y-2">${block.items.map(contactLine).join("")}</div>`;
 
     case "allowances": {
       const rows = (window.MORE_INFO?.allowances || []).map(a => {
@@ -1434,6 +1529,8 @@ function renderSectionPage(data, rootId, tocId) {
       <div class="space-y-7">${s.blocks.map(moreInfoBlock).join("")}</div>
     </section>`).join("") + `
     <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
+
+  initContactCopyButtons(root);
 
   const toc = document.getElementById(tocId);
   if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");
@@ -1505,7 +1602,7 @@ function renderFaqList() {
         </span>
       </summary>
       <div class="px-4 pb-4 text-sm text-slate-700 leading-relaxed">
-        <p>${L(i, 'answer')}${i.status === "unconfirmed" ? ` ${flag('unconfirmed')}` : ''}</p>
+        <p>${withFlags(L(i, 'answer'))}${i.status === "unconfirmed" ? ` ${flag('unconfirmed')}` : ''}</p>
         ${i.sourceUrl ? `<p class="text-xs text-slate-500 mt-2">${t('faq_source')}: <a class="underline hover:text-slate-800" href="${i.sourceUrl}" target="_blank" rel="noopener noreferrer">${i.sourceLabel}</a></p>` : ''}
       </div>
     </details>`).join("");
@@ -1614,7 +1711,7 @@ function renderApplySteps() {
             <span class="step-summary">${L(s, 'summary')}</span>
           </summary>
           <ul class="mt-3 space-y-2.5 text-sm text-slate-700 leading-relaxed">
-            ${s.points.map(p => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${ar ? p.ar : p.en}${p.flag ? ` ${flag(p.flag)}` : ''}</span></li>`).join("")}
+            ${s.points.map(p => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(ar ? p.ar : p.en)}${p.flag ? ` ${flag(p.flag)}` : ''}</span></li>`).join("")}
           </ul>
           ${s.links.length ? `<div class="mt-4 flex flex-wrap gap-2">${s.links.map(l => {
             const external = /^https?:/.test(l.url);
@@ -1633,7 +1730,7 @@ function renderApplySteps() {
   }));
 
   const merit = document.getElementById("steps-merit");
-  if (merit) merit.textContent = L(data, 'meritNote');
+  if (merit) merit.innerHTML = withFlags(L(data, 'meritNote'));
   const meta = document.getElementById("steps-meta");
   if (meta) meta.textContent = `${t('steps_sources')} ${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
   updateStepsProgress(ticked, data.steps.length);
@@ -1661,7 +1758,8 @@ function collegeRow(c, floorLabel) {
   const ar = isArabic();
   const weights = collegeWeights(c);
   const formula = c.qudrat && window.KUWAIT_QUDRAT?.formulas.find(f => f.collegeEn === c.qudrat);
-  const condition = formula ? L(formula, 'condition') : "";
+  // Extra requirements: KU's official table, or the college's own (e.g. AASU)
+  const condition = (formula ? L(formula, 'condition') : "") || L(c, 'condition');
 
   let scoring = "";
   if (weights) {

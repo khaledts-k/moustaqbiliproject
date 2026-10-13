@@ -120,6 +120,7 @@ const KUWAIT_QUDRAT = {
   ],
 
   rulesEn: [
+    "Optional prep courses by Kuwait University's College of Science: English 11 - 15 October 2026 (12 hours); Math in October or November 2026 (15 hours, in Arabic or English). Fee 50 KWD, not refundable. Register by WhatsApp on 24983724.",
     "College of Science uses English, Math and Chemistry for placement only; no equivalent percentage is calculated.",
     "College of Law does not require an aptitude test.",
     "An IELTS score can replace the English test using KU's conversion table (for example IELTS 6.5 = 81%, 7.0 = 89%, 8.0+ = 100%).",
@@ -127,6 +128,7 @@ const KUWAIT_QUDRAT = {
     "Cheating cancels the score."
   ],
   rulesAr: [
+    "دورات تقوية اختيارية تقدمها كلية العلوم بجامعة الكويت: الإنجليزي من 11 إلى 15 أكتوبر 2026 (12 ساعة)، والرياضيات في أكتوبر أو نوفمبر 2026 (15 ساعة بالعربية أو الإنجليزية). الرسوم 50 ديناراً غير مستردة، والتسجيل عبر واتساب على الرقم 24983724.",
     "تستخدم كلية العلوم اختبارات الإنجليزي والرياضيات والكيمياء لتحديد المستوى فقط، ولا يُحتسب لها معدل مكافئ.",
     "لا تشترط كلية الحقوق اختبارات القدرات.",
     "يمكن استبدال اختبار الإنجليزي بدرجة IELTS وفق جدول معادلة الجامعة (مثلاً IELTS 6.5 = 81%، و7.0 = 89%، و8.0 فأكثر = 100%).",
