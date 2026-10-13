@@ -1,4 +1,4 @@
-/
+/**
  * moustaqbili | مستقبلي
  * Scholarship programs, monthly allowances, filters and reference data.
  * Text is written in plain language. Arabic text for each program is in data-ar.js.

@@ -417,3 +417,59 @@ html {
   border-radius: 9999px;
   padding: 0.05rem 0.55rem;
 }
+
+/* How to Apply: scholarship checklist */
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.step-item.is-done { background: #f6f8f5; border-color: #cbd7c7; }
+.step-check { position: relative; flex: 0 0 auto; cursor: pointer; margin-top: 0.1rem; }
+.step-check input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2px solid #a8bfa2;
+  background: #ffffff;
+  cursor: pointer;
+  display: block;
+}
+.step-check input:checked { background: #384f33; border-color: #384f33; }
+.step-check input:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.step-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #384f33;
+  pointer-events: none;
+}
+.step-check input:checked + .step-num { color: transparent; }
+.step-check input:checked + .step-num::after {
+  content: "";
+  position: absolute;
+  width: 0.55rem;
+  height: 0.95rem;
+  border: solid #ffffff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg) translate(-1px, -2px);
+}
+.step-details { flex: 1 1 auto; min-width: 0; }
+.step-details summary { list-style: none; cursor: pointer; padding-top: 0.15rem; }
+.step-details summary::-webkit-details-marker { display: none; }
+.step-details summary:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.5rem; }
+.step-title { display: block; font-size: 1rem; font-weight: 800; color: #0f172a; }
+.step-item.is-done .step-title { color: #384f33; }
+.step-summary { display: block; font-size: 0.875rem; color: #475569; margin-top: 0.15rem; }
