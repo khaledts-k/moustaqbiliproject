@@ -34,6 +34,10 @@ const FOOTER_EXTRA = [
 
 const LANG_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>`;
 
+const MOON_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+const SUN_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+const SEARCH_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>`;
+
 function currentPageFile() {
   return window.location.pathname.split("/").pop() || "index.html";
 }
@@ -42,6 +46,8 @@ function renderSiteHeader() {
   const slot = document.getElementById("site-header");
   if (!slot) return;
   const page = currentPageFile();
+  // On the search page the header box keeps what the student searched for
+  const query = page === "search.html" ? (new URLSearchParams(window.location.search).get("q") || "") : "";
 
   const desktopLinks = SITE_NAV.map(item => {
     const active = item.href === page;
@@ -71,6 +77,12 @@ function renderSiteHeader() {
       </nav>
 
       <div class="flex items-center gap-2">
+        <button type="button" onclick="toggleTheme()" class="theme-toggle" title="Dark / light mode">
+          <span class="theme-when-light" aria-hidden="true">${MOON_ICON}</span>
+          <span class="theme-when-dark" aria-hidden="true">${SUN_ICON}</span>
+          <span class="sr-only theme-when-light" data-i18n="theme_dark">Dark mode</span>
+          <span class="sr-only theme-when-dark" data-i18n="theme_light">Light mode</span>
+        </button>
         <button type="button" onclick="toggleLanguage()" class="px-3 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 cursor-pointer" aria-label="Toggle language">
           ${LANG_ICON}
           <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
@@ -84,7 +96,40 @@ function renderSiteHeader() {
     <div id="mobile-menu" class="hidden xl:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
       ${mobileLinks}
     </div>
+
+    <div class="site-search-bar">
+      <form action="search.html" method="get" role="search" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center gap-2">
+        <label for="site-search-input" class="sr-only" data-i18n="site_search_label">Search the site</label>
+        <div class="relative flex-1 min-w-0">
+          <span class="site-search-icon" aria-hidden="true">${SEARCH_ICON}</span>
+          <input id="site-search-input" name="q" type="search" autocomplete="off" value="${escapeAttr(query)}"
+            placeholder="Search majors, countries, Qudrat, questions..." data-i18n-placeholder="site_search_placeholder"
+            class="site-search-input">
+        </div>
+        <button type="submit" class="site-search-btn" data-i18n="site_search_btn">Search</button>
+      </form>
+    </div>
   </header>`;
+
+  // "/" jumps to the search box from anywhere (unless already typing somewhere)
+  document.addEventListener("keydown", e => {
+    if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) return;
+    const tag = (document.activeElement?.tagName || "").toLowerCase();
+    if (["input", "textarea", "select"].includes(tag) || document.activeElement?.isContentEditable) return;
+    e.preventDefault();
+    document.getElementById("site-search-input")?.focus();
+  });
+}
+
+function escapeAttr(str) {
+  return String(str ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+// Dark mode. theme.js (in each page's <head>) applies the saved choice before the page is drawn;
+// the button only flips the class and remembers the choice on this device.
+function toggleTheme() {
+  const dark = document.documentElement.classList.toggle("dark");
+  try { localStorage.setItem("moustaqbili_theme", dark ? "dark" : "light"); } catch (e) { /* private mode: still switches for this page */ }
 }
 
 function renderSiteFooter() {
@@ -150,6 +195,7 @@ function renderHelpButton() {
 }
 
 window.SITE_CONFIG = SITE_CONFIG;
+window.toggleTheme = toggleTheme;
 
 renderSiteHeader();
 renderSiteFooter();

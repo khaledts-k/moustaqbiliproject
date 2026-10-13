@@ -30,6 +30,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Medicine (MBChB / MBBS)",
     titleAr: "الطب البشري والجراحة",
     isMerit: true,
+    levels: ["bachelor", "medical", "foundation"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "United Kingdom",
     countryAr: "المملكة المتحدة",
     category: "Medical & Health",
@@ -136,6 +137,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Medicine (MB BCh BAO)",
     titleAr: "الطب البشري والجراحة - أيرلندا",
     isMerit: false,
+    levels: ["bachelor", "medical", "foundation"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "Ireland",
     countryAr: "أيرلندا",
     category: "Medical & Health",
@@ -233,6 +235,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Cyber Security, Computer Engineering & Computer Science",
     titleAr: "الأمن السيبراني وهندسة الحاسوب وعلوم الحاسوب",
     isMerit: true,
+    levels: ["bachelor"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "United States",
     countryAr: "الولايات المتحدة",
     category: "Engineering & Computing",
@@ -338,6 +341,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Medicine (Monash, Western Sydney, Flinders, Curtin)",
     titleAr: "الطب البشري وطب الأسنان - أستراليا",
     isMerit: true,
+    levels: ["bachelor", "medical", "foundation"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "Australia",
     countryAr: "أستراليا",
     category: "Medical & Health",
@@ -438,6 +442,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Medicine - Arabian Gulf University & RCSI Bahrain",
     titleAr: "الطب البشري - جامعة الخليج العربي والكلية الملكية للجراحين في البحرين",
     isMerit: false,
+    levels: ["bachelor", "medical"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "Bahrain",
     countryAr: "البحرين",
     category: "Medical & Health",
@@ -531,6 +536,7 @@ const MOUSTAQBILI_PROGRAMS = [
     title: "Medicine - University of Malta (with foundation year)",
     titleAr: "الطب البشري - جامعة مالطا (مع سنة تأسيسية)",
     isMerit: false,
+    levels: ["bachelor", "medical", "foundation"], // level-of-education filter (MOUSTAQBILI_FILTERS.levels)
     country: "Malta",
     countryAr: "مالطا",
     category: "Medical & Health",
@@ -637,6 +643,19 @@ const MOUSTAQBILI_FILTERS = {
     { value: "85.0-89.9", label: "85% - 89.9%", minPct: 85.0, maxPct: 89.9 },
     { value: "80.0-84.9", label: "80% - 84.9%", minPct: 80.0, maxPct: 84.9 }
   ],
+
+  // Level of education. The 2026/2027 plan is for high-school graduates only, so every
+  // program is bachelor's level; master's and doctorate are listed as "not offered".
+  // planMajors: which plan majors (plan-majors-data.js) count for that level (none = all).
+  // The plan doesn't say which majors start with a foundation year, so "foundation"
+  // only filters the detailed programs (each program lists its levels in `levels`).
+  levels: [
+    { value: "bachelor", label: "Bachelor's degree", labelAr: "بكالوريوس", offered: true },
+    { value: "medical", label: "Medical or dental degree (MBChB, MBBS, MD, BDS)", labelAr: "شهادة الطب أو طب الأسنان (MBChB، MBBS، MD، BDS)", offered: true, planMajors: ["medicine", "dentistry"] },
+    { value: "foundation", label: "Starts with a foundation year", labelAr: "تبدأ بسنة تأسيسية", offered: true },
+    { value: "master", label: "Master's (not offered)", labelAr: "ماجستير (غير متاح)", offered: false },
+    { value: "doctorate", label: "Doctorate / PhD (not offered)", labelAr: "دكتوراه (غير متاح)", offered: false }
+  ]
   // Majors come from plan-majors-data.js (every major in the 2026/2027 plan)
 };
 
