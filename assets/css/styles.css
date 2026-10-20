@@ -767,6 +767,11 @@ html.dark mark { background: rgba(251, 191, 36, 0.35); }
 .view-switch { display: inline-flex; padding: 0.2rem; border-radius: 0.6rem; background: #e2e8f0; gap: 0.15rem; }
 .view-switch button { padding: 0.35rem 0.8rem; border-radius: 0.45rem; font-size: 0.75rem; font-weight: 700; color: #475569; }
 .view-switch button.is-active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12); }
+.view-tag {
+  display: inline-block; margin-inline-start: 0.35rem; padding: 0.05rem 0.4rem; border-radius: 9999px; vertical-align: 1px;
+  font-size: 0.625rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase;
+  color: #384f33; background: #e5ebe3; border: 1px solid #cbd7c7;
+}
 .view-switch button:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
 
 .pw-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; list-style: none; padding: 0; }
@@ -816,6 +821,7 @@ html.dark mark { background: rgba(251, 191, 36, 0.35); }
 html.dark .view-switch { background: #1d2a1a; }
 html.dark .view-switch button { color: #a3ad9f; }
 html.dark .view-switch button.is-active { background: #2b3628; color: #eef2ee; }
+html.dark .view-tag { color: #b7cf9f; background: #1d2a1a; border-color: #3a4836; }
 html.dark .pw-step { background: #131a12; border-color: #2b3628; }
 html.dark .pw-step-num { background: #131a12; border-color: #4b6b3d; color: #b7cf9f; }
 html.dark .pw-step-label { color: #eef2ee; }
