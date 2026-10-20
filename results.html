@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Approved Courses | moustaqbili</title>
+  <title>Scholarships | moustaqbili</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -30,76 +30,14 @@
     }
   </script>
   <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
-  <!-- Institutional Top Header -->
-  <header class="gov-header-gradient text-white sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Ministry Identity -->
-      <a href="index.html" class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded bg-olive-950 border border-olive-800 flex items-center justify-center text-amber-400 font-bold shadow-inner">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs tracking-wider uppercase font-bold text-amber-400" data-i18n="state_kuwait">State of Kuwait</span>
-            <span class="text-[11px] text-slate-400">|</span>
-            <span class="text-[11px] text-slate-300 font-medium" dir="rtl">دولة الكويت</span>
-          </div>
-          <span class="text-base sm:text-lg font-extrabold tracking-tight block">moustaqbili | مستقبلي</span>
-          <span class="text-[11px] text-slate-300 font-medium -mt-0.5 block" data-i18n="portal_subtitle">دليل التخصصات المعتمدة والرواتب</span>
-        </div>
-      </a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider">
-        <a href="index.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="gov-nav-link py-2 text-white font-bold border-b-2 border-olive-500" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_local">Local Universities</a>
-        <a href="guidelines.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_faq">Regulations & FAQ</a>
-        <a href="about.html" class="gov-nav-link py-2 text-slate-300 hover:text-white transition" data-i18n="nav_about">About</a>
-      </nav>
-
-      <!-- Language Translate Button (Top Right Header) -->
-      <div class="flex items-center gap-3">
-        <button id="lang-toggle-btn" onclick="toggleLanguage()" class="px-3.5 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 shadow-sm cursor-pointer" aria-label="Toggle language">
-          <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-          </svg>
-          <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
-        </button>
-      </div>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800 focus:outline-none" aria-label="Toggle menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-      </button>
-    </div>
-
-    <!-- Mobile Nav Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-2 text-xs font-semibold">
-      <a href="index.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_home">Home</a>
-      <a href="results.html" class="block px-3 py-2 rounded text-white bg-olive-800" data-i18n="nav_courses">Approved Courses</a>
-      <a href="suggestions.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_guide">Direct Application Guide</a>
-      <a href="local-universities.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_local">Local Universities</a>
-      <a href="guidelines.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_faq">Regulations & FAQ</a>
-      <a href="about.html" class="block px-3 py-2 rounded text-slate-300 hover:text-white" data-i18n="nav_about">About</a>
-      <button onclick="toggleLanguage()" class="w-full text-left px-3 py-2 rounded bg-amber-400 text-slate-950 font-bold flex items-center gap-2 cursor-pointer">
-        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-        </svg>
-        <span id="mobile-lang-toggle-text" data-i18n="mobile_lang_toggle">اللغة العربية</span>
-      </button>
-    </div>
-  </header>
+  <div id="site-header"></div>
 
   <!-- Page Main Content -->
   <main class="flex-grow py-8">
@@ -119,10 +57,20 @@
           <p class="text-xs text-slate-500 mt-0.5" data-i18n="results_desc">
             Find approved university courses, required grades, and monthly living stipends for Kuwaiti scholarship students.
           </p>
+          <p class="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded px-3 py-2 mt-3 max-w-2xl" data-i18n="results_plan_status">Plan 2026/2027: general registration closed on 7 July 2026. Merit programme applications are open until 24 February 2027.</p>
+          <a href="https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-olive-900 underline hover:text-olive-700">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span data-i18n="plan_majors_pdf">See the Ministry's plan (PDF)</span>
+            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
         </div>
 
         <!-- Controls: Count + Merit Filter Button -->
         <div class="flex flex-wrap items-center gap-3">
+          <div class="view-switch" role="group" aria-label="View">
+            <button type="button" data-view="pathway" class="is-active" aria-pressed="true"><span data-i18n="view_pathway">Step by step</span> <span class="view-tag" data-i18n="view_suggested">Suggested</span></button>
+            <button type="button" data-view="cards" aria-pressed="false" data-i18n="view_cards">All programs</button>
+          </div>
           <button id="quick-merit-toggle" type="button" class="px-3.5 py-1.5 bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
             <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
             <span data-i18n="btn_quick_merit">Show Merit Universities (+50% Stipend)</span>
@@ -139,7 +87,7 @@
         
         <!-- Filter chips -->
         <div class="flex-grow">
-          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2" data-i18n="active_filters_heading">Active Filters:</div>
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2" data-i18n="active_filters_heading">Active Filters:</div>
           <div id="active-filters-chips" class="flex flex-wrap items-center gap-2">
             <!-- Injected via app.js -->
           </div>
@@ -158,9 +106,34 @@
 
       </div>
 
-      <!-- Program Cards Grid -->
-      <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- Step-by-step pathway: major, country, requirements, money & universities (app.js renderPathway) -->
+      <section id="pathway-view" class="mb-14 scroll-mt-24">
+        <ol id="pw-steps" class="pw-steps mb-6" aria-label="Steps"></ol>
+        <div id="pw-body" class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 sm:p-6"></div>
+      </section>
+
+      <div id="cards-view" class="hidden">
+      <!-- Detailed program cards -->
+      <div id="detailed-heading" class="mb-4">
+        <h2 class="text-lg font-extrabold text-slate-900" data-i18n="detailed_title">Detailed programs</h2>
+        <p class="text-sm text-slate-600 mt-0.5" data-i18n="detailed_desc">Full requirements, monthly money and a currency calculator.</p>
+      </div>
+      <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
         <!-- Injected dynamically via app.js -->
+      </div>
+
+      <!-- Every major in the 2026/2027 plan (plan-majors-data.js) -->
+      <section id="plan-majors-section" class="mb-16">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-1">
+          <h2 class="text-lg font-extrabold text-slate-900" data-i18n="plan_majors_title">All majors in the 2026/2027 plan</h2>
+          <span id="plan-majors-count" class="text-sm font-semibold text-slate-600"></span>
+        </div>
+        <p class="text-sm text-slate-600 mb-4 max-w-3xl leading-relaxed">
+          <span data-i18n="plan_majors_desc">Every major the Ministry offers, with the lowest high school % accepted in each country. Most of these do not have a detailed card yet.</span>
+          <a href="https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf" target="_blank" rel="noopener noreferrer" class="font-semibold text-olive-900 underline" data-i18n="plan_majors_pdf">See the Ministry's plan (PDF)</a>
+        </p>
+        <div id="plan-majors" class="space-y-3"></div>
+      </section>
       </div>
 
       <!-- Empty State -->
@@ -192,7 +165,7 @@
           <h3 class="text-sm font-bold text-slate-900 mb-1" data-i18n="feedback_question">
             Was this search helpful?
           </h3>
-          <p class="text-[11px] text-slate-500 mb-4" data-i18n="feedback_sub_ar" dir="rtl">
+          <p class="text-xs text-slate-500 mb-4" data-i18n="feedback_sub_ar" dir="rtl">
             هل ساعدك هذا البحث في معرفة التخصصات والرواتب والمواعيد؟
           </p>
 
@@ -236,29 +209,14 @@
     </div>
   </div>
 
-  <!-- Official Footer -->
-  <footer class="bg-olive-950 text-slate-400 text-xs py-10 border-t border-olive-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <div>
-        <span class="text-white font-bold text-sm block" data-i18n="footer_app_name">moustaqbili | مستقبلي</span>
-        <span class="text-slate-400 text-[11px] block mt-0.5" data-i18n="footer_desc">
-          Educational application moustaqbili
-        </span>
-      </div>
-      <div class="flex items-center gap-6 text-[11px] font-medium">
-        <a href="index.html" class="hover:text-white transition" data-i18n="nav_home">Home</a>
-        <a href="results.html" class="hover:text-white transition" data-i18n="nav_courses">Approved Courses</a>
-        <a href="suggestions.html" class="hover:text-white transition" data-i18n="nav_guide">Direct Application Guide</a>
-        <a href="local-universities.html" class="hover:text-white transition" data-i18n="nav_local">Local Unis</a>
-        <a href="guidelines.html" class="hover:text-white transition" data-i18n="nav_faq">Regulations</a>
-        <a href="https://www.mohe.edu.kw" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 transition">mohe.edu.kw</a>
-      </div>
-    </div>
-  </footer>
+  <div id="site-footer"></div>
 
   <!-- Scripts -->
+  <script src="assets/js/layout.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/plan-majors-data.js"></script>
   <script src="assets/js/data-ar.js"></script>
+  <script src="assets/js/more-info-data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

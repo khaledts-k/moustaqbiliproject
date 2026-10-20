@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | moustaqbili</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive: {
+              50: '#f4f6f3',
+              100: '#e5ebe3',
+              200: '#cbd7c7',
+              300: '#a8bfa2',
+              400: '#7e9e76',
+              500: '#556b2f',
+              600: '#476340',
+              700: '#384f33',
+              800: '#2d3e29',
+              900: '#222d1d',
+              950: '#141c12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <div id="site-header"></div>
+
+  <main class="flex-grow py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-6 border-b border-slate-200 pb-5">
+        <h1 id="search-heading" class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="search_title">Search the site</h1>
+        <p id="search-summary" class="text-base text-slate-600 mt-2" aria-live="polite"></p>
+      </div>
+
+      <form id="search-page-form" action="search.html" method="get" role="search" class="flex gap-2 mb-8">
+        <label for="search-page-input" class="sr-only" data-i18n="site_search_label">Search the site</label>
+        <input id="search-page-input" name="q" type="search" autocomplete="off"
+          placeholder="Search majors, countries, Qudrat, questions..." data-i18n-placeholder="site_search_placeholder"
+          class="flex-1 min-w-0 bg-white border border-slate-300 text-slate-900 text-base rounded-lg px-4 py-3 focus:ring-2 focus:ring-olive-800 focus:outline-none">
+        <button type="submit" class="px-6 py-3 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold transition" data-i18n="site_search_btn">Search</button>
+      </form>
+
+      <div id="search-best"></div>
+      <div id="search-results" class="space-y-8"></div>
+
+      <div id="search-suggestions" class="hidden mt-2">
+        <h2 class="text-sm font-bold text-slate-900 mb-3" data-i18n="search_suggestions_title">Popular searches</h2>
+        <div id="search-suggestion-chips" class="flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Search reads every data file on the site -->
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/plan-majors-data.js"></script>
+  <script src="assets/js/data-ar.js"></script>
+  <script src="assets/js/qudrat-data.js"></script>
+  <script src="assets/js/clarifications-data.js"></script>
+  <script src="assets/js/more-info-data.js"></script>
+  <script src="assets/js/contact-data.js"></script>
+  <script src="assets/js/navigate-data.js"></script>
+  <script src="assets/js/apply-steps-data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask Us | moustaqbili</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive: {
+              50: '#f4f6f3',
+              100: '#e5ebe3',
+              200: '#cbd7c7',
+              300: '#a8bfa2',
+              400: '#7e9e76',
+              500: '#556b2f',
+              600: '#476340',
+              700: '#384f33',
+              800: '#2d3e29',
+              900: '#222d1d',
+              950: '#141c12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <div id="site-header"></div>
+
+  <main class="flex-grow py-8">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-6 border-b border-slate-200 pb-5">
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="ask_title">Ask us a question</h1>
+        <p class="text-base text-slate-600 mt-1" data-i18n="ask_desc">Write your question below. First, check the common questions page: the answer may already be there.</p>
+        <a href="clarifications.html" class="inline-block mt-2 text-sm font-semibold text-olive-900 underline" data-i18n="ask_check_faq">See common questions</a>
+      </div>
+
+      <div id="ask-email-notice" class="hidden mb-5 p-4 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-950" data-i18n="ask_email_soon">Our email address is coming soon. For now, the button below copies your question so you can keep it and send it later.</div>
+
+      <form id="ask-form" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 space-y-5" novalidate>
+        <div>
+          <label for="ask-topic" class="block text-sm font-bold text-slate-900 mb-1" data-i18n="ask_topic">Topic</label>
+          <select id="ask-topic" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-base focus:ring-2 focus:ring-olive-800 focus:outline-none">
+            <option value="scholarships" data-i18n="ask_topic_scholarships">Scholarships abroad</option>
+            <option value="merit" data-i18n="ask_topic_merit">Merit programme</option>
+            <option value="qudrat" data-i18n="ask_topic_qudrat">Qudrat tests</option>
+            <option value="english" data-i18n="ask_topic_english">English tests</option>
+            <option value="allowance" data-i18n="ask_topic_allowance">Monthly allowance</option>
+            <option value="local" data-i18n="ask_topic_local">Universities in Kuwait</option>
+            <option value="other" data-i18n="ask_topic_other">Something else</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="flex items-baseline justify-between mb-1">
+            <label for="ask-question" class="block text-sm font-bold text-slate-900" data-i18n="ask_question">Your question</label>
+            <span id="ask-counter" class="text-xs text-slate-500"></span>
+          </div>
+          <textarea id="ask-question" rows="6" required placeholder="Example: Can I apply for a scholarship and Kuwait University at the same time?" data-i18n-placeholder="ask_question_placeholder" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-base leading-relaxed focus:ring-2 focus:ring-olive-800 focus:outline-none"></textarea>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="ask_privacy">Please do not write your Civil ID, passport number or any password.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <button type="submit" class="px-6 py-3 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold" data-i18n="ask_send">Send question</button>
+          <p id="ask-status" class="text-sm" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="mt-6 p-4 rounded-lg bg-slate-100 border border-slate-200 text-sm text-slate-700">
+        <span data-i18n="ask_official_note">Need an official answer about your own file? Contact the Ministry directly.</span>
+        <a href="contact.html" class="font-semibold text-olive-900 underline" data-i18n="ask_contact_link">Ministry contacts</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

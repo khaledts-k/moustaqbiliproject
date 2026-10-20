@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions | moustaqbili</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive: {
+              50: '#f4f6f3',
+              100: '#e5ebe3',
+              200: '#cbd7c7',
+              300: '#a8bfa2',
+              400: '#7e9e76',
+              500: '#556b2f',
+              600: '#476340',
+              700: '#384f33',
+              800: '#2d3e29',
+              900: '#222d1d',
+              950: '#141c12',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <div id="site-header"></div>
+
+  <main class="flex-grow py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-6 border-b border-slate-200 pb-5">
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="faq_title">Common questions and mix-ups</h1>
+        <p class="text-base text-slate-600 mt-1" data-i18n="faq_desc">Things students often get wrong about scholarships, Qudrat and allowances. Tap a question to see the answer.</p>
+      </div>
+
+      <label for="faq-search" class="sr-only" data-i18n="faq_search_label">Search questions</label>
+      <input id="faq-search" type="search" autocomplete="off" placeholder="Search questions" data-i18n-placeholder="faq_search_placeholder" class="w-full bg-white border border-slate-300 rounded-lg px-4 py-3 text-base focus:ring-2 focus:ring-olive-800 focus:outline-none mb-4">
+
+      <div id="faq-topics" class="flex flex-wrap gap-2 mb-6" role="group" aria-label="Topics"></div>
+
+      <div id="faq-list" class="space-y-3"></div>
+
+      <div id="faq-empty" class="hidden p-6 rounded-xl border border-dashed border-slate-300 bg-white text-center">
+        <p class="text-base font-semibold text-slate-800" data-i18n="faq_empty">No question matches your search.</p>
+      </div>
+
+      <div class="mt-8 p-6 rounded-xl bg-olive-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold" data-i18n="faq_ask_title">Did not find your question?</h2>
+          <p class="text-sm text-slate-300 mt-0.5" data-i18n="faq_ask_desc">Send it to us and we will answer it.</p>
+        </div>
+        <a href="ask.html" class="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-lg text-sm text-center" data-i18n="faq_ask_btn">Ask us</a>
+      </div>
+
+      <p id="faq-meta" class="text-xs text-slate-500 mt-6"></p>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/clarifications-data.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
