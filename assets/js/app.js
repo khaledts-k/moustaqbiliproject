@@ -569,7 +569,9 @@ function initResultsPage() {
     chips.forEach(chip => {
       const chipEl = document.createElement("div");
       chipEl.className = `inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-md border ${chip.type === 'merit' ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-slate-100 text-slate-800 border-slate-300'}`;
-      chipEl.innerHTML = `<span>${chip.label}</span><button type="button" class="text-slate-500 hover:text-red-700 font-bold" aria-label="${t('chip_remove')}">&times;</button>`;
+      chipEl.innerHTML = `<span></span><button type="button" class="text-slate-500 hover:text-red-700 font-bold" aria-label="${t('chip_remove')}">&times;</button>`;
+      // Labels can echo raw URL values (?country=...), so they go in as text, never as HTML
+      chipEl.querySelector("span").textContent = chip.label;
       chipEl.querySelector("button").addEventListener("click", () => {
         if (chip.type === "country") selectedCountry = "";
         if (chip.type === "percentage") selectedPercentage = "";
@@ -854,7 +856,7 @@ function pathwayMajorsHtml(options, f, major) {
   }).join("");
 
   const countryNote = f.selectedCountry
-    ? `<p class="text-sm text-slate-600 mb-3">${t('pw_only_country').replace("{country}", `<strong>${name(f.selectedCountry)}</strong>`)} <button type="button" class="pw-all-countries font-semibold text-olive-900 underline">${t('pw_show_all_countries')}</button></p>`
+    ? `<p class="text-sm text-slate-600 mb-3">${t('pw_only_country').replace("{country}", `<strong>${escapeHtml(name(f.selectedCountry))}</strong>`)} <button type="button" class="pw-all-countries font-semibold text-olive-900 underline">${t('pw_show_all_countries')}</button></p>`
     : "";
   return `
     <h2 class="text-lg font-extrabold text-slate-900">${t('pw_step1_title')}</h2>
