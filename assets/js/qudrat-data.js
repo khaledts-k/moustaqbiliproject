@@ -52,32 +52,57 @@ const KUWAIT_QUDRAT = {
       "لا يحق لطلبة جامعة الكويت الحاليين التسجيل (باستثناء اختبار اللغة الفرنسية لتخصص الفرنسية)"
     ],
 
-    stepsEn: [
-      "Log in at portal.ku.edu.kw/placement: username = Civil ID number, password = last 5 digits of the Civil ID (new students use \"Create New User\")",
-      "Check your phone, email, education system and school",
-      "Choose the test(s), the Math test language (Arabic or English) and a test date",
-      "Pay 10 KWD per test by K-Net (non-refundable, cannot be cancelled after payment)",
-      "Print the admission ticket: it shows the date, time, building and room",
-      "On test day bring official photo ID: Civil ID, passport, driving licence or Kuwait Mobile ID"
+    // What to have ready before registering (shown with eligibility under "Before you register")
+    needEn: [
+      "Your Civil ID number: it is your username, and its last 5 digits are your first password",
+      "A phone number and email you check: the portal shows them and asks you to confirm them",
+      "A K-Net bank card with 10 KWD for each test you choose",
+      "The tests your college needs (see \"Subjects & fees\" below)"
     ],
-    stepsAr: [
-      "الدخول إلى portal.ku.edu.kw/placement: اسم المستخدم = الرقم المدني، وكلمة المرور = آخر 5 أرقام من الرقم المدني (الطلبة الجدد عبر \"إنشاء مستخدم جديد\")",
-      "التأكد من رقم الهاتف والبريد الإلكتروني والنظام التعليمي والمدرسة",
-      "اختيار الاختبار/الاختبارات ولغة اختبار الرياضيات (عربي أو إنجليزي) وموعد الاختبار",
-      "دفع 10 دنانير لكل اختبار عن طريق كي-نت (غير مستردة ولا يمكن الإلغاء بعد الدفع)",
-      "طباعة بطاقة الدخول: تتضمن التاريخ والوقت والمبنى والقاعة",
-      "إحضار إثبات شخصية رسمي بصورة يوم الاختبار: البطاقة المدنية أو الجواز أو رخصة القيادة أو هويتي"
+    needAr: [
+      "رقمك المدني: هو اسم المستخدم، وآخر 5 أرقام منه هي كلمة المرور الأولى",
+      "رقم هاتف وبريد إلكتروني تتابعهما: تعرضهما البوابة وتطلب منك تأكيدهما",
+      "بطاقة بنكية تعمل بنظام كي-نت، فيها 10 دنانير لكل اختبار تختاره",
+      "الاختبارات التي تطلبها كليتك (انظر \"المواد والرسوم\" أدناه)"
     ],
 
-    notesEn: [
-      "Registration for each test date closes about 10 days before it. Late registration is not available.",
-      "The test location is assigned on the admission ticket and cannot be changed.",
-      "Absence or late arrival cannot be rescheduled."
-    ],
-    notesAr: [
-      "يُغلق التسجيل لكل موعد قبل الاختبار بنحو 10 أيام، ولا يوجد تسجيل متأخر.",
-      "يُحدد مكان الاختبار في بطاقة الدخول ولا يمكن تغييره.",
-      "لا يمكن تعويض الغياب أو التأخر عن موعد الاختبار."
+    // How to register, grouped by when you do each step. Ticks are saved on the device (app.js).
+    registerPhases: [
+      {
+        id: "before", titleEn: "Before you start", titleAr: "قبل أن تبدأ",
+        steps: [
+          { id: "q-date", textEn: "Pick your test date and note its registration deadline", textAr: "اختر موعد الاختبار ودوّن آخر موعد للتسجيل فيه",
+            hintEn: "Registration for each date closes about 10 days before it. There is no late registration.", hintAr: "يُغلق التسجيل لكل موعد قبل الاختبار بنحو 10 أيام، ولا يوجد تسجيل متأخر." }
+        ]
+      },
+      {
+        id: "portal", titleEn: "On the registration website", titleAr: "على موقع التسجيل",
+        steps: [
+          { id: "q-login", textEn: "Log in at portal.ku.edu.kw/placement", textAr: "سجّل الدخول إلى portal.ku.edu.kw/placement",
+            hintEn: "Username: your Civil ID number. Password: its last 5 digits. First time? Use \"Create New User\".", hintAr: "اسم المستخدم: رقمك المدني. كلمة المرور: آخر 5 أرقام منه. أول مرة؟ اختر \"إنشاء مستخدم جديد\"." },
+          { id: "q-details", textEn: "Check your phone, email, education system and school", textAr: "تأكد من رقم الهاتف والبريد الإلكتروني والنظام التعليمي والمدرسة" },
+          { id: "q-choose", textEn: "Choose your test(s), the Math language and a test date", textAr: "اختر الاختبار/الاختبارات ولغة الرياضيات وموعد الاختبار",
+            hintEn: "Math can be taken in Arabic or English.", hintAr: "يمكن أداء اختبار الرياضيات بالعربية أو الإنجليزية." },
+          { id: "q-pay", textEn: "Pay 10 KWD per test by K-Net", textAr: "ادفع 10 دنانير لكل اختبار عن طريق كي-نت",
+            hintEn: "Not refundable. You cannot cancel after paying.", hintAr: "غير مستردة، ولا يمكن الإلغاء بعد الدفع." }
+        ]
+      },
+      {
+        id: "after", titleEn: "After you pay", titleAr: "بعد الدفع",
+        steps: [
+          { id: "q-ticket", textEn: "Print your admission ticket", textAr: "اطبع بطاقة الدخول",
+            hintEn: "It shows the date, time, building and room. The place cannot be changed.", hintAr: "تتضمن التاريخ والوقت والمبنى والقاعة، ولا يمكن تغيير المكان." }
+        ]
+      },
+      {
+        id: "day", titleEn: "On test day", titleAr: "يوم الاختبار",
+        steps: [
+          { id: "q-id", textEn: "Bring an official photo ID", textAr: "أحضر إثبات شخصية رسمياً بصورة",
+            hintEn: "Civil ID, passport, driving licence or Kuwait Mobile ID.", hintAr: "البطاقة المدنية أو الجواز أو رخصة القيادة أو تطبيق هويتي." },
+          { id: "q-ontime", textEn: "Arrive on time", textAr: "احضر في الموعد",
+            hintEn: "If you are absent or late, the test cannot be moved to another date.", hintAr: "لا يمكن تعويض الغياب أو التأخر بموعد آخر." }
+        ]
+      }
     ]
   },
 

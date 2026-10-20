@@ -13,8 +13,8 @@ It is a static site with no build step. Open `index.html` in a browser, or serve
 | Page | What it shows |
 | :--- | :--- |
 | `index.html` | Search (country, grade bracket, any of the 90 majors in the 2026/2027 plan, merit), GPA-to-percentage converter, current Qudrat cycle |
-| `results.html` | Program cards: minimum grade and monthly allowance in KWD. Each card opens **Requirements** (grades, exams, deadlines, visa) or **Allowance & calculator** (allowance table and a currency calculator for that major). Below the cards: every plan major that matches, grouped by field, with the minimum % per country |
-| `qudrat.html` | Current Qudrat cycle: registration phases, test dates and deadlines, subjects, fees, rules, and the equivalent-score calculator with each KU college's 2026/2027 weights |
+| `results.html` | Step by step (default): 1 major, 2 country, 3 requirements, 4 money & universities. "All programs" switches to the program cards: minimum grade and monthly allowance in KWD. Each card opens **Requirements** (grades, exams, deadlines, visa) or **Allowance & calculator** (allowance table and a currency calculator for that major). Below the cards: every plan major that matches, grouped by field, with the minimum % per country |
+| `qudrat.html` | Current Qudrat cycle: "Before you register" (who can sit the tests, what to have ready), a tickable "How to register" checklist grouped by when you do each step, registration phases, test dates and deadlines, subjects, fees, rules, and the equivalent-score calculator with each KU college's 2026/2027 weights |
 | `local-universities.html` | Kuwait University Fall 2026/27 cutoffs, AASU, PUC internal scholarships |
 | `more-info.html` | Key words explained, the scholarship year step by step, 2026/2027 rules, money by country (live KWD), merit programme, English tests, entry routes, visas, certificates, rules after acceptance, official links. (`guidelines.html` redirects here.) |
 | `clarifications.html` | Common misconceptions with short answers and sources, filter by topic, search |

@@ -697,6 +697,8 @@ const MOHE_PLAN_2026 = {
   statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
   countriesEn: "United States, United Kingdom, Ireland, Australia, New Zealand, Malta, Bahrain, Saudi Arabia, United Arab Emirates",
   countriesAr: "الولايات المتحدة، المملكة المتحدة، أيرلندا، أستراليا، نيوزيلندا، مالطا، البحرين، السعودية، الإمارات",
+  // Names for rulesEn / rulesAr, in the same order (the results-page pathway picks rules by name)
+  ruleKeys: ["age", "english", "qudrat", "uk", "ukMedicine", "merit"],
   rulesEn: [
     "Age 16 - 23, with a secondary certificate from 2024/2025 or 2025/2026.",
     "English: IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait. Accepted students then have one calendar year to reach their university's required score.",
