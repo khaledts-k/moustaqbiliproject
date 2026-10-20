@@ -520,6 +520,9 @@ function initResultsPage() {
   let selectedLevel = urlParams.get("level") || "";
   let isMeritOnly = urlParams.get("merit") === "1";
   let keywordQuery = "";
+  // "pathway" (step by step, the default) or "cards" (every detailed program at once)
+  let view = urlParams.get("view") === "cards" ? "cards" : "pathway";
+  let step = parseInt(urlParams.get("step"), 10) || 0; // 0 = let the pathway choose
 
   function updateMeritToggleBtnUI() {
     if (!meritToggleBtn) return;
@@ -532,6 +535,7 @@ function initResultsPage() {
 
   meritToggleBtn?.addEventListener("click", () => {
     isMeritOnly = !isMeritOnly;
+    step = 0;
     updateUrlParams();
     renderResults();
   });
@@ -572,6 +576,7 @@ function initResultsPage() {
         if (chip.type === "level") selectedLevel = "";
         if (chip.type === "major") selectedMajor = "";
         if (chip.type === "merit") isMeritOnly = false;
+        step = 0;
         updateUrlParams();
         renderResults();
       });
@@ -585,6 +590,7 @@ function initResultsPage() {
     clearBtn.addEventListener("click", () => {
       selectedCountry = selectedPercentage = selectedLevel = selectedMajor = "";
       isMeritOnly = false;
+      step = 0;
       updateUrlParams();
       renderResults();
     });
@@ -598,6 +604,8 @@ function initResultsPage() {
     if (selectedLevel) params.set("level", selectedLevel);
     if (selectedMajor) params.set("major", selectedMajor);
     if (isMeritOnly) params.set("merit", "1");
+    if (view === "cards") params.set("view", "cards");
+    else if (step) params.set("step", String(step));
     window.history.replaceState(null, "", window.location.pathname + (params.toString() ? `?${params}` : ""));
   }
 
@@ -626,6 +634,29 @@ function initResultsPage() {
   function renderResults() {
     renderFilterChips();
     updateMeritToggleBtnUI();
+
+    document.getElementById("pathway-view")?.classList.toggle("hidden", view !== "pathway");
+    document.getElementById("cards-view")?.classList.toggle("hidden", view !== "cards");
+    document.querySelectorAll("[data-view]").forEach(b => {
+      b.classList.toggle("is-active", b.dataset.view === view);
+      b.setAttribute("aria-pressed", String(b.dataset.view === view));
+    });
+
+    if (view === "pathway") {
+      const go = () => { updateUrlParams(); renderResults(); document.getElementById("pathway-view")?.scrollIntoView({ block: "start", behavior: "smooth" }); };
+      const shown = renderPathway({
+        f: { selectedCountry, selectedPercentage, selectedLevel, selectedMajor, isMeritOnly, keywordQuery },
+        step,
+        setMajor: id => { selectedMajor = id; step = 0; go(); },
+        setCountry: c => { selectedCountry = c; step = 3; go(); },
+        setStep: n => { step = n; go(); },
+        clearCountryFilter: () => { selectedCountry = ""; step = 1; go(); },
+        restart: () => { selectedMajor = selectedCountry = ""; step = 0; go(); }
+      });
+      if (countBadge) countBadge.textContent = shown === 1 ? t('plan_majors_count_one') : t('plan_majors_count').replace("{n}", shown);
+      emptyState?.classList.toggle("hidden", shown > 0 || !!selectedMajor);
+      return;
+    }
 
     const filtered = (window.MOUSTAQBILI_PROGRAMS || []).filter(matches);
     if (countBadge) countBadge.textContent = `${filtered.length} ${filtered.length === 1 ? t('results_count_one') : t('results_count_many')}`;
@@ -675,8 +706,15 @@ function initResultsPage() {
 
   keywordInput?.addEventListener("input", (e) => {
     keywordQuery = e.target.value.trim();
+    if (view === "pathway" && keywordQuery) step = 1; // searching means looking for a major
     renderResults();
   });
+
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    view = b.dataset.view;
+    updateUrlParams();
+    renderResults();
+  }));
 
   renderResults();
   initFeedbackWidget();
@@ -686,6 +724,305 @@ function initResultsPage() {
     renderResults();
     if (openModal?.kind === "salary") openSalaryModal(openModal.prog, true);
   });
+}
+
+// =========================================================================
+// 5b. Results page: step-by-step pathway
+//     1 major -> 2 country -> 3 requirements -> 4 money & universities
+// =========================================================================
+// The pathway's major and country are the page's major and country filters, so the
+// filter chips, the URL and the home-page search all stay in step with it.
+// Step 1 lists majors (respecting the country filter); step 2 lists every country
+// for the chosen major, so the country can be changed there.
+
+function detailedProgramFor(majorId, country) {
+  return (window.MOUSTAQBILI_PROGRAMS || []).find(p => (p.planMajors || []).includes(majorId) && p.country === country) || null;
+}
+
+function countryAllowance(country) {
+  return (window.MORE_INFO?.allowances || []).find(a => a.countryEn === country) || null;
+}
+
+// Plan rule 3: Qudrat for medicine, dentistry, veterinary, pharmacy and engineering
+function qudratNeeded(m) {
+  return ["medicine", "dentistry", "veterinary-medicine"].includes(m.id) || m.id.includes("pharm") || m.discipline === "engineering";
+}
+
+// Majors on offer after the page filters (grade, level, merit, keyword; country only when asked).
+// Returns [{ m, countries: [[country, pct], ...] }].
+function pathwayOptions(f, useCountry) {
+  const cfg = getFilterConfig();
+  const range = f.selectedPercentage ? cfg.percentageRanges.find(r => r.value === f.selectedPercentage) : null;
+  const level = f.selectedLevel ? (cfg.levels || []).find(l => l.value === f.selectedLevel) : null;
+  const okCountry = c => !useCountry || !f.selectedCountry || c === f.selectedCountry;
+  const okPct = pct => !range || pct <= range.maxPct;
+  const byId = new Map();
+  const add = (m, c, pct) => {
+    if (!okCountry(c) || !okPct(pct)) return;
+    if (!byId.has(m.id)) byId.set(m.id, { m, countries: [] });
+    const entry = byId.get(m.id);
+    if (!entry.countries.some(([x]) => x === c)) entry.countries.push([c, pct]);
+  };
+
+  if (f.isMeritOnly || f.selectedLevel === "foundation") {
+    // Merit status and the foundation year are only known for the detailed programs
+    (window.MOUSTAQBILI_PROGRAMS || []).forEach(p => {
+      if (f.isMeritOnly && !p.isMerit) return;
+      if (f.selectedLevel && !(p.levels || []).includes(f.selectedLevel)) return;
+      (p.planMajors || []).forEach(id => {
+        const m = planMajorById(id);
+        if (m) add(m, p.country, m.minPct[p.country] ?? (parseFloat(p.schoolGradSplit?.publicSchool?.minScore) || 0));
+      });
+    });
+  } else {
+    (window.PLAN_MAJORS || []).forEach(m => {
+      if (level?.planMajors && !level.planMajors.includes(m.id)) return;
+      Object.entries(m.minPct).forEach(([c, pct]) => add(m, c, pct));
+    });
+  }
+
+  const query = (f.keywordQuery || "").toLowerCase();
+  return [...byId.values()].filter(({ m, countries }) => {
+    if (!query) return true;
+    const disc = window.PLAN_DISCIPLINES.find(d => d.id === m.discipline);
+    const text = `${m.en} ${m.ar} ${disc?.en} ${disc?.ar} ${countries.map(([c]) => `${c} ${window.PLAN_COUNTRIES[c]}`).join(" ")}`.toLowerCase();
+    return text.includes(query);
+  });
+}
+
+function pathwayStepper(step, major, country) {
+  const ar = isArabic();
+  const items = [
+    { n: 1, label: t('pw_step1'), value: major ? (ar ? major.ar : major.en) : "" },
+    { n: 2, label: t('pw_step2'), value: country ? (ar ? (window.PLAN_COUNTRIES[country] || country) : country) : "" },
+    { n: 3, label: t('pw_step3'), value: "" },
+    { n: 4, label: t('pw_step4'), value: "" }
+  ];
+  const reachable = n => n === 1 || (n === 2 && major) || (n >= 3 && major && country);
+  return items.map(i => {
+    const state = i.n === step ? "is-current" : (i.n < step ? "is-done" : "");
+    return `
+      <li>
+        <button type="button" class="pw-step ${state}" data-step="${i.n}" ${reachable(i.n) ? "" : "disabled"} ${i.n === step ? 'aria-current="step"' : ""}>
+          <span class="pw-step-num">${i.n}</span>
+          <span class="min-w-0">
+            <span class="pw-step-label">${i.label}</span>
+            ${i.value ? `<span class="pw-step-value">${i.value}</span>` : ""}
+          </span>
+        </button>
+      </li>`;
+  }).join("");
+}
+
+function pathwayNav(backStep, backLabel, nextStep, nextLabel) {
+  return `
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-3">
+      ${backStep ? `<button type="button" class="pw-go px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-slate-700" data-step="${backStep}"><span class="flip-rtl inline-block">&larr;</span> ${backLabel}</button>` : "<span></span>"}
+      ${nextStep ? `<button type="button" class="pw-go px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold" data-step="${nextStep}">${nextLabel} <span class="flip-rtl inline-block">&rarr;</span></button>` : ""}
+    </div>`;
+}
+
+// Step 1: majors grouped by field
+function pathwayMajorsHtml(options, f, major) {
+  const ar = isArabic();
+  const name = c => ar ? (window.PLAN_COUNTRIES[c] || c) : c;
+  const openAll = !!(f.keywordQuery || f.selectedCountry || f.selectedPercentage || f.selectedLevel || f.isMeritOnly) || options.length <= 12;
+  const groups = window.PLAN_DISCIPLINES.map(d => {
+    const rows = options.filter(o => o.m.discipline === d.id)
+      .sort((a, b) => (ar ? a.m.ar : a.m.en).localeCompare(ar ? b.m.ar : b.m.en, ar ? "ar" : "en"));
+    if (!rows.length) return "";
+    const hasSelected = major && rows.some(r => r.m.id === major.id);
+    return `
+      <details class="plan-group" ${openAll || hasSelected ? "open" : ""}>
+        <summary>
+          <span class="font-bold text-slate-900">${ar ? d.ar : d.en}</span>
+          <span class="text-sm text-slate-500">${rows.length === 1 ? t('plan_majors_count_one') : t('plan_majors_count').replace("{n}", rows.length)}</span>
+        </summary>
+        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          ${rows.map(({ m, countries }) => {
+            const low = Math.min(...countries.map(([, p]) => p));
+            const detailed = countries.some(([c]) => detailedProgramFor(m.id, c));
+            return `
+            <button type="button" class="pw-option ${major?.id === m.id ? "is-selected" : ""}" data-major="${m.id}">
+              <span class="pw-option-title">${ar ? m.ar : m.en}</span>
+              <span class="pw-option-meta">${countries.length === 1 ? t('pw_countries_one') : t('pw_countries_n').replace("{n}", countries.length)} &middot; ${t('pw_from').replace("{pct}", low)}</span>
+              ${detailed ? `<span class="pw-badge">${t('pw_full_details')}</span>` : ""}
+            </button>`;
+          }).join("")}
+        </div>
+      </details>`;
+  }).join("");
+
+  const countryNote = f.selectedCountry
+    ? `<p class="text-sm text-slate-600 mb-3">${t('pw_only_country').replace("{country}", `<strong>${name(f.selectedCountry)}</strong>`)} <button type="button" class="pw-all-countries font-semibold text-olive-900 underline">${t('pw_show_all_countries')}</button></p>`
+    : "";
+  return `
+    <h2 class="text-lg font-extrabold text-slate-900">${t('pw_step1_title')}</h2>
+    <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('pw_step1_desc')}</p>
+    ${countryNote}
+    <div class="space-y-3">${groups}</div>`;
+}
+
+// Step 2: countries for the chosen major
+function pathwayCountriesHtml(m, countries, country) {
+  const ar = isArabic();
+  const name = c => ar ? (window.PLAN_COUNTRIES[c] || c) : c;
+  const cards = [...countries].sort((a, b) => a[1] - b[1] || name(a[0]).localeCompare(name(b[0]), ar ? "ar" : "en")).map(([c, pct]) => {
+    const prog = detailedProgramFor(m.id, c);
+    const allowance = countryAllowance(c);
+    const kwd = allowance ? convertAmount(allowance.standard, allowance.currency, "KWD", FX.rates) : null;
+    return `
+      <button type="button" class="pw-option ${country === c ? "is-selected" : ""}" data-country="${c}">
+        <span class="pw-option-title">${name(c)}</span>
+        <span class="mt-2 flex flex-wrap items-center gap-1.5">
+          <span class="pw-pct" dir="ltr">${pct}%</span>${m.unconfirmed.includes(c) ? flag('unconfirmed') : ""}
+          ${prog?.isMerit ? `<span class="px-2 py-0.5 rounded text-xs font-bold merit-tag">${t('card_merit_badge')}</span>` : ""}
+          ${prog ? `<span class="pw-badge">${t('pw_full_details')}</span>` : ""}
+        </span>
+        ${typeof kwd === "number" ? `<span class="pw-option-meta mt-2">${t('pw_monthly')}: <strong class="text-slate-800">${formatNumber(kwd)} KWD</strong></span>` : ""}
+      </button>`;
+  }).join("");
+  return `
+    <h2 class="text-lg font-extrabold text-slate-900">${t('pw_step2_title').replace("{major}", ar ? m.ar : m.en)}</h2>
+    <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('pw_step2_desc')} ${t('pw_open_to').replace("{stream}", t(m.stream === "both" ? 'plan_stream_both' : 'plan_stream_science'))}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">${cards}</div>`;
+}
+
+// Step 3: full requirements when a detailed program exists, otherwise the plan's rules
+function pathwayRequirementsHtml(m, country, pct) {
+  const ar = isArabic();
+  const plan = window.MOHE_PLAN_2026;
+  const prog = detailedProgramFor(m.id, country);
+  const title = t('pw_step3_title').replace("{major}", ar ? m.ar : m.en).replace("{country}", ar ? (window.PLAN_COUNTRIES[country] || country) : country);
+  if (prog) {
+    const local = localizeProgram(prog);
+    return `
+      <h2 class="text-lg font-extrabold text-slate-900">${title}</h2>
+      <p class="text-sm text-slate-600 mt-0.5 mb-4">${ar ? local.titleAr : local.title}</p>
+      <div class="pw-panel rounded-xl border border-slate-200 overflow-hidden">${requirementsBodyHtml(prog, true)}</div>`;
+  }
+  const rules = plan?.ruleKeys || [];
+  const rule = key => {
+    const i = rules.indexOf(key);
+    return i < 0 ? "" : (ar ? plan.rulesAr : plan.rulesEn)[i];
+  };
+  const picked = ["age", "english"];
+  if (qudratNeeded(m)) picked.push("qudrat");
+  if (country === "United Kingdom") picked.push("uk");
+  return `
+    <h2 class="text-lg font-extrabold text-slate-900">${title}</h2>
+    <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('pw_basic_note')}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <span class="text-xs font-bold text-slate-500 block mb-1">${t('pw_lowest')}</span>
+        <span class="pw-pct" dir="ltr">${pct}%</span>${m.unconfirmed.includes(country) ? ` ${flag('unconfirmed')}` : ""}
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <span class="text-xs font-bold text-slate-500 block mb-1">${t('pw_stream')}</span>
+        <span class="text-sm font-bold text-slate-900">${t(m.stream === "both" ? 'plan_stream_both' : 'plan_stream_science')}</span>
+      </div>
+    </div>
+    <h3 class="text-sm font-bold text-slate-900 mb-2">${t('pw_plan_rules')}</h3>
+    <ul class="space-y-2 text-sm text-slate-700">
+      ${picked.map(k => rule(k)).filter(Boolean).map(r => `<li class="flex items-start gap-2 p-3 rounded-lg bg-slate-50 border border-slate-200">${ICON_CHECK}<span>${withFlags(r)}</span></li>`).join("")}
+    </ul>
+    <a href="${plan?.planUrl}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-olive-900 underline">${t('plan_majors_pdf')} ${ICON_EXTERNAL}</a>`;
+}
+
+// Step 4: the two subsets, money and universities
+function pathwayMoneyHtml(m, country) {
+  const ar = isArabic();
+  const prog = detailedProgramFor(m.id, country);
+  const title = t('pw_step4_title').replace("{major}", ar ? m.ar : m.en).replace("{country}", ar ? (window.PLAN_COUNTRIES[country] || country) : country);
+  const a = countryAllowance(country);
+  const amount = (value, currency) => `<span class="text-xl font-black text-slate-900 block">${money(convertAmount(value, currency, "KWD", FX.rates), "KWD")}</span><span class="text-xs text-slate-500">${formatNumber(value)} ${currency}</span>`;
+
+  let moneyBody;
+  if (prog) {
+    const standard = stipendKwdRange(prog, "standard");
+    const merit = prog.isMerit ? stipendKwdRange(prog, "merit") : null;
+    moneyBody = `
+      <div class="salary-badge rounded-lg p-3 mb-3">
+        <span class="text-xs font-bold block text-emerald-900">${t('card_stipend_label')}</span>
+        <span class="text-xl font-black text-emerald-950 block">${standard ?? "—"}</span>
+        <span class="text-xs font-semibold text-emerald-800 block">${stipendHostRange(prog, "standard")}</span>
+        ${merit ? `<span class="text-xs font-bold text-amber-800 block mt-1">${t('card_merit_amount')}: ${merit}</span>` : ""}
+      </div>
+      <div class="grid grid-cols-1 gap-2">${allowanceItemsHtml(prog)}</div>
+      <button type="button" class="pw-calc mt-4 w-full px-4 py-2.5 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('pw_open_calc')}</button>`;
+  } else if (a) {
+    moneyBody = `
+      <div class="grid grid-cols-2 gap-2 mb-3">
+        <div class="p-3 rounded-lg bg-slate-50 border border-slate-200"><span class="text-xs font-bold text-slate-500 block mb-1">${t('stipend_standard')}</span>${amount(a.standard, a.currency)}</div>
+        <div class="p-3 rounded-lg bg-amber-50/60 border border-amber-200"><span class="text-xs font-bold text-amber-900 block mb-1">${t('stipend_merit')}</span>${typeof a.merit === "number" ? amount(a.merit, a.currency) : (a.meritFlag ? flag(a.meritFlag) : `<span class="text-sm text-slate-600">${t('pw_no_merit')}</span>`)}</div>
+      </div>
+      <p class="text-sm text-slate-600">${t('pw_extra_note')} <a class="font-semibold text-olive-900 underline" href="${window.MOHE_PLAN_2026?.allowancesUrl}" target="_blank" rel="noopener noreferrer">${t('pw_extra_link')}</a></p>
+      <p class="text-xs text-slate-400 mt-2">${fxNote()}</p>`;
+  } else {
+    moneyBody = `<p class="text-sm text-slate-600">${flag('unconfirmed')}</p>`;
+  }
+
+  const unisBody = prog
+    ? universitiesHtml(prog)
+    : `<p class="text-sm text-slate-600 mb-3">${t('pw_unis_plan_note')}</p>
+       <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`;
+
+  return `
+    <h2 class="text-lg font-extrabold text-slate-900 mb-4">${title}</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+      <section class="pw-panel rounded-xl border border-slate-200 bg-white p-5">
+        <h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_money_title')}</h3>
+        ${moneyBody}
+      </section>
+      <section class="pw-panel rounded-xl border border-slate-200 bg-white p-5">
+        ${prog ? "" : `<h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_unis_title')}</h3>`}
+        ${unisBody}
+      </section>
+    </div>`;
+}
+
+// Draws the stepper and the current step. ctx: { f, step, setMajor, setCountry, setStep, clearCountryFilter, restart }
+// Returns how many majors step 1 offers (for the count badge and the empty state).
+function renderPathway(ctx) {
+  const stepsEl = document.getElementById("pw-steps");
+  const body = document.getElementById("pw-body");
+  if (!stepsEl || !body) return 0;
+  const { f } = ctx;
+  const options = pathwayOptions(f, true);
+  const major = f.selectedMajor ? planMajorById(f.selectedMajor) : null;
+  // Step 2 ignores the country filter, so every country for the major can be picked
+  const majorEntry = major ? pathwayOptions({ ...f, keywordQuery: "" }, false).find(o => o.m.id === major.id) : null;
+  const countries = majorEntry?.countries || [];
+  const countryEntry = countries.find(([c]) => c === f.selectedCountry);
+  const country = major && countryEntry ? countryEntry[0] : null;
+
+  const maxStep = !major ? 1 : !country ? 2 : 4;
+  // With no step asked for, open the furthest useful one (requirements once a country is picked)
+  const wanted = ctx.step || (maxStep === 4 ? 3 : maxStep);
+  const step = Math.min(wanted, maxStep);
+
+  stepsEl.innerHTML = pathwayStepper(step, major, country);
+  if (step === 1) {
+    body.innerHTML = options.length ? pathwayMajorsHtml(options, f, major) : "";
+  } else if (step === 2) {
+    body.innerHTML = pathwayCountriesHtml(major, countries, country) + pathwayNav(1, t('pw_back_major'));
+  } else if (step === 3) {
+    body.innerHTML = pathwayRequirementsHtml(major, country, countryEntry[1]) + pathwayNav(2, t('pw_back_country'), 4, t('pw_next_money'));
+    wireTabs(body);
+  } else {
+    body.innerHTML = pathwayMoneyHtml(major, country) + pathwayNav(3, t('pw_back_req'), null, "") +
+      `<p class="mt-4 text-center"><button type="button" class="pw-restart text-sm font-semibold text-slate-500 hover:text-slate-800 underline">${t('pw_start_over')}</button></p>`;
+    body.querySelector(".pw-calc")?.addEventListener("click", () => openSalaryModal(detailedProgramFor(major.id, country)));
+  }
+
+  stepsEl.querySelectorAll(".pw-step:not([disabled])").forEach(b => b.addEventListener("click", () => ctx.setStep(+b.dataset.step)));
+  body.querySelectorAll(".pw-go").forEach(b => b.addEventListener("click", () => ctx.setStep(+b.dataset.step)));
+  body.querySelectorAll("[data-major]").forEach(b => b.addEventListener("click", () => ctx.setMajor(b.dataset.major)));
+  body.querySelectorAll("[data-country]").forEach(b => b.addEventListener("click", () => ctx.setCountry(b.dataset.country)));
+  body.querySelector(".pw-all-countries")?.addEventListener("click", ctx.clearCountryFilter);
+  body.querySelector(".pw-restart")?.addEventListener("click", ctx.restart);
+  body.classList.toggle("hidden", !body.innerHTML.trim());
+  return options.length;
 }
 
 // =========================================================================
@@ -762,6 +1099,18 @@ function wireTabs(root) {
 function openRequirementsModal(baseProg) {
   openModal = { kind: "requirements", prog: baseProg };
   const prog = localizeProgram(baseProg);
+  const content = showProgramModal(`
+    ${modalHeader(prog, 'modal_requirements_subtitle')}
+    ${requirementsBodyHtml(baseProg)}
+    ${modalFooter()}
+  `);
+  if (content) wireTabs(content);
+}
+
+// Tabs (grades, tests, dates, visa) for one program: used by the pop-up and inline by the pathway.
+// inline = true drops the pop-up's height limit.
+function requirementsBodyHtml(baseProg, inline = false) {
+  const prog = localizeProgram(baseProg);
   const g = prog.schoolGradSplit;
   const ex = prog.necessaryExams;
   const dl = prog.deadlines;
@@ -776,9 +1125,7 @@ function openRequirementsModal(baseProg) {
       <span class="text-slate-800">${withFlags(value)}${mark(key)}</span>
     </div>` : '';
 
-  const content = showProgramModal(`
-    ${modalHeader(prog, 'modal_requirements_subtitle')}
-
+  return `
     <div class="flex border-b border-slate-200 bg-slate-100 text-xs font-bold overflow-x-auto" role="tablist">
       <button type="button" role="tab" aria-selected="true" class="modal-tab-btn active px-4 py-3 whitespace-nowrap" data-target="tab-grades">${t('modal_tab_grades')}</button>
       <button type="button" role="tab" aria-selected="false" class="modal-tab-btn px-4 py-3 whitespace-nowrap" data-target="tab-exams">${t('modal_tab_exams')}</button>
@@ -786,7 +1133,7 @@ function openRequirementsModal(baseProg) {
       <button type="button" role="tab" aria-selected="false" class="modal-tab-btn px-4 py-3 whitespace-nowrap" data-target="tab-visa">${t('modal_tab_visa')}</button>
     </div>
 
-    <div class="p-5 max-h-[62vh] overflow-y-auto bg-white text-xs sm:text-sm">
+    <div class="p-5 ${inline ? '' : 'max-h-[62vh] overflow-y-auto'} bg-white text-xs sm:text-sm">
 
       <p class="text-xs text-slate-600 bg-slate-50 border border-slate-200 rounded px-3 py-2 mb-4">${t('req_verified_note')}</p>
 
@@ -860,10 +1207,23 @@ function openRequirementsModal(baseProg) {
         </div>
       </div>
     </div>
+  `;
+}
 
-    ${modalFooter()}
-  `);
-  if (content) wireTabs(content);
+// Allowance lines and university list for one program (money pop-up and pathway step 4)
+function allowanceItemsHtml(baseProg) {
+  const prog = localizeProgram(baseProg);
+  return prog.monthlySalary.allowancesSummary.map((a, i) => `<div class="flex items-start gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800">${ICON_CHECK}<span>${a}${i >= (baseProg.verifiedAllowances ?? 1) ? ` ${flag('unverified')}` : ''}</span></div>`).join("");
+}
+
+function universitiesHtml(baseProg) {
+  const prog = localizeProgram(baseProg);
+  return `
+    <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${(baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`}</h3>
+    <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
+      ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
+    </ul>`;
 }
 
 // =========================================================================
@@ -963,16 +1323,12 @@ function openSalaryModal(baseProg, keepInputs = false) {
       <section>
         <h3 class="text-sm font-extrabold text-slate-900 mb-2">${t('modal_allowances_heading')}</h3>
         <div class="grid grid-cols-1 gap-2">
-          ${prog.monthlySalary.allowancesSummary.map((a, i) => `<div class="flex items-start gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800">${ICON_CHECK}<span>${a}${i >= (baseProg.verifiedAllowances ?? 1) ? ` ${flag('unverified')}` : ''}</span></div>`).join("")}
+          ${allowanceItemsHtml(baseProg)}
         </div>
       </section>
 
       <section>
-        <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${(baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`}</h3>
-        <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
-        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
-          ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
-        </ul>
+        ${universitiesHtml(baseProg)}
       </section>
     </div>
 
@@ -1118,18 +1474,37 @@ function renderQudratPage() {
             <span class="text-sm font-extrabold text-slate-900">${s.value}</span>
           </li>`).join("")}
       </ol>
-      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-700">
-        <div>
-          <h3 class="text-sm font-bold text-slate-900 mb-2">${t('qudrat_who')}</h3>
+    </section>
+
+    <!-- Before you register: who can sit the tests, and what to have ready -->
+    <section id="requirements" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900">${t('qudrat_req_title')}</h2>
+      <p class="text-sm text-slate-600 mt-0.5 mb-5">${t('qudrat_req_desc')}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <h3 class="text-sm font-bold text-slate-900 mb-3">${t('qudrat_who')}</h3>
           ${list(arr(c, 'eligibility'))}
         </div>
-        <div>
-          <h3 class="text-sm font-bold text-slate-900 mb-2">${t('qudrat_how')}</h3>
-          ${list(arr(c, 'steps'))}
-          ${c.registerUrl ? `<a href="${c.registerUrl}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg font-bold">${t('qudrat_register_btn')} ${ICON_EXTERNAL}</a>` : ''}
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <h3 class="text-sm font-bold text-slate-900 mb-3">${t('qudrat_need')}</h3>
+          ${list(arr(c, 'need'))}
         </div>
       </div>
-      ${arr(c, 'notes').length ? `<div class="px-6 pb-6 text-xs"><div class="p-3 rounded-lg bg-amber-50 border border-amber-300 text-amber-950">${list(arr(c, 'notes'))}</div></div>` : ''}
+    </section>
+
+    <!-- How to register: a checklist grouped by when you do each step -->
+    <section id="register" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
+      <div class="flex flex-wrap items-end justify-between gap-2 mb-1">
+        <h2 class="text-lg font-extrabold text-slate-900">${t('qudrat_how')}</h2>
+        <p id="qreg-progress" class="text-sm font-semibold text-slate-600" aria-live="polite"></p>
+      </div>
+      <p class="text-sm text-slate-600 mb-3">${t('qudrat_how_desc')}</p>
+      <div class="h-2 rounded-full bg-slate-200 overflow-hidden mb-6" aria-hidden="true"><div id="qreg-bar" class="h-full bg-olive-700 transition-all" style="width:0%"></div></div>
+      <div id="qreg-phases" class="space-y-6"></div>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        ${c.registerUrl ? `<a href="${c.registerUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold">${t('qudrat_register_btn')} ${ICON_EXTERNAL}</a>` : ''}
+        <button type="button" id="qreg-reset" class="text-sm font-semibold text-slate-500 hover:text-slate-800 underline">${t('steps_reset')}</button>
+      </div>
     </section>
 
     <!-- Test dates & registration deadlines -->
@@ -1243,6 +1618,62 @@ function renderQudratPage() {
   `;
 
   initEquivalentCalculator(data);
+  renderQudratChecklist(c);
+  document.getElementById("qreg-reset")?.addEventListener("click", () => {
+    saveTickedSteps(new Set(), QREG_KEY);
+    renderQudratChecklist(c);
+  });
+}
+
+// Qudrat registration checklist. Ticks are kept apart from the scholarship checklist.
+const QREG_KEY = "moustaqbili_qudrat_steps";
+
+function renderQudratChecklist(cycle) {
+  const box = document.getElementById("qreg-phases");
+  if (!box) return;
+  const phases = cycle.registerPhases || [];
+  const total = phases.reduce((n, p) => n + p.steps.length, 0);
+  const ticked = loadTickedSteps(QREG_KEY);
+  let num = 0;
+
+  box.innerHTML = phases.map(p => `
+    <div>
+      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">${L(p, 'title')}</h3>
+      <ol class="space-y-2">
+        ${p.steps.map(s => {
+          num += 1;
+          const done = ticked.has(s.id);
+          return `
+          <li class="step-item ${done ? 'is-done' : ''}">
+            <label class="step-check" title="${t('steps_mark_done')}">
+              <input type="checkbox" data-step="${s.id}" ${done ? 'checked' : ''} aria-label="${t('steps_mark_done')}: ${L(s, 'text')}">
+              <span class="step-num" aria-hidden="true">${num}</span>
+            </label>
+            <div class="flex-1 min-w-0 pt-0.5">
+              <span class="step-title">${L(s, 'text')}</span>
+              ${L(s, 'hint') ? `<span class="step-summary">${L(s, 'hint')}</span>` : ''}
+            </div>
+          </li>`;
+        }).join("")}
+      </ol>
+    </div>`).join("");
+
+  const progress = () => {
+    const done = loadTickedSteps(QREG_KEY).size;
+    const label = document.getElementById("qreg-progress");
+    const bar = document.getElementById("qreg-bar");
+    if (label) label.textContent = t('steps_progress').replace("{done}", done).replace("{total}", total);
+    if (bar) bar.style.width = `${total ? Math.round((done / total) * 100) : 0}%`;
+  };
+
+  box.querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener("change", () => {
+    const set = loadTickedSteps(QREG_KEY);
+    if (input.checked) set.add(input.dataset.step); else set.delete(input.dataset.step);
+    saveTickedSteps(set, QREG_KEY);
+    input.closest(".step-item").classList.toggle("is-done", input.checked);
+    progress();
+  }));
+  progress();
 }
 
 function initEquivalentCalculator(data) {
@@ -1720,11 +2151,11 @@ function initAskPage() {
 const STEPS_KEY = "moustaqbili_apply_steps";
 
 // Ticked step ids, kept in this browser only. Storage can be unavailable (private mode), so never fail.
-function loadTickedSteps() {
-  try { return new Set(JSON.parse(localStorage.getItem(STEPS_KEY) || "[]")); } catch (e) { return new Set(); }
+function loadTickedSteps(key = STEPS_KEY) {
+  try { return new Set(JSON.parse(localStorage.getItem(key) || "[]")); } catch (e) { return new Set(); }
 }
-function saveTickedSteps(set) {
-  try { localStorage.setItem(STEPS_KEY, JSON.stringify([...set])); } catch (e) { /* ignore */ }
+function saveTickedSteps(set, key = STEPS_KEY) {
+  try { localStorage.setItem(key, JSON.stringify([...set])); } catch (e) { /* ignore */ }
 }
 
 function initApplySteps() {
