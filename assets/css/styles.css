@@ -268,6 +268,66 @@ html {
 /* Plain-language helper line under headings */
 .helper-text { font-size: 0.875rem; color: #475569; line-height: 1.6; }
 
+/* Reveal cards: the short answer on the front, the details behind it (revealCard() in app.js).
+   html[data-reveal] picks the animation: "fade" (default) or "flip". */
+.reveal-card { perspective: 1400px; min-width: 0; }
+.reveal-inner {
+  position: relative;
+  display: grid;
+  grid-template-rows: 100%;
+  transition: height 0.3s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.reveal-face {
+  grid-area: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  border-radius: 0.75rem;
+  text-align: start;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.reveal-front { display: block; cursor: pointer; }
+.reveal-front:hover { border-color: #7e9e76; }
+.reveal-front:focus-visible,
+.reveal-close:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.reveal-body { display: block; padding: 1rem 1.1rem; }
+/* The question the bold answer replies to, highlighted like a marker */
+.reveal-q {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  border-inline-start: 3px solid #556b2f;
+  background: #eef3ed;
+  color: #2d3e29;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.reveal-answer { display: block; margin-top: 0.45rem; font-size: 1.25rem; font-weight: 900; color: #0f172a; line-height: 1.25; }
+.reveal-sub { display: block; font-size: 0.875rem; color: #475569; margin-top: 0.1rem; }
+.reveal-more { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.6rem; font-size: 0.8125rem; font-weight: 700; color: #384f33; }
+.reveal-close { font-size: 0.8125rem; font-weight: 700; color: #384f33; text-decoration: underline; flex-shrink: 0; }
+
+/* Fade: the side that appears is visible at once (so it can take focus); the side that leaves
+   fades out first and is hidden after. */
+[data-reveal="fade"] .reveal-front,
+[data-reveal="fade"] .is-open .reveal-back { opacity: 1; visibility: visible; transition: opacity 0.3s ease 0.05s, visibility 0s; }
+[data-reveal="fade"] .reveal-back,
+[data-reveal="fade"] .is-open .reveal-front { opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
+
+[data-reveal="flip"] .reveal-back { transform: rotateY(180deg); }
+[data-reveal="flip"] .is-open .reveal-inner { transform: rotateY(180deg); }
+[dir="rtl"][data-reveal="flip"] .reveal-back,
+[dir="rtl"][data-reveal="flip"] .is-open .reveal-inner { transform: rotateY(-180deg); }
+
+/* In a narrow grid (the money pop-up) an open card takes the whole row */
+.reveal-grid-expand > .reveal-card.is-open { grid-column: 1 / -1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-inner, .reveal-face { transition: none !important; }
+}
+
 /* Contact page: link bubbles and info notes */
 .contact-bubble {
   display: flex;
@@ -837,3 +897,11 @@ html.dark .pw-option-title { color: #eef2ee; }
 html.dark .pw-option-meta { color: #a3ad9f; }
 html.dark .pw-badge { color: #b7cf9f; background: #1d2a1a; border-color: #3a4836; }
 html.dark .pw-pct { color: #d1fae5; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); }
+
+/* Reveal cards */
+html.dark .reveal-front:hover { border-color: #7e9e76; }
+html.dark .reveal-q { background: rgba(126, 158, 118, 0.16); color: #d5e6c8; border-inline-start-color: #7e9e76; }
+html.dark .reveal-answer { color: #eef2ee; }
+html.dark .reveal-sub { color: #a3ad9f; }
+html.dark .reveal-more, html.dark .reveal-close { color: #b7cf9f; }
+html.dark .reveal-front:focus-visible, html.dark .reveal-close:focus-visible { outline-color: #7e9e76; }

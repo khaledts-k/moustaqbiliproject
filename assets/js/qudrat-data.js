@@ -9,7 +9,7 @@
  */
 
 const KUWAIT_QUDRAT = {
-  lastVerified: "2026-10-11",
+  lastVerified: "2026-10-21",
 
   currentCycle: {
     nameEn: "Academic Aptitude Tests - First Opportunity 2026/2027",
@@ -39,31 +39,57 @@ const KUWAIT_QUDRAT = {
 
     registerUrl: "https://portal.ku.edu.kw/placement",
 
-    eligibilityEn: [
-      "Grade 12 students (or equivalent) and secondary-school graduates",
-      "Applicants to Kuwait University, Abdullah Al-Salem University, or medicine / engineering scholarships (inside Kuwait and abroad)",
-      "International and private-school students are eligible",
-      "Current Kuwait University students cannot register (except the French test for a French major)"
-    ],
-    eligibilityAr: [
-      "طلبة الصف الثاني عشر (أو ما يعادله) وخريجو الثانوية العامة",
-      "المتقدمون لجامعة الكويت أو جامعة عبد الله السالم أو بعثات الطب والهندسة (الداخلية والخارجية)",
-      "يحق لطلبة المدارس الخاصة والأجنبية التسجيل",
-      "لا يحق لطلبة جامعة الكويت الحاليين التسجيل (باستثناء اختبار اللغة الفرنسية لتخصص الفرنسية)"
-    ],
-
-    // What to have ready before registering (shown with eligibility under "Before you register")
-    needEn: [
-      "Your Civil ID number: it is your username, and its last 5 digits are your first password",
-      "A phone number and email you check: the portal shows them and asks you to confirm them",
-      "A K-Net bank card with 10 KWD for each test you choose",
-      "The tests your college needs (see \"Subjects & fees\" below)"
-    ],
-    needAr: [
-      "رقمك المدني: هو اسم المستخدم، وآخر 5 أرقام منه هي كلمة المرور الأولى",
-      "رقم هاتف وبريد إلكتروني تتابعهما: تعرضهما البوابة وتطلب منك تأكيدهما",
-      "بطاقة بنكية تعمل بنظام كي-نت، فيها 10 دنانير لكل اختبار تختاره",
-      "الاختبارات التي تطلبها كليتك (انظر \"المواد والرسوم\" أدناه)"
+    // "The basics" cards on the Qudrat page: a short answer on the front, details behind it.
+    // The "last day to register" card is built from `sessions` in app.js.
+    basics: [
+      {
+        id: "cost",
+        questionEn: "How much does it cost?", questionAr: "كم الرسوم؟",
+        answerEn: "10 KWD", answerAr: "10 د.ك",
+        subEn: "per test, paid by K-Net", subAr: "لكل اختبار، تُدفع عبر كي-نت",
+        detailsEn: [
+          "Not refundable. You cannot cancel after paying.",
+          "Scores last 2 years from the test date.",
+          "Up to 3 tries per subject each academic year. Your highest valid score counts."
+        ],
+        detailsAr: [
+          "غير مستردة، ولا يمكن الإلغاء بعد الدفع.",
+          "الدرجة صالحة لمدة سنتين من تاريخ الاختبار.",
+          "حتى 3 محاولات لكل مادة في السنة الأكاديمية، وتُحتسب أعلى درجة سارية."
+        ]
+      },
+      {
+        id: "who",
+        questionEn: "Who can register?", questionAr: "من يمكنه التسجيل؟",
+        answerEn: "Grade 12", answerAr: "الصف الثاني عشر",
+        subEn: "and high-school graduates", subAr: "وخريجو الثانوية العامة",
+        detailsEn: [
+          "For applicants to Kuwait University, Abdullah Al-Salem University, or medicine / engineering scholarships (inside Kuwait and abroad).",
+          "Private and international school students can register.",
+          "Current Kuwait University students cannot (except the French test for a French major)."
+        ],
+        detailsAr: [
+          "للمتقدمين لجامعة الكويت أو جامعة عبد الله السالم أو بعثات الطب والهندسة (الداخلية والخارجية).",
+          "يحق لطلبة المدارس الخاصة والأجنبية التسجيل.",
+          "لا يحق لطلبة جامعة الكويت الحاليين التسجيل (باستثناء اختبار الفرنسية لتخصص الفرنسية)."
+        ]
+      },
+      {
+        id: "need",
+        questionEn: "What do I need?", questionAr: "ماذا أحتاج؟",
+        answerEn: "Civil ID", answerAr: "البطاقة المدنية",
+        subEn: "and a K-Net bank card", subAr: "وبطاقة بنكية تعمل بكي-نت",
+        detailsEn: [
+          "Your Civil ID number is your username. Its last 5 digits are your first password.",
+          "A phone number and email you check: the portal asks you to confirm them.",
+          "10 KWD on the card for each test you choose."
+        ],
+        detailsAr: [
+          "رقمك المدني هو اسم المستخدم، وآخر 5 أرقام منه هي كلمة المرور الأولى.",
+          "رقم هاتف وبريد إلكتروني تتابعهما، فالبوابة تطلب منك تأكيدهما.",
+          "10 دنانير في البطاقة لكل اختبار تختاره."
+        ]
+      }
     ],
 
     // How to register, grouped by when you do each step. Ticks are saved on the device (app.js).
@@ -100,27 +126,35 @@ const KUWAIT_QUDRAT = {
           { id: "q-id", textEn: "Bring an official photo ID", textAr: "أحضر إثبات شخصية رسمياً بصورة",
             hintEn: "Civil ID, passport, driving licence or Kuwait Mobile ID.", hintAr: "البطاقة المدنية أو الجواز أو رخصة القيادة أو تطبيق هويتي." },
           { id: "q-ontime", textEn: "Arrive on time", textAr: "احضر في الموعد",
-            hintEn: "If you are absent or late, the test cannot be moved to another date.", hintAr: "لا يمكن تعويض الغياب أو التأخر بموعد آخر." }
+            hintEn: "Come one hour before the test starts. If you are absent or late, the test cannot be moved to another date.", hintAr: "احضر قبل بدء الاختبار بساعة. لا يمكن تعويض الغياب أو التأخر بموعد آخر." }
         ]
       }
     ]
   },
 
-  subjectsIntroEn: "Scores count toward the equivalent percentage only for colleges that list them. Chemistry is a placement test for students already admitted.",
-  subjectsIntroAr: "تُحتسب الدرجات في المعدل المكافئ للكليات التي تشترطها فقط. اختبار الكيمياء اختبار تحديد مستوى للمقبولين.",
+  subjectsIntroEn: "Scores count toward the equivalent percentage only for colleges that list them.",
+  subjectsIntroAr: "تُحتسب الدرجات في المعدل المكافئ للكليات التي تشترطها فقط.",
 
+  // Each test is a card: name and pass mark on the front, the colleges that ask for it behind.
   subjects: [
-    { code: "eng", nameEn: "English", nameAr: "اللغة الإنجليزية", requiredForEn: "Medicine, Dentistry, Pharmacy, Public Health, Allied Health, Engineering & Petroleum, Architecture, Life Sciences, Business, Education, Arts (English dept). Pass mark 60%.", requiredForAr: "الطب، طب الأسنان، الصيدلة، الصحة العامة، العلوم الطبية المساعدة، الهندسة والبترول، العمارة، علوم الحياة، العلوم الإدارية، التربية، الآداب (قسم اللغة الإنجليزية). درجة النجاح 60%." },
-    { code: "math", nameEn: "Mathematics", nameAr: "الرياضيات", requiredForEn: "Medicine, Dentistry, Pharmacy, Public Health, Allied Health, Engineering & Petroleum, Architecture, Life Sciences, Business, Education (Science). Taken in Arabic or English. Pass mark 50%.", requiredForAr: "الطب، طب الأسنان، الصيدلة، الصحة العامة، العلوم الطبية المساعدة، الهندسة والبترول، العمارة، علوم الحياة، العلوم الإدارية، التربية (علمي). باللغة العربية أو الإنجليزية. درجة النجاح 50%." },
-    { code: "arb", nameEn: "Arabic", nameAr: "اللغة العربية", requiredForEn: "Arts, Sharia & Islamic Studies, Social Sciences, Education. Pass mark 50%.", requiredForAr: "الآداب، الشريعة والدراسات الإسلامية، العلوم الاجتماعية، التربية. درجة النجاح 50%." },
-    { code: "fr", nameEn: "French", nameAr: "اللغة الفرنسية", requiredForEn: "French department (College of Arts), minimum 50%. Offered twice a year.", requiredForAr: "قسم اللغة الفرنسية (كلية الآداب)، بحد أدنى 50%. يُطرح مرتين في السنة." },
-    { code: "chem", nameEn: "Chemistry", nameAr: "الكيمياء", requiredForEn: "Placement only (not in the equivalent %): Allied Health, Engineering & Petroleum, Science, Education (Science).", requiredForAr: "تحديد مستوى فقط (لا يدخل في المعدل المكافئ): العلوم الطبية المساعدة، الهندسة والبترول، العلوم، التربية (علمي)." }
-  ],
-
-  facts: [
-    { labelEn: "Fee", labelAr: "الرسوم", valueEn: "10 KWD per test (K-Net)", valueAr: "10 د.ك لكل اختبار (كي-نت)" },
-    { labelEn: "Score validity", labelAr: "صلاحية الدرجة", valueEn: "2 years from the test date", valueAr: "سنتان من تاريخ الاختبار" },
-    { labelEn: "Attempts", labelAr: "عدد المحاولات", valueEn: "Up to 3 per subject per academic year; the highest valid score counts", valueAr: "حتى 3 محاولات لكل مادة في السنة الأكاديمية، وتُحتسب أعلى درجة سارية" }
+    { code: "eng", nameEn: "English", nameAr: "اللغة الإنجليزية", passEn: "60% to pass", passAr: "النجاح 60%",
+      collegesEn: ["Medicine", "Dentistry", "Pharmacy", "Public Health", "Allied Health", "Engineering & Petroleum", "Architecture", "Life Sciences", "Business", "Education", "Arts (English dept)"],
+      collegesAr: ["الطب", "طب الأسنان", "الصيدلة", "الصحة العامة", "العلوم الطبية المساعدة", "الهندسة والبترول", "العمارة", "علوم الحياة", "العلوم الإدارية", "التربية", "الآداب (قسم اللغة الإنجليزية)"] },
+    { code: "math", nameEn: "Mathematics", nameAr: "الرياضيات", passEn: "50% to pass", passAr: "النجاح 50%",
+      collegesEn: ["Medicine", "Dentistry", "Pharmacy", "Public Health", "Allied Health", "Engineering & Petroleum", "Architecture", "Life Sciences", "Business", "Education (Science)"],
+      collegesAr: ["الطب", "طب الأسنان", "الصيدلة", "الصحة العامة", "العلوم الطبية المساعدة", "الهندسة والبترول", "العمارة", "علوم الحياة", "العلوم الإدارية", "التربية (علمي)"],
+      noteEn: "Taken in Arabic or English.", noteAr: "باللغة العربية أو الإنجليزية." },
+    { code: "arb", nameEn: "Arabic", nameAr: "اللغة العربية", passEn: "50% to pass", passAr: "النجاح 50%",
+      collegesEn: ["Arts", "Sharia & Islamic Studies", "Social Sciences", "Education"],
+      collegesAr: ["الآداب", "الشريعة والدراسات الإسلامية", "العلوم الاجتماعية", "التربية"] },
+    { code: "fr", nameEn: "French", nameAr: "اللغة الفرنسية", passEn: "50% to pass", passAr: "النجاح 50%",
+      collegesEn: ["French department (College of Arts)"],
+      collegesAr: ["قسم اللغة الفرنسية (كلية الآداب)"],
+      noteEn: "Offered twice a year.", noteAr: "يُطرح مرتين في السنة." },
+    { code: "chem", nameEn: "Chemistry", nameAr: "الكيمياء", passEn: "Placement only", passAr: "تحديد مستوى فقط",
+      collegesEn: ["Allied Health", "Engineering & Petroleum", "Science", "Education (Science)"],
+      collegesAr: ["العلوم الطبية المساعدة", "الهندسة والبترول", "العلوم", "التربية (علمي)"],
+      noteEn: "For students already admitted. Not counted in the equivalent %.", noteAr: "للمقبولين فقط، ولا يدخل في المعدل المكافئ." }
   ],
 
   // Official "Required Academic Aptitude Tests for KU Colleges 2026/2027" (weights sum to 1)
@@ -144,22 +178,28 @@ const KUWAIT_QUDRAT = {
     { collegeEn: "Social Sciences", collegeAr: "العلوم الاجتماعية", weights: { hs: 0.90, arb: 0.10 }, conditionEn: "Interview for the Social Service major", conditionAr: "مقابلة لتخصص الخدمة الاجتماعية" }
   ],
 
-  rulesEn: [
-    "Optional prep courses by Kuwait University's College of Science: English 11 - 15 October 2026 (12 hours); Math in October or November 2026 (15 hours, in Arabic or English). Fee 50 KWD, not refundable. Register by WhatsApp on 24983724.",
-    "College of Science uses English, Math and Chemistry for placement only; no equivalent percentage is calculated.",
-    "College of Law does not require an aptitude test.",
-    "An IELTS score can replace the English test using KU's conversion table (for example IELTS 6.5 = 81%, 7.0 = 89%, 8.0+ = 100%).",
-    "Appeals on a score are accepted for one week after results are published.",
-    "Cheating cancels the score."
+  // "Good to know" cards: a short answer on the front, details behind it
+  goodToKnow: [
+    { id: "prep", questionEn: "Are there prep courses?", questionAr: "هل توجد دورات تقوية؟",
+      answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Math rounds from 22 October, 50 KWD", subAr: "دورات الرياضيات من 22 أكتوبر، 50 د.ك",
+      detailsEn: ["Math (15 hours, in Arabic or English), pick one round: 22-26 October, 5-9 November or 19-23 November 2026. Thursday, Saturday, Sunday and Monday, 5:00 - 9:00 pm (8:00 pm on the last day).", "English: the 11 - 15 October course has finished.", "The fee is not refundable. Register by WhatsApp on 24983724."],
+      detailsAr: ["الرياضيات (15 ساعة بالعربية أو الإنجليزية)، اختر دورة واحدة: 22-26 أكتوبر أو 5-9 نوفمبر أو 19-23 نوفمبر 2026، أيام الخميس والسبت والأحد والاثنين من 5:00 إلى 9:00 مساءً (حتى 8:00 في اليوم الأخير).", "الإنجليزي: انتهت دورة 11 - 15 أكتوبر.", "الرسوم غير مستردة، والتسجيل عبر واتساب على الرقم 24983724."] },
+    { id: "ielts", questionEn: "Can IELTS replace the English test?", questionAr: "هل يغني IELTS عن اختبار الإنجليزي؟",
+      answerEn: "Yes", answerAr: "نعم", subEn: "KU converts your IELTS score", subAr: "تعادل الجامعة درجة IELTS",
+      detailsEn: ["IELTS 6.5 = 81%", "IELTS 7.0 = 89%", "IELTS 8.0 or more = 100%", "From KU's conversion table."],
+      detailsAr: ["IELTS 6.5 = 81%", "IELTS 7.0 = 89%", "IELTS 8.0 فأكثر = 100%", "حسب جدول المعادلة في جامعة الكويت."] },
+    { id: "appeal", questionEn: "How long to appeal a score?", questionAr: "ما مدة التظلم على الدرجة؟",
+      answerEn: "1 week", answerAr: "أسبوع واحد", subEn: "after results are published", subAr: "بعد إعلان النتائج",
+      detailsEn: ["Appeals on a score are accepted for one week after results are published."],
+      detailsAr: ["تُقبل التظلمات على الدرجة خلال أسبوع من إعلان النتائج."] },
+    { id: "no-test", questionEn: "Which colleges need no Qudrat?", questionAr: "ما الكليات التي لا تشترط القدرات؟",
+      answerEn: "Law", answerAr: "الحقوق", subEn: "Science uses it for placement only", subAr: "العلوم تستخدمها لتحديد المستوى فقط",
+      detailsEn: ["College of Law does not require an aptitude test.", "College of Science uses English, Math and Chemistry for placement only; no equivalent percentage is calculated."],
+      detailsAr: ["لا تشترط كلية الحقوق اختبارات القدرات.", "تستخدم كلية العلوم اختبارات الإنجليزي والرياضيات والكيمياء لتحديد المستوى فقط، ولا يُحتسب لها معدل مكافئ."] }
   ],
-  rulesAr: [
-    "دورات تقوية اختيارية تقدمها كلية العلوم بجامعة الكويت: الإنجليزي من 11 إلى 15 أكتوبر 2026 (12 ساعة)، والرياضيات في أكتوبر أو نوفمبر 2026 (15 ساعة بالعربية أو الإنجليزية). الرسوم 50 ديناراً غير مستردة، والتسجيل عبر واتساب على الرقم 24983724.",
-    "تستخدم كلية العلوم اختبارات الإنجليزي والرياضيات والكيمياء لتحديد المستوى فقط، ولا يُحتسب لها معدل مكافئ.",
-    "لا تشترط كلية الحقوق اختبارات القدرات.",
-    "يمكن استبدال اختبار الإنجليزي بدرجة IELTS وفق جدول معادلة الجامعة (مثلاً IELTS 6.5 = 81%، و7.0 = 89%، و8.0 فأكثر = 100%).",
-    "تُقبل التظلمات على الدرجة خلال أسبوع من إعلان النتائج.",
-    "الغش يؤدي إلى إلغاء الدرجة."
-  ],
+  // Always shown under the cards: it can cost a student their score
+  warningEn: "Cheating cancels the score.",
+  warningAr: "الغش يؤدي إلى إلغاء الدرجة.",
 
   nextCycleEn: "The Second Opportunity has not been announced yet. Last year it ran from late January to early April, with registration opening in early January.",
   nextCycleAr: "لم يُعلن بعد عن الفرصة الثانية. في العام الماضي أُقيمت من أواخر يناير حتى أوائل أبريل، وبدأ التسجيل في أوائل يناير.",
@@ -178,6 +218,7 @@ const KUWAIT_QUDRAT = {
     { label: "Center for Evaluation & Measurement: First Opportunity test dates", url: "https://cem.ku.edu.kw/ar/at", date: "2026-09-29" },
     { label: "Aptitude Tests Student Guide 2026 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-09/2026APTE.pdf", date: "2026-09-01" },
     { label: "Required aptitude tests for KU colleges 2026/2027 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-06/ku_colleges_rules%20%D8%A7%D9%86%D8%AC%D9%84%D9%8A%D8%B2%D9%8A.pdf", date: "2026-06-01" },
+    { label: "Kuwait University: Qudrat prep courses (Arabic)", url: "https://www.ku.edu.kw/ar/media-center/announcements/jamt-alkwyt-tln-n-qd-dwrat-altqwyt-lakhtbarat-alqdrat-alfrst-alawly", date: "2026-10-01" },
     { label: "CEM frequently asked questions", url: "https://cem.ku.edu.kw/faqs", date: "2026-04-05" },
     { label: "IELTS to KU English test conversion (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2025-06/english-ielts.pdf", date: "2025-06-01" }
   ]

@@ -8,4 +8,6 @@
   var saved = null;
   try { saved = localStorage.getItem("moustaqbili_theme"); } catch (e) { /* storage blocked: stay light */ }
   if (saved === "dark") document.documentElement.classList.add("dark");
+  // How detail cards open (styles.css "Reveal cards"): "fade" or "flip"
+  document.documentElement.setAttribute("data-reveal", "fade");
 })();

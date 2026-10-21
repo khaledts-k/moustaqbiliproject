@@ -9,7 +9,7 @@
  */
 
 const MORE_INFO = {
-  lastVerified: "2026-10-11",
+  lastVerified: "2026-10-21",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -86,16 +86,47 @@ const MORE_INFO = {
       blocks: [
         { type: "allowances" },
         {
-          type: "list",
-          en: [
-            "Merit students get 50% more each month, but only after the preparatory (foundation) stage.",
-            "If a merit student's GPA drops below 2.67 (below 60% in the UK system), they lose merit status and go back to the normal amount.",
-            "The Ministry's tables also include money for books, equipment, clothing and clinical training. The amounts depend on the country and major."
-          ],
-          ar: [
-            "يحصل طلبة التميز على زيادة 50% شهرياً، ولكن بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط.",
-            "إذا قل معدل طالب التميز عن 2.67 (أو عن 60% في النظام البريطاني) يفقد صفة التميز ويعود إلى المخصص العادي.",
-            "تتضمن جداول الوزارة أيضاً مبالغ للكتب والأجهزة والملابس والتدريب السريري، وتختلف حسب الدولة والتخصص."
+          type: "reveal",
+          items: [
+            {
+              questionEn: "How much more do merit students get?", questionAr: "كم يزيد مخصص طلبة التميز؟",
+              answerEn: "+50%", answerAr: "+50%",
+              subEn: "each month, after the foundation year", subAr: "شهرياً، بعد السنة التأسيسية",
+              detailsEn: [
+                "The extra 50% starts only after the preparatory (foundation) stage.",
+                "If a merit student's GPA drops below 2.67 (below 60% in the UK system), they lose merit status and go back to the normal amount."
+              ],
+              detailsAr: [
+                "تبدأ زيادة 50% بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط.",
+                "إذا قل معدل طالب التميز عن 2.67 (أو عن 60% في النظام البريطاني) يفقد صفة التميز ويعود إلى المخصص العادي."
+              ]
+            },
+            {
+              questionEn: "Is anything else paid?", questionAr: "هل تُدفع مبالغ أخرى؟",
+              answerEn: "Yes", answerAr: "نعم",
+              subEn: "books, equipment, clothing and more", subAr: "الكتب والأجهزة والملابس وغيرها",
+              detailsEn: [
+                "The Ministry's tables include money for books, equipment, clothing and clinical training.",
+                "The amounts depend on the country and major. Open a program on the Scholarships page to see them."
+              ],
+              detailsAr: [
+                "تتضمن جداول الوزارة مبالغ للكتب والأجهزة والملابس والتدريب السريري.",
+                "تختلف المبالغ حسب الدولة والتخصص. افتح أي برنامج في صفحة البعثات لتراها."
+              ]
+            },
+            {
+              questionEn: "When does the allowance start?", questionAr: "متى يبدأ صرف المخصص؟",
+              answerEn: "When you arrive", answerAr: "عند وصولك",
+              subEn: "in your study country", subAr: "إلى بلد الدراسة",
+              detailsEn: [
+                "It starts when you arrive in your study country, at most two weeks before classes.",
+                "Failing a year, missing classes or getting academic warnings reduces your allowance."
+              ],
+              detailsAr: [
+                "يبدأ عند وصولك إلى بلد الدراسة، وبحد أقصى أسبوعين قبل بدء الدراسة.",
+                "الرسوب أو الغياب أو الإنذارات الأكاديمية تؤدي إلى خفض المخصص."
+              ]
+            }
           ]
         }
       ]
@@ -141,7 +172,7 @@ const MORE_INFO = {
         {
           type: "cards",
           items: [
-            { titleEn: "To register for the scholarship", titleAr: "للتسجيل في البعثة", bodyEn: "IELTS Academic (not General) 5.5 overall and in every part, or TOEFL 47. The test must be taken in Kuwait.", bodyAr: "IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، ويجب أداء الاختبار داخل الكويت." },
+            { titleEn: "To register for the scholarship", titleAr: "للتسجيل في البعثة", bodyEn: "IELTS Academic (not General) 5.5 overall and in every part, or TOEFL 47. The test must be taken in Kuwait. Since January 2026 TOEFL also shows a new 1-6 score; the plan's 47 is on the usual 0-120 scale, which TOEFL still reports.", bodyAr: "IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، ويجب أداء الاختبار داخل الكويت. منذ يناير 2026 يعرض TOEFL أيضاً درجة جديدة من 1 إلى 6، أما درجة 47 في الخطة فهي على مقياس 0-120 المعتاد الذي ما زال TOEFL يصدره." },
             { titleEn: "After you are accepted", titleAr: "بعد القبول", bodyEn: "You have one calendar year to reach the score your university asks for. That is usually higher (often 6.5 or 7.0).", bodyAr: "لديك سنة ميلادية واحدة لتحقيق الدرجة التي تطلبها جامعتك، وهي عادة أعلى (غالباً 6.5 أو 7.0)." },
             { titleEn: "Studying in the UK", titleAr: "الدراسة في بريطانيا", bodyEn: "The plan requires UKVI IELTS for the UK. It is the same test, booked as the UKVI version. A normal IELTS may not be accepted for a UK student visa, so book the UKVI one.", bodyAr: "تشترط الخطة UKVI IELTS للدراسة في بريطانيا، وهو الاختبار نفسه لكن يُحجز بنسخة UKVI. قد لا يُقبل IELTS العادي لتأشيرة الطالب البريطانية، لذا احجز نسخة UKVI." }
           ]
@@ -185,7 +216,7 @@ const MORE_INFO = {
             { titleEn: "United Kingdom (Student visa)", titleAr: "المملكة المتحدة (تأشيرة طالب)", bodyEn: "A CAS number from the university, the financial guarantee letter, UKVI IELTS (for a foundation year), and written consent from both parents if you are under 18. The fee is £558. The UK now gives you a digital visa (eVisa) instead of a residence card. Kuwaitis do not need a TB test.", bodyAr: "رقم CAS من الجامعة، والكتاب المالي، وUKVI IELTS (للسنة التأسيسية)، وموافقة مكتوبة من الوالدين إذا كان عمرك أقل من 18 سنة. الرسوم 558 جنيهاً. وتمنحك بريطانيا الآن تأشيرة إلكترونية (eVisa) بدلاً من بطاقة الإقامة. ولا يحتاج الكويتيون إلى فحص السل." },
             { titleEn: "Ireland (D study visa)", titleAr: "أيرلندا (تأشيرة دراسة D)", bodyEn: "Applied for through the Irish visa office in Abu Dhabi. You need the university acceptance letter, proof you can access at least €10,000 (the financial guarantee letter), a passport valid for 12 months, and private medical insurance.", bodyAr: "يُقدَّم عليها عبر مكتب التأشيرات الأيرلندي في أبوظبي. تحتاج خطاب القبول من الجامعة، وإثبات أنك تملك 10,000 يورو على الأقل (الكتاب المالي)، وجواز سفر صالح لمدة 12 شهراً، وتأميناً طبياً خاصاً." },
             { titleEn: "Australia (Subclass 500)", titleAr: "أستراليا (فئة 500)", bodyEn: "The electronic Confirmation of Enrolment (CoE), student health cover (OSHC) and the financial guarantee letter. The Genuine Student questions are answered inside the visa application form.", bodyAr: "تأكيد التسجيل الإلكتروني (CoE)، والتأمين الصحي للطلبة (OSHC)، والكتاب المالي. وتُجيب عن أسئلة الطالب الحقيقي (Genuine Student) داخل نموذج طلب التأشيرة." },
-            { titleEn: "Malta (D visa, then residence permit)", titleAr: "مالطا (تأشيرة D ثم تصريح إقامة)", bodyEn: "A national long-stay visa, then a residence permit from Identità in Malta. You need the acceptance letter, the financial guarantee letter, health insurance with at least €100,000 cover, and proof of accommodation.", bodyAr: "تأشيرة وطنية طويلة المدة، ثم تصريح إقامة من Identità في مالطا. تحتاج خطاب القبول، والكتاب المالي، وتأميناً صحياً بتغطية لا تقل عن 100,000 يورو، وإثبات السكن." }
+            { titleEn: "Malta (D visa, then residence permit)", titleAr: "مالطا (تأشيرة D ثم تصريح إقامة)", bodyEn: "A national long-stay visa, then a residence permit from Identità in Malta. You need the acceptance letter, the financial guarantee letter, health insurance with at least €100,000 cover (unless your university makes you exempt), and proof of accommodation.", bodyAr: "تأشيرة وطنية طويلة المدة، ثم تصريح إقامة من Identità في مالطا. تحتاج خطاب القبول، والكتاب المالي، وتأميناً صحياً بتغطية لا تقل عن 100,000 يورو (إلا إذا كانت جامعتك تعفيك منه)، وإثبات السكن." }
           ]
         },
         { type: "text", en: "The financial guarantee letter replaces a personal bank statement: it shows the embassy that the government pays for your studies.", ar: "يُغني الكتاب المالي عن كشف الحساب البنكي الشخصي، إذ يثبت للسفارة أن الحكومة تتكفل بدراستك." }
@@ -260,7 +291,7 @@ const MORE_INFO = {
           type: "links",
           items: [
             { labelEn: "Ministry of Higher Education", labelAr: "وزارة التعليم العالي", url: "https://www.mohe.edu.kw/site/" },
-            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf" },
+            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" },
             { labelEn: "Monthly allowance tables", labelAr: "جداول المخصصات الشهرية", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3" },
             { labelEn: "Merit allowance tables", labelAr: "جداول مخصصات التميز", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3" },
             { labelEn: "Scholarship registration portal", labelAr: "بوابة التسجيل في البعثات", url: "https://reg2.mohe.edu.kw/Account/Login" },

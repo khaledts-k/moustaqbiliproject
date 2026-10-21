@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const page = currentPageFile();
   if (page === "index.html") {
     initLandingSearch();
+    initSearchGuideVideo();
     initGpaCalculator();
     renderQudratHomeBanner();
   }
@@ -87,6 +88,88 @@ function flag(kind) {
 // Data text can carry "{{unconfirmed}}" / "{{unverified}}" where a status label belongs
 function withFlags(str) {
   return String(str ?? "").replace(/\s*\{\{(unconfirmed|unverified)\}\}/g, (m, kind) => ` ${flag(kind)}`);
+}
+
+// -------------------------------------------------------------------------
+// Reveal cards: the front shows a question (highlighted) and its short bold answer;
+// one click shows the details behind it. Styles: "Reveal cards" in styles.css.
+// Pages call initRevealCards(root) after drawing, so each card fits the side showing.
+// -------------------------------------------------------------------------
+function revealCard({ question, answer, sub = "", tag = "", backTitle = "", back = "", id = "" }) {
+  return `
+  <div class="reveal-card scroll-mt-24" ${id ? `id="${id}"` : ""}>
+    <div class="reveal-inner">
+      <button type="button" class="reveal-face reveal-front bg-white border border-slate-300" aria-expanded="false">
+        <span class="reveal-body">
+          <span class="flex flex-wrap items-start justify-between gap-2"><span class="reveal-q">${question}</span>${tag}</span>
+          <span class="reveal-answer">${answer}</span>
+          ${sub ? `<span class="reveal-sub">${sub}</span>` : ""}
+          <span class="reveal-more">${t('reveal_more')} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></span>
+        </span>
+      </button>
+      <div class="reveal-face reveal-back bg-white border border-olive-200" role="region" aria-label="${escapeHtml(backTitle || question)}" inert>
+        <div class="reveal-body text-sm text-slate-700">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <strong class="text-slate-900">${backTitle || question}</strong>
+            <button type="button" class="reveal-close">${t('reveal_back')}</button>
+          </div>
+          ${back}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Detail lines for the back of a card
+function revealList(items) {
+  return `<ul class="space-y-1.5">${items.map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(i)}</span></li>`).join("")}</ul>`;
+}
+
+let revealObserver = null;
+
+function sizeRevealCard(card) {
+  const open = card.classList.contains("is-open");
+  const body = card.querySelector(open ? ".reveal-back .reveal-body" : ".reveal-front .reveal-body");
+  const inner = card.querySelector(".reveal-inner");
+  if (body && inner) inner.style.height = `${body.offsetHeight + 2}px`; // + the face's top and bottom border
+}
+
+function setRevealOpen(card, open) {
+  if (!card) return;
+  const front = card.querySelector(".reveal-front");
+  const back = card.querySelector(".reveal-back");
+  card.classList.toggle("is-open", open);
+  front.setAttribute("aria-expanded", String(open));
+  front.inert = open;
+  back.inert = !open;
+  sizeRevealCard(card);
+  (open ? back.querySelector(".reveal-close") : front).focus({ preventScroll: true });
+}
+
+function initRevealCards(root = document) {
+  if (!revealObserver) {
+    revealObserver = new ResizeObserver(entries => entries.forEach(e => {
+      const card = e.target.closest(".reveal-card");
+      if (card) sizeRevealCard(card);
+    }));
+    document.addEventListener("click", e => {
+      const front = e.target.closest(".reveal-front");
+      if (front) return setRevealOpen(front.closest(".reveal-card"), true);
+      const close = e.target.closest(".reveal-close");
+      if (close) setRevealOpen(close.closest(".reveal-card"), false);
+    });
+    // Capture phase, so Escape closes the card before it closes a pop-up around it
+    window.addEventListener("keydown", e => {
+      const card = e.key === "Escape" && e.target.closest?.(".reveal-card.is-open");
+      if (!card) return;
+      e.stopPropagation();
+      setRevealOpen(card, false);
+    }, true);
+  }
+  root.querySelectorAll(".reveal-card").forEach(card => {
+    card.querySelectorAll(".reveal-body").forEach(b => revealObserver.observe(b));
+    sizeRevealCard(card);
+  });
 }
 
 // =========================================================================
@@ -281,6 +364,30 @@ function populateLandingSelects() {
       groupByLetter(window.PLAN_MAJORS, m => ar ? m.ar : m.en, ar),
       ([letter, items]) => group(letter, items.map(m => opt(m.id, ar ? m.ar : m.en))));
   }
+}
+
+// Home page video guide to the search. The video only loads when the student opens the panel,
+// in the page language (assets/video/search-guide-en.mp4 / -ar.mp4, recorded from this site).
+function initSearchGuideVideo() {
+  const toggle = document.getElementById("guide-video-toggle");
+  const panel = document.getElementById("guide-video-panel");
+  const video = document.getElementById("guide-video");
+  if (!toggle || !panel || !video) return;
+  const srcFor = () => `assets/video/search-guide-${isArabic() ? "ar" : "en"}.mp4`;
+  const load = () => {
+    const src = srcFor();
+    if (video.getAttribute("src") === src) return;
+    video.poster = src.replace(".mp4", ".jpg");
+    video.src = src;
+  };
+  toggle.addEventListener("click", () => {
+    const open = panel.classList.toggle("hidden") === false;
+    toggle.setAttribute("aria-expanded", String(open));
+    document.getElementById("guide-video-chevron")?.classList.toggle("rotate-180", open);
+    if (open) { load(); video.play().catch(() => {}); } else video.pause();
+  });
+  // Switch to the other language's video if the student changes language with the panel open
+  window.addEventListener("languageChanged", () => { if (!panel.classList.contains("hidden")) load(); });
 }
 
 // Heading letter for a dropdown item. Arabic names mostly start with "ال", so it is skipped
@@ -950,7 +1057,7 @@ function pathwayMoneyHtml(m, country) {
         <span class="text-xs font-semibold text-emerald-800 block">${stipendHostRange(prog, "standard")}</span>
         ${merit ? `<span class="text-xs font-bold text-amber-800 block mt-1">${t('card_merit_amount')}: ${merit}</span>` : ""}
       </div>
-      <div class="grid grid-cols-1 gap-2">${allowanceItemsHtml(prog)}</div>
+      ${extrasCard(prog)}
       <button type="button" class="pw-calc mt-4 w-full px-4 py-2.5 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('pw_open_calc')}</button>`;
   } else if (a) {
     moneyBody = `
@@ -1024,6 +1131,7 @@ function renderPathway(ctx) {
   body.querySelector(".pw-all-countries")?.addEventListener("click", ctx.clearCountryFilter);
   body.querySelector(".pw-restart")?.addEventListener("click", ctx.restart);
   body.classList.toggle("hidden", !body.innerHTML.trim());
+  initRevealCards(body);
   return options.length;
 }
 
@@ -1218,14 +1326,31 @@ function allowanceItemsHtml(baseProg) {
   return prog.monthlySalary.allowancesSummary.map((a, i) => `<div class="flex items-start gap-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-xs text-slate-800">${ICON_CHECK}<span>${a}${i >= (baseProg.verifiedAllowances ?? 1) ? ` ${flag('unverified')}` : ''}</span></div>`).join("");
 }
 
-function universitiesHtml(baseProg) {
+// "What else is paid" card: the extra allowances behind one click (money pop-up and pathway step 4)
+function extrasCard(baseProg) {
+  const n = localizeProgram(baseProg).monthlySalary.allowancesSummary.length;
+  return revealCard({
+    question: t('salary_q_extras'),
+    answer: t('salary_extras_answer'),
+    sub: t('salary_extras_n').replace("{n}", n),
+    tag: n > (baseProg.verifiedAllowances ?? 1) ? flag('unverified') : "", // some lines are not checked yet
+    backTitle: t('modal_allowances_heading'),
+    back: `<div class="grid grid-cols-1 gap-2">${allowanceItemsHtml(baseProg)}</div>`
+  });
+}
+
+function universitiesHtml(baseProg, withHeading = true) {
   const prog = localizeProgram(baseProg);
   return `
-    <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${(baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`}</h3>
+    ${withHeading ? `<h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${universitiesFlag(baseProg)}</h3>` : ''}
     <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
       ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
     </ul>`;
+}
+
+function universitiesFlag(baseProg) {
+  return (baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`;
 }
 
 // =========================================================================
@@ -1266,6 +1391,8 @@ function openSalaryModal(baseProg, keepInputs = false) {
   });
 
   const options = (selected) => currencies.map(c => `<option value="${c}" ${c === selected ? 'selected' : ''}>${currencyLabel(c)}</option>`).join("");
+  // A rate or language update redraws the pop-up: keep the same cards open
+  const wasOpen = prev ? [...document.querySelectorAll("#modal-dynamic-content .reveal-card")].map(c => c.classList.contains("is-open")) : [];
 
   const content = showProgramModal(`
     ${modalHeader(prog, 'modal_salary_subtitle')}
@@ -1286,13 +1413,19 @@ function openSalaryModal(baseProg, keepInputs = false) {
             <tbody>${variantRows}</tbody>
           </table>
         </div>
-        ${baseProg.isMerit ? `<p class="text-xs text-amber-900 mt-2">${t('salary_merit_note')}</p>` : ''}
+        ${baseProg.isMerit ? `<p class="text-xs text-amber-900 mt-2">${t('salary_merit_short')}</p>` : ''}
         ${s.meritNoteKey ? `<p class="text-xs text-slate-500 mt-1">${t(s.meritNoteKey)}</p>` : ''}
         <p class="text-xs text-slate-400 mt-1">${t('salary_source_note')} <a class="underline" href="${window.MOHE_PLAN_2026?.allowancesUrl}" target="_blank" rel="noopener noreferrer">mohe.edu.kw</a></p>
       </section>
 
-      <section class="p-4 rounded-xl border border-olive-200 bg-olive-50">
-        <h3 class="text-sm font-extrabold text-slate-900">${t('calc_heading')}</h3>
+      <!-- Calculator, extras and universities each sit behind a card; an open card takes the whole row -->
+      <div class="reveal-grid-expand grid grid-cols-1 sm:grid-cols-3 gap-3 items-start">
+      ${revealCard({
+        question: t('salary_q_convert'),
+        answer: `1 ${s.currency} = ${formatNumber(convertAmount(1, s.currency, "KWD", FX.rates), 3)} KWD`,
+        sub: t('salary_convert_sub'),
+        backTitle: t('calc_heading'),
+        back: `
         <p class="text-xs text-slate-600 mb-3">${t('calc_desc')}</p>
 
         <div class="flex flex-wrap gap-1.5 mb-3">
@@ -1319,24 +1452,25 @@ function openSalaryModal(baseProg, keepInputs = false) {
           <output id="calc-result" class="text-xl font-black text-slate-900" aria-live="polite"></output>
         </div>
         <p id="calc-rate" class="text-xs text-slate-500 mt-2"></p>
-        <p class="text-xs text-slate-400 mt-1">${fxNote()}</p>
-      </section>
-
-      <section>
-        <h3 class="text-sm font-extrabold text-slate-900 mb-2">${t('modal_allowances_heading')}</h3>
-        <div class="grid grid-cols-1 gap-2">
-          ${allowanceItemsHtml(baseProg)}
-        </div>
-      </section>
-
-      <section>
-        ${universitiesHtml(baseProg)}
-      </section>
+        <p class="text-xs text-slate-400 mt-1">${fxNote()}</p>`
+      })}
+      ${extrasCard(baseProg)}
+      ${revealCard({
+        question: t('salary_q_unis'),
+        answer: t('salary_unis_n').replace("{n}", prog.accreditedUniversities.length),
+        sub: t('salary_unis_sub'),
+        tag: universitiesFlag(baseProg),
+        backTitle: t('modal_institutions_heading'),
+        back: universitiesHtml(baseProg, false)
+      })}
+      </div>
     </div>
 
     ${modalFooter()}
   `);
   if (!content) return;
+  initRevealCards(content);
+  content.querySelectorAll(".reveal-card").forEach((card, i) => { if (wasOpen[i]) setRevealOpen(card, true); });
 
   const amountEl = content.querySelector("#calc-amount");
   const fromEl = content.querySelector("#calc-from");
@@ -1449,7 +1583,6 @@ function renderQudratPage() {
   if (!data || !root) return;
   const c = data.currentCycle;
   const status = qudratStatus(c);
-  const list = (items) => `<ul class="space-y-1.5">${items.map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(i)}</span></li>`).join("")}</ul>`;
   const arr = (obj, field) => (isArabic() ? obj[`${field}Ar`] : obj[`${field}En`]) || obj[`${field}En`] || [];
 
   const steps = [
@@ -1457,6 +1590,44 @@ function renderQudratPage() {
     { label: t('qudrat_tests'), value: formatRange(c.tests) },
     { label: t('qudrat_results'), value: c.results ? formatDate(c.results) : `<span class="block text-sm font-semibold">${L(c, 'resultsNote')}</span> ${flag('unconfirmed')}` }
   ];
+
+  // "Last day to register" card: the nearest deadline on the front, every date behind it
+  const nextSession = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
+  const datesBack = `
+    <div class="overflow-x-auto rounded-lg border border-slate-200">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 text-slate-600 text-xs">
+          <tr>
+            <th class="p-2 text-start">${t('qudrat_col_test_date')}</th>
+            <th class="p-2 text-start">${t('qudrat_col_reg_close')}</th>
+            <th class="p-2 text-start">${t('qudrat_col_status')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${(c.sessions || []).map(s => {
+            const st = sessionStatus(s);
+            return `
+            <tr class="border-t border-slate-200">
+              <th scope="row" class="p-2 text-start font-bold text-slate-900">${formatDate(s.test)}</th>
+              <td class="p-2">${formatDate(s.regClose)}</td>
+              <td class="p-2"><span class="status-pill ${st.cls}">${t(`qudrat_${st.key}`)}</span></td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-2">${t('qudrat_no_late')}</p>
+    <h4 class="font-bold text-slate-900 mt-4 mb-1">${t('qudrat_phases_title')}</h4>
+    <ul class="space-y-1">${(c.openingPhases || []).map(p => `<li><strong class="text-slate-900">${formatDate(p.date)}:</strong> ${L(p, 'who')}</li>`).join("")}</ul>
+    <p class="mt-4"><strong class="text-slate-900">${t('qudrat_next_cycle')}:</strong> ${L(data, 'nextCycle')} ${flag('unconfirmed')}</p>`;
+  const deadlineCard = revealCard({
+    id: "dates",
+    question: t('qudrat_q_deadline'),
+    answer: nextSession ? formatDate(nextSession.regClose) : t('qudrat_closed_short'),
+    sub: nextSession ? t('qudrat_for_test').replace("{date}", formatDate(nextSession.test)) : t('qudrat_see_next'),
+    backTitle: t('qudrat_dates_title'),
+    back: datesBack
+  });
 
   root.innerHTML = `
     <!-- Current cycle -->
@@ -1478,19 +1649,31 @@ function renderQudratPage() {
       </ol>
     </section>
 
-    <!-- Before you register: who can sit the tests, and what to have ready -->
-    <section id="requirements" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900">${t('qudrat_req_title')}</h2>
-      <p class="text-sm text-slate-600 mt-0.5 mb-5">${t('qudrat_req_desc')}</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-700">
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <h3 class="text-sm font-bold text-slate-900 mb-3">${t('qudrat_who')}</h3>
-          ${list(arr(c, 'eligibility'))}
-        </div>
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <h3 class="text-sm font-bold text-slate-900 mb-3">${t('qudrat_need')}</h3>
-          ${list(arr(c, 'need'))}
-        </div>
+    <!-- The basics: one short answer per card, the details behind it -->
+    <section id="requirements" class="scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900">${t('qudrat_basics_title')}</h2>
+      <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('reveal_hint')}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
+        ${deadlineCard}
+        ${(c.basics || []).map(b => revealCard({ question: L(b, 'question'), answer: L(b, 'answer'), sub: L(b, 'sub'), back: revealList(arr(b, 'details')) })).join("")}
+      </div>
+    </section>
+
+    <!-- Which tests: one card per subject, the colleges that ask for it behind -->
+    <section id="subjects" class="scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900">${t('qudrat_which_tests')}</h2>
+      <p class="text-sm text-slate-600 mt-0.5 mb-4">${L(data, 'subjectsIntro')}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+        ${data.subjects.map(s => {
+          const colleges = arr(s, 'colleges');
+          return revealCard({
+            question: L(s, 'name'),
+            answer: L(s, 'pass'),
+            sub: (colleges.length === 1 ? t('qudrat_colleges_one') : t('qudrat_colleges_n')).replace("{n}", colleges.length),
+            backTitle: t('qudrat_who_needs').replace("{test}", L(s, 'name')),
+            back: `<p class="leading-relaxed">${colleges.join(isArabic() ? "، " : ", ")}</p>${L(s, 'note') ? `<p class="text-slate-500 mt-2">${L(s, 'note')}</p>` : ""}`
+          });
+        }).join("")}
       </div>
     </section>
 
@@ -1507,72 +1690,6 @@ function renderQudratPage() {
         ${c.registerUrl ? `<a href="${c.registerUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 bg-olive-900 hover:bg-olive-800 text-white rounded-lg text-sm font-bold">${t('qudrat_register_btn')} ${ICON_EXTERNAL}</a>` : ''}
         <button type="button" id="qreg-reset" class="text-sm font-semibold text-slate-500 hover:text-slate-800 underline">${t('steps_reset')}</button>
       </div>
-    </section>
-
-    <!-- Test dates & registration deadlines -->
-    <section id="dates" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900 mb-4">${t('qudrat_dates_title')}</h2>
-      <div class="overflow-x-auto rounded-lg border border-slate-200 mb-5">
-        <table class="w-full text-xs">
-          <thead class="bg-slate-100 text-slate-600">
-            <tr>
-              <th class="p-3 text-start">${t('qudrat_col_test_date')}</th>
-              <th class="p-3 text-start">${t('qudrat_col_reg_close')}</th>
-              <th class="p-3 text-start">${t('qudrat_col_status')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${(c.sessions || []).map(s => {
-              const st = sessionStatus(s);
-              return `
-              <tr class="border-t border-slate-200">
-                <th scope="row" class="p-3 text-start font-bold text-slate-900">${formatDate(s.test)}</th>
-                <td class="p-3 text-slate-700">${formatDate(s.regClose)}</td>
-                <td class="p-3"><span class="status-pill ${st.cls}">${t(`qudrat_${st.key}`)}</span></td>
-              </tr>`;
-            }).join("")}
-          </tbody>
-        </table>
-      </div>
-      <h3 class="text-sm font-bold text-slate-900 mb-2">${t('qudrat_phases_title')}</h3>
-      <ol class="space-y-2 text-xs">
-        ${(c.openingPhases || []).map(p => `
-          <li class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 p-3 rounded-lg border border-slate-200 ${daysBetween(new Date(), p.date) <= 0 ? 'bg-emerald-50/60' : 'bg-slate-50'}">
-            <span class="font-bold text-slate-900 sm:w-40 flex-shrink-0">${formatDate(p.date)}</span>
-            <span class="text-slate-700">${L(p, 'who')}</span>
-          </li>`).join("")}
-      </ol>
-      <p class="text-xs text-slate-600 mt-4"><strong class="text-slate-800">${t('qudrat_next_cycle')}:</strong> ${L(data, 'nextCycle')} ${flag('unconfirmed')}</p>
-    </section>
-
-    <!-- Subjects & fees -->
-    <section id="subjects" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900 mb-1">${t('qudrat_subjects_title')}</h2>
-      <p class="text-xs text-slate-500 mb-4">${L(data, 'subjectsIntro')}</p>
-      <div class="overflow-x-auto rounded-lg border border-slate-200">
-        <table class="w-full text-xs">
-          <thead class="bg-slate-100 text-slate-600">
-            <tr>
-              <th class="p-3 text-start">${t('qudrat_col_subject')}</th>
-              <th class="p-3 text-start">${t('qudrat_col_required_for')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${data.subjects.map(s => `
-              <tr class="border-t border-slate-200">
-                <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(s, 'name')}</th>
-                <td class="p-3 text-slate-700">${L(s, 'requiredFor')}</td>
-              </tr>`).join("")}
-          </tbody>
-        </table>
-      </div>
-      <dl class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 text-xs">
-        ${data.facts.map(f => `
-          <div class="p-3 bg-slate-50 rounded border border-slate-200">
-            <dt class="text-xs font-bold text-slate-500">${L(f, 'label')}</dt>
-            <dd class="font-bold text-slate-900 mt-0.5">${L(f, 'value')}</dd>
-          </div>`).join("")}
-      </dl>
     </section>
 
     <!-- Equivalent score -->
@@ -1592,10 +1709,13 @@ function renderQudratPage() {
       <p class="text-xs text-slate-400 mt-2">${L(data, 'formulaNote')}</p>
     </section>
 
-    <!-- Rules -->
-    <section id="rules" class="bg-white rounded-xl border border-slate-300 shadow-sm p-6 text-xs text-slate-700 scroll-mt-24">
-      <h2 class="text-lg font-extrabold text-slate-900 mb-3">${t('qudrat_rules_title')}</h2>
-      ${list(arr(data, 'rules'))}
+    <!-- Good to know: short answers, details behind -->
+    <section id="rules" class="scroll-mt-24">
+      <h2 class="text-lg font-extrabold text-slate-900 mb-4">${t('qudrat_rules_title')}</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: revealList(arr(g, 'details')) })).join("")}
+      </div>
+      ${L(data, 'warning') ? `<p class="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-900">${L(data, 'warning')}</p>` : ""}
     </section>
 
     <!-- CEM contact -->
@@ -1621,6 +1741,7 @@ function renderQudratPage() {
 
   initEquivalentCalculator(data);
   renderQudratChecklist(c);
+  initRevealCards(root);
   document.getElementById("qreg-reset")?.addEventListener("click", () => {
     saveTickedSteps(new Set(), QREG_KEY);
     renderQudratChecklist(c);
@@ -1917,7 +2038,14 @@ function moreInfoBlock(block) {
       return `<p class="text-sm text-slate-700 leading-7">${withFlags(ar ? block.ar : block.en)}</p>`;
 
     case "list":
-      return `<ul class="space-y-3 text-sm text-slate-700 leading-7">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${i}</span></li>`).join("")}</ul>`;
+      return `<ul class="space-y-3 text-sm text-slate-700 leading-7">${(ar ? block.ar : block.en).map(i => `<li class="flex items-start gap-2">${ICON_CHECK}<span>${withFlags(i)}</span></li>`).join("")}</ul>`;
+
+    case "reveal":
+      // Short answers on cards, the details behind them (items: question/answer/sub/details, En + Ar)
+      return `<div class="grid grid-cols-1 sm:grid-cols-${Math.min(block.items.length, 3)} gap-4 items-start">${block.items.map(i => revealCard({
+        question: L(i, 'question'), answer: L(i, 'answer'), sub: L(i, 'sub'),
+        back: revealList((ar ? i.detailsAr : i.detailsEn) || i.detailsEn || [])
+      })).join("")}</div>`;
 
     case "terms":
       return `<dl class="grid grid-cols-1 md:grid-cols-2 gap-4">${block.items.map(i => `
@@ -1964,31 +2092,27 @@ function moreInfoBlock(block) {
       return `<div class="space-y-2">${block.items.map(contactLine).join("")}</div>`;
 
     case "allowances": {
-      const rows = (window.MORE_INFO?.allowances || []).map(a => {
-        const kwd = (amount) => money(convertAmount(amount, a.currency, "KWD", FX.rates), "KWD");
-        const merit = typeof a.merit === "number"
-          ? `<span class="font-bold text-slate-900 block">${kwd(a.merit)}</span><span class="text-xs text-slate-500">${formatNumber(a.merit)} ${a.currency}</span>`
-          : (a.meritFlag ? flag(a.meritFlag) : `<span class="text-slate-400">${t('allow_no_merit')}</span>`);
-        return `
-          <tr class="border-t border-slate-200">
-            <th scope="row" class="p-3 text-start font-bold text-slate-900 whitespace-nowrap">${L(a, 'country')}</th>
-            <td class="p-3"><span class="font-bold text-slate-900 block">${kwd(a.standard)}</span><span class="text-xs text-slate-500">${formatNumber(a.standard)} ${a.currency}</span></td>
-            <td class="p-3">${merit}</td>
-          </tr>`;
+      // One card per country: the monthly amount on the front, merit and a link to its majors behind
+      const cards = (window.MORE_INFO?.allowances || []).map(a => {
+        const both = (amount) => `<strong class="text-slate-900">${money(convertAmount(amount, a.currency, "KWD", FX.rates), "KWD")}</strong> (${formatNumber(amount)} ${a.currency})`;
+        const merit = typeof a.merit === "number" ? both(a.merit) : (a.meritFlag ? flag(a.meritFlag) : t('allow_no_merit'));
+        const country = L(a, 'country');
+        return revealCard({
+          question: country,
+          answer: money(convertAmount(a.standard, a.currency, "KWD", FX.rates), "KWD"),
+          sub: t('allow_per_month').replace("{amount}", `${formatNumber(a.standard)} ${a.currency}`),
+          tag: typeof a.merit === "number" ? `<span class="px-2 py-0.5 rounded text-xs font-bold merit-tag whitespace-nowrap">${t('allow_merit_tag')}</span>` : "",
+          backTitle: t('allow_back_title').replace("{country}", country),
+          back: `
+            <dl class="space-y-2">
+              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_standard')}</dt><dd>${both(a.standard)}</dd></div>
+              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_merit')}</dt><dd>${merit}</dd></div>
+            </dl>
+            <a href="results.html?country=${encodeURIComponent(a.countryEn)}" class="inline-block mt-3 font-semibold text-olive-900 underline">${t('allow_see_majors').replace("{country}", country)}</a>`
+        });
       }).join("");
       return `
-        <div class="overflow-x-auto rounded-xl border border-slate-200 mb-3">
-          <table class="w-full text-sm">
-            <thead class="bg-slate-100 text-slate-600 text-xs">
-              <tr>
-                <th class="p-3 text-start">${t('plan_col_country')}</th>
-                <th class="p-3 text-start">${t('allow_col_standard')}</th>
-                <th class="p-3 text-start">${t('allow_col_merit')}</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start mb-3">${cards}</div>
         <p class="text-xs text-slate-500 mb-4">${t('allow_kwd_note')} ${fxNote()}</p>`;
     }
     default:
@@ -2021,6 +2145,7 @@ function renderSectionPage(data, rootId, tocId) {
     <p class="text-xs text-slate-500">${t('last_verified_full')} ${formatDate(data.lastVerified)}.</p>`;
 
   initContactCopyButtons(root);
+  initRevealCards(root);
 
   const toc = document.getElementById(tocId);
   if (toc) toc.innerHTML = data.sections.map(s => `<a href="#${s.id}">${L(s, 'title')}</a>`).join("");

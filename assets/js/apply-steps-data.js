@@ -11,7 +11,7 @@
  */
 
 const APPLY_STEPS = {
-  lastVerified: "2026-10-12",
+  lastVerified: "2026-10-21",
 
   steps: [
     {
@@ -74,7 +74,7 @@ const APPLY_STEPS = {
       points: [
         { en: "Medicine and engineering: students are ranked by the equivalent average (high school % plus Qudrat).", ar: "الطب والهندسة: يُرتب الطلبة حسب المعدل المكافئ (نسبة الثانوية مع القدرات)." },
         { en: "Other majors: students are ranked by their high school %.", ar: "التخصصات الأخرى: يُرتب الطلبة حسب نسبة الثانوية." },
-        { en: "In 2026, results came out in July and 2,704 high school graduates were accepted.", ar: "في 2026 ظهرت النتائج في يوليو، وقُبل 2,704 من خريجي الثانوية." }
+        { en: "In 2026, results came out in July and 2,704 high school graduates were accepted, plus 33 with English secondary or IB certificates in August.", ar: "في 2026 ظهرت النتائج في يوليو، وقُبل 2,704 من خريجي الثانوية، ثم 33 من حملة الشهادة الإنجليزية أو IB في أغسطس." }
       ],
       links: []
     },

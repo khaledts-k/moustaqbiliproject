@@ -9,7 +9,7 @@
  * 3. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
  * 4. Merit university lists (NBAQ): UK Decree 16/2025, US Decree 15/2025, Ireland Decree 22/2025, Australia Decision 60/2025
  * 5. University and government pages (UCAS, UCAT, GOV.UK, Irish Immigration, US State Dept / ICE,
- *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13
+ *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-10-21
  *
  * verifiedFields lists the details checked against those sources on 2026-10-13. Every other
  * detail shown in the "What you need" window carries a "Not checked yet" label.
@@ -47,7 +47,7 @@ const MOUSTAQBILI_PROGRAMS = [
         "Extra allowances in the Ministry's 2026/2027 table: books £690, equipment £1,285, clothing £495, clinical training £750.",
         "Hospital training fees are paid by the Ministry.",
         "A return flight to Kuwait each year.",
-        "The UK health surcharge (IHS) is paid back by the cultural office."
+        "The UK health surcharge (IHS, £776 a year for students) is paid back by the cultural office."
       ]
     },
 
@@ -551,7 +551,7 @@ const MOUSTAQBILI_PROGRAMS = [
         "Monthly allowance: €3,450.",
         "Extra allowances in the Ministry's 2026/2027 table: books €690, equipment €1,360, clothing €495, clinical training €900.",
         "Tuition is paid by the Ministry.",
-        "Health insurance (Malta requires at least €100,000 cover for the residence permit).",
+        "Health insurance: Malta asks for at least €100,000 cover for the residence permit, unless your university makes you exempt (ask the University of Malta).",
         "A return flight to Kuwait each year."
       ]
     },
@@ -610,7 +610,7 @@ const MOUSTAQBILI_PROGRAMS = [
       keyDocuments: [
         "Acceptance letter from the University of Malta",
         "Financial guarantee letter from the Ministry (proof of funds)",
-        "Health insurance with at least €100,000 cover",
+        "Health insurance with at least €100,000 cover, unless your university makes you exempt",
         "Proof of accommodation (rental agreement)",
         "Valid Kuwaiti passport"
       ]
@@ -676,25 +676,25 @@ const MOUSTAQBILI_CURRENCIES = {
 };
 
 // Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
-// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-12.
-// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-12 (CBK does not publish them).
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-21.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-21 (CBK does not publish them).
 const MOUSTAQBILI_FX_FALLBACK = {
-  date: "2026-10-12",
+  date: "2026-10-21",
   rates: {
     KWD: 1,
-    USD: 3.2452, GBP: 2.4496, EUR: 2.8946, SAR: 12.1694, AED: 11.9195, BHD: 1.2204,
-    AUD: 4.6252, NZD: 5.7471, CAD: 4.5982, JOD: 2.2796, EGP: 169.4706
+    USD: 3.2468, GBP: 2.4276, EUR: 2.8922, SAR: 12.1754, AED: 11.9253, BHD: 1.2210,
+    AUD: 4.6381, NZD: 5.6847, CAD: 4.5611, JOD: 2.2897, EGP: 175.4536
   }
 };
 
 // Key rules of the Foreign Scholarship Plan 2026/2027 (shown on more-info.html)
 const MOHE_PLAN_2026 = {
-  planUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf",
+  planUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf",
   allowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3",
   meritAllowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3",
   registrationUrl: "https://reg2.mohe.edu.kw/Account/Login",
-  statusEn: "General registration for 2026/2027 ran 14 June - 7 July 2026 and is closed. 2,704 high-school graduates were accepted. Merit programme applications stay open until 24 February 2027.",
-  statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
+  statusEn: "General registration for 2026/2027 ran 14 June - 7 July 2026 and is closed. 2,704 high-school graduates were accepted, and 33 more with English secondary or IB certificates in August. Merit programme applications stay open until 24 February 2027.",
+  statusAr: "أُقيم التسجيل العام للعام 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق، وقُبل 2,704 من خريجي الثانوية، ثم 33 آخرون من حملة الشهادة الإنجليزية أو IB في أغسطس. يبقى التقديم لبرنامج التميز مفتوحاً حتى 24 فبراير 2027.",
   countriesEn: "United States, United Kingdom, Ireland, Australia, New Zealand, Malta, Bahrain, Saudi Arabia, United Arab Emirates",
   countriesAr: "الولايات المتحدة، المملكة المتحدة، أيرلندا، أستراليا، نيوزيلندا، مالطا، البحرين، السعودية، الإمارات",
   // Names for rulesEn / rulesAr, in the same order (the results-page pathway picks rules by name)
