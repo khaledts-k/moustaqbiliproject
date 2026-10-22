@@ -2673,26 +2673,120 @@ function buildSearchIndex() {
   return entries;
 }
 
-// 0 = no match. Every word (or one of its synonyms) must appear; title hits rank above text hits.
-function scoreSearchEntry(entry, words, phrase) {
-  const alts = words.map(w => [w, ...(SEARCH_SYNONYMS[w] || []).map(normalizeSearch)]);
-  if (!alts.every(list => list.some(a => entry._hay.includes(a)))) return 0;
-  let score = 1;
-  for (const title of entry._titles) {
-    if (title === phrase) score += 30;
-    else if (title.startsWith(phrase)) score += 12;
-    else if (title.includes(phrase)) score += 8;
+// Question and filler words. They are dropped, so a full question works like its key words.
+const SEARCH_STOPWORDS = new Set([
+  "a", "an", "the", "is", "are", "am", "was", "be", "do", "does", "did", "i", "me", "my", "we", "you", "your",
+  "it", "its", "to", "of", "in", "on", "at", "for", "from", "by", "with", "about", "and", "or", "if", "can", "could",
+  "will", "would", "should", "how", "what", "which", "who", "when", "where", "why", "much", "many", "there", "this",
+  "that", "these", "those", "get", "got", "want", "need", "know", "tell", "please", "any", "some", "into", "instead", "use",
+  "study", "studying", "studies",
+  "كم", "ما", "ماذا", "هل", "متى", "كيف", "اين", "لماذا", "في", "من", "الى", "على", "عن", "هي", "هو", "انا", "اريد",
+  "ابي", "ابغى", "ممكن", "يمكن", "يمكنني", "لي", "او", "و", "مع", "هذا", "هذه", "التي", "الذي", "ان", "اذا", "عند", "بدل", "بدلا",
+  "دراسة", "ادرس", "الدراسة"
+].map(normalizeSearch));
+
+// Words with the same meaning on this site, used on top of SEARCH_SYNONYMS
+const SEARCH_MEANINGS = {
+  cost: ["fee", "kwd", "cost"], price: ["fee", "kwd"], fee: ["fee", "kwd"], fees: ["fee", "kwd"], pay: ["fee", "allowance", "paid"],
+  deadline: ["last day", "deadline", "register by", "closes"], last: ["last day", "deadline"], late: ["late", "deadline"],
+  requirement: ["need", "requirement", "minimum"], requirements: ["need", "requirement", "minimum"],
+  grade: ["grade", "percentage", "lowest"], grades: ["grade", "percentage", "lowest"], percentage: ["percentage", "lowest"], marks: ["grade", "percentage", "lowest"],
+  register: ["register", "registration"], registration: ["register", "registration"], apply: ["apply", "register", "application"],
+  exam: ["test", "exam"], test: ["test", "exam"],
+  "شروط": ["شروط", "تحتاج", "متطلبات", "نسبه"], "رسوم": ["رسوم", "د.ك"], "سعر": ["رسوم", "د.ك"], "موعد": ["موعد", "اخر يوم"],
+  "مخصص": ["مخصص", "مكافاه"], "جامعات": ["جامعه", "جامعات"], "تسجيل": ["تسجيل", "التسجيل"],
+  airplane: ["flight"]
+};
+
+// Rough word root, so "universities", "studies" or "tests" also find "university", "study", "test".
+// Arabic: drop "ال" and "و/ب/ف/ل + ال" at the start ("والطب" finds "طب").
+function searchStem(word) {
+  if (/\p{Script=Arabic}/u.test(word)) return word.replace(/^(وال|بال|فال|لل|ال)(?=..)/, "");
+  if (word.length > 4 && word.endsWith("ies")) return word.slice(0, -3);
+  if (word.length > 5 && word.endsWith("ing")) return word.slice(0, -3);
+  if (word.length > 4 && word.endsWith("ed")) return word.slice(0, -2);
+  if (word.length > 4 && /(s|x|ch|sh)es$/.test(word)) return word.slice(0, -2);
+  if (word.length > 3 && word.endsWith("s") && !word.endsWith("ss")) return word.slice(0, -1);
+  return word;
+}
+
+// Letters to change to turn a into b, giving up once it passes `max` (for typo matching)
+function editDistance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    let best = i;
+    for (let j = 1; j <= b.length; j++) {
+      row[j] = Math.min(prev[j] + 1, row[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      best = Math.min(best, row[j]);
+    }
+    if (best > max) return max + 1;
+    prev = row;
   }
-  alts.forEach(list => { if (list.some(a => entry._titles.some(tt => tt.includes(a)))) score += 3; });
-  return score;
+  return prev[b.length];
+}
+
+// Does the text contain one of these forms at the start of a word? ("test" finds "tests",
+// but "طب" does not find "تطبيق"). Symbols such as "%" can match anywhere.
+function searchHas(text, alts) {
+  const padded = ` ${text}`;
+  return alts.some(a => /^[\p{L}\p{N}]/u.test(a) ? padded.includes(` ${a}`) : text.includes(a));
+}
+
+// The meaningful words of a query, each with the spellings that count as a match
+function searchTerms(query, index) {
+  const all = normalizeSearch(query).split(" ").filter(Boolean);
+  const kept = all.filter(w => !SEARCH_STOPWORDS.has(w));
+  const words = kept.length ? kept : all; // a query made only of small words still searches
+  index._vocab = index._vocab || [...new Set(index.flatMap(e => e._hay.split(" ")).filter(w => w.length > 3))];
+  const prefixes = ["ال", "وال", "بال", "فال", "لل", "و", "ب"];
+  return words.map(w => {
+    const stem = searchStem(w);
+    const plain = w.replace(/\./g, ""); // "u.k." -> "uk"
+    // Synonyms are looked up for the word, its root and its dot-free form ("الطبيب" uses the entry for "طبيب")
+    const related = [w, stem, plain].flatMap(k => [...(SEARCH_SYNONYMS[k] || []), ...(SEARCH_MEANINGS[k] || [])]);
+    const alts = new Set([w, stem, plain, ...related].map(normalizeSearch));
+    // Arabic roots also match with their usual prefixes: "طب" finds "الطب" and "بالطب"
+    [...alts].filter(a => /\p{Script=Arabic}/u.test(a) && !/^(ال|وال|بال|فال|لل)/.test(a))
+      .forEach(a => prefixes.forEach(p => alts.add(p + a)));
+    // Typos: a word found nowhere borrows the closest real words ("medcine" -> "medicine")
+    if (w.length >= 5 && !index.some(e => searchHas(e._hay, [...alts]))) {
+      const max = w.length >= 8 ? 2 : 1;
+      index._vocab.filter(v => editDistance(w, v, max) <= max).slice(0, 5).forEach(v => alts.add(v));
+    }
+    return { word: w, alts: [...alts].filter(a => a.length > 1 || /\d|%/.test(a)) };
+  });
 }
 
 function searchSite(query, index) {
   const phrase = normalizeSearch(query);
   if (!phrase) return [];
-  const words = phrase.split(" ");
-  return index
-    .map(entry => ({ entry, score: scoreSearchEntry(entry, words, phrase) }))
+  const terms = searchTerms(query, index);
+  const has = (text, t) => searchHas(text, t.alts);
+  // Rare words count for more: "ireland" says more about what you want than "study"
+  const weights = terms.map(t => {
+    const found = index.filter(e => has(e._hay, t)).length;
+    return found ? Math.log(1 + index.length / found) : 0;
+  });
+  const total = weights.reduce((s, w) => s + w, 0);
+  if (!total) return [];
+
+  return index.map(entry => {
+    let matched = 0, score = 0;
+    terms.forEach((t, i) => {
+      if (!weights[i] || !has(entry._hay, t)) return;
+      matched += weights[i];
+      score += weights[i] * (entry._titles.some(title => has(title, t)) ? 3 : 1);
+    });
+    // Most of the meaning has to be there; the best covered results come first
+    if (matched / total < 0.6) return { entry, score: 0 };
+    for (const title of entry._titles) {
+      if (title === phrase) score += 30;
+      else if (title.includes(phrase)) score += 8;
+    }
+    return { entry, score: score * (matched / total) };
+  })
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score || SEARCH_GROUPS.indexOf(a.entry.group) - SEARCH_GROUPS.indexOf(b.entry.group));
 }
@@ -2705,13 +2799,15 @@ function searchSnippet(text, words) {
   let at = -1;
   for (const w of words) { at = lower.indexOf(w); if (at >= 0) break; }
   const start = Math.max(0, at - 60);
-  let piece = (start > 0 ? "…" : "") + clean.slice(start, start + 170) + (clean.length > start + 170 ? "…" : "");
-  piece = escapeHtml(piece);
-  words.filter(w => w.length > 1).forEach(w => {
-    const re = new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
-    piece = piece.replace(re, "<mark>$1</mark>");
-  });
-  return piece;
+  const piece = (start > 0 ? "…" : "") + clean.slice(start, start + 170) + (clean.length > start + 170 ? "…" : "");
+  // Highlight in one pass on the plain text (longest words first), then make each part safe for HTML.
+  // One pass means "ielts" is not marked again inside itself, and a search for "mark" can't break the tags.
+  const marks = words.filter(w => w.length > 1).sort((a, b) => b.length - a.length)
+    .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  if (!marks.length) return escapeHtml(piece);
+  return piece.split(new RegExp(`(${marks.join("|")})`, "gi"))
+    .map((part, i) => i % 2 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part))
+    .join("");
 }
 
 let searchIndexCache = null;
@@ -2734,7 +2830,8 @@ function renderSearchPage() {
 
   searchIndexCache = searchIndexCache || buildSearchIndex();
   const results = searchSite(query, searchIndexCache);
-  const words = normalizeSearch(query).split(" ").filter(Boolean);
+  // Highlight what actually matched (key words, their roots and their synonyms), not "how" or "do"
+  const words = query.trim() ? [...new Set(searchTerms(query, searchIndexCache).flatMap(t => t.alts))].filter(w => w.length > 2) : [];
   const title = e => ar ? e.titleAr : e.titleEn;
   const text = e => ar ? e.textAr : e.textEn;
 
