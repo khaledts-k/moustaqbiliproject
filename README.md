@@ -37,6 +37,17 @@ With Node.js on a network that allows npm, `npx tailwindcss@3.4.17` with the sam
 
 Tailwind only sees whole class names written out in a file. Write `"bg-olive-800"`, not `"bg-olive-" + shade`.
 
+## Security
+
+Text from outside the site (the address bar, search boxes, the exchange-rate service) must reach the page as plain text: use `textContent`, or `escapeHtml()` / `escapeAttr()` before putting it into an HTML string. Never put it into `innerHTML` as it is.
+
+As a safety net, every page has a security policy (the `Content-Security-Policy` line near the top of each page). It lets the browser run only this site's own script files, so injected code is blocked. Because of it:
+
+- Attach clicks in JavaScript with `addEventListener`. `onclick="..."` and `<script>` code written inside a page are blocked.
+- Anything loaded from another website (a YouTube video, an outside image or script) is blocked until its address is added to that line on every page. Fonts from Google and rates from open.er-api.com are already allowed.
+
+If something stops working after an edit, the browser console (F12) names what the policy blocked.
+
 ## Pages
 
 | Page | What it shows |
