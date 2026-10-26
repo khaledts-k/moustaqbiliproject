@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
   if (page === "search.html") initSearchPage();
+  initPageSidebar();
   revealHashTarget();
 });
 
@@ -1966,7 +1967,7 @@ function renderContactPage() {
         ${group.entries.map(card).join("")}
       </div>
     </section>`).join("") + `
-    <section class="text-sm text-slate-500 border-t border-slate-200 pt-5">
+    <section id="contact-sources" class="text-sm text-slate-500 border-t border-slate-200 pt-5">
       <h2 class="text-sm font-bold text-slate-700 mb-1">${t('sources_title')} &middot; ${t('last_verified')} ${formatDate(data.lastVerified)}</h2>
       <p class="leading-relaxed">${t('contact_disclaimer')}</p>
     </section>`;
@@ -2889,6 +2890,149 @@ function renderSearchPage() {
   }));
 }
 
+// =========================================================================
+// 12. Side panel ("More on this page")
+//     An arrow tab on the edge of the page opens a panel of single-line headings.
+//     Each heading opens a short version of a section that used to sit in the page,
+//     so the page itself keeps only what most students came for.
+// =========================================================================
+// Which sections move into the panel, per page (CSS selectors, in panel order)
+const PAGE_SIDEBAR = {
+  "index.html": ["#home-gpa", "#home-links"],
+  "qudrat.html": ["#rules", "#help", "#sources"],
+  "more-info.html": ["#words", "#entry", "#certificates", "#links"],
+  "navigate.html": ["#data", "#degrees", "#tools", "#privacy", "#contact"],
+  "local-universities.html": ["#local-orientation"],
+  "contact.html": ["#related", "#contact-sources"],
+  "suggestions.html": ["#apply-websites", "#apply-tests", "#apply-gov"]
+};
+
+const sidebarState = { open: false, item: -1 };
+
+function initPageSidebar() {
+  if (!PAGE_SIDEBAR[currentPageFile()]) return;
+  buildPageSidebar();
+  // Pages redraw themselves when the language or exchange rates change; move the fresh
+  // sections across once every redraw has run (a microtask runs before the next paint)
+  const rebuild = () => queueMicrotask(buildPageSidebar);
+  window.addEventListener("languageChanged", rebuild);
+  window.addEventListener("fxUpdated", rebuild);
+}
+
+function sidebarShell() {
+  let panel = document.getElementById("page-sidebar");
+  if (panel) return panel;
+  document.body.insertAdjacentHTML("beforeend", `
+    <button type="button" id="page-sidebar-tab" class="page-sidebar-tab" aria-controls="page-sidebar" aria-expanded="false">
+      <svg class="w-4 h-4 page-sidebar-tab-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      <span class="page-sidebar-tab-text"></span>
+    </button>
+    <div id="page-sidebar-backdrop" class="page-sidebar-backdrop"></div>
+    <aside id="page-sidebar" class="page-sidebar bg-white border-slate-300" aria-labelledby="page-sidebar-title" inert>
+      <div class="page-sidebar-top border-b border-slate-200">
+        <div>
+          <h2 id="page-sidebar-title" class="text-base font-extrabold text-slate-900"></h2>
+          <p class="page-sidebar-hint text-xs text-slate-500"></p>
+        </div>
+        <button type="button" class="page-sidebar-close text-slate-500 hover:text-slate-900">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <ul class="page-sidebar-list"></ul>
+    </aside>`);
+  panel = document.getElementById("page-sidebar");
+  document.getElementById("page-sidebar-tab").addEventListener("click", () => setSidebarOpen(!sidebarState.open));
+  document.getElementById("page-sidebar-backdrop").addEventListener("click", () => setSidebarOpen(false));
+  panel.querySelector(".page-sidebar-close").addEventListener("click", () => setSidebarOpen(false));
+  panel.addEventListener("click", e => {
+    const head = e.target.closest(".page-sidebar-head");
+    if (head) setSidebarItem(sidebarState.item === +head.dataset.index ? -1 : +head.dataset.index);
+    if (e.target.closest("[data-sidebar-close]")) setSidebarOpen(false);
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && sidebarState.open) setSidebarOpen(false); });
+  // Links to a section that now lives in the panel (the page menu, "#help"...) open the panel there
+  document.addEventListener("click", e => {
+    const link = e.target.closest("a[href*='#']");
+    if (!link || link.closest("#page-sidebar")) return;
+    const url = new URL(link.href, location.href);
+    if (url.pathname !== location.pathname || !url.hash) return;
+    const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+    if (!target?.closest("#page-sidebar")) return;
+    e.preventDefault();
+    history.replaceState(null, "", url.hash);
+    openSidebarAt(target, true);
+  });
+  return panel;
+}
+
+function buildPageSidebar() {
+  const found = (PAGE_SIDEBAR[currentPageFile()] || []).map(sel => document.querySelector(sel)).filter(Boolean);
+  if (!found.length) return;
+  const panel = sidebarShell();
+  // The heading comes from the section's own title (read before the section is moved)
+  const items = found.map(el => ({
+    el,
+    title: el.dataset.sidebarTitle ? t(el.dataset.sidebarTitle) : (el.querySelector("h2, h3")?.textContent || "").replace(/\s+/g, " ").trim()
+  }));
+  document.querySelector("#page-sidebar-tab .page-sidebar-tab-text").textContent = t('sidebar_tab');
+  document.getElementById("page-sidebar-title").textContent = t('sidebar_title');
+  panel.querySelector(".page-sidebar-hint").textContent = t('sidebar_hint');
+  panel.querySelector(".page-sidebar-close").setAttribute("aria-label", t('sidebar_close'));
+
+  const list = panel.querySelector(".page-sidebar-list");
+  list.innerHTML = "";
+  items.forEach(({ el, title }, i) => {
+    const li = document.createElement("li");
+    li.className = "page-sidebar-item border-b border-slate-200";
+    li.innerHTML = `
+      <button type="button" class="page-sidebar-head text-slate-900 hover:bg-slate-50" data-index="${i}" id="psh-${i}" aria-controls="psb-${i}" aria-expanded="false">
+        <span class="page-sidebar-head-text"></span>
+        <svg class="page-sidebar-chevron w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="page-sidebar-body" id="psb-${i}" role="region" aria-labelledby="psh-${i}" hidden></div>`;
+    li.querySelector(".page-sidebar-head-text").textContent = title;
+    li.querySelector(".page-sidebar-head").title = title;
+    el.classList.add("in-sidebar");
+    li.querySelector(".page-sidebar-body").appendChild(el);
+    list.appendChild(li);
+  });
+  document.querySelectorAll("[data-sidebar-hide]").forEach(el => el.classList.add("hidden"));
+  // Keep what the student had open across a redraw
+  setSidebarItem(sidebarState.item < items.length ? sidebarState.item : -1, false);
+}
+
+function setSidebarOpen(open, moveFocus = true) {
+  const panel = document.getElementById("page-sidebar");
+  const tab = document.getElementById("page-sidebar-tab");
+  if (!panel || !tab) return;
+  sidebarState.open = open;
+  document.documentElement.classList.toggle("sidebar-open", open);
+  panel.inert = !open;
+  tab.setAttribute("aria-expanded", String(open));
+  if (moveFocus) (open ? panel.querySelector(".page-sidebar-close") : tab).focus({ preventScroll: true });
+}
+
+// Open one heading (one at a time keeps the panel short); -1 closes them all
+function setSidebarItem(index, scroll = true) {
+  sidebarState.item = index;
+  document.querySelectorAll("#page-sidebar .page-sidebar-item").forEach((li, i) => {
+    const open = i === index;
+    li.classList.toggle("is-open", open);
+    li.querySelector(".page-sidebar-head").setAttribute("aria-expanded", String(open));
+    li.querySelector(".page-sidebar-body").hidden = !open;
+    if (open && scroll) li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  });
+}
+
+// Open the panel at the heading that holds `el`
+function openSidebarAt(el, moveFocus) {
+  const li = el.closest(".page-sidebar-item");
+  const items = [...document.querySelectorAll("#page-sidebar .page-sidebar-item")];
+  setSidebarOpen(true, moveFocus);
+  setSidebarItem(items.indexOf(li), false);
+  li?.scrollIntoView({ block: "start" });
+}
+
 // Pages are drawn by JavaScript, so a link like clarifications.html#some-question arrives before
 // its target exists. Once the page is drawn, scroll to the target (and open it if it is a question).
 function revealHashTarget() {
@@ -2896,6 +3040,8 @@ function revealHashTarget() {
   if (!id) return;
   const el = document.getElementById(id);
   if (!el) return;
+  // The section now lives in the side panel: open the panel at that heading instead
+  if (el.closest("#page-sidebar")) { openSidebarAt(el, false); return; }
   if (el.tagName === "DETAILS") el.open = true;
   // Instant, not smooth: this is a page-load jump, and smooth scrolling stalls in background tabs
   el.scrollIntoView({ block: "start", behavior: "instant" });
