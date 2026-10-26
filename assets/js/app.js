@@ -96,19 +96,21 @@ function withFlags(str) {
 // one click shows the details behind it. Styles: "Reveal cards" in styles.css.
 // Pages call initRevealCards(root) after drawing, so each card fits the side showing.
 // -------------------------------------------------------------------------
-function revealCard({ question, answer, sub = "", tag = "", backTitle = "", back = "", id = "" }) {
+// `flip: true` turns the card over instead of fading (whatever the site-wide setting);
+// `front` replaces the question / answer layout with your own front (e.g. a college name)
+function revealCard({ question, answer, sub = "", tag = "", backTitle = "", back = "", id = "", flip = false, front = "" }) {
   return `
-  <div class="reveal-card scroll-mt-24" ${id ? `id="${id}"` : ""}>
+  <div class="reveal-card scroll-mt-24" ${id ? `id="${id}"` : ""} ${flip ? 'data-reveal="flip"' : ""}>
     <div class="reveal-inner">
       <button type="button" class="reveal-face reveal-front bg-white border border-slate-300" aria-expanded="false">
         <span class="reveal-body">
-          <span class="flex flex-wrap items-start justify-between gap-2"><span class="reveal-q">${question}</span>${tag}</span>
+          ${front || `<span class="flex flex-wrap items-start justify-between gap-2"><span class="reveal-q">${question}</span>${tag}</span>
           <span class="reveal-answer">${answer}</span>
-          ${sub ? `<span class="reveal-sub">${sub}</span>` : ""}
+          ${sub ? `<span class="reveal-sub">${sub}</span>` : ""}`}
           <span class="reveal-more">${t('reveal_more')} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></span>
         </span>
       </button>
-      <div class="reveal-face reveal-back bg-white border border-olive-200" role="region" aria-label="${escapeHtml(backTitle || question)}" inert>
+      <div class="reveal-face reveal-back bg-white border border-olive-200${!backTitle || backTitle === question ? " reveal-back-same" : ""}" role="region" aria-label="${escapeHtml(backTitle || question)}" inert>
         <div class="reveal-body text-sm text-slate-700">
           <div class="flex items-start justify-between gap-3 mb-2">
             <strong class="text-slate-900">${backTitle || question}</strong>
@@ -2369,7 +2371,8 @@ function scorePartName(code) {
   return s ? L(s, 'name') : code;
 }
 
-// One college: lowest admitted grade, how the score is counted, extra conditions, majors
+// One college as a flip card: the name and lowest admitted grade on the front;
+// how the score is counted, extra conditions and majors on the back
 function collegeRow(c, floorLabel) {
   const ar = isArabic();
   const weights = collegeWeights(c);
@@ -2398,24 +2401,37 @@ function collegeRow(c, floorLabel) {
       <div class="flex flex-wrap items-center gap-1.5">${content}${extra}</div>
     </div>` : "";
 
-  return `
-    <div class="p-4 rounded-xl border border-slate-200 bg-white">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <h4 class="text-base font-bold text-slate-900">${ar ? (c.collegeNameAr || c.collegeName) : c.collegeName}</h4>
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="grade-pill ${c.flag ? 'is-missing' : ''}">
-            <span class="grade-pill-label">${floorLabel}</span>
-            <span class="grade-pill-value" dir="auto">${ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya}</span>
-          </span>
-          ${c.flag ? flag(c.flag) : ''}
-        </div>
-      </div>
-      ${(scoring || condition || majors) ? `<div class="mt-3 pt-3 border-t border-slate-100 space-y-2">
-        ${line(t('local_how_counted'), scoring)}
-        ${line(t('equiv_condition'), condition.split(/[;؛]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="req-chip is-condition"><span>${s}</span></span>`).join(""))}
-        ${line(c.majors?.some(m => m.grade) ? t('local_majors_grades') : t('local_majors'), majors, c.majorsFlag ? ` ${flag(c.majorsFlag)}` : "")}
-      </div>` : ''}
-    </div>`;
+  const name = ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+  const details = [
+    line(t('local_how_counted'), scoring),
+    line(t('equiv_condition'), condition.split(/[;؛]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="req-chip is-condition"><span>${s}</span></span>`).join("")),
+    line(c.majors?.some(m => m.grade) ? t('local_majors_grades') : t('local_majors'), majors, c.majorsFlag ? ` ${flag(c.majorsFlag)}` : "")
+  ].join("").trim();
+
+  return revealCard({
+    question: name,
+    flip: true,
+    front: `
+      <span class="college-card-name">${name}</span>
+      <span class="mt-3 flex flex-wrap items-center gap-2">
+        <span class="grade-pill ${c.flag ? 'is-missing' : ''}">
+          <span class="grade-pill-label">${floorLabel}</span>
+          <span class="grade-pill-value" dir="auto">${ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya}</span>
+        </span>
+        ${c.flag ? flag(c.flag) : ''}
+      </span>`,
+    back: details ? `<div class="space-y-3">${details}</div>` : `<p class="text-slate-600">${t('local_no_details')}</p>`
+  });
+}
+
+// One fact about a university (who pays, how you get in, tests) as a flip card
+function universityFactCard(title, text, extra = "") {
+  return revealCard({
+    question: title,
+    flip: true,
+    front: `<span class="college-card-name">${title}</span>`,
+    back: `<p class="leading-relaxed">${text}</p>${extra}`
+  });
 }
 
 // =========================================================================
@@ -2435,38 +2451,29 @@ function initLocalUniversitiesPage() {
     const pick = (en, ar) => isAr ? (uni[ar] || uni[en]) : uni[en];
 
     card.innerHTML = `
-      <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-200 pb-4 mb-4">
-        <div>
-          <span class="text-xs font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-200 uppercase tracking-wide">${pick('typeEn', 'typeAr')}</span>
-          <h2 class="text-xl font-black text-slate-900 mt-2">${pick('name', 'nameAr')}</h2>
-          <p class="text-xs text-slate-600 mt-1">${pick('campusLocation', 'campusLocationAr')}</p>
-        </div>
-        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-lg text-xs max-w-sm">
-          <strong class="text-emerald-900 block mb-0.5">${t('local_funding')}</strong>
-          <span class="text-emerald-800 font-semibold">${pick('scholarshipFunding', 'scholarshipFundingAr')}</span>
-        </div>
+      <div class="border-b border-slate-200 pb-4 mb-4">
+        <span class="text-xs font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-200 uppercase tracking-wide">${pick('typeEn', 'typeAr')}</span>
+        <h2 class="text-xl font-black text-slate-900 mt-2">${pick('name', 'nameAr')}</h2>
+        <p class="text-xs text-slate-600 mt-1">${pick('campusLocation', 'campusLocationAr')}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mb-5">
-        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-          <strong class="text-slate-900 block mb-1">${t('local_admission')}</strong>
-          <span class="text-slate-600">${pick('admissionSystem', 'admissionSystemAr')}</span>
-        </div>
-        <div class="p-3 bg-slate-50 rounded border border-slate-200">
-          <strong class="text-slate-900 block mb-1">${t('local_aptitude')}</strong>
-          <span class="text-slate-600">${pick('aptitudeExams', 'aptitudeExamsAr')}</span>
-          ${uni.id === 'kuwait-university' ? `<a href="qudrat.html" class="block mt-1 font-semibold text-olive-900 underline">${t('local_qudrat_link')}</a>` : ''}
-        </div>
+      <p class="text-sm text-slate-600 mb-3">${t('local_flip_hint')}</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-start mb-6">
+        ${universityFactCard(t('local_funding'), pick('scholarshipFunding', 'scholarshipFundingAr'))}
+        ${universityFactCard(t('local_admission'), pick('admissionSystem', 'admissionSystemAr'))}
+        ${universityFactCard(t('local_aptitude'), pick('aptitudeExams', 'aptitudeExamsAr'),
+          uni.id === 'kuwait-university' ? `<a href="qudrat.html" class="inline-block mt-2 font-semibold text-olive-900 underline">${t('local_qudrat_link')}</a>` : '')}
       </div>
 
       <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">${t('local_colleges')}</h3>
-      <div class="space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-start">
         ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'))).join("")}
       </div>
       ${uni.sourceNote ? `<p class="text-xs text-slate-400 mt-3">${pick('sourceNote', 'sourceNoteAr')}</p>` : ''}
     `;
     container.appendChild(card);
   });
+  initRevealCards(container);
 }
 
 // =========================================================================
@@ -2912,6 +2919,7 @@ const sidebarState = { open: false, item: -1 };
 function initPageSidebar() {
   if (!PAGE_SIDEBAR[currentPageFile()]) return;
   buildPageSidebar();
+  addShowAllButton();
   // Pages redraw themselves when the language or exchange rates change; move the fresh
   // sections across once every redraw has run (a microtask runs before the next paint)
   const rebuild = () => queueMicrotask(buildPageSidebar);
@@ -2926,6 +2934,7 @@ function sidebarShell() {
     <button type="button" id="page-sidebar-tab" class="page-sidebar-tab" aria-controls="page-sidebar" aria-expanded="false">
       <svg class="w-4 h-4 page-sidebar-tab-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
       <span class="page-sidebar-tab-text"></span>
+      <span class="page-sidebar-tab-count"></span>
     </button>
     <div id="page-sidebar-backdrop" class="page-sidebar-backdrop"></div>
     <aside id="page-sidebar" class="page-sidebar bg-white border-slate-300" aria-labelledby="page-sidebar-title" inert>
@@ -2975,11 +2984,13 @@ function buildPageSidebar() {
     title: el.dataset.sidebarTitle ? t(el.dataset.sidebarTitle) : (el.querySelector("h2, h3")?.textContent || "").replace(/\s+/g, " ").trim()
   }));
   document.querySelector("#page-sidebar-tab .page-sidebar-tab-text").textContent = t('sidebar_tab');
+  document.querySelector("#page-sidebar-tab .page-sidebar-tab-count").textContent = items.length;
+  document.getElementById("page-sidebar-tab").setAttribute("aria-label", `${t('sidebar_tab')}: ${t('sidebar_topics').replace("{n}", items.length)}`);
   document.getElementById("page-sidebar-title").textContent = t('sidebar_title');
   panel.querySelector(".page-sidebar-hint").textContent = t('sidebar_hint');
   panel.querySelector(".page-sidebar-close").setAttribute("aria-label", t('sidebar_close'));
 
-  const list = panel.querySelector(".page-sidebar-list");
+  const list = document.querySelector(".page-sidebar-list");
   list.innerHTML = "";
   items.forEach(({ el, title }, i) => {
     const li = document.createElement("li");
@@ -2999,6 +3010,7 @@ function buildPageSidebar() {
   document.querySelectorAll("[data-sidebar-hide]").forEach(el => el.classList.add("hidden"));
   // Keep what the student had open across a redraw
   setSidebarItem(sidebarState.item < items.length ? sidebarState.item : -1, false);
+  applyShowAll();
 }
 
 function setSidebarOpen(open, moveFocus = true) {
@@ -3031,6 +3043,83 @@ function openSidebarAt(el, moveFocus) {
   setSidebarOpen(true, moveFocus);
   setSidebarItem(items.indexOf(li), false);
   li?.scrollIntoView({ block: "start" });
+}
+
+// -------------------------------------------------------------------------
+// "Show everything": opens every card on the page and brings the panel's topics
+// back into the page, all open, so students can see nothing is hidden.
+// The choice is remembered on this device while they move between pages.
+// -------------------------------------------------------------------------
+const SHOW_ALL_KEY = "moustaqbili_show_all";
+let showAllState = null; // null until read from this device
+
+function showAllOn() {
+  try { return localStorage.getItem(SHOW_ALL_KEY) === "1"; } catch (e) { return false; }
+}
+
+function addShowAllButton() {
+  const title = document.querySelector("main h1");
+  if (!title || document.getElementById("show-all-btn")) return;
+  title.parentElement.insertAdjacentHTML("beforeend", `
+    <button type="button" id="show-all-btn" class="show-all-btn" aria-pressed="false">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <span></span>
+    </button>`);
+  document.getElementById("show-all-btn").addEventListener("click", () => {
+    const next = !showAllState;
+    try { localStorage.setItem(SHOW_ALL_KEY, next ? "1" : "0"); } catch (e) { /* storage blocked: still switch this page */ }
+    applyShowAll(next);
+  });
+  window.addEventListener("languageChanged", () => applyShowAll());
+  applyShowAll();
+}
+
+function applyShowAll(force) {
+  if (force !== undefined) showAllState = force;
+  if (showAllState === null) showAllState = showAllOn();
+  const on = showAllState;
+  const root = document.documentElement;
+  // Switch every card at once, with no fade (dozens of cards fading together looks jumpy)
+  root.classList.add("no-reveal-anim");
+  root.classList.toggle("show-all", on);
+  void root.offsetWidth;
+  setTimeout(() => root.classList.remove("no-reveal-anim"), 50);
+  const btn = document.getElementById("show-all-btn");
+  if (btn) {
+    btn.setAttribute("aria-pressed", String(on));
+    btn.querySelector("span").textContent = t(on ? 'show_all_off' : 'show_all_on');
+  }
+  // Cards: details readable and clickable; the front no longer toggles
+  document.querySelectorAll(".reveal-card").forEach(card => {
+    card.querySelector(".reveal-back").inert = on ? false : !card.classList.contains("is-open");
+    card.querySelector(".reveal-front").inert = on ? true : card.classList.contains("is-open");
+    if (!on) sizeRevealCard(card);
+  });
+  // Panel topics: shown at the end of the page, all open (or put back in the panel)
+  const list = document.querySelector(".page-sidebar-list");
+  if (!list) return;
+  let inline = document.getElementById("page-more-inline");
+  if (on) {
+    if (sidebarState.open) setSidebarOpen(false, false);
+    if (!inline) {
+      document.querySelector("main").insertAdjacentHTML("beforeend", `
+        <section id="page-more-inline" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
+          <h2 class="text-xl font-extrabold text-slate-900 mb-3"></h2>
+        </section>`);
+      inline = document.getElementById("page-more-inline");
+    }
+    inline.querySelector("h2").textContent = t('sidebar_title');
+    inline.appendChild(list);
+    list.querySelectorAll(".page-sidebar-item").forEach(li => {
+      li.classList.add("is-open");
+      li.querySelector(".page-sidebar-head").setAttribute("aria-expanded", "true");
+      li.querySelector(".page-sidebar-body").hidden = false;
+    });
+  } else if (inline) {
+    document.getElementById("page-sidebar")?.appendChild(list);
+    inline.remove();
+    setSidebarItem(sidebarState.item, false);
+  }
 }
 
 // Pages are drawn by JavaScript, so a link like clarifications.html#some-question arrives before

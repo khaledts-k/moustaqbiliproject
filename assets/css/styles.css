@@ -978,3 +978,67 @@ html.dark .page-sidebar-tab:hover { background: #5b7f4b; }
 html.dark .page-sidebar { background: #182016; border-color: #3a4836; }
 html.dark .page-sidebar-item.is-open .page-sidebar-head { color: #d5e6c8; background: rgba(126, 158, 118, 0.16); }
 html.dark .page-sidebar-close:focus-visible, html.dark .page-sidebar-head:focus-visible { outline-color: #7e9e76; }
+
+/* =========================================================================
+   "Show everything" (applyShowAll() in app.js): every card open, the side
+   panel's topics shown at the end of the page, all open
+   ========================================================================= */
+.show-all-btn {
+  display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem;
+  padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid #cbd5e1; background: #fff;
+  color: #222d1d; font-size: 0.8125rem; font-weight: 700; transition: background 0.15s, border-color 0.15s;
+}
+.show-all-btn:hover { border-color: #7e9e76; background: #f4f6f3; }
+.show-all-btn:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.show-all-btn[aria-pressed="true"] { background: #222d1d; border-color: #222d1d; color: #fff; }
+.gov-hero-gradient .show-all-btn { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+.gov-hero-gradient .show-all-btn[aria-pressed="true"] { background: #fbbf24; border-color: #fbbf24; color: #141c12; }
+
+/* How many topics the arrow tab holds */
+.page-sidebar-tab-count {
+  min-width: 1.35rem; height: 1.35rem; padding: 0 0.3rem; border-radius: 9999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fbbf24; color: #141c12; font-size: 0.75rem; font-weight: 800;
+}
+.show-all .page-sidebar-tab { display: none; }
+
+/* Cards: the front and its details stacked, no flipping or fading */
+.show-all .reveal-inner { display: block; height: auto !important; transform: none !important; }
+.show-all .reveal-face { position: static; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; }
+.show-all .reveal-front { cursor: default; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.show-all .reveal-front:hover { border-color: #cbd5e1; }
+.show-all .reveal-back { border-top: 1px dashed #cbd5e1 !important; border-top-left-radius: 0; border-top-right-radius: 0; margin-top: -1px; }
+.show-all .reveal-more, .show-all .reveal-close { display: none; }
+.no-reveal-anim .reveal-inner, .no-reveal-anim .reveal-face { transition: none !important; }
+/* The details repeat the question as their title: once is enough */
+.show-all .reveal-back-same > .reveal-body > div:first-child { display: none; }
+
+/* Panel topics shown in the page */
+#page-more-inline .page-sidebar-list { border-top: 1px solid #e2e8f0; }
+#page-more-inline .page-sidebar-head { cursor: default; padding-inline: 0; font-size: 1.0625rem; background: transparent !important; color: inherit; }
+#page-more-inline .page-sidebar-chevron { display: none; }
+#page-more-inline .page-sidebar-head-text { white-space: normal; }
+#page-more-inline .page-sidebar-body { padding: 0 0 1.25rem; font-size: 0.9375rem; }
+
+html.dark .show-all-btn { background: #182016; border-color: #3a4836; color: #d7ded5; }
+html.dark .show-all-btn:hover { background: #212b1f; border-color: #7e9e76; }
+html.dark .show-all-btn[aria-pressed="true"] { background: #4b6b3d; border-color: #4b6b3d; color: #fff; }
+html.dark .show-all .reveal-back { border-top-color: #3a4836 !important; }
+html.dark #page-more-inline .page-sidebar-list { border-top-color: #2b3628; }
+
+/* =========================================================================
+   Flip cards (revealCard({ flip: true }), e.g. the Study in Kuwait colleges).
+   These turn over even though the rest of the site fades.
+   ========================================================================= */
+.reveal-card[data-reveal="flip"] .reveal-face { opacity: 1; visibility: visible; transition: none; }
+.reveal-card[data-reveal="flip"] .reveal-back { transform: rotateY(180deg); }
+.reveal-card[data-reveal="flip"].is-open .reveal-front,
+.reveal-card[data-reveal="flip"].is-open .reveal-back { opacity: 1; visibility: visible; }
+.reveal-card[data-reveal="flip"].is-open .reveal-inner { transform: rotateY(180deg); }
+[dir="rtl"] .reveal-card[data-reveal="flip"] .reveal-back,
+[dir="rtl"] .reveal-card[data-reveal="flip"].is-open .reveal-inner { transform: rotateY(-180deg); }
+/* Inside a card, each detail line stacks its label above the chips */
+.reveal-card .college-line { flex-direction: column; gap: 0.35rem; }
+.reveal-card .college-line-label { flex: none; padding-top: 0; }
+.college-card-name { display: block; font-size: 1.0625rem; font-weight: 800; line-height: 1.35; color: #0f172a; }
+html.dark .college-card-name { color: #eef2ee; }
