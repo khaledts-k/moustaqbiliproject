@@ -6,7 +6,36 @@ It is an independent student guide, not an official Ministry site. Students shou
 
 ## Run locally
 
-It is a static site with no build step. Open `index.html` in a browser, or serve the folder with any static server (for example the VS Code Live Server extension).
+It is a static site. Open `index.html` in a browser, or serve the folder with any static server (for example the VS Code Live Server extension). Hosting needs no build: upload the folder as it is.
+
+## Styling (Tailwind CSS)
+
+Pages are styled with Tailwind classes plus `assets/css/styles.css` (site colours and special styles). Tailwind is built ahead of time into `assets/css/tailwind.css`, which every page loads after `styles.css`.
+
+| File | What it is |
+| :--- | :--- |
+| `tailwind.config.js` | Tailwind settings: which files to scan for classes, and the `olive` colour set |
+| `assets/css/tailwind-input.css` | Starting point Tailwind builds from. Pages do not load it |
+| `assets/css/tailwind.css` | The built file. Do not edit it by hand; rebuild it. Commit it with your changes |
+
+**After adding or changing Tailwind classes** in any page or in `assets/js/`, rebuild `tailwind.css`, or the new classes will have no style.
+
+1. Get Tailwind v3.4.17 once: download `tailwindcss-windows-x64.exe` from [the v3.4.17 release](https://github.com/tailwindlabs/tailwindcss/releases/tag/v3.4.17), rename it `tailwindcss.exe` and put it in this folder (Git ignores it). On Mac, download the `macos` file for your Mac instead.
+2. From this folder, rebuild once:
+
+   ```
+   ./tailwindcss.exe -i assets/css/tailwind-input.css -o assets/css/tailwind.css --minify
+   ```
+
+   Or keep it running while you work, so it rebuilds every time you save:
+
+   ```
+   ./tailwindcss.exe -i assets/css/tailwind-input.css -o assets/css/tailwind.css --minify --watch
+   ```
+
+With Node.js on a network that allows npm, `npx tailwindcss@3.4.17` with the same options works too.
+
+Tailwind only sees whole class names written out in a file. Write `"bg-olive-800"`, not `"bg-olive-" + shade`.
 
 ## Pages
 

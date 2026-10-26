@@ -4,36 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How to Apply | moustaqbili</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            olive: {
-              50: '#f4f6f3',
-              100: '#e5ebe3',
-              200: '#cbd7c7',
-              300: '#a8bfa2',
-              400: '#7e9e76',
-              500: '#556b2f',
-              600: '#476340',
-              700: '#384f33',
-              800: '#2d3e29',
-              900: '#222d1d',
-              950: '#141c12',
-            }
-          }
-        }
-      }
-    }
-  </script>
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind styles, built from tailwind.config.js (see README). Loaded last so it wins over styles.css, as before. -->
+  <link rel="stylesheet" href="assets/css/tailwind.css">
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
