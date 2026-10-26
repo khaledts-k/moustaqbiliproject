@@ -599,6 +599,49 @@ html {
 .plan-group[open] summary::after { content: "\2212"; }
 .plan-group summary:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.5rem; }
 
+/* Results: NBAQ-approved UK universities for the chosen major */
+.nbaq-uni {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.6rem;
+  background: #f8fafc;
+  padding: 0.5rem 0.75rem;
+}
+.nbaq-uni summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+}
+.nbaq-uni summary::-webkit-details-marker { display: none; }
+.nbaq-uni summary::after { content: "+"; font-weight: 800; color: #384f33; margin-inline-start: auto; }
+.nbaq-uni[open] summary::after { content: "\2212"; }
+.nbaq-uni summary:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.4rem; }
+.nbaq-levels { display: inline-flex; gap: 0.2rem; }
+.nbaq-level {
+  min-width: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 0.3rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.5;
+}
+.nbaq-star { color: #b45309; }
+.nbaq-program {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid #eef2f6;
+}
+
 /* Dropdown headings: letter groups (A, B, C...) and level groups are bold; options stay regular */
 select optgroup {
   font-weight: 800;
@@ -821,6 +864,11 @@ html.dark .help-callout:hover { border-color: #d7ded5; }
 html.dark .help-callout-arrow { color: #d7ded5; }
 html.dark .plan-group { background: #131a12; border-color: #2b3628; }
 html.dark .plan-group summary::after { color: #b7cf9f; }
+html.dark .nbaq-uni { background: #131a12; border-color: #2b3628; }
+html.dark .nbaq-uni summary::after { color: #b7cf9f; }
+html.dark .nbaq-level { background: #182016; border-color: #3a4836; color: #d7ded5; }
+html.dark .nbaq-star { color: #fbbf24; }
+html.dark .nbaq-program { border-color: #212b1f; }
 html.dark mark { background: rgba(251, 191, 36, 0.35); }
 
 /* ---------- Results page: view switch and step-by-step pathway ---------- */

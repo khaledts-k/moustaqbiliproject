@@ -1074,8 +1074,11 @@ function pathwayMoneyHtml(m, country) {
     moneyBody = `<p class="text-sm text-slate-600">${flag('unconfirmed')}</p>`;
   }
 
+  const nbaqList = nbaqMajorFor(m.id, country);
   const unisBody = prog
     ? universitiesHtml(prog)
+    : nbaqList
+    ? nbaqMajorUnisHtml(nbaqList, ar ? m.ar : m.en)
     : `<p class="text-sm text-slate-600 mb-3">${t('pw_unis_plan_note')}</p>
        <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`;
 
@@ -1087,7 +1090,7 @@ function pathwayMoneyHtml(m, country) {
         ${moneyBody}
       </section>
       <section class="pw-panel rounded-xl border border-slate-200 bg-white p-5">
-        ${prog ? "" : `<h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_unis_title')}</h3>`}
+        ${prog || nbaqList ? "" : `<h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_unis_title')}</h3>`}
         ${unisBody}
       </section>
     </div>`;
@@ -1344,6 +1347,12 @@ function extrasCard(baseProg) {
 
 function universitiesHtml(baseProg, withHeading = true) {
   const prog = localizeProgram(baseProg);
+  const majorId = baseProg.planMajors?.[0];
+  const nbaqList = nbaqMajorFor(majorId, baseProg.country);
+  if (nbaqList) {
+    const m = (window.PLAN_MAJORS || []).find(x => x.id === majorId);
+    return nbaqMajorUnisHtml(nbaqList, m ? (isArabic() ? m.ar : m.en) : (isArabic() ? prog.titleAr : prog.title));
+  }
   return `
     ${withHeading ? `<h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${universitiesFlag(baseProg)}</h3>` : ''}
     <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
