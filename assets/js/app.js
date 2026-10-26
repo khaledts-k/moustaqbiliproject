@@ -964,8 +964,11 @@ function pathwayMoneyHtml(m, country) {
     moneyBody = `<p class="text-sm text-slate-600">${flag('unconfirmed')}</p>`;
   }
 
+  const nbaqList = nbaqMajorFor(m.id, country);
   const unisBody = prog
     ? universitiesHtml(prog)
+    : nbaqList
+    ? nbaqMajorUnisHtml(nbaqList, ar ? m.ar : m.en)
     : `<p class="text-sm text-slate-600 mb-3">${t('pw_unis_plan_note')}</p>
        <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`;
 
@@ -977,7 +980,7 @@ function pathwayMoneyHtml(m, country) {
         ${moneyBody}
       </section>
       <section class="pw-panel rounded-xl border border-slate-200 bg-white p-5">
-        ${prog ? "" : `<h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_unis_title')}</h3>`}
+        ${prog || nbaqList ? "" : `<h3 class="text-base font-extrabold text-slate-900 mb-3">${t('pw_unis_title')}</h3>`}
         ${unisBody}
       </section>
     </div>`;
@@ -1220,12 +1223,67 @@ function allowanceItemsHtml(baseProg) {
 
 function universitiesHtml(baseProg) {
   const prog = localizeProgram(baseProg);
+  const majorId = baseProg.planMajors?.[0];
+  const nbaqList = nbaqMajorFor(majorId, baseProg.country);
+  if (nbaqList) {
+    const m = (window.PLAN_MAJORS || []).find(x => x.id === majorId);
+    return nbaqMajorUnisHtml(nbaqList, m ? (isArabic() ? m.ar : m.en) : (isArabic() ? prog.titleAr : prog.title));
+  }
   return `
     <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${(baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`}</h3>
     <p class="text-xs text-slate-500 mb-2">${t('institutions_note')} <a class="underline" href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer">nbaq.edu.kw</a></p>
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
       ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
     </ul>`;
+}
+
+// NBAQ's approved UK universities for a plan major (nbaq-uk-data.js), or null
+function nbaqMajorFor(majorId, country) {
+  return country === "United Kingdom" ? (window.NBAQ_UK?.[majorId] || null) : null;
+}
+
+// Degree-level letters ("BMP" -> B M D tags)
+function nbaqLevelsHtml(levels) {
+  return `<span class="nbaq-levels">${[...levels].map(l => `<span class="nbaq-level">${t(`nbaq_level_${l}`)}</span>`).join("")}</span>`;
+}
+
+// Universities approved for one major: merit ones first, the rest folded away
+function nbaqMajorUnisHtml(list, majorName) {
+  const row = ([name, levels, merit]) => `
+    <li class="nbaq-program">
+      <span>${name}${merit ? ` <span class="nbaq-star" title="${t('nbaq_merit')}">★</span>` : ''}</span>
+      ${nbaqLevelsHtml(levels)}
+    </li>`;
+  const merit = list.unis.filter(u => u[2]);
+  const other = list.unis.filter(u => !u[2]);
+  const grid = rows => `<ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1 text-xs text-slate-800">${rows.map(row).join("")}</ul>`;
+
+  return `
+    <h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}</h3>
+    <p class="text-sm text-slate-700 mb-1">${t('nbaq_major_intro').replace('{n}', list.unis.length).replace('{major}', majorName)}</p>
+    ${list.unconfirmed ? `<p class="text-xs text-slate-600 mb-1">${t('nbaq_closest_subject').replace('{subject}', list.nbaq.join(' / '))} ${flag('unconfirmed')}</p>` : ''}
+    <p class="text-[11px] text-slate-500 mb-3">${t('nbaq_levels_key')}</p>
+    <h4 class="text-xs font-bold text-slate-900 mb-1">${t('nbaq_merit_group').replace('{n}', merit.length)}</h4>
+    ${merit.length ? grid(merit) : `<p class="text-xs text-slate-500">${t('nbaq_no_merit')}</p>`}
+    ${other.length ? `
+      <details class="nbaq-uni mt-3">
+        <summary><span class="font-bold text-slate-900">${t('nbaq_other_group').replace('{n}', other.length)}</span></summary>
+        <div class="mt-2">${grid(other)}</div>
+      </details>` : ''}
+    ${nbaqRulesHtml()}`;
+}
+
+// UK merit-decree conditions, folded away under the university list
+function nbaqRulesHtml() {
+  const date = window.NBAQ_UK_CHECKED || "";
+  return `
+    <details class="nbaq-uni mt-3">
+      <summary><span class="font-bold text-slate-900">${t('nbaq_rules_title')}</span></summary>
+      <ul class="mt-2 space-y-1 list-disc ps-5 text-xs text-slate-700">
+        ${[1, 2, 3, 4, 5, 6, 7].map(n => `<li>${t(`nbaq_rule_${n}`)}</li>`).join("")}
+      </ul>
+    </details>
+    <p class="text-[11px] text-slate-500 mt-2">${t('nbaq_source').replace('{date}', date)} <a class="underline" href="https://nbaq.edu.kw/search/" target="_blank" rel="noopener noreferrer">nbaq.edu.kw/search</a></p>`;
 }
 
 // =========================================================================
