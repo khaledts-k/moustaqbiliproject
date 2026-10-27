@@ -1090,3 +1090,21 @@ html.dark #page-more-inline .page-sidebar-list { border-top-color: #2b3628; }
 .reveal-card .college-line-label { flex: none; padding-top: 0; }
 .college-card-name { display: block; font-size: 1.0625rem; font-weight: 800; line-height: 1.35; color: #0f172a; }
 html.dark .college-card-name { color: #eef2ee; }
+
+/* "How to use each page" (navigate page, in the More info panel): one line per page */
+.howto-head { padding: 0.7rem 0.9rem; font-weight: 700; font-size: 0.9375rem; }
+.howto-head::-webkit-details-marker { display: none; }
+.howto-title { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.howto-body { padding: 0 0.9rem 0.9rem; font-size: 0.875rem; line-height: 1.55; }
+.howto-item[open] .howto-head { color: #2d3e29; }
+html.dark .howto-item[open] .howto-head { color: #d5e6c8; }
+
+/* Home page section numbers ("1 · Start here", "2 · Find your scholarship") */
+.home-step-num {
+  flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 9999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #222d1d; color: #fff; font-size: 0.9375rem; font-weight: 800;
+}
+html.dark .home-step-num { background: #4b6b3d; }
+/* "Why no results?" page: each reason has a quiet amber edge */
+#why-root .why-reason { border-inline-start: 4px solid #f59e0b; } /* id beats Tailwind border colours, which load later */

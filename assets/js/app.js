@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
   if (page === "search.html") initSearchPage();
+  if (page === "why.html") initWhyPage();
+  initWhyLinks();
   initPageSidebar();
   revealHashTarget();
 });
@@ -369,28 +371,20 @@ function populateLandingSelects() {
   }
 }
 
-// Home page video guide to the search. The video only loads when the student opens the panel,
-// in the page language (assets/video/search-guide-en.mp4 / -ar.mp4, recorded from this site).
+// Home page tour video ("Start here"). It sits in the page with preload="none", so nothing
+// downloads until the student presses play. The source follows the page language.
 function initSearchGuideVideo() {
-  const toggle = document.getElementById("guide-video-toggle");
-  const panel = document.getElementById("guide-video-panel");
   const video = document.getElementById("guide-video");
-  if (!toggle || !panel || !video) return;
-  const srcFor = () => `assets/video/search-guide-${isArabic() ? "ar" : "en"}.mp4`;
+  if (!video) return;
   const load = () => {
-    const src = srcFor();
+    const src = `assets/video/search-guide-${isArabic() ? "ar" : "en"}.mp4`;
+    video.setAttribute("aria-label", t('guide_video_title'));
     if (video.getAttribute("src") === src) return;
     video.poster = src.replace(".mp4", ".jpg");
     video.src = src;
   };
-  toggle.addEventListener("click", () => {
-    const open = panel.classList.toggle("hidden") === false;
-    toggle.setAttribute("aria-expanded", String(open));
-    document.getElementById("guide-video-chevron")?.classList.toggle("rotate-180", open);
-    if (open) { load(); video.play().catch(() => {}); } else video.pause();
-  });
-  // Switch to the other language's video if the student changes language with the panel open
-  window.addEventListener("languageChanged", () => { if (!panel.classList.contains("hidden")) load(); });
+  load();
+  window.addEventListener("languageChanged", load);
 }
 
 // Heading letter for a dropdown item. Arabic names mostly start with "ال", so it is skipped
@@ -997,7 +991,11 @@ function pathwayCountriesHtml(m, countries, country) {
   return `
     <h2 class="text-lg font-extrabold text-slate-900">${t('pw_step2_title').replace("{major}", ar ? m.ar : m.en)}</h2>
     <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('pw_step2_desc')} ${t('pw_open_to').replace("{stream}", t(m.stream === "both" ? 'plan_stream_both' : 'plan_stream_science'))}</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">${cards}</div>`;
+    ${cards ? `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">${cards}</div>` : `
+    <div class="p-4 rounded-xl border border-dashed border-slate-300 bg-slate-50">
+      <p class="text-sm text-slate-700">${t('pw_no_country')}</p>
+      <a href="why.html" data-why-link class="inline-block mt-2 text-sm font-bold text-olive-900 underline">${t('why_btn')}</a>
+    </div>`}`;
 }
 
 // Step 3: full requirements when a detailed program exists, otherwise the plan's rules
@@ -1351,7 +1349,7 @@ function universitiesHtml(baseProg, withHeading = true) {
   const nbaqList = nbaqMajorFor(majorId, baseProg.country);
   if (nbaqList) {
     const m = (window.PLAN_MAJORS || []).find(x => x.id === majorId);
-    return nbaqMajorUnisHtml(nbaqList, m ? (isArabic() ? m.ar : m.en) : (isArabic() ? prog.titleAr : prog.title));
+    return nbaqMajorUnisHtml(nbaqList, m ? (isArabic() ? m.ar : m.en) : (isArabic() ? prog.titleAr : prog.title), withHeading);
   }
   return `
     ${withHeading ? `<h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}${universitiesFlag(baseProg)}</h3>` : ''}
@@ -1363,6 +1361,55 @@ function universitiesHtml(baseProg, withHeading = true) {
 
 function universitiesFlag(baseProg) {
   return (baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`;
+}
+
+// NBAQ's approved UK universities for a plan major (nbaq-uk-data.js), or null
+function nbaqMajorFor(majorId, country) {
+  return country === "United Kingdom" ? (window.NBAQ_UK?.[majorId] || null) : null;
+}
+
+// Degree-level letters ("BMP" -> B M D tags)
+function nbaqLevelsHtml(levels) {
+  return `<span class="nbaq-levels">${[...levels].map(l => `<span class="nbaq-level">${t(`nbaq_level_${l}`)}</span>`).join("")}</span>`;
+}
+
+// Universities approved for one major: merit ones first, the rest folded away
+function nbaqMajorUnisHtml(list, majorName, withHeading = true) {
+  const row = ([name, levels, merit]) => `
+    <li class="nbaq-program">
+      <span>${name}${merit ? ` <span class="nbaq-star" title="${t('nbaq_merit')}">★</span>` : ''}</span>
+      ${nbaqLevelsHtml(levels)}
+    </li>`;
+  const merit = list.unis.filter(u => u[2]);
+  const other = list.unis.filter(u => !u[2]);
+  const grid = rows => `<ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1 text-xs text-slate-800">${rows.map(row).join("")}</ul>`;
+
+  return `
+    ${withHeading ? `<h3 class="text-sm font-extrabold text-slate-900 mb-1">${t('modal_institutions_heading')}</h3>` : ''}
+    <p class="text-sm text-slate-700 mb-1">${t('nbaq_major_intro').replace('{n}', list.unis.length).replace('{major}', majorName)}</p>
+    ${list.unconfirmed ? `<p class="text-xs text-slate-600 mb-1">${t('nbaq_closest_subject').replace('{subject}', list.nbaq.join(' / '))} ${flag('unconfirmed')}</p>` : ''}
+    <p class="text-[11px] text-slate-500 mb-3">${t('nbaq_levels_key')}</p>
+    <h4 class="text-xs font-bold text-slate-900 mb-1">${t('nbaq_merit_group').replace('{n}', merit.length)}</h4>
+    ${merit.length ? grid(merit) : `<p class="text-xs text-slate-500">${t('nbaq_no_merit')}</p>`}
+    ${other.length ? `
+      <details class="nbaq-uni mt-3">
+        <summary><span class="font-bold text-slate-900">${t('nbaq_other_group').replace('{n}', other.length)}</span></summary>
+        <div class="mt-2">${grid(other)}</div>
+      </details>` : ''}
+    ${nbaqRulesHtml()}`;
+}
+
+// UK merit-decree conditions, folded away under the university list
+function nbaqRulesHtml() {
+  const date = window.NBAQ_UK_CHECKED || "";
+  return `
+    <details class="nbaq-uni mt-3">
+      <summary><span class="font-bold text-slate-900">${t('nbaq_rules_title')}</span></summary>
+      <ul class="mt-2 space-y-1 list-disc ps-5 text-xs text-slate-700">
+        ${[1, 2, 3, 4, 5, 6, 7].map(n => `<li>${t(`nbaq_rule_${n}`)}</li>`).join("")}
+      </ul>
+    </details>
+    <p class="text-[11px] text-slate-500 mt-2">${t('nbaq_source').replace('{date}', date)} <a class="underline" href="https://nbaq.edu.kw/search/" target="_blank" rel="noopener noreferrer">nbaq.edu.kw/search</a></p>`;
 }
 
 // =========================================================================
@@ -1469,9 +1516,9 @@ function openSalaryModal(baseProg, keepInputs = false) {
       ${extrasCard(baseProg)}
       ${revealCard({
         question: t('salary_q_unis'),
-        answer: t('salary_unis_n').replace("{n}", prog.accreditedUniversities.length),
+        answer: t('salary_unis_n').replace("{n}", nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country)?.unis.length ?? prog.accreditedUniversities.length),
         sub: t('salary_unis_sub'),
-        tag: universitiesFlag(baseProg),
+        tag: nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country) ? "" : universitiesFlag(baseProg),
         backTitle: t('modal_institutions_heading'),
         back: universitiesHtml(baseProg, false)
       })}
@@ -2095,6 +2142,20 @@ function moreInfoBlock(block) {
         return `
         <li><a href="${l.url}" ${external ? 'target="_blank" rel="noopener noreferrer"' : ''} class="inline-flex items-center gap-1 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-semibold text-olive-900">${L(l, 'label')}${external ? ` ${ICON_EXTERNAL}` : ''}</a></li>`;
       }).join("")}</ul>`;
+
+    case "howto":
+      // One line per page; tapping it opens short numbered steps and a link to that page
+      return `<div class="space-y-2">${block.items.map(i => `
+        <details class="faq-item howto-item rounded-xl border border-slate-200 bg-white">
+          <summary class="howto-head cursor-pointer list-none flex items-center justify-between gap-3 text-slate-900">
+            <span class="howto-title">${L(i, 'title')}</span>
+            <svg class="faq-chevron w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="howto-body">
+            <ol class="list-decimal ps-5 space-y-1.5 text-slate-700">${(ar ? i.stepsAr : i.stepsEn).map(step => `<li>${step}</li>`).join("")}</ol>
+            <a href="${i.url}" class="inline-flex items-center gap-1 mt-3 font-semibold text-olive-900 underline">${t('howto_open').replace("{page}", L(i, 'title'))} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </details>`).join("")}</div>`;
 
     case "plan":
       return planHtml();
@@ -2868,6 +2929,7 @@ function renderSearchPage() {
     chips.innerHTML = popular.map(p => `<a href="search.html?q=${encodeURIComponent(p)}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">${escapeHtml(p)}</a>`).join("");
   }
 
+  document.getElementById("search-why")?.classList.toggle("hidden", !query.trim() || results.length > 0);
   if (!results.length) { box.innerHTML = ""; if (bestBox) bestBox.innerHTML = ""; return; }
 
   // Best match: the top result, shown large, linking straight to it
@@ -2917,7 +2979,7 @@ const PAGE_SIDEBAR = {
   "index.html": ["#home-gpa", "#home-links"],
   "qudrat.html": ["#rules", "#help", "#sources"],
   "more-info.html": ["#words", "#entry", "#certificates", "#links"],
-  "navigate.html": ["#data", "#degrees", "#tools", "#privacy", "#contact"],
+  "navigate.html": ["#howto", "#data", "#degrees", "#tools", "#privacy", "#contact"],
   "local-universities.html": ["#local-orientation"],
   "contact.html": ["#related", "#contact-sources"],
   "suggestions.html": ["#apply-websites", "#apply-tests", "#apply-gov"]
@@ -3145,4 +3207,148 @@ function revealHashTarget() {
   el.scrollIntoView({ block: "start", behavior: "instant" });
   el.classList.add("search-target");
   setTimeout(() => el.classList.remove("search-target"), 2500);
+}
+
+// =========================================================================
+// 14. "Why no results?" page (why.html)
+//     Reads the same search from the address bar as the results or search page,
+//     explains what most likely emptied it, and offers one-click fixes.
+// =========================================================================
+// "Why no results?" links carry the current search along (the results page keeps it in the address bar)
+function initWhyLinks() {
+  document.addEventListener("click", e => {
+    const link = e.target.closest("[data-why-link]");
+    if (link) link.href = `why.html${location.search}`;
+  });
+}
+
+// The reasons a search came back empty: [{ text, fix: { label, url } }]
+function whyReasons(params) {
+  const ar = isArabic();
+  const cfg = getFilterConfig();
+  const country = params.get("country") || "";
+  const range = cfg.percentageRanges.find(r => r.value === params.get("percentage")) || null;
+  const level = (cfg.levels || []).find(l => l.value === params.get("level")) || null;
+  const major = params.get("major") ? planMajorById(params.get("major")) : null;
+  const merit = params.get("merit") === "1";
+  const q = params.get("q") || "";
+  // English sentences need "the" before "United Kingdom", "United States" and "United Arab Emirates"
+  const countryName = c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : (/^United /.test(c) ? `the ${c}` : c);
+  const majorName = m => ar ? m.ar : m.en;
+  const without = (...keys) => {
+    const next = new URLSearchParams(params);
+    keys.forEach(k => next.delete(k));
+    return `results.html${next.toString() ? `?${next}` : ""}`;
+  };
+  const lowest = list => list.reduce((best, x) => (best && best[1] <= x[1] ? best : x), null);
+  const programs = window.MOUSTAQBILI_PROGRAMS || [];
+  const reasons = [];
+
+  if (q) {
+    reasons.push({ text: t('why_site_search').replace("{q}", escapeHtml(q)), tips: [t('why_tip_spelling'), t('why_tip_language'), t('why_tip_topics')],
+      fix: { label: t('why_fix_new_search'), url: "search.html" } });
+  }
+  if (merit) {
+    reasons.push({ text: t('why_merit').replace("{n}", programs.filter(p => p.isMerit).length), fix: { label: t('why_fix_no_merit'), url: without("merit") } });
+  }
+  if (level?.value === "foundation") {
+    reasons.push({ text: t('why_foundation').replace("{n}", programs.filter(p => (p.levels || []).includes("foundation")).length), fix: { label: t('why_fix_no_level'), url: without("level") } });
+  }
+  if (level?.planMajors && major && !level.planMajors.includes(major.id)) {
+    reasons.push({ text: t('why_medical').replace("{major}", majorName(major)), fix: { label: t('why_fix_no_level'), url: without("level") } });
+  }
+  if (country && !(cfg.countries || []).some(c => c.value === country)) {
+    reasons.push({ text: t('why_country_missing').replace("{country}", escapeHtml(countryName(country))), fix: { label: t('why_fix_no_country'), url: without("country") } });
+  }
+  if (major) {
+    const offered = Object.entries(major.minPct);
+    if (country && !(country in major.minPct)) {
+      reasons.push({
+        text: t('why_not_offered').replace("{major}", majorName(major)).replace("{country}", countryName(country))
+          .replace("{list}", offered.map(([c]) => countryName(c)).join(ar ? "، " : ", ")),
+        fix: { label: t('why_fix_all_countries').replace("{major}", majorName(major)), url: without("country") }
+      });
+    } else if (country && range && major.minPct[country] > range.maxPct) {
+      reasons.push({
+        text: t('why_pct_major_country').replace("{country}", countryName(country)).replace("{major}", majorName(major))
+          .replace("{min}", major.minPct[country]).replace("{range}", range.label),
+        fix: { label: t('why_fix_no_pct'), url: without("percentage") }
+      });
+    } else if (!country && range && offered.every(([, p]) => p > range.maxPct)) {
+      const [c, p] = lowest(offered);
+      reasons.push({
+        text: t('why_pct_major').replace("{major}", majorName(major)).replace("{min}", p).replace("{country}", countryName(c)),
+        fix: { label: t('why_fix_no_pct'), url: without("percentage") }
+      });
+    }
+  } else if (country && range) {
+    const inCountry = (window.PLAN_MAJORS || []).filter(m => country in m.minPct).map(m => [m, m.minPct[country]]);
+    if (inCountry.length && inCountry.every(([, p]) => p > range.maxPct)) {
+      reasons.push({
+        text: t('why_pct_country').replace("{country}", countryName(country)).replace("{min}", Math.min(...inCountry.map(([, p]) => p))).replace("{range}", range.label),
+        fix: { label: t('why_fix_no_pct'), url: without("percentage") }
+      });
+    }
+  }
+  return reasons;
+}
+
+function initWhyPage() {
+  renderWhyPage();
+  window.addEventListener("languageChanged", renderWhyPage);
+}
+
+function renderWhyPage() {
+  const root = document.getElementById("why-root");
+  if (!root) return;
+  const ar = isArabic();
+  const params = new URLSearchParams(location.search);
+  const cfg = getFilterConfig();
+
+  // The search being explained, as small chips
+  const chips = [];
+  const country = params.get("country");
+  if (country) chips.push(ar ? (window.PLAN_COUNTRIES?.[country] || country) : country);
+  const range = cfg.percentageRanges.find(r => r.value === params.get("percentage"));
+  if (range) chips.push(range.label);
+  const level = (cfg.levels || []).find(l => l.value === params.get("level"));
+  if (level) chips.push(ar ? level.labelAr : level.label);
+  const major = params.get("major") ? planMajorById(params.get("major")) : null;
+  if (major) chips.push(ar ? major.ar : major.en);
+  if (params.get("merit") === "1") chips.push(t('merit_toggle_off'));
+  if (params.get("q")) chips.push(`"${params.get("q")}"`);
+
+  const reasons = whyReasons(params);
+  const missing = (window.NAVIGATE_GUIDE?.sections || []).find(s => s.id === "missing");
+  const backUrl = params.get("q") ? `search.html?q=${encodeURIComponent(params.get("q"))}` : `results.html${location.search}`;
+
+  root.innerHTML = !chips.length ? `
+    <p class="text-base text-slate-700">${t('why_no_search')}</p>
+    <a href="index.html#home-search" class="inline-block px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('home_search_title')}</a>` : `
+    <section>
+      <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">${t('why_your_search')}</h2>
+      <div class="flex flex-wrap gap-2">${chips.map(c => `<span class="px-3 py-1 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-800">${escapeHtml(c)}</span>`).join("")}</div>
+      <a href="${backUrl}" class="inline-block mt-3 text-sm font-semibold text-olive-900 underline">${t('why_back')}</a>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-extrabold text-slate-900 mb-3">${t('why_happened')}</h2>
+      ${reasons.length ? `<ol class="space-y-3">${reasons.map(r => `
+        <li class="why-reason bg-white rounded-xl border border-slate-300 p-4">
+          <p class="text-base text-slate-800 leading-relaxed">${r.text}</p>
+          ${r.tips ? `<ul class="mt-2 space-y-1 text-sm text-slate-600 list-disc ps-5">${r.tips.map(x => `<li>${x}</li>`).join("")}</ul>` : ""}
+          ${r.fix ? `<a href="${r.fix.url}" class="inline-flex items-center gap-1 mt-3 px-3 py-1.5 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${r.fix.label} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></a>` : ""}
+        </li>`).join("")}</ol>` : `<p class="text-base text-slate-700">${t('why_none_found')}</p>`}
+    </section>
+
+    ${missing ? `<section>
+      <h2 class="text-lg font-extrabold text-slate-900 mb-3">${t('why_common')}</h2>
+      <div class="space-y-4">${missing.blocks.map(moreInfoBlock).join("")}</div>
+    </section>` : ""}
+
+    <section class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+      <h2 class="text-base font-extrabold text-slate-900">${t('why_stuck')}</h2>
+      <p class="text-sm text-slate-600 mt-1">${t('why_stuck_desc')}</p>
+      <a href="ask.html" class="inline-block mt-3 text-sm font-bold text-olive-900 underline">${t('nav_ask')}</a>
+    </section>`;
 }
