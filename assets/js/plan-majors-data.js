@@ -5,6 +5,8 @@
  *
  * Source: the Ministry's plan PDF (44 pages; 10 scanned pages read from the images):
  * https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf - checked 2026-10-12.
+ * Re-checked 2026-10-21 against the June 2026 file the plan page now links (same majors and %):
+ * https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf
  * The plan has no Law, Education or Social Science majors; Malta lists 3 majors, the UAE 6.
  *
  * Row format: [id, English, Arabic, discipline id, stream, { country: min % }, [countries whose % is "unconfirmed"]]
@@ -14,8 +16,8 @@
  */
 
 const PLAN_MAJORS_SOURCE = {
-  url: "https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf",
-  lastVerified: "2026-10-12"
+  url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf",
+  lastVerified: "2026-10-21"
 };
 
 const PLAN_DISCIPLINES = [

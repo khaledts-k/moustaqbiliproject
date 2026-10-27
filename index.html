@@ -3,37 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Security policy: only this site's own scripts may run, so injected code is blocked. Add a host here before loading anything new from another site. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://open.er-api.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <title>moustaqbili | مستقبلي</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            olive: {
-              50: '#f4f6f3',
-              100: '#e5ebe3',
-              200: '#cbd7c7',
-              300: '#a8bfa2',
-              400: '#7e9e76',
-              500: '#556b2f',
-              600: '#476340',
-              700: '#384f33',
-              800: '#2d3e29',
-              900: '#222d1d',
-              950: '#141c12',
-            }
-          }
-        }
-      }
-    }
-  </script>
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind styles, built from tailwind.config.js (see README). Loaded last so it wins over styles.css, as before. -->
+  <link rel="stylesheet" href="assets/css/tailwind.css">
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
@@ -51,13 +30,56 @@
       </div>
     </section>
 
-    <!-- Search -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-8">
+    <!-- 1. Start here: the tour video, the suggested way to use the site, and how to read results -->
+    <section id="home-start" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-6 scroll-mt-24">
+      <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-5 sm:p-6">
+        <div class="flex flex-wrap items-start gap-3 mb-4">
+          <span class="home-step-num" aria-hidden="true">1</span>
+          <div class="flex-grow min-w-0">
+            <h2 class="text-lg font-extrabold text-slate-900" data-i18n="home_start_title">Start here</h2>
+            <p class="text-sm text-slate-600" data-i18n="home_start_desc">New to Moustaqbili? Watch the one-minute tour, or follow the steps.</p>
+          </div>
+          <a href="#home-search" class="text-sm font-semibold text-olive-900 underline whitespace-nowrap" data-i18n="home_skip_search">Skip to the search</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+          <!-- The tour video: nothing downloads until the student presses play -->
+          <video id="guide-video" class="w-full rounded-lg bg-slate-900 aspect-video" controls playsinline preload="none"></video>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900 mb-2" data-i18n="home_way_title">The suggested way</h3>
+            <ol class="space-y-2 text-sm text-slate-700 list-decimal ps-5">
+              <li data-i18n="home_way_1">Search: pick your country, grade 12 % and level, plus a major if you know it.</li>
+              <li data-i18n="home_way_2">Read your results step by step: major, country, what you need, then the money.</li>
+              <li data-i18n="home_way_3">Tap a card for its details. "Show everything" opens them all, and "More info" on the side has the extras.</li>
+              <li data-i18n="home_way_4">Next: book Qudrat if your major needs it, then follow the steps on "How to Apply".</li>
+            </ol>
+            <details class="faq-item howto-item mt-4 rounded-xl border border-slate-200">
+              <summary class="howto-head cursor-pointer list-none flex items-center justify-between gap-3 text-slate-900">
+                <span class="howto-title" data-i18n="home_read_title">How to read your results</span>
+                <svg class="faq-chevron w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </summary>
+              <ul class="howto-body space-y-1.5 text-slate-700 list-disc ps-9">
+                <li data-i18n="home_read_1">The % is the lowest high school % the plan accepts. A higher % gives you a better chance, but no guarantee.</li>
+                <li data-i18n="home_read_2">Money is per month. The Ministry sets the amount in the local currency; the Kuwaiti Dinar amount moves a little with the exchange rate.</li>
+                <li data-i18n="home_read_3">"Merit" means a top university on the Ministry's list: 50% more each month, after the foundation year.</li>
+                <li data-i18n="home_read_4">"Not confirmed" or "Not checked yet" means: check with the Ministry before you act.</li>
+                <li data-i18n="home_read_5">No results? Press "Why no results?" to see what happened and what to try.</li>
+              </ul>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Find your scholarship: the search -->
+    <section id="home-search" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 scroll-mt-24">
       <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-6 sm:p-8">
 
-        <div class="mb-5 border-b border-slate-200 pb-4">
-          <h2 class="text-lg font-bold text-slate-900" data-i18n="search_card_title">Search approved programs</h2>
-          <p class="text-xs text-slate-600 mt-0.5" data-i18n="search_card_desc">Choose at least one option below.</p>
+        <div class="mb-5 border-b border-slate-200 pb-4 flex items-start gap-3">
+          <span class="home-step-num" aria-hidden="true">2</span>
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900" data-i18n="home_search_title">Find your scholarship</h2>
+            <p class="text-xs text-slate-600 mt-0.5" data-i18n="search_card_desc">Choose at least one option below.</p>
+          </div>
         </div>
 
         <div id="validation-alert" class="hidden mb-5 p-4 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="alert">
@@ -136,7 +158,7 @@
     <!-- GPA converter + quick links -->
     <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 grid grid-cols-1 lg:grid-cols-5 gap-6">
 
-      <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
+      <div id="home-gpa" class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
         <h3 class="text-sm font-extrabold text-slate-900 mb-1" data-i18n="tool1_title">GPA to percentage</h3>
         <p class="text-xs text-slate-600 mb-4" data-i18n="tool1_desc">Convert an American-diploma GPA (4.0 scale) to the Kuwaiti percentage.</p>
 
@@ -152,7 +174,7 @@
             <span id="gpa-calc-percentage" class="text-xl font-black text-emerald-950"></span>
           </div>
           <span id="gpa-calc-tier" class="text-xs font-semibold text-emerald-800 block mt-1"></span>
-          <button type="button" id="gpa-apply-btn" class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">Use in search</button>
+          <button type="button" id="gpa-apply-btn" data-sidebar-close class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">Use in search</button>
         </div>
         <p class="text-xs text-slate-500 mt-3">
           <span data-i18n="gpa_ref_note">Approximate guide only. The official equivalency is issued by the Ministry of Education.</span>
@@ -160,7 +182,7 @@
         </p>
       </div>
 
-      <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div id="home-links" data-sidebar-title="sidebar_home_links" class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <a href="qudrat.html" class="quick-link-card">
           <span class="quick-link-title" data-i18n="ql_qudrat_title">Qudrat tests</span>
           <span class="quick-link-desc" data-i18n="ql_qudrat_desc">Current cycle dates, subjects, fees and the equivalent-score calculator.</span>

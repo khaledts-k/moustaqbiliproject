@@ -268,6 +268,66 @@ html {
 /* Plain-language helper line under headings */
 .helper-text { font-size: 0.875rem; color: #475569; line-height: 1.6; }
 
+/* Reveal cards: the short answer on the front, the details behind it (revealCard() in app.js).
+   html[data-reveal] picks the animation: "fade" (default) or "flip". */
+.reveal-card { perspective: 1400px; min-width: 0; }
+.reveal-inner {
+  position: relative;
+  display: grid;
+  grid-template-rows: 100%;
+  transition: height 0.3s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.reveal-face {
+  grid-area: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  border-radius: 0.75rem;
+  text-align: start;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.reveal-front { display: block; cursor: pointer; }
+.reveal-front:hover { border-color: #7e9e76; }
+.reveal-front:focus-visible,
+.reveal-close:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.reveal-body { display: block; padding: 1rem 1.1rem; }
+/* The question the bold answer replies to, highlighted like a marker */
+.reveal-q {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  border-inline-start: 3px solid #556b2f;
+  background: #eef3ed;
+  color: #2d3e29;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.reveal-answer { display: block; margin-top: 0.45rem; font-size: 1.25rem; font-weight: 900; color: #0f172a; line-height: 1.25; }
+.reveal-sub { display: block; font-size: 0.875rem; color: #475569; margin-top: 0.1rem; }
+.reveal-more { display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.6rem; font-size: 0.8125rem; font-weight: 700; color: #384f33; }
+.reveal-close { font-size: 0.8125rem; font-weight: 700; color: #384f33; text-decoration: underline; flex-shrink: 0; }
+
+/* Fade: the side that appears is visible at once (so it can take focus); the side that leaves
+   fades out first and is hidden after. */
+[data-reveal="fade"] .reveal-front,
+[data-reveal="fade"] .is-open .reveal-back { opacity: 1; visibility: visible; transition: opacity 0.3s ease 0.05s, visibility 0s; }
+[data-reveal="fade"] .reveal-back,
+[data-reveal="fade"] .is-open .reveal-front { opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; }
+
+[data-reveal="flip"] .reveal-back { transform: rotateY(180deg); }
+[data-reveal="flip"] .is-open .reveal-inner { transform: rotateY(180deg); }
+[dir="rtl"][data-reveal="flip"] .reveal-back,
+[dir="rtl"][data-reveal="flip"] .is-open .reveal-inner { transform: rotateY(-180deg); }
+
+/* In a narrow grid (the money pop-up) an open card takes the whole row */
+.reveal-grid-expand > .reveal-card.is-open { grid-column: 1 / -1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-inner, .reveal-face { transition: none !important; }
+}
+
 /* Contact page: link bubbles and info notes */
 .contact-bubble {
   display: flex;
@@ -885,3 +945,166 @@ html.dark .pw-option-title { color: #eef2ee; }
 html.dark .pw-option-meta { color: #a3ad9f; }
 html.dark .pw-badge { color: #b7cf9f; background: #1d2a1a; border-color: #3a4836; }
 html.dark .pw-pct { color: #d1fae5; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); }
+
+/* Reveal cards */
+html.dark .reveal-front:hover { border-color: #7e9e76; }
+html.dark .reveal-q { background: rgba(126, 158, 118, 0.16); color: #d5e6c8; border-inline-start-color: #7e9e76; }
+html.dark .reveal-answer { color: #eef2ee; }
+html.dark .reveal-sub { color: #a3ad9f; }
+html.dark .reveal-more, html.dark .reveal-close { color: #b7cf9f; }
+html.dark .reveal-front:focus-visible, html.dark .reveal-close:focus-visible { outline-color: #7e9e76; }
+
+/* =========================================================================
+   Side panel ("More on this page", buildPageSidebar() in app.js)
+   An arrow tab on the page edge opens a panel of one-line headings. It sits
+   on the right, or on the left in Arabic.
+   ========================================================================= */
+.page-sidebar-tab {
+  position: fixed; z-index: 45; top: 50%; inset-inline-end: 0; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 0.45rem; border-start-start-radius: 0.6rem; border-end-start-radius: 0.6rem;
+  background: #222d1d; color: #fff; box-shadow: -2px 4px 14px rgba(0, 0, 0, 0.2);
+  font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.02em; transition: background 0.2s, padding 0.2s;
+}
+.page-sidebar-tab:hover { background: #384f33; padding-inline-end: 0.6rem; }
+.page-sidebar-tab:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
+.page-sidebar-tab-text { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+[dir="rtl"] .page-sidebar-tab-text { transform: none; }
+[dir="rtl"] .page-sidebar-tab-arrow { transform: scaleX(-1); }
+.sidebar-open .page-sidebar-tab { opacity: 0; pointer-events: none; }
+
+.page-sidebar-backdrop {
+  position: fixed; inset: 0; z-index: 46; background: rgba(15, 23, 42, 0.35);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.sidebar-open .page-sidebar-backdrop { opacity: 1; pointer-events: auto; }
+
+.page-sidebar {
+  position: fixed; z-index: 47; top: 0; bottom: 0; inset-inline-end: 0;
+  width: min(400px, 92vw); display: flex; flex-direction: column;
+  border-inline-start-width: 1px; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.18);
+  transform: translateX(105%); visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.3s;
+}
+[dir="rtl"] .page-sidebar { transform: translateX(-105%); }
+.sidebar-open .page-sidebar,
+[dir="rtl"].sidebar-open .page-sidebar,
+.sidebar-open [dir="rtl"] .page-sidebar { transform: none; visibility: visible; transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s; }
+.page-sidebar-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.1rem 0.9rem; }
+.page-sidebar-close { padding: 0.25rem; border-radius: 0.375rem; }
+.page-sidebar-close:focus-visible, .page-sidebar-head:focus-visible { outline: 2px solid #384f33; outline-offset: -2px; }
+.page-sidebar-list { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; margin: 0; padding: 0; list-style: none; }
+
+/* One-line heading; the full title shows on hover */
+.page-sidebar-head {
+  width: 100%; display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.1rem;
+  text-align: start; font-size: 0.9375rem; font-weight: 700;
+}
+.page-sidebar-head-text { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.page-sidebar-chevron { flex-shrink: 0; transition: transform 0.2s ease; }
+.page-sidebar-item.is-open .page-sidebar-chevron { transform: rotate(180deg); }
+.page-sidebar-item.is-open .page-sidebar-head { color: #2d3e29; background: #eef3ed; }
+.page-sidebar-body { padding: 0.25rem 1.1rem 1.1rem; font-size: 0.875rem; }
+
+/* Condensed version of a moved section: no box of its own, no repeated heading, one column */
+.in-sidebar { margin: 0 !important; padding: 0 !important; border: 0 !important; box-shadow: none !important; background: transparent !important; }
+.in-sidebar > h2:first-child, .in-sidebar > h3:first-child { display: none; }
+.in-sidebar > p:first-of-type { margin-top: 0 !important; margin-bottom: 0.75rem !important; }
+.page-sidebar [class*="grid-cols-"] { grid-template-columns: minmax(0, 1fr) !important; }
+.page-sidebar .space-y-7 > * + * { margin-top: 1rem !important; }
+.page-sidebar .text-base, .page-sidebar .text-lg { font-size: 0.875rem !important; line-height: 1.5rem !important; }
+.page-sidebar .p-5, .page-sidebar .p-6 { padding: 0.75rem !important; }
+.page-sidebar .leading-7 { line-height: 1.5rem !important; }
+.page-sidebar .quick-link-card { padding: 0.75rem 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-sidebar, .page-sidebar-backdrop, .page-sidebar-chevron { transition: none !important; }
+}
+
+html.dark .page-sidebar-tab { background: #4b6b3d; }
+html.dark .page-sidebar-tab:hover { background: #5b7f4b; }
+html.dark .page-sidebar { background: #182016; border-color: #3a4836; }
+html.dark .page-sidebar-item.is-open .page-sidebar-head { color: #d5e6c8; background: rgba(126, 158, 118, 0.16); }
+html.dark .page-sidebar-close:focus-visible, html.dark .page-sidebar-head:focus-visible { outline-color: #7e9e76; }
+
+/* =========================================================================
+   "Show everything" (applyShowAll() in app.js): every card open, the side
+   panel's topics shown at the end of the page, all open
+   ========================================================================= */
+.show-all-btn {
+  display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem;
+  padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid #cbd5e1; background: #fff;
+  color: #222d1d; font-size: 0.8125rem; font-weight: 700; transition: background 0.15s, border-color 0.15s;
+}
+.show-all-btn:hover { border-color: #7e9e76; background: #f4f6f3; }
+.show-all-btn:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; }
+.show-all-btn[aria-pressed="true"] { background: #222d1d; border-color: #222d1d; color: #fff; }
+.gov-hero-gradient .show-all-btn { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+.gov-hero-gradient .show-all-btn[aria-pressed="true"] { background: #fbbf24; border-color: #fbbf24; color: #141c12; }
+
+/* How many topics the arrow tab holds */
+.page-sidebar-tab-count {
+  min-width: 1.35rem; height: 1.35rem; padding: 0 0.3rem; border-radius: 9999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #fbbf24; color: #141c12; font-size: 0.75rem; font-weight: 800;
+}
+.show-all .page-sidebar-tab { display: none; }
+
+/* Cards: the front and its details stacked, no flipping or fading */
+.show-all .reveal-inner { display: block; height: auto !important; transform: none !important; }
+.show-all .reveal-face { position: static; opacity: 1 !important; visibility: visible !important; transform: none !important; transition: none !important; }
+.show-all .reveal-front { cursor: default; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.show-all .reveal-front:hover { border-color: #cbd5e1; }
+.show-all .reveal-back { border-top: 1px dashed #cbd5e1 !important; border-top-left-radius: 0; border-top-right-radius: 0; margin-top: -1px; }
+.show-all .reveal-more, .show-all .reveal-close { display: none; }
+.no-reveal-anim .reveal-inner, .no-reveal-anim .reveal-face { transition: none !important; }
+/* The details repeat the question as their title: once is enough */
+.show-all .reveal-back-same > .reveal-body > div:first-child { display: none; }
+
+/* Panel topics shown in the page */
+#page-more-inline .page-sidebar-list { border-top: 1px solid #e2e8f0; }
+#page-more-inline .page-sidebar-head { cursor: default; padding-inline: 0; font-size: 1.0625rem; background: transparent !important; color: inherit; }
+#page-more-inline .page-sidebar-chevron { display: none; }
+#page-more-inline .page-sidebar-head-text { white-space: normal; }
+#page-more-inline .page-sidebar-body { padding: 0 0 1.25rem; font-size: 0.9375rem; }
+
+html.dark .show-all-btn { background: #182016; border-color: #3a4836; color: #d7ded5; }
+html.dark .show-all-btn:hover { background: #212b1f; border-color: #7e9e76; }
+html.dark .show-all-btn[aria-pressed="true"] { background: #4b6b3d; border-color: #4b6b3d; color: #fff; }
+html.dark .show-all .reveal-back { border-top-color: #3a4836 !important; }
+html.dark #page-more-inline .page-sidebar-list { border-top-color: #2b3628; }
+
+/* =========================================================================
+   Flip cards (revealCard({ flip: true }), e.g. the Study in Kuwait colleges).
+   These turn over even though the rest of the site fades.
+   ========================================================================= */
+.reveal-card[data-reveal="flip"] .reveal-face { opacity: 1; visibility: visible; transition: none; }
+.reveal-card[data-reveal="flip"] .reveal-back { transform: rotateY(180deg); }
+.reveal-card[data-reveal="flip"].is-open .reveal-front,
+.reveal-card[data-reveal="flip"].is-open .reveal-back { opacity: 1; visibility: visible; }
+.reveal-card[data-reveal="flip"].is-open .reveal-inner { transform: rotateY(180deg); }
+[dir="rtl"] .reveal-card[data-reveal="flip"] .reveal-back,
+[dir="rtl"] .reveal-card[data-reveal="flip"].is-open .reveal-inner { transform: rotateY(-180deg); }
+/* Inside a card, each detail line stacks its label above the chips */
+.reveal-card .college-line { flex-direction: column; gap: 0.35rem; }
+.reveal-card .college-line-label { flex: none; padding-top: 0; }
+.college-card-name { display: block; font-size: 1.0625rem; font-weight: 800; line-height: 1.35; color: #0f172a; }
+html.dark .college-card-name { color: #eef2ee; }
+
+/* "How to use each page" (navigate page, in the More info panel): one line per page */
+.howto-head { padding: 0.7rem 0.9rem; font-weight: 700; font-size: 0.9375rem; }
+.howto-head::-webkit-details-marker { display: none; }
+.howto-title { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.howto-body { padding: 0 0.9rem 0.9rem; font-size: 0.875rem; line-height: 1.55; }
+.howto-item[open] .howto-head { color: #2d3e29; }
+html.dark .howto-item[open] .howto-head { color: #d5e6c8; }
+
+/* Home page section numbers ("1 · Start here", "2 · Find your scholarship") */
+.home-step-num {
+  flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 9999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #222d1d; color: #fff; font-size: 0.9375rem; font-weight: 800;
+}
+html.dark .home-step-num { background: #4b6b3d; }
+/* "Why no results?" page: each reason has a quiet amber edge */
+#why-root .why-reason { border-inline-start: 4px solid #f59e0b; } /* id beats Tailwind border colours, which load later */

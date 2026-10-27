@@ -77,13 +77,13 @@ function renderSiteHeader() {
       </nav>
 
       <div class="flex items-center gap-2">
-        <button type="button" onclick="toggleTheme()" class="theme-toggle" title="Dark / light mode">
+        <button type="button" data-theme-toggle class="theme-toggle" title="Dark / light mode">
           <span class="theme-when-light" aria-hidden="true">${MOON_ICON}</span>
           <span class="theme-when-dark" aria-hidden="true">${SUN_ICON}</span>
           <span class="sr-only theme-when-light" data-i18n="theme_dark">Dark mode</span>
           <span class="sr-only theme-when-dark" data-i18n="theme_light">Light mode</span>
         </button>
-        <button type="button" onclick="toggleLanguage()" class="px-3 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 cursor-pointer" aria-label="Toggle language">
+        <button type="button" data-lang-toggle class="px-3 py-1.5 rounded bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition flex items-center gap-1.5 cursor-pointer" aria-label="Toggle language">
           ${LANG_ICON}
           <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
         </button>
@@ -110,6 +110,10 @@ function renderSiteHeader() {
       </form>
     </div>
   </header>`;
+
+  // Clicks are wired here, not with onclick="...", because the pages' security policy blocks inline code
+  document.querySelector("[data-theme-toggle]")?.addEventListener("click", toggleTheme);
+  document.querySelector("[data-lang-toggle]")?.addEventListener("click", () => toggleLanguage());
 
   // "/" jumps to the search box from anywhere (unless already typing somewhere)
   document.addEventListener("keydown", e => {

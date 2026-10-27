@@ -1,0 +1,6 @@
+/* Starting point for Tailwind. Do not link this file from a page.
+ * Tailwind turns it into assets/css/tailwind.css (the file the pages load).
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
