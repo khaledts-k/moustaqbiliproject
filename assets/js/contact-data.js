@@ -13,7 +13,7 @@
 const MOHE = "https://www.mohe.edu.kw/site/AR";
 
 const MOHE_CONTACTS = {
-  lastVerified: "2026-10-21",
+  lastVerified: "2026-10-29",
 
   groups: [
     {
@@ -64,6 +64,7 @@ const MOHE_CONTACTS = {
           nameAr: "البعثات",
           items: [
             { type: "email", labelEn: "New applicants: scholarship guidance", labelAr: "المتقدمون الجدد: الإرشاد في البعثات", value: "scholarship_guidance_eservice@mohe.edu.kw" },
+            { type: "email", labelEn: "Scholarship registration questions", labelAr: "استفسارات التسجيل في البعثات", value: "reg_support@mohe.edu.kw" },
             { type: "email", labelEn: "Scholarships to foreign countries", labelAr: "البعثات إلى الدول الأجنبية", value: "Foreign_scholarship_eservice@mohe.edu.kw" },
             { type: "email", labelEn: "Scholarships to Arab countries", labelAr: "البعثات إلى الدول العربية", value: "arabic_scholarship_eservice@mohe.edu.kw" },
             { type: "email", labelEn: "Student allowances (finance)", labelAr: "مخصصات الطلبة (الشؤون المالية)", value: "finance_eservice@mohe.edu.kw" }

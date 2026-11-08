@@ -16,11 +16,12 @@ const DECREE_197 = {
   url: "https://mesferlaw.com/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%8A-%D9%82%D8%B1%D8%A7%D8%B1-%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A/"
 };
 const PLAN_PAGE = { label: "Ministry: Plan 2026/2027 conditions", url: "https://www.mohe.edu.kw/site/ar/eServices/ServiceDetails/1?PageID=3" };
+const PLAN_GUIDE = { label: "Ministry: Plan 2026/2027 registration guide (PDF, pages 35-39)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" };
 const KU_FAQ = { label: "Kuwait University, Qudrat FAQ", url: "https://cem.ku.edu.kw/faqs" };
 const MOHE_FAQ = { label: "Ministry FAQ", url: "https://www.mohe.edu.kw/site/AR/FAQ?PageID=8" };
 
 const CLARIFICATIONS = {
-  lastVerified: "2026-10-12",
+  lastVerified: "2026-10-29",
 
   topics: [
     { id: "scholarships", labelEn: "Applying", labelAr: "التقديم" },
@@ -55,8 +56,8 @@ const CLARIFICATIONS = {
       id: "government-job", topic: "scholarships",
       questionEn: "Can I keep my government job and still get a scholarship?",
       questionAr: "هل يمكنني الاحتفاظ بوظيفتي الحكومية والحصول على بعثة؟",
-      answerEn: "No. You cannot apply if you work for a government body. While you study, you must study full-time. The Ministry may allow training linked to your major if it does not affect your studies.",
-      answerAr: "لا. لا يحق التقديم لمن يعمل في جهة حكومية، ويجب التفرغ الكامل للدراسة. وقد تسمح الوزارة بتدريب مرتبط بالتخصص إذا لم يؤثر على الدراسة.",
+      answerEn: "No. You cannot apply if you work for a government body. While you study, you must study full-time, though the Ministry may allow training linked to your major {{unconfirmed}}.",
+      answerAr: "لا. لا يحق التقديم لمن يعمل في جهة حكومية، ويجب التفرغ الكامل للدراسة، وقد تسمح الوزارة بتدريب مرتبط بالتخصص {{unconfirmed}}.",
       status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
     },
     {
@@ -125,8 +126,8 @@ const CLARIFICATIONS = {
       id: "merit-deadline-separate", topic: "merit",
       questionEn: "Registration closed in July. Did I miss the merit programme?",
       questionAr: "أُغلق التسجيل في يوليو، هل فاتني برنامج التميز؟",
-      answerEn: "No. Merit registration for 2026/2027 stays open until 24 February 2027. You need an offer from a university or programme on the merit list, and 95% for medicine, dentistry and pharmacy. For other majors the plan PDF says 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}.",
-      answerAr: "لا. التسجيل في برنامج التميز للعام 2026/2027 مفتوح حتى 24 فبراير 2027. تحتاج إلى قبول في جامعة أو برنامج من قائمة التميز، و95% للطب وطب الأسنان والصيدلة. ولبقية التخصصات تذكر خطة الوزارة (PDF) 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}.",
+      answerEn: "No. Merit registration for 2026/2027 stays open until 24 February 2027. You need an offer from a university or programme on the merit list, and 95% for medicine, dentistry and pharmacy. For other majors the Ministry's merit registration guide says 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}.",
+      answerAr: "لا. التسجيل في برنامج التميز للعام 2026/2027 مفتوح حتى 24 فبراير 2027. تحتاج إلى قبول في جامعة أو برنامج من قائمة التميز، و95% للطب وطب الأسنان والصيدلة. ولبقية التخصصات يذكر دليل التسجيل في برنامج التميز 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}.",
       status: "confirmed", sourceLabel: "Ministry announcement reported by Al-Rai", sourceUrl: "https://www.alraimedia.com/article/1769447"
     },
     {
@@ -177,9 +178,9 @@ const CLARIFICATIONS = {
       id: "sixty-day-deadline", topic: "after-acceptance",
       questionEn: "I got accepted. Is there a deadline to finish my paperwork?",
       questionAr: "قُبلت في البعثة، هل هناك مهلة لإكمال الإجراءات؟",
-      answerEn: "Yes. You have 60 days from the results to hand in your school certificate and sign the pledge (a signed promise that your guardian approves in the Sahel app). If you miss this, the scholarship is cancelled. It is also cancelled if you do not reach the required IELTS or TOEFL score within one year.",
-      answerAr: "نعم. لديك 60 يوماً من إعلان النتائج لتقديم شهادة الثانوية وتوقيع التعهد (يوافق عليه ولي الأمر عبر تطبيق سهل)، وإلا تُلغى البعثة. وتُلغى أيضاً إذا لم تحقق درجة IELTS أو TOEFL المطلوبة خلال سنة.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+      answerEn: "Yes. Within 60 days of the results you must go to the Ministry so it can match your original school certificate. If you miss this, the scholarship is cancelled. Your guardian approves the pledge (a written promise about your studies) in the Sahel app; merit students must have it approved within 60 days too. You then have one full calendar year from your acceptance to reach the IELTS or TOEFL score your university needs.",
+      answerAr: "نعم. خلال 60 يوماً من إعلان النتائج يجب أن تراجع الوزارة لمطابقة شهادة الثانوية الأصلية، وإلا تُلغى البعثة. ويصادق ولي الأمر على التعهد المالي والأكاديمي عبر تطبيق سهل، وعلى طلبة التميز المصادقة عليه خلال 60 يوماً أيضاً. ثم لديك عام ميلادي كامل من تاريخ قبولك لتحقيق درجة IELTS أو TOEFL التي تطلبها جامعتك.",
+      status: "confirmed", sourceLabel: PLAN_GUIDE.label, sourceUrl: PLAN_GUIDE.url
     },
     {
       id: "change-major-before-travel", topic: "after-acceptance",

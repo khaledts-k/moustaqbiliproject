@@ -150,6 +150,12 @@ function renderSiteFooter() {
       <div>
         <span class="text-white font-bold text-sm block">moustaqbili | مستقبلي</span>
         <span class="text-slate-400 text-xs block mt-1 max-w-sm" data-i18n="footer_desc">Independent student guide. Always confirm final decisions with the Ministry of Higher Education.</span>
+        <!-- Update schedule; the next date is filled in by app.js (initUpdateNote) -->
+        <p class="mt-3 inline-flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 rounded-lg bg-olive-900 border border-olive-800 text-slate-200 text-xs">
+          <svg class="w-3.5 h-3.5 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M12 7v5l3 2"/></svg>
+          <span data-i18n="footer_update_schedule">Updated every week on Thursday at 4:00 PM (Kuwait time).</span>
+          <span id="footer-next-update" class="text-amber-300 font-semibold"></span>
+        </p>
         <div class="mt-4 space-y-1.5 text-xs max-w-md">
           <span class="text-slate-300 font-semibold block" data-i18n="footer_flags_title">What the small labels next to some information mean:</span>
           <div><span class="flag flag-unconfirmed" data-i18n="flag_unconfirmed">Not confirmed</span> <span data-i18n="footer_flag_unconfirmed">The information next to this label (for example a date, amount or phone number) is not on any official website. Treat it as uncertain and check with the Ministry.</span></div>

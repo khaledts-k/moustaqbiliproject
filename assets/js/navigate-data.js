@@ -6,7 +6,7 @@
  */
 
 const NAVIGATE_GUIDE = {
-  lastVerified: "2026-10-27",
+  lastVerified: "2026-10-29",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -143,7 +143,7 @@ const NAVIGATE_GUIDE = {
           ]
         },
         { type: "links", items: [
-          { labelEn: "Ministry plan 2026/2027 (PDF)", labelAr: "خطة الوزارة 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" },
+          { labelEn: "Ministry plan 2026/2027 (PDF)", labelAr: "خطة الوزارة 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf" },
           { labelEn: "Search approved universities (NBAQ)", labelAr: "البحث في الجامعات المعتمدة", url: "https://nbaq.edu.kw/search/" }
         ] }
       ]

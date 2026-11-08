@@ -9,7 +9,7 @@
  * 3. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
  * 4. Merit university lists (NBAQ): UK Decree 16/2025, US Decree 15/2025, Ireland Decree 22/2025, Australia Decision 60/2025
  * 5. University and government pages (UCAS, UCAT, GOV.UK, Irish Immigration, US State Dept / ICE,
- *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-10-21
+ *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-10-29
  *
  * verifiedFields lists the details checked against those sources on 2026-10-13. Every other
  * detail shown in the "What you need" window carries a "Not checked yet" label.
@@ -168,7 +168,7 @@ const MOUSTAQBILI_PROGRAMS = [
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "RCSI (non-EU applicants): 1 November 2026 - 15 January 2027. Through CAO (the Irish application system): 1 February 2027, 5:00 pm.",
+      regularDecision: "RCSI (non-EU applicants): 1 November 2026 - 15 January 2027. Through CAO (the Irish application system): opens 5 November 2026 (12:00 noon), closes 1 February 2027, 5:00 pm.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
@@ -676,20 +676,20 @@ const MOUSTAQBILI_CURRENCIES = {
 };
 
 // Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
-// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-21.
-// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-21 (CBK does not publish them).
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-29.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-29 (CBK does not publish them).
 const MOUSTAQBILI_FX_FALLBACK = {
-  date: "2026-10-21",
+  date: "2026-10-29",
   rates: {
     KWD: 1,
-    USD: 3.2468, GBP: 2.4276, EUR: 2.8922, SAR: 12.1754, AED: 11.9253, BHD: 1.2210,
-    AUD: 4.6381, NZD: 5.6847, CAD: 4.5611, JOD: 2.2897, EGP: 175.4536
+    USD: 3.2441, GBP: 2.4354, EUR: 2.9110, SAR: 12.1655, AED: 11.9157, BHD: 1.2201,
+    AUD: 4.5958, NZD: 5.7300, CAD: 4.5401, JOD: 2.2856, EGP: 181.1562
   }
 };
 
 // Key rules of the Foreign Scholarship Plan 2026/2027 (shown on more-info.html)
 const MOHE_PLAN_2026 = {
-  planUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf",
+  planUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf",
   allowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3",
   meritAllowancesUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3",
   registrationUrl: "https://reg2.mohe.edu.kw/Account/Login",
@@ -703,17 +703,17 @@ const MOHE_PLAN_2026 = {
     "Age 16 - 23, with a secondary certificate from 2024/2025 or 2025/2026.",
     "English: IELTS Academic (not General) 5.5 overall and in every band, or TOEFL 47, taken in Kuwait. Accepted students then have one calendar year to reach their university's required score.",
     "Medicine, dentistry, veterinary, pharmacy and engineering applicants must sit the Kuwait University aptitude tests (Qudrat); an equivalent average is used.",
-    "United Kingdom: UKVI IELTS is required. For medicine and dentistry, failing the foundation year or the interview ends the placement, and the foundation year cannot be repeated. Other students may repeat it once.",
+    "United Kingdom: UKVI IELTS is required. For medicine, dentistry and pharmacy, the Ministry cannot provide a place if you fail the foundation year or the interview. In medicine and dentistry the foundation year cannot be repeated. Other students may be allowed to repeat it once {{unconfirmed}}.",
     "UK medicine: UCAT 1,650 or more, and IELTS 7.0 (no band below 6.5) for the foundation year.",
-    "Merit (excellence) programme: 95% for medicine, dentistry and pharmacy; for other majors the plan PDF says at least 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
+    "Merit (excellence) programme: 95% for medicine, dentistry and pharmacy; for other majors the Ministry's merit registration guide says at least 90%, but the Ministry's merit page only says \"the plan minimum\" {{unconfirmed}}. Merit students receive an extra 50% monthly allowance after the preparatory stage (Decree 197/2025, Art. 25). Merit status is lost if the GPA falls below 2.67 (below 60% in the UK system)."
   ],
   rulesAr: [
     "العمر من 16 إلى 23 سنة، وشهادة ثانوية من العام 2024/2025 أو 2025/2026.",
     "اللغة الإنجليزية: IELTS أكاديمي (وليس العام) 5.5 كمعدل عام وفي كل قسم، أو TOEFL بدرجة 47، يُجرى داخل الكويت. ويُمنح المقبول سنة ميلادية واحدة لتحقيق الدرجة المطلوبة من الجامعة.",
     "يجب على المتقدمين لتخصصات الطب وطب الأسنان والطب البيطري والصيدلة والهندسة أداء اختبارات القدرات بجامعة الكويت، ويُعتمد المعدل المكافئ.",
-    "المملكة المتحدة: يُشترط UKVI IELTS. في الطب وطب الأسنان يؤدي عدم اجتياز السنة التأسيسية أو المقابلة إلى إنهاء الإيفاد، ولا تجوز إعادة السنة التأسيسية. ويجوز لغيرهم إعادتها مرة واحدة.",
+    "المملكة المتحدة: يُشترط UKVI IELTS. في الطب وطب الأسنان والصيدلة يتعذر على الوزارة توفير قبول عند عدم اجتياز السنة التمهيدية أو المقابلة، ولا تجوز إعادة السنة التمهيدية في الطب وطب الأسنان. وقد يُسمح لغيرهم بإعادتها مرة واحدة {{unconfirmed}}.",
     "الطب في المملكة المتحدة: UCAT بدرجة 1,650 فأكثر، وIELTS 7.0 (ولا يقل أي قسم عن 6.5) للسنة التأسيسية.",
-    "برنامج التميز: 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات تذكر خطة الوزارة (PDF) 90% على الأقل، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
+    "برنامج التميز: 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات يذكر دليل التسجيل في برنامج التميز 90% على الأقل، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\" فقط {{unconfirmed}}. يحصل طلبة التميز على زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية (القرار 197/2025، المادة 25). وتسقط صفة التميز إذا قل المعدل عن 2.67 (أو عن 60% في النظام البريطاني)."
   ],
   // Minimum high-school % by country and major (Plan 2026/2027)
   floors: [
@@ -739,8 +739,8 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     campusLocationAr: "مدينة صباح السالم الجامعية - الشدادية",
     scholarshipFunding: "Free tuition for Kuwaiti students",
     scholarshipFundingAr: "دراسة مجانية للطلبة الكويتيين",
-    admissionSystem: "Kuwait University admission portal (portal.ku.edu.kw). General minimum: 70% science stream, 78% arts stream.",
-    admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي.",
+    admissionSystem: "Kuwait University admission portal (portal.ku.edu.kw). General minimum: 70% science stream, 78% arts stream. Second semester 2026/2027: apply online 16-23 December 2026 at portal.ku.edu.kw/admission; other categories apply in person 20-23 December.",
+    admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي. الفصل الثاني 2026/2027: التقديم إلكترونياً من 16 إلى 23 ديسمبر 2026 عبر portal.ku.edu.kw/admission، وتتقدم الفئات الأخرى حضورياً من 20 إلى 23 ديسمبر.",
     aptitudeExams: "Aptitude tests (Qudrat) in English, Math and Arabic, weighted by college.",
     aptitudeExamsAr: "اختبارات القدرات في الإنجليزي والرياضيات والعربي، بأوزان تختلف حسب الكلية.",
     floorLabelEn: "Lowest admitted, Fall 2026/27",

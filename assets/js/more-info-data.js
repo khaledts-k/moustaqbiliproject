@@ -9,7 +9,7 @@
  */
 
 const MORE_INFO = {
-  lastVerified: "2026-10-21",
+  lastVerified: "2026-10-29",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -143,14 +143,14 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Who can apply: 95% in high school for medicine, dentistry and pharmacy. For other majors the plan PDF says 90%, while the Ministry's merit page says \"the plan minimum\". {{unconfirmed}}",
+            "Who can apply: 95% in high school for medicine, dentistry and pharmacy. For other majors the Ministry's merit registration guide says 90%, while the Ministry's merit page says \"the plan minimum\". {{unconfirmed}}",
             "What you get: 50% more monthly allowance after the preparatory stage.",
             "Deadline for 2026/2027: 24 February 2027.",
             "The list of merit universities is kept by the National Bureau for Academic Accreditation. It was last changed in November 2025, when New Zealand and Australia lists were added.",
             "For the UK, the list comes from Ministerial Decree 16/2025. We found no newer decree."
           ],
           ar: [
-            "من يحق له التقديم: 95% في الثانوية للطب وطب الأسنان والصيدلة. ولبقية التخصصات تذكر خطة الوزارة (PDF) 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\". {{unconfirmed}}",
+            "من يحق له التقديم: 95% في الثانوية للطب وطب الأسنان والصيدلة. ولبقية التخصصات يذكر دليل التسجيل في برنامج التميز 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\". {{unconfirmed}}",
             "ما تحصل عليه: زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
             "آخر موعد للعام 2026/2027: 24 فبراير 2027.",
             "يحتفظ الجهاز الوطني للاعتماد الأكاديمي بقائمة جامعات التميز، وآخر تعديل عليها كان في نوفمبر 2025 بإضافة قوائم نيوزيلندا وأستراليا.",
@@ -192,7 +192,7 @@ const MORE_INFO = {
         {
           type: "cards",
           items: [
-            { titleEn: "UK, Kuwaiti public school", titleAr: "بريطانيا، مدرسة حكومية كويتية", bodyEn: "Usually a 1-year foundation year, then a 3-year degree. Medicine is longer. For medicine and dentistry it cannot be repeated. Other students may repeat it once.", bodyAr: "عادة سنة تأسيسية واحدة ثم 3 سنوات للبكالوريوس، والطب أطول. ولا تجوز إعادتها في الطب وطب الأسنان، ويجوز لغيرهم إعادتها مرة واحدة." },
+            { titleEn: "UK, Kuwaiti public school", titleAr: "بريطانيا، مدرسة حكومية كويتية", bodyEn: "Usually a 1-year foundation year, then a 3-year degree. Medicine is longer. For medicine and dentistry it cannot be repeated. Other students may be allowed to repeat it once {{unconfirmed}}.", bodyAr: "عادة سنة تأسيسية واحدة ثم 3 سنوات للبكالوريوس، والطب أطول. ولا تجوز إعادتها في الطب وطب الأسنان، وقد يُسمح لغيرهم بإعادتها مرة واحدة {{unconfirmed}}." },
             { titleEn: "UK, British system (A-Levels)", titleAr: "بريطانيا، النظام البريطاني (A-Levels)", bodyEn: "Students with good A-Level grades usually start the degree directly.", bodyAr: "الطلبة الحاصلون على درجات جيدة في A-Levels يبدأون الدراسة الجامعية مباشرة عادةً." },
             { titleEn: "United States", titleAr: "الولايات المتحدة", bodyEn: "A 4-year degree with no separate foundation year.", bodyAr: "بكالوريوس مدته 4 سنوات دون سنة تأسيسية منفصلة." },
             { titleEn: "Australia, medicine", titleAr: "أستراليا، الطب", bodyEn: "Usually a foundation year first. You must reach a set grade in it to move on to medicine.", bodyAr: "عادة سنة تأسيسية أولاً، ويجب تحقيق درجة محددة فيها للانتقال إلى الطب." }
@@ -257,8 +257,8 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Within 60 days of the results, hand in your school certificate and sign the pledge. Your guardian approves it in the Sahel app. If you miss this, the scholarship is cancelled.",
-            "Reach the English score your university asks for within one year, or the scholarship is cancelled.",
+            "Within 60 days of the results, take your original school certificate to the Ministry to be matched, or the scholarship is cancelled. Your guardian approves the financial and academic pledge in the Sahel app.",
+            "You have one full calendar year from your acceptance to reach the English score your university asks for, before you travel.",
             "Your monthly allowance starts when you arrive in your study country (at most two weeks before classes).",
             "You can change your major only once, and only after you start studying.",
             "You can move to another country only once, and only for set reasons (for example a refused visa).",
@@ -266,8 +266,8 @@ const MORE_INFO = {
             "Failing a year, missing classes or getting academic warnings reduces your allowance."
           ],
           ar: [
-            "خلال 60 يوماً من إعلان النتائج، قدّم شهادة الثانوية ووقّع التعهد، ويوافق عليه ولي الأمر عبر تطبيق سهل. وإن فاتتك المهلة تُلغى البعثة.",
-            "حقق درجة اللغة الإنجليزية التي تطلبها جامعتك خلال سنة واحدة، وإلا تُلغى البعثة.",
+            "خلال 60 يوماً من إعلان النتائج، راجع الوزارة لمطابقة شهادة الثانوية الأصلية، وإلا تُلغى البعثة. ويصادق ولي الأمر على التعهد المالي والأكاديمي عبر تطبيق سهل.",
+            "لديك عام ميلادي كامل من تاريخ قبولك لتحقيق درجة اللغة الإنجليزية التي تطلبها جامعتك، قبل سفرك إلى مقر البعثة.",
             "يبدأ المخصص الشهري عند وصولك إلى بلد الدراسة (وبحد أقصى أسبوعين قبل بدء الدراسة).",
             "يمكنك تغيير التخصص مرة واحدة فقط، وبعد بدء الدراسة.",
             "يمكنك نقل البعثة إلى دولة أخرى مرة واحدة فقط، ولأسباب محددة (مثل رفض التأشيرة).",
@@ -291,7 +291,7 @@ const MORE_INFO = {
           type: "links",
           items: [
             { labelEn: "Ministry of Higher Education", labelAr: "وزارة التعليم العالي", url: "https://www.mohe.edu.kw/site/" },
-            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" },
+            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf" },
             { labelEn: "Monthly allowance tables", labelAr: "جداول المخصصات الشهرية", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3" },
             { labelEn: "Merit allowance tables", labelAr: "جداول مخصصات التميز", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3" },
             { labelEn: "Scholarship registration portal", labelAr: "بوابة التسجيل في البعثات", url: "https://reg2.mohe.edu.kw/Account/Login" },

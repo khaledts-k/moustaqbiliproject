@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "search.html") initSearchPage();
   if (page === "why.html") initWhyPage();
   initWhyLinks();
+  initUpdateNote();
   initPageSidebar();
   revealHashTarget();
 });
@@ -1368,9 +1369,13 @@ function nbaqMajorFor(majorId, country) {
   return country === "United Kingdom" ? (window.NBAQ_UK?.[majorId] || null) : null;
 }
 
-// Degree-level letters ("BMP" -> B M D tags)
+// Degree-level letters ("BMP" -> B M D tags). Hovering, tapping or tabbing to a letter
+// shows its full name (data-tip, drawn by styles.css); screen readers read the name.
 function nbaqLevelsHtml(levels) {
-  return `<span class="nbaq-levels">${[...levels].map(l => `<span class="nbaq-level">${t(`nbaq_level_${l}`)}</span>`).join("")}</span>`;
+  return `<span class="nbaq-levels">${[...levels].map(l => {
+    const name = t(`nbaq_level_${l}_name`);
+    return `<span class="nbaq-level" tabindex="0" role="img" aria-label="${name}" data-tip="${name}">${t(`nbaq_level_${l}`)}</span>`;
+  }).join("")}</span>`;
 }
 
 // Universities approved for one major: merit ones first, the rest folded away
@@ -3351,4 +3356,28 @@ function renderWhyPage() {
       <p class="text-sm text-slate-600 mt-1">${t('why_stuck_desc')}</p>
       <a href="ask.html" class="inline-block mt-3 text-sm font-bold text-olive-900 underline">${t('nav_ask')}</a>
     </section>`;
+}
+
+// =========================================================================
+// 15. Footer update note: "Next update: <date>" (every Thursday, 4:00 PM Kuwait time)
+// =========================================================================
+const UPDATE_WEEKDAY = 4;   // Thursday (Sunday = 0)
+const UPDATE_HOUR_KW = 16;  // 4:00 PM in Kuwait
+
+// The next update as an ISO date (yyyy-mm-dd) in Kuwait. Kuwait is UTC+3 all year.
+function nextUpdateDate(now = new Date()) {
+  const kw = new Date(now.getTime() + 3 * 3600 * 1000); // Kuwait clock, read with the UTC getters
+  let days = (UPDATE_WEEKDAY - kw.getUTCDay() + 7) % 7;
+  if (days === 0 && kw.getUTCHours() >= UPDATE_HOUR_KW) days = 7; // today's update has passed
+  const next = new Date(Date.UTC(kw.getUTCFullYear(), kw.getUTCMonth(), kw.getUTCDate() + days));
+  return next.toISOString().slice(0, 10);
+}
+
+function initUpdateNote() {
+  const show = () => {
+    const el = document.getElementById("footer-next-update");
+    if (el) el.textContent = t('footer_next_update').replace("{date}", formatDate(nextUpdateDate()));
+  };
+  show();
+  window.addEventListener("languageChanged", show);
 }

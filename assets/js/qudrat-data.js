@@ -9,7 +9,7 @@
  */
 
 const KUWAIT_QUDRAT = {
-  lastVerified: "2026-10-21",
+  lastVerified: "2026-10-29",
 
   currentCycle: {
     nameEn: "Academic Aptitude Tests - First Opportunity 2026/2027",
@@ -181,9 +181,9 @@ const KUWAIT_QUDRAT = {
   // "Good to know" cards: a short answer on the front, details behind it
   goodToKnow: [
     { id: "prep", questionEn: "Are there prep courses?", questionAr: "هل توجد دورات تقوية؟",
-      answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Math rounds from 22 October, 50 KWD", subAr: "دورات الرياضيات من 22 أكتوبر، 50 د.ك",
-      detailsEn: ["Math (15 hours, in Arabic or English), pick one round: 22-26 October, 5-9 November or 19-23 November 2026. Thursday, Saturday, Sunday and Monday, 5:00 - 9:00 pm (8:00 pm on the last day).", "English: the 11 - 15 October course has finished.", "The fee is not refundable. Register by WhatsApp on 24983724."],
-      detailsAr: ["الرياضيات (15 ساعة بالعربية أو الإنجليزية)، اختر دورة واحدة: 22-26 أكتوبر أو 5-9 نوفمبر أو 19-23 نوفمبر 2026، أيام الخميس والسبت والأحد والاثنين من 5:00 إلى 9:00 مساءً (حتى 8:00 في اليوم الأخير).", "الإنجليزي: انتهت دورة 11 - 15 أكتوبر.", "الرسوم غير مستردة، والتسجيل عبر واتساب على الرقم 24983724."] },
+      answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Next Math round: 5 November, 50 KWD", subAr: "دورة الرياضيات القادمة: 5 نوفمبر، 50 د.ك",
+      detailsEn: ["Math (15 hours, in Arabic or English): the rounds left are 5-9 November and 19-23 November 2026 (the 22-26 October round has finished). Thursday, Saturday, Sunday and Monday, 5:00 - 9:00 pm (8:00 pm on the last day).", "English: the 11 - 15 October course has finished.", "The fee is not refundable. Register by WhatsApp on 24983724."],
+      detailsAr: ["الرياضيات (15 ساعة بالعربية أو الإنجليزية): الدورات المتبقية 5-9 نوفمبر و19-23 نوفمبر 2026 (انتهت دورة 22-26 أكتوبر)، أيام الخميس والسبت والأحد والاثنين من 5:00 إلى 9:00 مساءً (حتى 8:00 في اليوم الأخير).", "الإنجليزي: انتهت دورة 11 - 15 أكتوبر.", "الرسوم غير مستردة، والتسجيل عبر واتساب على الرقم 24983724."] },
     { id: "ielts", questionEn: "Can IELTS replace the English test?", questionAr: "هل يغني IELTS عن اختبار الإنجليزي؟",
       answerEn: "Yes", answerAr: "نعم", subEn: "KU converts your IELTS score", subAr: "تعادل الجامعة درجة IELTS",
       detailsEn: ["IELTS 6.5 = 81%", "IELTS 7.0 = 89%", "IELTS 8.0 or more = 100%", "From KU's conversion table."],

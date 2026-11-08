@@ -11,7 +11,7 @@
  */
 
 const APPLY_STEPS = {
-  lastVerified: "2026-10-21",
+  lastVerified: "2026-10-29",
 
   steps: [
     {
@@ -56,7 +56,7 @@ const APPLY_STEPS = {
       summaryAr: "خلال فترة التسجيل فقط (في 2026: من 14 يونيو إلى 7 يوليو).",
       points: [
         { en: "Log in to the registration portal with Hawyti.", ar: "سجّل الدخول إلى بوابة التسجيل عبر هويتي." },
-        { en: "Enter your details and upload your documents, such as your original IELTS or TOEFL result and, if needed, your equivalency letter. Check the full list on the Ministry's plan page.", ar: "أدخل بياناتك وارفع مستنداتك، مثل نتيجة IELTS أو TOEFL الأصلية وكتاب المعادلة عند الحاجة. راجع القائمة الكاملة في صفحة الخطة لدى الوزارة.", flag: "unconfirmed" },
+        { en: "Enter your details and upload: your final school transcript (all secondary years), an equivalency letter from Private Education (foreign schools only), your Qudrat and Tahsili certificates (Saudi certificate only), your and your guardian's civil IDs, your passport data page, and your original IELTS or TOEFL result if you have one.", ar: "أدخل بياناتك وارفع: كشف درجات الثانوية النهائي لجميع صفوف المرحلة الثانوية، وإفادة المعادلة من إدارة التعليم الخاص (للثانويات الأجنبية)، وشهادتي القدرات والتحصيلي (للثانوية السعودية)، والبطاقة المدنية لك ولولي الأمر، وصفحة البيانات في جواز السفر، ونتيجة IELTS أو TOEFL الأصلية إن وجدت." },
         { en: "Registering on the first day gives no advantage. What counts is meeting the conditions, correct details and complete documents.", ar: "التسجيل في أول يوم لا يعطيك أفضلية، فالمهم استيفاء الشروط وصحة البيانات واكتمال المستندات." },
         { en: "The next registration window has not been announced yet. It usually opens in June.", ar: "لم يُعلن عن فترة التسجيل القادمة بعد، وعادة تبدأ في يونيو.", flag: "unconfirmed" }
       ],
@@ -82,11 +82,11 @@ const APPLY_STEPS = {
       id: "paperwork",
       titleEn: "Finish your paperwork within 60 days",
       titleAr: "أكمل أوراقك خلال 60 يوماً",
-      summaryEn: "Certificate and pledge, or the scholarship is cancelled.",
-      summaryAr: "الشهادة والتعهد، وإلا تُلغى البعثة.",
+      summaryEn: "Match your original certificate at the Ministry, or the scholarship is cancelled.",
+      summaryAr: "طابق شهادتك الأصلية في الوزارة، وإلا تُلغى البعثة.",
       points: [
-        { en: "Hand in your high school certificate.", ar: "سلّم شهادة الثانوية." },
-        { en: "Sign the pledge (a written promise about your studies). Your guardian approves it in the Sahel app.", ar: "وقّع التعهد (التزام مكتوب بشأن دراستك)، ويوافق عليه ولي الأمر عبر تطبيق سهل." },
+        { en: "Take your original high school certificate to the Ministry to be matched.", ar: "راجع الوزارة لمطابقة شهادة الثانوية الأصلية." },
+        { en: "Your guardian approves the financial and academic pledge (a written promise about your studies) and your medical form in the Sahel app. No visit is needed for these.", ar: "يصادق ولي الأمر على التعهد المالي والأكاديمي (التزام مكتوب بشأن دراستك) ونموذج الفحص الطبي عبر تطبيق سهل، دون الحاجة لمراجعة الوزارة." },
         { en: "If you miss the 60 days, the scholarship is cancelled.", ar: "إذا فاتتك مهلة الـ60 يوماً تُلغى البعثة." }
       ],
       links: [
@@ -104,7 +104,7 @@ const APPLY_STEPS = {
         { en: "The cultural office gives you the financial guarantee letter for your visa.", ar: "يعطيك المكتب الثقافي الكتاب المالي لاستخدامه في التأشيرة." },
         { en: "Apply for your student visa.", ar: "قدّم على تأشيرة الدراسة." },
         { en: "Your monthly allowance starts when you arrive in your country of study.", ar: "يبدأ مخصصك الشهري عند وصولك إلى بلد الدراسة." },
-        { en: "Reach the English score your university asks for within one year, or the scholarship is cancelled.", ar: "حقق درجة اللغة الإنجليزية التي تطلبها جامعتك خلال سنة واحدة، وإلا تُلغى البعثة." }
+        { en: "You have one full calendar year from your acceptance to reach the English score your university asks for, before you travel.", ar: "لديك عام ميلادي كامل من تاريخ قبولك لتحقيق درجة اللغة الإنجليزية التي تطلبها جامعتك، قبل سفرك إلى مقر البعثة." }
       ],
       links: [
         { labelEn: "Student visas", labelAr: "تأشيرات الدراسة", url: "more-info.html#visa" },
@@ -113,8 +113,8 @@ const APPLY_STEPS = {
     }
   ],
 
-  meritNoteEn: "Merit programme: you can still apply until 24 February 2027 if you get an offer from a university on the merit list. You need 95% for medicine, dentistry and pharmacy; for other majors the plan PDF says 90% but the Ministry's merit page says \"the plan minimum\", so check with the Ministry.",
-  meritNoteAr: "برنامج التميز: يمكنك التقديم حتى 24 فبراير 2027 إذا حصلت على قبول في جامعة من قائمة التميز. تحتاج 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات تذكر خطة الوزارة (PDF) 90% بينما تذكر صفحة التميز \"الحد الأدنى للخطة\"، فتأكد من الوزارة."
+  meritNoteEn: "Merit programme: you can still apply until 24 February 2027 if you get an offer from a university on the merit list. You need 95% for medicine, dentistry and pharmacy; for other majors the Ministry's merit registration guide says 90% but the Ministry's merit page says \"the plan minimum\", so check with the Ministry.",
+  meritNoteAr: "برنامج التميز: يمكنك التقديم حتى 24 فبراير 2027 إذا حصلت على قبول في جامعة من قائمة التميز. تحتاج 95% للطب وطب الأسنان والصيدلة؛ ولبقية التخصصات يذكر دليل التسجيل في برنامج التميز 90% بينما تذكر صفحة التميز \"الحد الأدنى للخطة\"، فتأكد من الوزارة."
 };
 
 if (typeof window !== 'undefined') {
