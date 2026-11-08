@@ -14,23 +14,25 @@ const SITE_CONFIG = {
   askEmail: "meshoabul@gmail.com"
 };
 
+// The top menu: the search (home page) and the More info page
 const SITE_NAV = [
-  { href: "index.html", key: "nav_home", label: "Home" },
+  { href: "index.html", key: "nav_home", label: "Search" },
+  { href: "navigate.html", key: "nav_navigate", label: "More info" }
+];
+
+// Every other page: listed in the "More info" side panel on every page, and in the footer
+const SITE_PAGES = [
   { href: "results.html", key: "nav_courses", label: "Scholarships" },
   { href: "qudrat.html", key: "nav_qudrat", label: "Qudrat Tests" },
   { href: "local-universities.html", key: "nav_local", label: "Study in Kuwait" },
   { href: "suggestions.html", key: "nav_guide", label: "How to Apply" },
   { href: "clarifications.html", key: "nav_questions", label: "Questions" },
-  { href: "more-info.html", key: "nav_more", label: "More Info" },
-  { href: "contact.html", key: "nav_contact", label: "Contact" }
-];
-
-// Footer-only links
-const FOOTER_EXTRA = [
-  { href: "navigate.html", key: "nav_navigate", label: "How this site works" },
+  { href: "more-info.html", key: "nav_more", label: "Rules, money & visas" },
+  { href: "contact.html", key: "nav_contact", label: "Contact" },
   { href: "ask.html", key: "nav_ask", label: "Ask Us" },
   { href: "about.html", key: "nav_about", label: "About" }
 ];
+const FOOTER_EXTRA = SITE_PAGES; // older name, still read by the site search
 
 const LANG_ICON = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>`;
 
@@ -47,14 +49,14 @@ function renderSiteHeader() {
   if (!slot) return;
   const page = currentPageFile();
   // On the search page the header box keeps what the student searched for
-  const query = page === "search.html" ? (new URLSearchParams(window.location.search).get("q") || "") : "";
+  const query = (page === "index.html" || page === "search.html") ? (new URLSearchParams(window.location.search).get("q") || "") : "";
 
   const desktopLinks = SITE_NAV.map(item => {
     const active = item.href === page;
     return `<a href="${item.href}" class="py-2 transition ${active ? 'text-white font-bold border-b-2 border-amber-400' : 'text-slate-300 hover:text-white'}" ${active ? 'aria-current="page"' : ''} data-i18n="${item.key}">${item.label}</a>`;
   }).join("");
 
-  const mobileLinks = SITE_NAV.map(item => {
+  const mobileLinks = SITE_NAV.concat(SITE_PAGES).map(item => {
     const active = item.href === page;
     return `<a href="${item.href}" class="block px-3 py-2 rounded ${active ? 'text-white bg-olive-800' : 'text-slate-300 hover:text-white'}" data-i18n="${item.key}">${item.label}</a>`;
   }).join("");
@@ -72,7 +74,7 @@ function renderSiteHeader() {
         </div>
       </a>
 
-      <nav class="hidden xl:flex items-center gap-4 text-xs font-semibold" aria-label="Main">
+      <nav class="hidden sm:flex items-center gap-5 text-sm font-semibold" aria-label="Main">
         ${desktopLinks}
       </nav>
 
@@ -87,18 +89,18 @@ function renderSiteHeader() {
           ${LANG_ICON}
           <span id="lang-toggle-text" data-i18n="btn_lang_toggle">العربية</span>
         </button>
-        <button id="mobile-menu-btn" type="button" class="xl:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800" aria-label="Toggle navigation" aria-expanded="false">
+        <button id="mobile-menu-btn" type="button" class="sm:hidden p-2 rounded text-slate-300 hover:text-white hover:bg-olive-800" aria-label="Toggle navigation" aria-expanded="false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
 
-    <div id="mobile-menu" class="hidden xl:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
+    <div id="mobile-menu" class="hidden sm:hidden bg-olive-950 border-b border-olive-900 px-4 pt-2 pb-4 space-y-1 text-sm font-semibold">
       ${mobileLinks}
     </div>
 
     <div class="site-search-bar">
-      <form action="search.html" method="get" role="search" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center gap-2">
+      <form action="index.html" method="get" role="search" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center gap-2">
         <label for="site-search-input" class="sr-only" data-i18n="site_search_label">Search the site</label>
         <div class="relative flex-1 min-w-0">
           <span class="site-search-icon" aria-hidden="true">${SEARCH_ICON}</span>
@@ -140,7 +142,7 @@ function renderSiteFooter() {
   const slot = document.getElementById("site-footer");
   if (!slot) return;
 
-  const links = SITE_NAV.concat(FOOTER_EXTRA)
+  const links = SITE_NAV.concat(SITE_PAGES)
     .map(item => `<a href="${item.href}" class="hover:text-white transition" data-i18n="${item.key}">${item.label}</a>`)
     .join("");
 

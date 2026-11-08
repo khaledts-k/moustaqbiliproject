@@ -6,7 +6,7 @@
  */
 
 const NAVIGATE_GUIDE = {
-  lastVerified: "2026-10-29",
+  lastVerified: "2026-11-08",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -38,13 +38,13 @@ const NAVIGATE_GUIDE = {
         {
           type: "cards",
           items: [
-            { titleEn: "Home", titleAr: "الرئيسية", url: "index.html", bodyEn: "Search scholarships by country, high school % and major. Convert an American GPA into a %.", bodyAr: "ابحث في البعثات حسب الدولة ونسبة الثانوية والتخصص، وحوّل المعدل الأمريكي إلى نسبة." },
+            { titleEn: "Search (home page)", titleAr: "البحث (الصفحة الرئيسية)", url: "index.html", bodyEn: "Ask anything about scholarships, Qudrat, universities in Kuwait or the Ministry. A quick answer comes first, then the matching pages. Filters (country, %, level, major) and a GPA converter are one click away.", bodyAr: "اسأل عن أي شيء يخص البعثات أو القدرات أو الجامعات في الكويت أو الوزارة. تظهر إجابة سريعة أولاً ثم الصفحات المطابقة، والفلاتر (الدولة والنسبة والمرحلة والتخصص) وتحويل المعدل على بعد ضغطة." },
             { titleEn: "Scholarships", titleAr: "البعثات", url: "results.html", bodyEn: "Your search results: each program's lowest % accepted, monthly money, requirements and a currency calculator.", bodyAr: "نتائج بحثك: أقل نسبة مقبولة لكل برنامج، والمبلغ الشهري، والشروط، وحاسبة العملات." },
             { titleEn: "Qudrat Tests", titleAr: "اختبارات القدرات", url: "qudrat.html", bodyEn: "Kuwait University test dates, how to register, and a calculator for your equivalent %.", bodyAr: "مواعيد اختبارات جامعة الكويت، وطريقة التسجيل، وحاسبة المعدل المكافئ." },
             { titleEn: "Study in Kuwait", titleAr: "الدراسة في الكويت", url: "local-universities.html", bodyEn: "Kuwait University, Abdullah Al-Salem University and private-university scholarships: lowest grades accepted and how scores are counted.", bodyAr: "جامعة الكويت وجامعة عبد الله السالم وبعثات الجامعات الخاصة: أقل النسب المقبولة وطريقة احتساب الدرجات." },
             { titleEn: "How to Apply", titleAr: "طريقة التقديم", url: "suggestions.html", bodyEn: "A step-by-step checklist for the Ministry scholarship, plus the websites for applying to universities.", bodyAr: "قائمة خطوات للتقديم على بعثة الوزارة، ومواقع التقديم على الجامعات." },
             { titleEn: "Questions", titleAr: "الأسئلة", url: "clarifications.html", bodyEn: "Common mix-ups, answered with official sources.", bodyAr: "أخطاء شائعة مع إجابات من مصادر رسمية." },
-            { titleEn: "More Info", titleAr: "معلومات أكثر", url: "more-info.html", bodyEn: "Key words, the 2026/2027 rules, money by country, visas and what happens after you are accepted.", bodyAr: "الكلمات المهمة، وشروط 2026/2027، والمخصصات حسب الدولة، والتأشيرات، وما بعد القبول." },
+            { titleEn: "Rules, money & visas", titleAr: "الشروط والمبالغ والتأشيرات", url: "more-info.html", bodyEn: "Key words, the 2026/2027 rules, money by country, visas and what happens after you are accepted.", bodyAr: "الكلمات المهمة، وشروط 2026/2027، والمخصصات حسب الدولة، والتأشيرات، وما بعد القبول." },
             { titleEn: "Contact and Ask Us", titleAr: "التواصل واسألنا", url: "contact.html", bodyEn: "The Ministry's official emails and offices abroad, and a form to send us your own question.", bodyAr: "البريد الرسمي للوزارة ومكاتبها في الخارج، ونموذج لإرسال سؤالك إلينا." }
           ]
         }
@@ -63,9 +63,9 @@ const NAVIGATE_GUIDE = {
         {
           type: "howto",
           items: [
-            { titleEn: "Home", titleAr: "الرئيسية", url: "index.html",
-              stepsEn: ["Pick a country, your grade 12 % range, your level of education and a major. One choice is enough.", "Press \"Show programs\" to see your results.", "Studied in an American school? Open \"More info\" on the side, then \"Turn a GPA into a %\" and \"Use this % in the search\".", "New here? Watch \"How to use Moustaqbili\" under the search."],
-              stepsAr: ["اختر الدولة، ونطاق نسبتك في الصف الثاني عشر، والمرحلة الدراسية، والتخصص. يكفي اختيار واحد.", "اضغط \"اعرض البرامج\" لترى نتائجك.", "درست في مدرسة أمريكية؟ افتح \"معلومات إضافية\" على الجانب، ثم \"حوّل المعدل إلى نسبة\" و\"استخدم هذه النسبة في البحث\".", "جديد هنا؟ شاهد \"طريقة استخدام مستقبلي\" تحت البحث."] },
+            { titleEn: "Search (home page)", titleAr: "البحث (الصفحة الرئيسية)", url: "index.html",
+              stepsEn: ["Type a question or a few words in the big search bar, in English or Arabic.", "Read the quick answer at the top, then open the result that fits.", "Prefer filters? Open \"Prefer filters?\" under the search to choose a country, your %, level and major. The GPA converter is there too.", "Every other page is in the \"More info\" panel on the side."],
+              stepsAr: ["اكتب سؤالاً أو بضع كلمات في شريط البحث الكبير، بالعربية أو الإنجليزية.", "اقرأ الإجابة السريعة في الأعلى، ثم افتح النتيجة المناسبة.", "تفضّل الفلاتر؟ افتح \"تفضّل الفلاتر؟\" تحت البحث لاختيار الدولة ونسبتك والمرحلة والتخصص، وستجد تحويل المعدل هناك أيضاً.", "كل الصفحات الأخرى موجودة في لوحة \"معلومات إضافية\" على الجانب."] },
             { titleEn: "Scholarships", titleAr: "البعثات", url: "results.html",
               stepsEn: ["\"Step by step\" takes you through major, country, what you need, then the money. \"All programs\" shows everything as cards.", "The % shown is the lowest the plan accepts. A higher % gives you a better chance.", "Change your choices with the boxes at the top, or press \"Only merit universities\".", "On a program card, press \"Money & calculator\" to see the monthly money in any currency."],
               stepsAr: ["\"خطوة بخطوة\" تأخذك من التخصص إلى الدولة، ثم ما تحتاجه، ثم المبلغ. \"كل البرامج\" تعرض كل شيء كبطاقات.", "النسبة المعروضة هي أقل نسبة تقبلها الخطة، والنسبة الأعلى تعطيك فرصة أفضل.", "غيّر اختياراتك من المربعات في الأعلى، أو اضغط \"جامعات التميز فقط\".", "في بطاقة البرنامج اضغط \"المبلغ والحاسبة\" لترى المبلغ الشهري بأي عملة."] },
@@ -81,7 +81,7 @@ const NAVIGATE_GUIDE = {
             { titleEn: "Questions", titleAr: "الأسئلة", url: "clarifications.html",
               stepsEn: ["Pick a topic at the top, or leave it on \"All\".", "Tap a question to open its answer. Each answer says where it comes from."],
               stepsAr: ["اختر موضوعاً في الأعلى، أو اتركه على \"الكل\".", "اضغط على السؤال لفتح إجابته، وكل إجابة توضح مصدرها."] },
-            { titleEn: "More Info", titleAr: "معلومات أكثر", url: "more-info.html",
+            { titleEn: "Rules, money & visas", titleAr: "الشروط والمبالغ والتأشيرات", url: "more-info.html",
               stepsEn: ["Use the list on the side of the page to jump to a topic.", "Money: one card per country. Tap a card for the merit amount.", "Key words, certificates and official links are in the \"More info\" panel."],
               stepsAr: ["استخدم القائمة على جانب الصفحة للانتقال إلى أي موضوع.", "المبلغ: بطاقة لكل دولة. اضغط على البطاقة لترى مبلغ التميز.", "الكلمات المهمة والشهادات والروابط الرسمية موجودة في لوحة \"معلومات إضافية\"."] },
             { titleEn: "Contact and Ask Us", titleAr: "التواصل واسألنا", url: "contact.html",

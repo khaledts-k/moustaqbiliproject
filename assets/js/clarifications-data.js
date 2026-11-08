@@ -21,7 +21,7 @@ const KU_FAQ = { label: "Kuwait University, Qudrat FAQ", url: "https://cem.ku.ed
 const MOHE_FAQ = { label: "Ministry FAQ", url: "https://www.mohe.edu.kw/site/AR/FAQ?PageID=8" };
 
 const CLARIFICATIONS = {
-  lastVerified: "2026-10-29",
+  lastVerified: "2026-11-08",
 
   topics: [
     { id: "scholarships", labelEn: "Applying", labelAr: "التقديم" },

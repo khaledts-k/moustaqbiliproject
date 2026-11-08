@@ -12,16 +12,18 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // The search page moved to the home page: keep old links (search.html?q=...) working
+  if (currentPageFile() === "search.html") { location.replace(`index.html${location.search}${location.hash}`); return; }
   initCommonNav();
   loadLiveRates();
 
   const page = currentPageFile();
   if (page === "index.html") {
-    initLandingSearch();
-    initSearchGuideVideo();
+    initSearchPage();          // the home page is the search engine
+    initLandingSearch();       // the folded-away filters
     initGpaCalculator();
-    renderQudratHomeBanner();
   }
+  if (page === "navigate.html") initSearchGuideVideo(); // "Start here" lives on the More info page
   if (page === "results.html") initResultsPage();
   if (page === "local-universities.html") initLocalUniversitiesPage();
   if (page === "qudrat.html") initQudratPage();
@@ -31,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "ask.html") initAskPage();
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
-  if (page === "search.html") initSearchPage();
   if (page === "why.html") initWhyPage();
   initWhyLinks();
   initUpdateNote();
@@ -124,6 +125,41 @@ function revealCard({ question, answer, sub = "", tag = "", backTitle = "", back
       </div>
     </div>
   </div>`;
+}
+
+// Official documents a card's "Official source" link opens (`source` keys in the data files).
+// The Ministry's own PDFs where it is the source; otherwise the body that publishes the rule.
+const OFFICIAL = {
+  mohe_guide: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf", en: "Ministry: plan registration guide (PDF)", ar: "الوزارة: إرشادات التسجيل في خطة البعثات (PDF)" },
+  mohe_majors: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf", en: "Ministry: majors in the 2026/2027 plan (PDF)", ar: "الوزارة: تخصصات خطة 2026/2027 (PDF)" },
+  mohe_merit_guide: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/20266149415.pdf", en: "Ministry: merit registration guide (PDF)", ar: "الوزارة: دليل التسجيل في برنامج التميز (PDF)" },
+  mohe_allowances: { url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3", en: "Ministry: plan and allowance tables", ar: "الوزارة: الخطة وجداول المخصصات" },
+  mohe_merit: { url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3", en: "Ministry: merit programme and allowances", ar: "الوزارة: برنامج التميز ومخصصاته" },
+  decree197: { url: "https://mesferlaw.com/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%8A-%D9%82%D8%B1%D8%A7%D8%B1-%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A/", en: "Decree 197/2025 (no official copy online; copy on mesferlaw.com)", ar: "القرار 197/2025 (لا توجد نسخة رسمية على الإنترنت؛ نسخة على mesferlaw.com)" },
+  nbaq_search: { url: "https://nbaq.edu.kw/search/", en: "NBAQ: approved universities", ar: "الجهاز الوطني للاعتماد: الجامعات المعتمدة" },
+  nbaq_merit: { url: "https://nbaq.edu.kw/website/merits", en: "NBAQ: merit university lists", ar: "الجهاز الوطني للاعتماد: قوائم جامعات التميز" },
+  ku_dates: { url: "https://cem.ku.edu.kw/ar/at", en: "Kuwait University: Qudrat test dates", ar: "جامعة الكويت: مواعيد اختبارات القدرات" },
+  ku_guide: { url: "https://www.ku.edu.kw/sites/default/files/2026-09/2026APTE.pdf", en: "Kuwait University: Qudrat student guide 2026 (PDF)", ar: "جامعة الكويت: دليل الطالب لاختبارات القدرات 2026 (PDF)" },
+  ku_faq: { url: "https://cem.ku.edu.kw/faqs", en: "Kuwait University: Qudrat questions and answers", ar: "جامعة الكويت: أسئلة وأجوبة اختبارات القدرات" },
+  ku_portal: { url: "https://portal.ku.edu.kw/placement", en: "Kuwait University: Qudrat registration portal", ar: "جامعة الكويت: بوابة التسجيل في القدرات" },
+  ku_colleges: { url: "https://www.ku.edu.kw/sites/default/files/2026-06/ku_colleges_rules%20%D8%A7%D9%86%D8%AC%D9%84%D9%8A%D8%B2%D9%8A.pdf", en: "Kuwait University: required tests by college (PDF)", ar: "جامعة الكويت: الاختبارات المطلوبة لكل كلية (PDF)" },
+  ku_ielts: { url: "https://www.ku.edu.kw/sites/default/files/2025-06/english-ielts.pdf", en: "Kuwait University: IELTS conversion table (PDF)", ar: "جامعة الكويت: جدول معادلة IELTS (PDF)" },
+  ku_prep: { url: "https://www.ku.edu.kw/ar/media-center/announcements/jamt-alkwyt-tln-n-qd-dwrat-altqwyt-lakhtbarat-alqdrat-alfrst-alawly", en: "Kuwait University: prep course announcement", ar: "جامعة الكويت: إعلان دورات التقوية" },
+  ku_admission: { url: "https://www.ku.edu.kw/ar/media-center/news/jamt-alkwyt-tln-mwayd-tqdym-tlbat-alalthaq-llfsl-aldrasy-althany-2026-2027", en: "Kuwait University: admission announcement", ar: "جامعة الكويت: إعلان القبول" },
+  aasu: { url: "https://aasu.edu.kw/pages/undergraduate-admissions", en: "AASU: undergraduate admissions", ar: "جامعة عبد الله السالم: القبول للبكالوريوس" },
+  puc: { url: "https://www.puc.edu.kw", en: "Private Universities Council", ar: "مجلس الجامعات الخاصة" }
+};
+
+// "Official source: <document> ↗" under a card's main fact
+function officialLink(key) {
+  const o = OFFICIAL[key];
+  if (!o) return "";
+  return `<a href="${o.url}" target="_blank" rel="noopener noreferrer" class="reveal-source">${t('reveal_source')}: ${isArabic() ? o.ar : o.en} ${ICON_EXTERNAL}</a>`;
+}
+
+// The back of a card: one main fact, then the official link
+function factBack(text, source) {
+  return `<p class="reveal-fact">${withFlags(text)}</p>${officialLink(source)}`;
 }
 
 // Detail lines for the back of a card
@@ -1340,8 +1376,14 @@ function extrasCard(baseProg) {
     sub: t('salary_extras_n').replace("{n}", n),
     tag: n > (baseProg.verifiedAllowances ?? 1) ? flag('unverified') : "", // some lines are not checked yet
     backTitle: t('modal_allowances_heading'),
-    back: `<div class="grid grid-cols-1 gap-2">${allowanceItemsHtml(baseProg)}</div>`
+    back: factBack(extraAllowancesLine(baseProg), "mohe_allowances")
   });
+}
+
+// The main extra-allowance line for a program (books, equipment...), shown on the "What else is paid?" card
+function extraAllowancesLine(baseProg) {
+  const lines = localizeProgram(baseProg).monthlySalary.allowancesSummary;
+  return lines.find(l => /Extra allowances|مخصصات إضافية|المخصصات الإضافية/.test(l)) || lines[0] || "";
 }
 
 function universitiesHtml(baseProg, withHeading = true) {
@@ -1365,8 +1407,11 @@ function universitiesFlag(baseProg) {
 }
 
 // NBAQ's approved UK universities for a plan major (nbaq-uk-data.js), or null
+// Universities with no approved degree level are ones NBAQ has suspended ("stopped") for Kuwaiti
+// students, so they are left out: only approved universities are listed and counted.
 function nbaqMajorFor(majorId, country) {
-  return country === "United Kingdom" ? (window.NBAQ_UK?.[majorId] || null) : null;
+  const list = country === "United Kingdom" ? window.NBAQ_UK?.[majorId] : null;
+  return list ? { ...list, unis: list.unis.filter(u => u[1]) } : null;
 }
 
 // Degree-level letters ("BMP" -> B M D tags). Hovering, tapping or tabbing to a letter
@@ -1525,7 +1570,12 @@ function openSalaryModal(baseProg, keepInputs = false) {
         sub: t('salary_unis_sub'),
         tag: nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country) ? "" : universitiesFlag(baseProg),
         backTitle: t('modal_institutions_heading'),
-        back: universitiesHtml(baseProg, false)
+        back: (() => {
+          const nbaq = nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country);
+          return nbaq
+            ? factBack(t('ans_unis_nbaq').replace("{n}", nbaq.unis.length).replace("{m}", nbaq.unis.filter(u => u[2]).length), "nbaq_search")
+            : factBack(t('ans_unis_examples').replace("{list}", prog.accreditedUniversities.slice(0, 3).join(isArabic() ? "، " : ", ")), "nbaq_merit");
+        })()
       })}
       </div>
     </div>
@@ -1657,33 +1707,11 @@ function renderQudratPage() {
 
   // "Last day to register" card: the nearest deadline on the front, every date behind it
   const nextSession = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
-  const datesBack = `
-    <div class="overflow-x-auto rounded-lg border border-slate-200">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 text-slate-600 text-xs">
-          <tr>
-            <th class="p-2 text-start">${t('qudrat_col_test_date')}</th>
-            <th class="p-2 text-start">${t('qudrat_col_reg_close')}</th>
-            <th class="p-2 text-start">${t('qudrat_col_status')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${(c.sessions || []).map(s => {
-            const st = sessionStatus(s);
-            return `
-            <tr class="border-t border-slate-200">
-              <th scope="row" class="p-2 text-start font-bold text-slate-900">${formatDate(s.test)}</th>
-              <td class="p-2">${formatDate(s.regClose)}</td>
-              <td class="p-2"><span class="status-pill ${st.cls}">${t(`qudrat_${st.key}`)}</span></td>
-            </tr>`;
-          }).join("")}
-        </tbody>
-      </table>
-    </div>
-    <p class="mt-2">${t('qudrat_no_late')}</p>
-    <h4 class="font-bold text-slate-900 mt-4 mb-1">${t('qudrat_phases_title')}</h4>
-    <ul class="space-y-1">${(c.openingPhases || []).map(p => `<li><strong class="text-slate-900">${formatDate(p.date)}:</strong> ${L(p, 'who')}</li>`).join("")}</ul>
-    <p class="mt-4"><strong class="text-slate-900">${t('qudrat_next_cycle')}:</strong> ${L(data, 'nextCycle')} ${flag('unconfirmed')}</p>`;
+  // Behind the deadline card: the tests still ahead (or the next round), then the official dates page
+  const ahead = (c.sessions || []).filter(s => daysBetween(new Date(), s.regClose) >= 0);
+  const datesBack = factBack(ahead.length
+    ? `${t('qudrat_tests_left')} ${ahead.map(s => t('qudrat_test_by').replace("{test}", formatDate(s.test)).replace("{close}", formatDate(s.regClose))).join(" · ")}.`
+    : `${L(data, 'nextCycle')} {{unconfirmed}}`, "ku_dates");
   const deadlineCard = revealCard({
     id: "dates",
     question: t('qudrat_q_deadline'),
@@ -1719,7 +1747,7 @@ function renderQudratPage() {
       <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('reveal_hint')}</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
         ${deadlineCard}
-        ${(c.basics || []).map(b => revealCard({ question: L(b, 'question'), answer: L(b, 'answer'), sub: L(b, 'sub'), back: revealList(arr(b, 'details')) })).join("")}
+        ${(c.basics || []).map(b => revealCard({ question: L(b, 'question'), answer: L(b, 'answer'), sub: L(b, 'sub'), back: factBack(L(b, 'fact'), b.source) })).join("")}
       </div>
     </section>
 
@@ -1735,7 +1763,7 @@ function renderQudratPage() {
             answer: L(s, 'pass'),
             sub: (colleges.length === 1 ? t('qudrat_colleges_one') : t('qudrat_colleges_n')).replace("{n}", colleges.length),
             backTitle: t('qudrat_who_needs').replace("{test}", L(s, 'name')),
-            back: `<p class="leading-relaxed">${colleges.join(isArabic() ? "، " : ", ")}</p>${L(s, 'note') ? `<p class="text-slate-500 mt-2">${L(s, 'note')}</p>` : ""}`
+            back: factBack(colleges.join(isArabic() ? "، " : ", "), "ku_colleges")
           });
         }).join("")}
       </div>
@@ -1777,7 +1805,7 @@ function renderQudratPage() {
     <section id="rules" class="scroll-mt-24">
       <h2 class="text-lg font-extrabold text-slate-900 mb-4">${t('qudrat_rules_title')}</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: revealList(arr(g, 'details')) })).join("")}
+        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: factBack(L(g, 'fact'), g.source) })).join("")}
       </div>
       ${L(data, 'warning') ? `<p class="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-900">${L(data, 'warning')}</p>` : ""}
     </section>
@@ -1836,10 +1864,12 @@ function renderQudratChecklist(cycle) {
               <input type="checkbox" data-step="${s.id}" ${done ? 'checked' : ''} aria-label="${t('steps_mark_done')}: ${L(s, 'text')}">
               <span class="step-num" aria-hidden="true">${num}</span>
             </label>
-            <div class="flex-1 min-w-0 pt-0.5">
-              <span class="step-title">${L(s, 'text')}</span>
-              ${L(s, 'hint') ? `<span class="step-summary">${L(s, 'hint')}</span>` : ''}
-            </div>
+            ${L(s, 'hint') ? `
+            <details class="step-details" data-step="${s.id}">
+              <summary><span class="step-title">${L(s, 'text')}</span></summary>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">${L(s, 'hint')}</p>
+            </details>` : `
+            <div class="flex-1 min-w-0 pt-0.5"><span class="step-title">${L(s, 'text')}</span></div>`}
           </li>`;
         }).join("")}
       </ol>
@@ -2108,7 +2138,7 @@ function moreInfoBlock(block) {
       // Short answers on cards, the details behind them (items: question/answer/sub/details, En + Ar)
       return `<div class="grid grid-cols-1 sm:grid-cols-${Math.min(block.items.length, 3)} gap-4 items-start">${block.items.map(i => revealCard({
         question: L(i, 'question'), answer: L(i, 'answer'), sub: L(i, 'sub'),
-        back: revealList((ar ? i.detailsAr : i.detailsEn) || i.detailsEn || [])
+        back: i.factEn ? factBack(L(i, 'fact'), i.source) : revealList((ar ? i.detailsAr : i.detailsEn) || i.detailsEn || [])
       })).join("")}</div>`;
 
     case "terms":
@@ -2181,12 +2211,7 @@ function moreInfoBlock(block) {
           sub: t('allow_per_month').replace("{amount}", `${formatNumber(a.standard)} ${a.currency}`),
           tag: typeof a.merit === "number" ? `<span class="px-2 py-0.5 rounded text-xs font-bold merit-tag whitespace-nowrap">${t('allow_merit_tag')}</span>` : "",
           backTitle: t('allow_back_title').replace("{country}", country),
-          back: `
-            <dl class="space-y-2">
-              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_standard')}</dt><dd>${both(a.standard)}</dd></div>
-              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_merit')}</dt><dd>${merit}</dd></div>
-            </dl>
-            <a href="results.html?country=${encodeURIComponent(a.countryEn)}" class="inline-block mt-3 font-semibold text-olive-900 underline">${t('allow_see_majors').replace("{country}", country)}</a>`
+          back: factBack(`${t('allow_col_merit')}: ${merit}`, typeof a.merit === "number" ? "mohe_merit" : "mohe_allowances")
         });
       }).join("");
       return `
@@ -2448,7 +2473,7 @@ function scorePartName(code) {
 
 // One college as a flip card: the name and lowest admitted grade on the front;
 // how the score is counted, extra conditions and majors on the back
-function collegeRow(c, floorLabel) {
+function collegeRow(c, floorLabel, source = "") {
   const ar = isArabic();
   const weights = collegeWeights(c);
   const formula = c.qudrat && window.KUWAIT_QUDRAT?.formulas.find(f => f.collegeEn === c.qudrat);
@@ -2495,17 +2520,19 @@ function collegeRow(c, floorLabel) {
         </span>
         ${c.flag ? flag(c.flag) : ''}
       </span>`,
-    back: details ? `<div class="space-y-3">${details}</div>` : `<p class="text-slate-600">${t('local_no_details')}</p>`
+    // Main fact: how the score is counted; everything else is in the university's own document
+    back: factBack(weights ? `${t('local_how_counted')}: ${weights.map(([code, w]) => `${scorePartName(code)} ${+(w * 100).toFixed(1)}%`).join(" · ")}`
+      : c.scoring === "hs-only" ? t('local_hs_only') : c.scoring === "no-qudrat" ? t('local_no_qudrat') : t('local_no_details'), source)
   });
 }
 
 // One fact about a university (who pays, how you get in, tests) as a flip card
-function universityFactCard(title, text, extra = "") {
+function universityFactCard(title, text, source = "") {
   return revealCard({
     question: title,
     flip: true,
     front: `<span class="college-card-name">${title}</span>`,
-    back: `<p class="leading-relaxed">${text}</p>${extra}`
+    back: factBack(text, source)
   });
 }
 
@@ -2524,6 +2551,8 @@ function initLocalUniversitiesPage() {
     card.id = uni.id;
     card.className = "bg-white rounded-xl border border-slate-300 p-6 shadow-sm mb-6 scroll-mt-24";
     const pick = (en, ar) => isAr ? (uni[ar] || uni[en]) : uni[en];
+    // The official page behind this university's cards
+    const source = { "kuwait-university": "ku_admission", aasu: "aasu", puc: "puc" }[uni.id] || "";
 
     card.innerHTML = `
       <div class="border-b border-slate-200 pb-4 mb-4">
@@ -2534,15 +2563,14 @@ function initLocalUniversitiesPage() {
 
       <p class="text-sm text-slate-600 mb-3">${t('local_flip_hint')}</p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-start mb-6">
-        ${universityFactCard(t('local_funding'), pick('scholarshipFunding', 'scholarshipFundingAr'))}
-        ${universityFactCard(t('local_admission'), pick('admissionSystem', 'admissionSystemAr'))}
-        ${universityFactCard(t('local_aptitude'), pick('aptitudeExams', 'aptitudeExamsAr'),
-          uni.id === 'kuwait-university' ? `<a href="qudrat.html" class="inline-block mt-2 font-semibold text-olive-900 underline">${t('local_qudrat_link')}</a>` : '')}
+        ${universityFactCard(t('local_funding'), pick('scholarshipFunding', 'scholarshipFundingAr'), source)}
+        ${universityFactCard(t('local_admission'), pick('admissionSystem', 'admissionSystemAr'), uni.id === "kuwait-university" ? "ku_admission" : source)}
+        ${universityFactCard(t('local_aptitude'), pick('aptitudeExams', 'aptitudeExamsAr'), uni.id === "kuwait-university" ? "ku_colleges" : source)}
       </div>
 
       <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">${t('local_colleges')}</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-start">
-        ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'))).join("")}
+        ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'), uni.id === "kuwait-university" ? "ku_colleges" : source)).join("")}
       </div>
       ${uni.sourceNote ? `<p class="text-xs text-slate-400 mt-3">${pick('sourceNote', 'sourceNoteAr')}</p>` : ''}
     `;
@@ -2905,7 +2933,9 @@ function renderSearchPage() {
   const ar = isArabic();
   const input = document.getElementById("search-page-input");
   const summary = document.getElementById("search-summary");
+  const answerBox = document.getElementById("search-answer");
   const bestBox = document.getElementById("search-best");
+  const home = currentPageFile() === "index.html";
   const box = document.getElementById("search-results");
   const suggest = document.getElementById("search-suggestions");
   if (!box) return;
@@ -2918,28 +2948,33 @@ function renderSearchPage() {
   const title = e => ar ? e.titleAr : e.titleEn;
   const text = e => ar ? e.textAr : e.textEn;
 
-  document.title = query ? `${query} | ${t('search_title')} | moustaqbili` : `${t('search_title')} | moustaqbili`;
+  renderHomeExamples();
+  if (query || !home) document.title = query ? `${query} | ${t('search_title')} | moustaqbili` : `${t('search_title')} | moustaqbili`;
   if (summary) {
-    summary.textContent = !query.trim() ? t('search_empty_prompt')
+    summary.textContent = !query.trim() ? (home ? "" : t('search_empty_prompt'))
       : results.length ? t(results.length === 1 ? 'search_count_one' : 'search_count').replace("{n}", results.length).replace("{q}", query)
       : t('search_none').replace("{q}", query);
   }
 
   // Popular searches when the box is empty or nothing matched
-  suggest?.classList.toggle("hidden", results.length > 0);
+  suggest?.classList.toggle("hidden", results.length > 0 || (home && !query.trim()));
   const chips = document.getElementById("search-suggestion-chips");
   if (chips) {
     const popular = ar ? ["الطب", "الأيلتس", "القدرات", "التميز", "المخصص الشهري", "بريطانيا", "التمريض", "الهندسة"]
                        : ["Medicine", "IELTS", "Qudrat", "Merit", "Allowance", "United Kingdom", "Nursing", "Engineering"];
-    chips.innerHTML = popular.map(p => `<a href="search.html?q=${encodeURIComponent(p)}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">${escapeHtml(p)}</a>`).join("");
+    chips.innerHTML = popular.map(p => `<a href="index.html?q=${encodeURIComponent(p)}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">${escapeHtml(p)}</a>`).join("");
   }
 
   document.getElementById("search-why")?.classList.toggle("hidden", !query.trim() || results.length > 0);
+  // Quick answer: a short, direct answer built from the site's data, above the results
+  const answer = query.trim() ? searchAnswer(query, results) : null;
+  if (answerBox) answerBox.innerHTML = answer ? answerCardHtml(answer) : "";
   if (!results.length) { box.innerHTML = ""; if (bestBox) bestBox.innerHTML = ""; return; }
 
-  // Best match: the top result, shown large, linking straight to it
+  // Best match: the top result, shown large, linking straight to it (unless the answer already is it)
   const best = results[0].entry;
-  if (bestBox) {
+  if (bestBox) bestBox.innerHTML = "";
+  if (bestBox && answer?.entry !== best) {
     bestBox.innerHTML = `
       <a href="${best.url}" class="block mb-8 p-5 rounded-xl bg-white border-2 border-olive-900 hover:bg-slate-50 transition">
         <span class="text-xs font-bold uppercase tracking-wider text-olive-900">${t('search_best')} &middot; ${t('search_group_' + best.group)}</span>
@@ -2979,9 +3014,9 @@ function renderSearchPage() {
 //     Each heading opens a short version of a section that used to sit in the page,
 //     so the page itself keeps only what most students came for.
 // =========================================================================
-// Which sections move into the panel, per page (CSS selectors, in panel order)
+// Which sections move into the panel, per page (CSS selectors, in panel order).
+// Every page gets the panel: it always lists the site's other pages first.
 const PAGE_SIDEBAR = {
-  "index.html": ["#home-gpa", "#home-links"],
   "qudrat.html": ["#rules", "#help", "#sources"],
   "more-info.html": ["#words", "#entry", "#certificates", "#links"],
   "navigate.html": ["#howto", "#data", "#degrees", "#tools", "#privacy", "#contact"],
@@ -2993,9 +3028,10 @@ const PAGE_SIDEBAR = {
 const sidebarState = { open: false, item: -1 };
 
 function initPageSidebar() {
-  if (!PAGE_SIDEBAR[currentPageFile()]) return;
+  if (currentPageFile() === "search.html") return; // it forwards to the home page
   buildPageSidebar();
-  addShowAllButton();
+  // "Show everything" only where something is folded away (cards or panel topics)
+  if (document.querySelector(".reveal-card") || (PAGE_SIDEBAR[currentPageFile()] || []).length) addShowAllButton();
   // Pages redraw themselves when the language or exchange rates change; move the fresh
   // sections across once every redraw has run (a microtask runs before the next paint)
   const rebuild = () => queueMicrotask(buildPageSidebar);
@@ -3023,7 +3059,14 @@ function sidebarShell() {
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <ul class="page-sidebar-list"></ul>
+      <div class="page-sidebar-scroll">
+        <nav class="page-sidebar-pages" aria-labelledby="page-sidebar-pages-title">
+          <h3 id="page-sidebar-pages-title" class="page-sidebar-group"></h3>
+          <ul class="page-sidebar-page-links"></ul>
+        </nav>
+        <h3 class="page-sidebar-group page-sidebar-onpage"></h3>
+        <ul class="page-sidebar-list"></ul>
+      </div>
     </aside>`);
   panel = document.getElementById("page-sidebar");
   document.getElementById("page-sidebar-tab").addEventListener("click", () => setSidebarOpen(!sidebarState.open));
@@ -3052,15 +3095,23 @@ function sidebarShell() {
 
 function buildPageSidebar() {
   const found = (PAGE_SIDEBAR[currentPageFile()] || []).map(sel => document.querySelector(sel)).filter(Boolean);
-  if (!found.length) return;
   const panel = sidebarShell();
+  // Pages: everything that is not in the top menu (SITE_PAGES in layout.js)
+  const here = currentPageFile();
+  panel.querySelector("#page-sidebar-pages-title").textContent = t('sidebar_pages');
+  panel.querySelector(".page-sidebar-page-links").innerHTML = (typeof SITE_PAGES !== "undefined" ? SITE_PAGES : []).map(p => `
+    <li><a href="${p.href}" class="page-sidebar-link ${p.href === here ? "is-current" : ""}" ${p.href === here ? 'aria-current="page"' : ""}>${t(p.key)}</a></li>`).join("");
+  panel.querySelector(".page-sidebar-onpage").textContent = t('sidebar_on_page');
+  panel.querySelector(".page-sidebar-onpage").classList.toggle("hidden", !found.length);
   // The heading comes from the section's own title (read before the section is moved)
   const items = found.map(el => ({
     el,
     title: el.dataset.sidebarTitle ? t(el.dataset.sidebarTitle) : (el.querySelector("h2, h3")?.textContent || "").replace(/\s+/g, " ").trim()
   }));
   document.querySelector("#page-sidebar-tab .page-sidebar-tab-text").textContent = t('sidebar_tab');
-  document.querySelector("#page-sidebar-tab .page-sidebar-tab-count").textContent = items.length;
+  const count = document.querySelector("#page-sidebar-tab .page-sidebar-tab-count");
+  count.textContent = items.length;
+  count.classList.toggle("hidden", !items.length);
   document.getElementById("page-sidebar-tab").setAttribute("aria-label", `${t('sidebar_tab')}: ${t('sidebar_topics').replace("{n}", items.length)}`);
   document.getElementById("page-sidebar-title").textContent = t('sidebar_title');
   panel.querySelector(".page-sidebar-hint").textContent = t('sidebar_hint');
@@ -3175,7 +3226,7 @@ function applyShowAll(force) {
   const list = document.querySelector(".page-sidebar-list");
   if (!list) return;
   let inline = document.getElementById("page-more-inline");
-  if (on) {
+  if (on && list.children.length) {
     if (sidebarState.open) setSidebarOpen(false, false);
     if (!inline) {
       document.querySelector("main").insertAdjacentHTML("beforeend", `
@@ -3192,7 +3243,7 @@ function applyShowAll(force) {
       li.querySelector(".page-sidebar-body").hidden = false;
     });
   } else if (inline) {
-    document.getElementById("page-sidebar")?.appendChild(list);
+    document.querySelector("#page-sidebar .page-sidebar-scroll")?.appendChild(list);
     inline.remove();
     setSidebarItem(sidebarState.item, false);
   }
@@ -3329,7 +3380,7 @@ function renderWhyPage() {
 
   root.innerHTML = !chips.length ? `
     <p class="text-base text-slate-700">${t('why_no_search')}</p>
-    <a href="index.html#home-search" class="inline-block px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('home_search_title')}</a>` : `
+    <a href="index.html#home-filters" class="inline-block px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('home_search_title')}</a>` : `
     <section>
       <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">${t('why_your_search')}</h2>
       <div class="flex flex-wrap gap-2">${chips.map(c => `<span class="px-3 py-1 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-800">${escapeHtml(c)}</span>`).join("")}</div>
@@ -3380,4 +3431,132 @@ function initUpdateNote() {
   };
   show();
   window.addEventListener("languageChanged", show);
+}
+
+// =========================================================================
+// 16. Quick answers (home page search)
+//     A short, direct answer above the results, built from the site's own data
+//     files, so it stays right after every weekly update.
+// =========================================================================
+const ANSWER_WORDS = {
+  money: ["money", "allowance", "allowances", "stipend", "salary", "pay", "paid", "monthly", "مخصص", "المخصص", "راتب", "فلوس", "مكافاه", "المكافاه", "مبلغ", "المبلغ"],
+  qudrat: ["qudrat", "aptitude", "قدرات", "القدرات"],
+  when: ["deadline", "last day", "when", "date", "dates", "register", "registration", "موعد", "مواعيد", "متى", "اخر", "تسجيل", "التسجيل"],
+  cost: ["cost", "fee", "fees", "price", "رسوم", "الرسوم", "سعر", "تكلفه"],
+  merit: ["merit", "excellence", "تميز", "التميز", "متميز"]
+};
+
+// Short names students type for a major (the plan's own names are longer, e.g. "الطب البشري")
+const MAJOR_ALIASES = {
+  medicine: ["doctor", "md", "mbbs", "mbchb", "طب", "طبيب"],
+  dentistry: ["dentist", "dental", "اسنان", "طبيب اسنان"],
+  pharmacy: ["pharmacist", "صيدلي"],
+  "veterinary-medicine": ["vet", "vet medicine", "veterinary", "بيطري"]
+};
+
+// Lower-case words with Arabic "ال" taken off, padded with spaces for whole-word matching
+function answerText(str) {
+  return ` ${normalizeSearch(str).split(" ").map(w => w.replace(/^(وال|بال|فال|لل|ال)(?=..)/, "")).join(" ")} `;
+}
+
+function searchAnswer(query, results) {
+  const ar = isArabic();
+  const words = normalizeSearch(query).split(" ").filter(Boolean);
+  // The question plus the site's synonyms ("uk" -> "united kingdom", "doctor" -> "medicine")
+  const q = answerText([query, ...words.flatMap(w => SEARCH_SYNONYMS[w] || [])].join(" "));
+  const has = key => ANSWER_WORDS[key].some(w => q.includes(answerText(w)));
+  const longest = (list, names) => list.map(x => [x, Math.max(...names(x).map(n => q.includes(answerText(n)) ? n.length : 0))])
+    .filter(([, len]) => len > 0).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+
+  const major = longest(window.PLAN_MAJORS || [], m => [m.en, m.ar, ...(MAJOR_ALIASES[m.id] || [])]);
+  const country = longest(getFilterConfig().countries || [], c => [c.value, c.label, c.labelAr].filter(Boolean));
+  // English sentences need "the" before "United Kingdom", "United States" and "United Arab Emirates"
+  const countryName = c => ar ? (c.labelAr || c.label) : (/^United /.test(c.label) ? `the ${c.label}` : c.label);
+  // A question from the Questions page, shown as the answer (by its id in clarifications-data.js)
+  const faqAnswer = id => {
+    const entry = (searchIndexCache || []).find(e => e.url === `clarifications.html#${id}`);
+    return entry && { entry, title: ar ? entry.titleAr : entry.titleEn, lines: [withFlags(ar ? entry.textAr : entry.textEn)], url: entry.url, label: t('ans_read_answer') };
+  };
+  const majorName = m => ar ? m.ar : m.en;
+  const both = (amount, cur) => `<strong>${money(convertAmount(amount, cur, "KWD", FX.rates), "KWD")}</strong> (${formatNumber(amount)} ${cur})`;
+  const moneyLines = a => !a ? [] : [
+    t('ans_allowance').replace("{amount}", both(a.standard, a.currency)),
+    typeof a.merit === "number" ? t('ans_merit').replace("{amount}", both(a.merit, a.currency)) : ""
+  ].filter(Boolean);
+
+  // 1. Qudrat dates or fee
+  const qd = window.KUWAIT_QUDRAT;
+  if (qd && has("qudrat") && !major) {
+    const c = qd.currentCycle;
+    const next = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
+    const cost = (c.basics || []).find(b => b.id === "cost");
+    const lines = [
+      next ? t('ans_qudrat_next').replace("{date}", `<strong>${formatDate(next.regClose)}</strong>`).replace("{test}", formatDate(next.test)) : qudratStatusText(qudratStatus(c)),
+      cost ? t('ans_qudrat_fee').replace("{fee}", `<strong>${L(cost, 'answer')}</strong> ${L(cost, 'sub')}`) : ""
+    ].filter(Boolean);
+    if (has("cost") && !has("when")) lines.reverse();
+    return { title: t('ans_qudrat_title'), lines, url: "qudrat.html", label: t('ans_open_qudrat') };
+  }
+  // 2. The merit programme: its deadline, or when the extra money starts
+  if (has("merit") && !major && !country) {
+    return faqAnswer(has("money") ? "merit-bonus-start" : "merit-deadline-separate") || null;
+  }
+  // 3. A major, in one country or everywhere
+  if (major) {
+    const offered = Object.entries(major.minPct);
+    if (country) {
+      const pct = major.minPct[country.value];
+      if (pct === undefined) {
+        return { title: t('ans_major_country').replace("{major}", majorName(major)).replace("{country}", countryName(country)),
+          lines: [t('why_not_offered').replace("{major}", majorName(major)).replace("{country}", countryName(country))
+            .replace("{list}", offered.map(([c]) => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c).join(ar ? "، " : ", "))],
+          url: `results.html?major=${encodeURIComponent(major.id)}`, label: t('ans_choose_country') };
+      }
+      return { title: t('ans_major_country').replace("{major}", majorName(major)).replace("{country}", countryName(country)),
+        lines: [t('ans_lowest').replace("{pct}", `<strong>${pct}%</strong>`) + (major.unconfirmed?.includes(country.value) ? ` ${flag('unconfirmed')}` : ""),
+          ...moneyLines(countryAllowance(country.value))],
+        url: `results.html?major=${encodeURIComponent(major.id)}&country=${encodeURIComponent(country.value)}&step=3`, label: t('ans_open_major_country') };
+    }
+    return { title: majorName(major),
+      lines: [t('ans_by_country'), offered.sort((a, b) => a[1] - b[1]).map(([c, p]) => `${ar ? (window.PLAN_COUNTRIES?.[c] || c) : c} <strong>${p}%</strong>`).join(" · ")],
+      url: `results.html?major=${encodeURIComponent(major.id)}`, label: t('ans_choose_country') };
+  }
+  // 4. A country: its monthly money and how many majors it offers
+  if (country) {
+    const n = (window.PLAN_MAJORS || []).filter(m => country.value in m.minPct).length;
+    return { title: t('ans_money_country').replace("{country}", countryName(country)),
+      lines: [...moneyLines(countryAllowance(country.value)), t('ans_majors_in').replace("{n}", n)],
+      url: `results.html?country=${encodeURIComponent(country.value)}`, label: t('allow_see_majors').replace("{country}", countryName(country)) };
+  }
+  // 5. Money in general: every country at a glance
+  if (has("money")) {
+    const all = window.MORE_INFO?.allowances || [];
+    return { title: t('ans_money_all'),
+      lines: [all.map(a => `${L(a, 'country')} <strong>${money(convertAmount(a.standard, a.currency, "KWD", FX.rates), "KWD")}</strong>`).join(" · "), t('home_read_2')],
+      url: "more-info.html#money", label: t('ans_see_money') };
+  }
+  // 6. Otherwise, when the best match is a common question, show its answer
+  const top = results[0]?.entry;
+  if (top?.group === "questions") {
+    return { entry: top, title: ar ? top.titleAr : top.titleEn, lines: [withFlags(ar ? top.textAr : top.textEn)], url: top.url, label: t('ans_read_answer') };
+  }
+  return null;
+}
+
+function answerCardHtml(a) {
+  return `
+    <section class="answer-card mb-6" aria-labelledby="answer-title">
+      <span class="text-xs font-bold uppercase tracking-wider text-olive-900">${t('ans_label')}</span>
+      <h2 id="answer-title" class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">${a.title}</h2>
+      <div class="mt-2 space-y-1.5 text-base text-slate-800 leading-relaxed">${a.lines.map(l => `<p>${l}</p>`).join("")}</div>
+      <a href="${a.url}" class="inline-flex items-center gap-1 mt-4 px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${a.label} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></a>
+    </section>`;
+}
+
+// Example questions under the home search bar
+function renderHomeExamples() {
+  const box = document.getElementById("home-examples");
+  if (!box) return;
+  box.innerHTML = [1, 2, 3, 4].map(i => t(`home_ex_${i}`)).map(q =>
+    `<a href="index.html?q=${encodeURIComponent(q)}" class="home-example">${escapeHtml(q)}</a>`).join("");
 }

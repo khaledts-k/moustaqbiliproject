@@ -17,7 +17,7 @@
 
 const PLAN_MAJORS_SOURCE = {
   url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf",
-  lastVerified: "2026-10-29"
+  lastVerified: "2026-11-08"
 };
 
 const PLAN_DISCIPLINES = [

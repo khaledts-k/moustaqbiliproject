@@ -11,7 +11,7 @@
  */
 
 const APPLY_STEPS = {
-  lastVerified: "2026-10-29",
+  lastVerified: "2026-11-08",
 
   steps: [
     {

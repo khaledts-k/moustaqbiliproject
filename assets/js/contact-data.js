@@ -13,7 +13,7 @@
 const MOHE = "https://www.mohe.edu.kw/site/AR";
 
 const MOHE_CONTACTS = {
-  lastVerified: "2026-10-29",
+  lastVerified: "2026-11-08",
 
   groups: [
     {

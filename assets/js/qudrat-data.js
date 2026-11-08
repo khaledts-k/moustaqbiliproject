@@ -9,7 +9,7 @@
  */
 
 const KUWAIT_QUDRAT = {
-  lastVerified: "2026-10-29",
+  lastVerified: "2026-11-08",
 
   currentCycle: {
     nameEn: "Academic Aptitude Tests - First Opportunity 2026/2027",
@@ -39,7 +39,8 @@ const KUWAIT_QUDRAT = {
 
     registerUrl: "https://portal.ku.edu.kw/placement",
 
-    // "The basics" cards on the Qudrat page: a short answer on the front, details behind it.
+    // "The basics" cards on the Qudrat page: a short answer on the front; behind it one main fact
+    // and a link to the official document it comes from (`source`, a key of OFFICIAL in app.js).
     // The "last day to register" card is built from `sessions` in app.js.
     basics: [
       {
@@ -47,48 +48,24 @@ const KUWAIT_QUDRAT = {
         questionEn: "How much does it cost?", questionAr: "كم الرسوم؟",
         answerEn: "10 KWD", answerAr: "10 د.ك",
         subEn: "per test, paid by K-Net", subAr: "لكل اختبار، تُدفع عبر كي-نت",
-        detailsEn: [
-          "Not refundable. You cannot cancel after paying.",
-          "Scores last 2 years from the test date.",
-          "Up to 3 tries per subject each academic year. Your highest valid score counts."
-        ],
-        detailsAr: [
-          "غير مستردة، ولا يمكن الإلغاء بعد الدفع.",
-          "الدرجة صالحة لمدة سنتين من تاريخ الاختبار.",
-          "حتى 3 محاولات لكل مادة في السنة الأكاديمية، وتُحتسب أعلى درجة سارية."
-        ]
+        factEn: "Not refundable: you cannot cancel after paying.",
+        factAr: "غير مستردة، ولا يمكن الإلغاء بعد الدفع.", source: "ku_guide"
       },
       {
         id: "who",
         questionEn: "Who can register?", questionAr: "من يمكنه التسجيل؟",
         answerEn: "Grade 12", answerAr: "الصف الثاني عشر",
         subEn: "and high-school graduates", subAr: "وخريجو الثانوية العامة",
-        detailsEn: [
-          "For applicants to Kuwait University, Abdullah Al-Salem University, or medicine / engineering scholarships (inside Kuwait and abroad).",
-          "Private and international school students can register.",
-          "Current Kuwait University students cannot (except the French test for a French major)."
-        ],
-        detailsAr: [
-          "للمتقدمين لجامعة الكويت أو جامعة عبد الله السالم أو بعثات الطب والهندسة (الداخلية والخارجية).",
-          "يحق لطلبة المدارس الخاصة والأجنبية التسجيل.",
-          "لا يحق لطلبة جامعة الكويت الحاليين التسجيل (باستثناء اختبار الفرنسية لتخصص الفرنسية)."
-        ]
+        factEn: "Current Kuwait University students cannot register (except the French test for a French major).",
+        factAr: "لا يحق لطلبة جامعة الكويت الحاليين التسجيل (باستثناء اختبار الفرنسية لتخصص الفرنسية).", source: "ku_faq"
       },
       {
         id: "need",
         questionEn: "What do I need?", questionAr: "ماذا أحتاج؟",
         answerEn: "Civil ID", answerAr: "البطاقة المدنية",
         subEn: "and a K-Net bank card", subAr: "وبطاقة بنكية تعمل بكي-نت",
-        detailsEn: [
-          "Your Civil ID number is your username. Its last 5 digits are your first password.",
-          "A phone number and email you check: the portal asks you to confirm them.",
-          "10 KWD on the card for each test you choose."
-        ],
-        detailsAr: [
-          "رقمك المدني هو اسم المستخدم، وآخر 5 أرقام منه هي كلمة المرور الأولى.",
-          "رقم هاتف وبريد إلكتروني تتابعهما، فالبوابة تطلب منك تأكيدهما.",
-          "10 دنانير في البطاقة لكل اختبار تختاره."
-        ]
+        factEn: "Your username is your Civil ID number, and your first password is its last 5 digits.",
+        factAr: "اسم المستخدم هو رقمك المدني، وكلمة المرور الأولى هي آخر 5 أرقام منه.", source: "ku_portal"
       }
     ],
 
@@ -181,28 +158,28 @@ const KUWAIT_QUDRAT = {
   // "Good to know" cards: a short answer on the front, details behind it
   goodToKnow: [
     { id: "prep", questionEn: "Are there prep courses?", questionAr: "هل توجد دورات تقوية؟",
-      answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Next Math round: 5 November, 50 KWD", subAr: "دورة الرياضيات القادمة: 5 نوفمبر، 50 د.ك",
-      detailsEn: ["Math (15 hours, in Arabic or English): the rounds left are 5-9 November and 19-23 November 2026 (the 22-26 October round has finished). Thursday, Saturday, Sunday and Monday, 5:00 - 9:00 pm (8:00 pm on the last day).", "English: the 11 - 15 October course has finished.", "The fee is not refundable. Register by WhatsApp on 24983724."],
-      detailsAr: ["الرياضيات (15 ساعة بالعربية أو الإنجليزية): الدورات المتبقية 5-9 نوفمبر و19-23 نوفمبر 2026 (انتهت دورة 22-26 أكتوبر)، أيام الخميس والسبت والأحد والاثنين من 5:00 إلى 9:00 مساءً (حتى 8:00 في اليوم الأخير).", "الإنجليزي: انتهت دورة 11 - 15 أكتوبر.", "الرسوم غير مستردة، والتسجيل عبر واتساب على الرقم 24983724."] },
+      answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Last Math round: 19 November, 50 KWD", subAr: "آخر دورة رياضيات: 19 نوفمبر، 50 د.ك",
+      factEn: "Math (15 hours, in Arabic or English): the last round is 19-23 November 2026, 5:00 - 9:00 pm. Register by WhatsApp on 24983724.",
+      factAr: "الرياضيات (15 ساعة بالعربية أو الإنجليزية): آخر دورة من 19 إلى 23 نوفمبر 2026، من 5:00 إلى 9:00 مساءً، والتسجيل عبر واتساب على 24983724.", source: "ku_prep" },
     { id: "ielts", questionEn: "Can IELTS replace the English test?", questionAr: "هل يغني IELTS عن اختبار الإنجليزي؟",
       answerEn: "Yes", answerAr: "نعم", subEn: "KU converts your IELTS score", subAr: "تعادل الجامعة درجة IELTS",
-      detailsEn: ["IELTS 6.5 = 81%", "IELTS 7.0 = 89%", "IELTS 8.0 or more = 100%", "From KU's conversion table."],
-      detailsAr: ["IELTS 6.5 = 81%", "IELTS 7.0 = 89%", "IELTS 8.0 فأكثر = 100%", "حسب جدول المعادلة في جامعة الكويت."] },
+      factEn: "IELTS 6.5 = 81%, 7.0 = 89%, 8.0 or more = 100%.",
+      factAr: "IELTS 6.5 = 81%، و7.0 = 89%، و8.0 فأكثر = 100%.", source: "ku_ielts" },
     { id: "appeal", questionEn: "How long to appeal a score?", questionAr: "ما مدة التظلم على الدرجة؟",
       answerEn: "1 week", answerAr: "أسبوع واحد", subEn: "after results are published", subAr: "بعد إعلان النتائج",
-      detailsEn: ["Appeals on a score are accepted for one week after results are published."],
-      detailsAr: ["تُقبل التظلمات على الدرجة خلال أسبوع من إعلان النتائج."] },
+      factEn: "Appeals on a score are accepted for one week after results are published.",
+      factAr: "تُقبل التظلمات على الدرجة خلال أسبوع من إعلان النتائج.", source: "ku_faq" },
     { id: "no-test", questionEn: "Which colleges need no Qudrat?", questionAr: "ما الكليات التي لا تشترط القدرات؟",
       answerEn: "Law", answerAr: "الحقوق", subEn: "Science uses it for placement only", subAr: "العلوم تستخدمها لتحديد المستوى فقط",
-      detailsEn: ["College of Law does not require an aptitude test.", "College of Science uses English, Math and Chemistry for placement only; no equivalent percentage is calculated."],
-      detailsAr: ["لا تشترط كلية الحقوق اختبارات القدرات.", "تستخدم كلية العلوم اختبارات الإنجليزي والرياضيات والكيمياء لتحديد المستوى فقط، ولا يُحتسب لها معدل مكافئ."] }
+      factEn: "The College of Law needs no aptitude test; the College of Science uses the tests for placement only.",
+      factAr: "لا تشترط كلية الحقوق اختبارات القدرات، وتستخدمها كلية العلوم لتحديد المستوى فقط.", source: "ku_colleges" }
   ],
   // Always shown under the cards: it can cost a student their score
   warningEn: "Cheating cancels the score.",
   warningAr: "الغش يؤدي إلى إلغاء الدرجة.",
 
-  nextCycleEn: "The Second Opportunity has not been announced yet. Last year it ran from late January to early April, with registration opening in early January.",
-  nextCycleAr: "لم يُعلن بعد عن الفرصة الثانية. في العام الماضي أُقيمت من أواخر يناير حتى أوائل أبريل، وبدأ التسجيل في أوائل يناير.",
+  nextCycleEn: "The Second Opportunity has not been announced yet. Last year it ran from late January to May (the April test was moved to 23 May), with registration opening in early January.",
+  nextCycleAr: "لم يُعلن بعد عن الفرصة الثانية. في العام الماضي أُقيمت من أواخر يناير حتى مايو (أُجّل اختبار أبريل إلى 23 مايو)، وبدأ التسجيل في أوائل يناير.",
 
   contact: {
     phones: ["24983166", "24985178"],
@@ -218,6 +195,7 @@ const KUWAIT_QUDRAT = {
     { label: "Center for Evaluation & Measurement: First Opportunity test dates", url: "https://cem.ku.edu.kw/ar/at", date: "2026-09-29" },
     { label: "Aptitude Tests Student Guide 2026 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-09/2026APTE.pdf", date: "2026-09-01" },
     { label: "Required aptitude tests for KU colleges 2026/2027 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-06/ku_colleges_rules%20%D8%A7%D9%86%D8%AC%D9%84%D9%8A%D8%B2%D9%8A.pdf", date: "2026-06-01" },
+    { label: "Kuwait University: third Qudrat session held on 23 May 2026", url: "https://www.ku.edu.kw/media-center/news/jamt-alkwyt-tqd-akhtbar-alqdrat-alakadymyt-llfrst-althaltht-bmsharkt-8898-talbana", date: "2026-05-23" },
     { label: "Kuwait University: Qudrat prep courses (Arabic)", url: "https://www.ku.edu.kw/ar/media-center/announcements/jamt-alkwyt-tln-n-qd-dwrat-altqwyt-lakhtbarat-alqdrat-alfrst-alawly", date: "2026-10-01" },
     { label: "CEM frequently asked questions", url: "https://cem.ku.edu.kw/faqs", date: "2026-04-05" },
     { label: "IELTS to KU English test conversion (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2025-06/english-ielts.pdf", date: "2025-06-01" }

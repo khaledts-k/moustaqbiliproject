@@ -9,7 +9,7 @@
  * 3. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
  * 4. Merit university lists (NBAQ): UK Decree 16/2025, US Decree 15/2025, Ireland Decree 22/2025, Australia Decision 60/2025
  * 5. University and government pages (UCAS, UCAT, GOV.UK, Irish Immigration, US State Dept / ICE,
- *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-10-29
+ *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-11-08
  *
  * verifiedFields lists the details checked against those sources on 2026-10-13. Every other
  * detail shown in the "What you need" window carries a "Not checked yet" label.
@@ -676,14 +676,14 @@ const MOUSTAQBILI_CURRENCIES = {
 };
 
 // Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
-// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-10-29.
-// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-10-29 (CBK does not publish them).
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-11-08.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-11-08 (CBK does not publish them).
 const MOUSTAQBILI_FX_FALLBACK = {
-  date: "2026-10-29",
+  date: "2026-11-08",
   rates: {
     KWD: 1,
-    USD: 3.2441, GBP: 2.4354, EUR: 2.9110, SAR: 12.1655, AED: 11.9157, BHD: 1.2201,
-    AUD: 4.5958, NZD: 5.7300, CAD: 4.5401, JOD: 2.2856, EGP: 181.1562
+    USD: 3.2441, GBP: 2.4300, EUR: 2.9111, SAR: 12.1655, AED: 11.9157, BHD: 1.2201,
+    AUD: 4.6896, NZD: 5.7874, CAD: 4.5483, JOD: 2.2833, EGP: 174.8992
   }
 };
 

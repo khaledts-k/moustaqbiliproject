@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Security policy: only this site's own scripts may run, so injected code is blocked. Add a host here before loading anything new from another site. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://open.er-api.com; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <title>Navigate Moustaqbili | moustaqbili</title>
+  <title>More info | moustaqbili</title>
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +25,46 @@
         <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3"><span data-potato class="w-9 h-9 text-slate-700 flex-shrink-0"></span><span data-i18n="navigate_title">Navigate Moustaqbili</span></h1>
         <p class="text-base text-slate-600 mt-2 max-w-2xl leading-relaxed" data-i18n="navigate_desc">How this website works, what the results mean, and where our information comes from.</p>
       </div>
+
+      <!-- Start here: the tour video, the suggested way to use the site, and how to read results -->
+      <section id="start-here" class="mb-8 scroll-mt-24">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-5 sm:p-6">
+          <div class="flex flex-wrap items-start gap-3 mb-4">
+            <span class="home-step-num" aria-hidden="true">▶</span>
+            <div class="flex-grow min-w-0">
+              <h2 class="text-lg font-extrabold text-slate-900" data-i18n="home_start_title">Start here</h2>
+              <p class="text-sm text-slate-600" data-i18n="home_start_desc">New to Moustaqbili? Watch the one-minute tour, or follow the steps.</p>
+            </div>
+            <a href="index.html" class="text-sm font-semibold text-olive-900 underline whitespace-nowrap" data-i18n="home_go_search">Go to the search</a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+            <!-- The tour video: nothing downloads until the student presses play -->
+            <video id="guide-video" class="w-full rounded-lg bg-slate-900 aspect-video" controls playsinline preload="none"></video>
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 mb-2" data-i18n="home_way_title">The suggested way</h3>
+              <ol class="space-y-2 text-sm text-slate-700 list-decimal ps-5">
+                <li data-i18n="home_way_1">Search: pick your country, grade 12 % and level, plus a major if you know it.</li>
+                <li data-i18n="home_way_2">Read your results step by step: major, country, what you need, then the money.</li>
+                <li data-i18n="home_way_3">Tap a card for its details. "Show everything" opens them all, and "More info" on the side has the extras.</li>
+                <li data-i18n="home_way_4">Next: book Qudrat if your major needs it, then follow the steps on "How to Apply".</li>
+              </ol>
+              <details class="faq-item howto-item mt-4 rounded-xl border border-slate-200">
+                <summary class="howto-head cursor-pointer list-none flex items-center justify-between gap-3 text-slate-900">
+                  <span class="howto-title" data-i18n="home_read_title">How to read your results</span>
+                  <svg class="faq-chevron w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <ul class="howto-body space-y-1.5 text-slate-700 list-disc ps-9">
+                  <li data-i18n="home_read_1">The % is the lowest high school % the plan accepts. A higher % gives you a better chance, but no guarantee.</li>
+                  <li data-i18n="home_read_2">Money is per month. The Ministry sets the amount in the local currency; the Kuwaiti Dinar amount moves a little with the exchange rate.</li>
+                  <li data-i18n="home_read_3">"Merit" means a top university on the Ministry's list: 50% more each month, after the foundation year.</li>
+                  <li data-i18n="home_read_4">"Not confirmed" or "Not checked yet" means: check with the Ministry before you act.</li>
+                  <li data-i18n="home_read_5">No results? Press "Why no results?" to see what happened and what to try.</li>
+                </ul>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-8">
         <nav id="nav-toc" class="page-toc hidden lg:block sticky top-24 self-start" aria-label="On this page"></nav>

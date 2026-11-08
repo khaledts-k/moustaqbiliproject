@@ -14,74 +14,48 @@
   <!-- Tailwind styles, built from tailwind.config.js (see README). Loaded last so it wins over styles.css, as before. -->
   <link rel="stylesheet" href="assets/css/tailwind.css">
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+<body class="page-home bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
   <div id="site-header"></div>
 
   <main class="flex-grow">
 
-    <!-- Hero -->
-    <section class="gov-hero-gradient text-white pt-12 pb-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+    <!-- The search engine: ask anything; a quick answer and the results appear below -->
+    <section class="gov-hero-gradient text-white pt-12 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
       <div class="max-w-3xl mx-auto text-center">
         <span class="inline-block px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-4" data-i18n="hero_badge">Academic Year 2026/2027</span>
-        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3" data-i18n="hero_title">Find your scholarship, step by step</h1>
-        <p class="text-sm sm:text-base text-slate-300 leading-relaxed" data-i18n="hero_desc">Approved majors, monthly allowances, Qudrat dates and Ministry contacts in one place.</p>
-        <a href="navigate.html" class="inline-block mt-4 text-sm font-semibold text-amber-300 hover:text-amber-200 underline underline-offset-4" data-i18n="home_navigate_link">New here? See how Moustaqbili works</a>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3" data-i18n="home_q_title">What do you want to know?</h1>
+        <p class="text-sm sm:text-base text-slate-300 leading-relaxed" data-i18n="home_q_desc">Ask about scholarships, Qudrat, universities in Kuwait or the Ministry, in English or Arabic.</p>
+        <form id="search-page-form" action="index.html" method="get" role="search" class="mt-6 flex gap-2">
+          <label for="search-page-input" class="sr-only" data-i18n="site_search_label">Search the site</label>
+          <input id="search-page-input" name="q" type="search" autocomplete="off"
+            placeholder="e.g. How much money do I get in the UK?" data-i18n-placeholder="home_q_placeholder"
+            class="home-search-input">
+          <button type="submit" class="home-search-btn" data-i18n="site_search_btn">Search</button>
+        </form>
+        <!-- Example questions (renderHomeExamples in app.js) -->
+        <div id="home-examples" class="mt-4 flex flex-wrap justify-center gap-2"></div>
       </div>
     </section>
 
-    <!-- 1. Start here: the tour video, the suggested way to use the site, and how to read results -->
-    <section id="home-start" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-6 scroll-mt-24">
-      <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-5 sm:p-6">
-        <div class="flex flex-wrap items-start gap-3 mb-4">
-          <span class="home-step-num" aria-hidden="true">1</span>
-          <div class="flex-grow min-w-0">
-            <h2 class="text-lg font-extrabold text-slate-900" data-i18n="home_start_title">Start here</h2>
-            <p class="text-sm text-slate-600" data-i18n="home_start_desc">New to Moustaqbili? Watch the one-minute tour, or follow the steps.</p>
-          </div>
-          <a href="#home-search" class="text-sm font-semibold text-olive-900 underline whitespace-nowrap" data-i18n="home_skip_search">Skip to the search</a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
-          <!-- The tour video: nothing downloads until the student presses play -->
-          <video id="guide-video" class="w-full rounded-lg bg-slate-900 aspect-video" controls playsinline preload="none"></video>
-          <div>
-            <h3 class="text-sm font-bold text-slate-900 mb-2" data-i18n="home_way_title">The suggested way</h3>
-            <ol class="space-y-2 text-sm text-slate-700 list-decimal ps-5">
-              <li data-i18n="home_way_1">Search: pick your country, grade 12 % and level, plus a major if you know it.</li>
-              <li data-i18n="home_way_2">Read your results step by step: major, country, what you need, then the money.</li>
-              <li data-i18n="home_way_3">Tap a card for its details. "Show everything" opens them all, and "More info" on the side has the extras.</li>
-              <li data-i18n="home_way_4">Next: book Qudrat if your major needs it, then follow the steps on "How to Apply".</li>
-            </ol>
-            <details class="faq-item howto-item mt-4 rounded-xl border border-slate-200">
-              <summary class="howto-head cursor-pointer list-none flex items-center justify-between gap-3 text-slate-900">
-                <span class="howto-title" data-i18n="home_read_title">How to read your results</span>
-                <svg class="faq-chevron w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-              </summary>
-              <ul class="howto-body space-y-1.5 text-slate-700 list-disc ps-9">
-                <li data-i18n="home_read_1">The % is the lowest high school % the plan accepts. A higher % gives you a better chance, but no guarantee.</li>
-                <li data-i18n="home_read_2">Money is per month. The Ministry sets the amount in the local currency; the Kuwaiti Dinar amount moves a little with the exchange rate.</li>
-                <li data-i18n="home_read_3">"Merit" means a top university on the Ministry's list: 50% more each month, after the foundation year.</li>
-                <li data-i18n="home_read_4">"Not confirmed" or "Not checked yet" means: check with the Ministry before you act.</li>
-                <li data-i18n="home_read_5">No results? Press "Why no results?" to see what happened and what to try.</li>
-              </ul>
-            </details>
-          </div>
-        </div>
+    <section id="search-area" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <p id="search-summary" class="text-base text-slate-600 mb-1" aria-live="polite"></p>
+      <a id="search-why" href="why.html" data-why-link class="hidden inline-block mb-4 text-sm font-bold text-olive-900 underline" data-i18n="why_btn">Why no results?</a>
+      <div id="search-answer"></div>
+      <div id="search-best"></div>
+      <div id="search-results" class="space-y-8"></div>
+      <div id="search-suggestions" class="hidden mt-2">
+        <h2 class="text-sm font-bold text-slate-900 mb-3" data-i18n="search_suggestions_title">Popular searches</h2>
+        <div id="search-suggestion-chips" class="flex flex-wrap gap-2"></div>
       </div>
-    </section>
 
-    <!-- 2. Find your scholarship: the search -->
-    <section id="home-search" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 scroll-mt-24">
-      <div class="bg-white rounded-xl shadow-xl border border-slate-300 p-6 sm:p-8">
-
-        <div class="mb-5 border-b border-slate-200 pb-4 flex items-start gap-3">
-          <span class="home-step-num" aria-hidden="true">2</span>
-          <div>
-            <h2 class="text-lg font-extrabold text-slate-900" data-i18n="home_search_title">Find your scholarship</h2>
-            <p class="text-xs text-slate-600 mt-0.5" data-i18n="search_card_desc">Choose at least one option below.</p>
-          </div>
-        </div>
-
+      <!-- Prefer filters? The country / % / level / major finder, folded away -->
+      <details id="home-filters" class="faq-item howto-item mt-8 rounded-xl border border-slate-300 bg-white scroll-mt-24">
+        <summary class="howto-head cursor-pointer list-none flex items-center justify-between gap-3 text-slate-900">
+          <span class="howto-title" data-i18n="home_filters_title">Prefer filters? Choose a country, %, level and major</span>
+          <svg class="faq-chevron w-4 h-4 text-slate-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="p-4 sm:p-5 border-t border-slate-200">
         <div id="validation-alert" class="hidden mb-5 p-4 rounded-lg bg-amber-50 border border-amber-300 text-amber-950 text-xs" role="alert">
           <strong class="font-bold block" data-i18n="validation_error_title">Choose at least one option</strong>
           <span data-i18n="validation_error_msg">Pick a country, a grade bracket, or a specialization to see matching programs.</span>
@@ -147,17 +121,7 @@
             </button>
           </div>
         </form>
-      </div>
-    </section>
-
-    <!-- Current Qudrat cycle (rendered from qudrat-data.js) -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-      <div id="qudrat-home-banner"></div>
-    </section>
-
-    <!-- GPA converter + quick links -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 grid grid-cols-1 lg:grid-cols-5 gap-6">
-
+          <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div id="home-gpa" class="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
         <h3 class="text-sm font-extrabold text-slate-900 mb-1" data-i18n="tool1_title">GPA to percentage</h3>
         <p class="text-xs text-slate-600 mb-4" data-i18n="tool1_desc">Convert an American-diploma GPA (4.0 scale) to the Kuwaiti percentage.</p>
@@ -174,48 +138,18 @@
             <span id="gpa-calc-percentage" class="text-xl font-black text-emerald-950"></span>
           </div>
           <span id="gpa-calc-tier" class="text-xs font-semibold text-emerald-800 block mt-1"></span>
-          <button type="button" id="gpa-apply-btn" data-sidebar-close class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">Use in search</button>
+          <button type="button" id="gpa-apply-btn" class="mt-3 w-full py-1.5 bg-olive-700 hover:bg-olive-800 text-white rounded text-xs font-bold transition" data-i18n="btn_apply_gpa">Use in search</button>
         </div>
         <p class="text-xs text-slate-500 mt-3">
           <span data-i18n="gpa_ref_note">Approximate guide only. The official equivalency is issued by the Ministry of Education.</span>
           <span class="flag flag-unverified" data-i18n="flag_unverified" title="Not checked against the 2026/2027 rules yet">Not checked yet</span>
         </p>
       </div>
-
-      <div id="home-links" data-sidebar-title="sidebar_home_links" class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a href="qudrat.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_qudrat_title">Qudrat tests</span>
-          <span class="quick-link-desc" data-i18n="ql_qudrat_desc">Current cycle dates, subjects, fees and the equivalent-score calculator.</span>
-        </a>
-        <a href="local-universities.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_local_title">Local universities</span>
-          <span class="quick-link-desc" data-i18n="ql_local_desc">Kuwait University, AASU and private-university scholarships.</span>
-        </a>
-        <a href="suggestions.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_guide_title">Application guide</span>
-          <span class="quick-link-desc" data-i18n="ql_guide_desc">Common App, UCAS, testing portals and Kuwaiti e-services.</span>
-        </a>
-        <a href="clarifications.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_questions_title">Common questions</span>
-          <span class="quick-link-desc" data-i18n="ql_questions_desc">Things students often get wrong, answered simply.</span>
-        </a>
-        <a href="more-info.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_more_title">More information</span>
-          <span class="quick-link-desc" data-i18n="ql_more_desc">Key words explained, the rules, money, visas and more.</span>
-        </a>
-        <a href="contact.html" class="quick-link-card">
-          <span class="quick-link-title" data-i18n="ql_contact_title">Contact the Ministry</span>
-          <span class="quick-link-desc" data-i18n="ql_contact_desc">Phone, address, hours and cultural offices abroad.</span>
-        </a>
-      </div>
-
-      <!-- Slim link to the Ministry scholarship checklist (How to Apply page) -->
-      <a href="suggestions.html#scholarship-steps" class="lg:col-span-5 flex items-center justify-between gap-3 px-5 py-3.5 rounded-xl bg-olive-900 hover:bg-olive-800 text-white transition">
-        <span class="text-sm font-bold" data-i18n="home_steps_link">Applying for a Ministry scholarship? See the 6 steps</span>
-        <span class="flip-rtl text-lg leading-none" aria-hidden="true">&rarr;</span>
-      </a>
+          </div>
+        </div>
+      </details>
+      <p class="mt-4 text-center text-sm"><a href="navigate.html#start-here" class="font-semibold text-olive-900 underline" data-i18n="home_tour_link">New here? Watch the 1-minute tour</a></p>
     </section>
-
   </main>
 
   <div id="site-footer"></div>
@@ -224,6 +158,12 @@
   <script src="assets/js/data.js"></script>
   <script src="assets/js/plan-majors-data.js"></script>
   <script src="assets/js/qudrat-data.js"></script>
+  <script src="assets/js/data-ar.js"></script>
+  <script src="assets/js/clarifications-data.js"></script>
+  <script src="assets/js/more-info-data.js"></script>
+  <script src="assets/js/contact-data.js"></script>
+  <script src="assets/js/navigate-data.js"></script>
+  <script src="assets/js/apply-steps-data.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
