@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
   if (page === "why.html") initWhyPage();
+  if (document.body.classList.contains("page-404")) init404Page(); // its address is whatever was mistyped
   initWhyLinks();
   initUpdateNote();
   initPageSidebar();
@@ -3554,6 +3555,22 @@ function answerCardHtml(a) {
 }
 
 // Example questions under the home search bar
+// "Page not found" (404.html): list every page, and put the mistyped page name in the
+// search bar (e.g. ".../qudrat-dates" becomes "qudrat dates") so one click searches for it
+function init404Page() {
+  const pages = document.getElementById("nf-pages");
+  if (pages) {
+    pages.innerHTML = SITE_PAGES.map(p =>
+      `<a href="${p.href}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-100" data-i18n="${p.key}">${escapeHtml(t(p.key))}</a>`).join("");
+  }
+  const input = document.getElementById("nf-search-input");
+  if (!input) return;
+  let words = "";
+  try { words = decodeURIComponent(location.pathname.split("/").filter(Boolean).pop() || ""); } catch (e) { /* a broken % code */ }
+  words = words.replace(/\.[a-z]{2,4}$/i, "").replace(/[-_+.]+/g, " ").trim();
+  if (/\p{L}{3}/u.test(words) && words.length <= 60) input.value = words;
+}
+
 function renderHomeExamples() {
   const box = document.getElementById("home-examples");
   if (!box) return;
