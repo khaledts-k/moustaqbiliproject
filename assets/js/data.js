@@ -743,6 +743,7 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي. الفصل الثاني 2026/2027: التقديم إلكترونياً من 16 إلى 23 ديسمبر 2026 عبر portal.ku.edu.kw/admission، وتتقدم الفئات الأخرى حضورياً من 20 إلى 23 ديسمبر.",
     aptitudeExams: "Aptitude tests (Qudrat) in English, Math and Arabic, weighted by college.",
     aptitudeExamsAr: "اختبارات القدرات في الإنجليزي والرياضيات والعربي، بأوزان تختلف حسب الكلية.",
+    generalMin: { science: 70, arts: 78 }, // the general minimum in admissionSystem above (used by score.html)
     floorLabelEn: "Lowest admitted, Fall 2026/27",
     floorLabelAr: "أدنى معدل مقبول، الفصل الأول 2026/2027",
     // qudrat: the college's name in KUWAIT_QUDRAT.formulas (qudrat-data.js), used to show how the score is counted

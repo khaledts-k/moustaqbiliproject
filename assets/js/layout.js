@@ -23,11 +23,13 @@ const SITE_NAV = [
 // Every other page: listed in the "More info" side panel on every page, and in the footer
 const SITE_PAGES = [
   { href: "results.html", key: "nav_courses", label: "Scholarships" },
+  { href: "score.html", key: "nav_score", label: "Check my score" },
   { href: "qudrat.html", key: "nav_qudrat", label: "Qudrat Tests" },
   { href: "local-universities.html", key: "nav_local", label: "Study in Kuwait" },
   { href: "suggestions.html", key: "nav_guide", label: "How to Apply" },
   { href: "clarifications.html", key: "nav_questions", label: "Questions" },
   { href: "more-info.html", key: "nav_more", label: "Rules, money & visas" },
+  { href: "resources.html", key: "nav_resources", label: "Resources" },
   { href: "contact.html", key: "nav_contact", label: "Contact" },
   { href: "ask.html", key: "nav_ask", label: "Ask Us" },
   { href: "about.html", key: "nav_about", label: "About" }

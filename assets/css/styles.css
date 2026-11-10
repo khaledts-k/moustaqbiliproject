@@ -1178,3 +1178,30 @@ html.dark .answer-card { background: #182016; border-color: #7e9e76; }
 .reveal-source:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.25rem; }
 html.dark .reveal-fact { color: #d7ded5; }
 html.dark .reveal-source { color: #b7cf9f; }
+
+/* Check my score (score.html) */
+.score-input { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.6rem; background: #fff; color: #0f172a; font-size: 1rem; }
+.score-input:focus { outline: 2px solid #476340; outline-offset: 1px; }
+.score-choice { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border: 1px solid #cbd5e1; border-radius: 9999px; background: #fff; font-size: 0.875rem; font-weight: 600; color: #334155; cursor: pointer; }
+.score-choice:has(input:checked) { background: #f4f6f3; border-color: #476340; color: #222d1d; }
+.score-choice input { accent-color: #384f33; }
+.score-group { border-top: 1px solid #e2e8f0; padding: 0.6rem 0; }
+.score-group > summary { cursor: pointer; }
+.score-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 0.6rem; background: #f8fafc; }
+.score-chip { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; border: 1px solid; }
+.score-chip-above { background: #f0f7ec; color: #2d4a22; border-color: #a8bfa2; }
+.score-chip-close { background: #fef7e6; color: #78501a; border-color: #f2d28b; }
+.score-chip-below { background: #f8eeee; color: #7a2e2e; border-color: #e3b7b7; }
+.score-chip-stream, .score-chip-need { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+html.dark .score-input { background: #182016; color: #eef2ee; border-color: #384f33; }
+html.dark .score-choice { background: #182016; color: #d6dfd3; border-color: #384f33; }
+html.dark .score-choice:has(input:checked) { background: #2d3e29; color: #fff; border-color: #7e9e76; }
+html.dark .score-group { border-color: #2d3e29; }
+html.dark .score-row { background: #141c12; border-color: #2d3e29; }
+html.dark .score-chip-above { background: #1f3318; color: #c7e0bd; border-color: #476340; }
+html.dark .score-chip-close { background: #3a2c10; color: #f6dfa6; border-color: #78501a; }
+html.dark .score-chip-below { background: #3a1c1c; color: #f0c4c4; border-color: #7a2e2e; }
+html.dark .score-chip-stream, html.dark .score-chip-need { background: #1e2a1b; color: #cbd5e1; border-color: #384f33; }
+/* Resources page */
+html.dark .resource-link { background: #141c12; border-color: #2d3e29; }
+html.dark .resource-link:hover { background: #182016; border-color: #7e9e76; }

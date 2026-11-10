@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
   if (page === "why.html") initWhyPage();
+  if (page === "score.html") initScorePage();
+  if (page === "resources.html") initResourcesPage();
   if (document.body.classList.contains("page-404")) init404Page(); // its address is whatever was mistyped
   initWhyLinks();
   initUpdateNote();
@@ -1111,12 +1113,13 @@ function pathwayMoneyHtml(m, country) {
   }
 
   const nbaqList = nbaqMajorFor(m.id, country);
-  const unisBody = prog
+  const unisBody = (prog
     ? universitiesHtml(prog)
     : nbaqList
     ? nbaqMajorUnisHtml(nbaqList, ar ? m.ar : m.en)
     : `<p class="text-sm text-slate-600 mb-3">${t('pw_unis_plan_note')}</p>
-       <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`;
+       <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`)
+    + unlistedUniNote();
 
   return `
     <h2 class="text-lg font-extrabold text-slate-900 mb-4">${title}</h2>
@@ -1401,6 +1404,11 @@ function universitiesHtml(baseProg, withHeading = true) {
     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-slate-800">
       ${prog.accreditedUniversities.map(u => `<li class="p-2 bg-slate-50 border border-slate-200 rounded">${u}</li>`).join("")}
     </ul>`;
+}
+
+// Under every university list: what to do when your university is not on it
+function unlistedUniNote() {
+  return `<p class="text-sm text-slate-600 mt-4 pt-3 border-t border-slate-200"><strong class="text-slate-800">${t('unlisted_uni_q')}</strong> ${t('unlisted_uni_a')} <a class="font-semibold text-olive-900 underline" href="clarifications.html#university-not-listed">${t('unlisted_uni_link')}</a></p>`;
 }
 
 function universitiesFlag(baseProg) {
@@ -2328,6 +2336,254 @@ function renderFaqList() {
 }
 
 // =========================================================================
+// 10h. Check my score (score.html): where a student's % stands against
+// the Ministry's minimums and last year's lowest accepted scores
+// =========================================================================
+const SCORE_WHERE = ["abroad", "ku", "aasu", "puc"];
+const SCORE_UNI_IDS = { ku: "kuwait-university", aasu: "aasu", puc: "puc" };
+
+function initScorePage() {
+  const form = document.getElementById("score-form");
+  if (!form) return;
+  // Choices live in the address (score.html?hs=92&stream=arts&where=abroad,ku), so a result can be shared
+  const p = new URLSearchParams(location.search);
+  ["hs", "eng", "math", "arb"].forEach(n => { if (p.get(n)) form.elements[n].value = p.get(n); });
+  if (p.get("stream") === "arts") form.querySelector('input[name="stream"][value="arts"]').checked = true;
+  if (p.get("where")) {
+    const where = p.get("where").split(",");
+    form.querySelectorAll('input[name="where"]').forEach(b => { b.checked = where.includes(b.value); });
+  }
+  if (["eng", "math", "arb"].some(n => p.get(n))) document.getElementById("score-qudrat").open = true;
+  fillScoreCountries(p.get("country") || "");
+
+  form.addEventListener("input", () => renderScoreResults(true));
+  form.addEventListener("change", () => renderScoreResults(true));
+  form.addEventListener("submit", e => e.preventDefault());
+  window.addEventListener("languageChanged", () => { fillScoreCountries(form.elements.country.value); renderScoreResults(false); });
+  renderScoreResults(false);
+}
+
+function fillScoreCountries(selected) {
+  const sel = document.getElementById("score-country");
+  if (!sel) return;
+  const names = window.PLAN_COUNTRIES || {};
+  sel.innerHTML = `<option value="">${t('score_country_all')}</option>` + Object.keys(names).map(c =>
+    `<option value="${escapeHtml(c)}"${c === selected ? " selected" : ""}>${escapeHtml(isArabic() ? names[c] : c)}</option>`).join("");
+}
+
+function readScoreForm() {
+  const f = document.getElementById("score-form");
+  const num = n => { const v = parseFloat(f.elements[n].value); return Number.isFinite(v) && v >= 0 && v <= 100 ? v : null; };
+  return {
+    hs: num("hs"), eng: num("eng"), math: num("math"), arb: num("arb"),
+    hsRaw: f.elements.hs.value.trim(),
+    stream: f.querySelector('input[name="stream"]:checked')?.value || "science",
+    where: [...f.querySelectorAll('input[name="where"]:checked')].map(b => b.value),
+    country: f.elements.country.value
+  };
+}
+
+function renderScoreResults(updateUrl) {
+  const box = document.getElementById("score-results");
+  if (!box) return;
+  const s = readScoreForm();
+  document.getElementById("score-country-box")?.classList.toggle("hidden", !s.where.includes("abroad"));
+
+  if (updateUrl) {
+    const p = new URLSearchParams();
+    ["hs", "eng", "math", "arb"].forEach(k => { if (s[k] != null) p.set(k, s[k]); });
+    if (s.stream === "arts") p.set("stream", "arts");
+    if (s.where.length < SCORE_WHERE.length) p.set("where", s.where.join(","));
+    if (s.country) p.set("country", s.country);
+    history.replaceState(null, "", location.pathname + (p.toString() ? `?${p}` : ""));
+  }
+
+  const badHs = s.hsRaw !== "" && (s.hs == null || s.hs < 50);
+  document.getElementById("score-hs-error")?.classList.toggle("hidden", !badHs);
+  if (s.hs == null || badHs) { box.innerHTML = `<p class="text-sm text-slate-600">${t('score_empty')}</p>`; return; }
+  if (!s.where.length) { box.innerHTML = `<p class="text-sm text-slate-600">${t('score_pick_where')}</p>`; return; }
+
+  const unis = window.KUWAIT_LOCAL_UNIVERSITIES || [];
+  box.innerHTML = s.where.map(w => {
+    if (w === "abroad") return scoreAbroadHtml(s);
+    const u = unis.find(x => x.id === SCORE_UNI_IDS[w]);
+    return u ? scoreLocalHtml(u, s) : "";
+  }).join("");
+}
+
+// Above / Close / Below. "min": a minimum to apply (close = less than 3 points above it).
+// "lowest": last year's lowest admitted score (close = within 1 point of it).
+function scoreStatus(score, floor, kind) {
+  if (kind === "min") return score < floor ? "below" : score < floor + 3 ? "close" : "above";
+  return score >= floor + 1 ? "above" : score >= floor - 1 ? "close" : "below";
+}
+
+function scorePct(n) {
+  return `${formatNumber(n, 2)}%`;
+}
+
+function scoreRow(name, url, meta, status) {
+  const title = url ? `<a href="${url}" class="font-bold text-slate-900 hover:underline">${name}</a>` : `<span class="font-bold text-slate-900">${name}</span>`;
+  return `<li class="score-row"><div class="min-w-0">${title}<p class="text-xs text-slate-600 mt-0.5">${meta}</p></div><span class="score-chip score-chip-${status}">${t('score_st_' + status)}</span></li>`;
+}
+
+function scoreSection(title, sub, body, foot) {
+  return `
+    <section class="bg-white border border-slate-300 rounded-xl p-5 shadow-sm mb-5">
+      <h2 class="text-lg font-extrabold text-slate-900">${title}</h2>
+      ${sub ? `<p class="text-sm text-slate-600 mt-1">${sub}</p>` : ""}
+      <div class="mt-4">${body}</div>
+      ${foot ? `<p class="text-xs text-slate-500 mt-4">${foot}</p>` : ""}
+    </section>`;
+}
+
+// Rows grouped Above / Close / Below (and "science stream only"); the groups fold away
+function scoreGroups(items, groupKey) {
+  return ["above", "close", "below", "stream", "need"].map(st => {
+    const list = items.filter(i => i.status === st);
+    if (!list.length) return "";
+    return `
+      <details class="score-group"${st === "above" || st === "close" ? " open" : ""}>
+        <summary><span class="font-bold text-slate-900">${t(`${groupKey}_${st}`).replace("{n}", list.length)}</span></summary>
+        <ul class="mt-2 space-y-2">${list.map(i => i.html).join("")}</ul>
+      </details>`;
+  }).join("");
+}
+
+// Scholarships abroad: every plan major against its minimum, in one country or the lowest anywhere
+function scoreAbroadHtml(s) {
+  const ar = isArabic();
+  const names = window.PLAN_COUNTRIES || {};
+  const countryName = c => ar ? (names[c] || c) : c;
+  const countries = s.country ? [s.country] : Object.keys(names);
+  const items = (window.PLAN_MAJORS || []).map(m => {
+    const offered = countries.filter(c => c in m.minPct);
+    if (!offered.length) return null;
+    const best = offered.reduce((a, c) => (m.minPct[c] < m.minPct[a] ? c : a));
+    const min = m.minPct[best];
+    const status = s.stream === "arts" && m.stream === "science" ? "stream" : scoreStatus(s.hs, min, "min");
+    const meets = offered.filter(c => s.hs >= m.minPct[c]).length;
+    const url = `results.html?major=${encodeURIComponent(m.id)}${s.country ? `&country=${encodeURIComponent(s.country)}&step=3` : ""}`;
+    const meta = (s.country ? t('score_min').replace("{pct}", scorePct(min))
+      : t('score_lowest_min').replace("{pct}", scorePct(min)).replace("{country}", countryName(best)))
+      + (m.unconfirmed?.includes(best) ? ` ${flag('unconfirmed')}` : "")
+      + (!s.country && status !== "stream" ? ` · ${t('score_meets_in').replace("{n}", meets).replace("{m}", offered.length)}` : "");
+    return { status, html: scoreRow(escapeHtml(ar ? m.ar : m.en), url, meta, status) };
+  }).filter(Boolean);
+  const meetsCount = items.filter(i => i.status === "above" || i.status === "close").length;
+  const sub = t('score_abroad_summary').replace("{n}", meetsCount).replace("{m}", items.length)
+    .replace("{where}", s.country ? t('score_in_country').replace("{country}", countryName(s.country)) : "");
+  return scoreSection(t('score_where_abroad'), sub, scoreGroups(items, 'score_group_min'),
+    `${t('score_abroad_ranked')} ${t('score_source_plan')}`);
+}
+
+// "80% science / 85% arts" -> that stream's number; "65.38 - 76.56%" -> a range; "90%" -> one number
+function scoreFloors(text, stream) {
+  const str = String(text || "");
+  const byStream = [...str.matchAll(/(\d+(?:\.\d+)?)%\s*(science|arts)/g)];
+  if (byStream.length) {
+    const m = byStream.find(x => x[2] === stream);
+    return m ? { low: +m[1], high: +m[1] } : { streamOnly: true };
+  }
+  const nums = (str.match(/\d+(?:\.\d+)?/g) || []).map(Number);
+  return nums.length ? { low: Math.min(...nums), high: Math.max(...nums) } : null;
+}
+
+// A Kuwait university: each college (or major) against its lowest admitted score or minimum.
+// Kuwait University compares the equivalent average (school % + Qudrat, with each college's
+// weights); AASU and PUC publish minimums to apply, which are high school percentages.
+function scoreLocalHtml(u, s) {
+  const ar = isArabic();
+  const isKu = u.id === "kuwait-university";
+  const kind = isKu ? "lowest" : "min";
+  const formulas = window.KUWAIT_QUDRAT?.formulas || [];
+  const testNames = { eng: t('score_eng'), math: t('score_math'), arb: t('score_arb') };
+  const general = u.generalMin?.[s.stream];
+  const items = [];
+
+  u.colleges.forEach(c => {
+    const cName = ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+    const formula = c.weights ? { weights: c.weights } : c.qudrat ? formulas.find(f => f.collegeEn === c.qudrat) : null;
+    const usesQudrat = formula && c.scoring !== "hs-only" && c.scoring !== "no-qudrat";
+    const missing = usesQudrat ? Object.keys(formula.weights).filter(k => k !== "hs" && formula.weights[k] > 0 && s[k] == null) : [];
+    const equiv = usesQudrat && !missing.length
+      ? Object.entries(formula.weights).reduce((sum, [k, w]) => sum + w * (k === "hs" ? s.hs : s[k]), 0) : null;
+    // Kuwait University's own high school condition for the college ("High school 85% or more")
+    const hsNeed = parseFloat((formula?.conditionEn || "").match(/^High school (\d+)%/)?.[1]);
+    // The score this college is compared on
+    const score = isKu && usesQudrat ? equiv : s.hs;
+    const yours = equiv != null ? t('score_your_equiv').replace("{pct}", scorePct(equiv)) : t('score_your_hs').replace("{pct}", scorePct(s.hs));
+
+    const rowsFor = [];
+    const graded = (c.majors || []).filter(m => m.grade);
+    if (graded.length) {
+      graded.forEach(m => rowsFor.push({ name: `${cName}: ${ar ? (m.ar || m.en) : m.en}`, floors: scoreFloors(m.grade, s.stream) }));
+      const all = scoreFloors(c.minThanawiya, s.stream);
+      const lowestMajor = Math.min(...graded.map(m => parseFloat(m.grade)));
+      if (all && all.low < lowestMajor) rowsFor.push({ name: `${cName}: ${t('score_other_majors')}`, floors: { low: all.low, high: all.low } });
+    } else {
+      rowsFor.push({ name: cName, floors: scoreFloors(c.minThanawiya, s.stream) }); // the English text says "science" / "arts"
+    }
+
+    rowsFor.forEach(r => {
+      let status, meta;
+      const f = r.floors;
+      if (!f) return;
+      const floorText = f.low === f.high ? scorePct(f.low) : t('score_range').replace("{low}", scorePct(f.low)).replace("{high}", scorePct(f.high));
+      const floorLine = (kind === "lowest" ? t('score_lowest') : t('score_min')).replace("{pct}", floorText);
+      if (f.streamOnly) { status = "stream"; meta = escapeHtml(ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya); }
+      else if (general && s.hs < general) { status = "below"; meta = t('score_general_below').replace("{pct}", scorePct(general)); }
+      else if (hsNeed && s.hs < hsNeed) { status = "below"; meta = t('score_hs_need').replace("{pct}", scorePct(hsNeed)); }
+      else if (score == null) { status = "need"; meta = `${floorLine} · ${t('score_add_tests').replace("{tests}", missing.map(k => testNames[k]).join(ar ? " و" : " and "))}`; }
+      else { status = scoreStatus(score, f.low, kind); meta = `${floorLine} · ${yours}`; }
+      const cond = L(c, 'condition');
+      if (cond) meta += `<br><span class="text-slate-500">${escapeHtml(cond)}</span>`;
+      items.push({ status, html: scoreRow(escapeHtml(r.name), "local-universities.html", meta, status) });
+    });
+  });
+
+  const sub = `${escapeHtml(L(u, 'floorLabel'))}${general ? ` · ${t('score_general_min').replace("{pct}", scorePct(general))}` : ""}`;
+  return scoreSection(escapeHtml(ar ? u.nameAr : u.name), sub, scoreGroups(items, isKu ? 'score_group_lowest' : 'score_group_min'),
+    escapeHtml(ar ? (u.sourceNoteAr || u.sourceNote) : u.sourceNote));
+}
+
+// =========================================================================
+// 10i. Resources page (resources.html): official links, grouped
+// =========================================================================
+function initResourcesPage() {
+  renderResourcesPage();
+  window.addEventListener("languageChanged", renderResourcesPage);
+  revealHashTarget();
+}
+
+function renderResourcesPage() {
+  const root = document.getElementById("resources-root");
+  const data = window.RESOURCES;
+  if (!root || !data) return;
+  const ar = isArabic();
+  const host = url => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return ""; } };
+  root.innerHTML = data.groups.map(g => `
+    <section id="${g.id}" class="scroll-mt-24 bg-white border border-slate-300 rounded-xl p-5 shadow-sm">
+      <h2 class="text-lg font-extrabold text-slate-900 mb-3">${escapeHtml(L(g, 'title'))}</h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        ${g.items.map(i => {
+          const url = ar ? (i.urlAr || i.url) : i.url;
+          return `
+          <li>
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="resource-link block h-full p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-olive-700 transition">
+              <span class="flex items-center gap-1.5 font-bold text-olive-900">${escapeHtml(L(i, 'label'))} ${ICON_EXTERNAL}</span>
+              <span class="block text-sm text-slate-600 mt-1">${escapeHtml(L(i, 'desc'))}</span>
+              <span class="block text-xs text-slate-400 mt-1" dir="ltr">${escapeHtml(host(url))}</span>
+            </a>
+          </li>`;
+        }).join("")}
+      </ul>
+    </section>`).join("");
+  const meta = document.getElementById("resources-meta");
+  if (meta) meta.textContent = `${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
+}
+
+// =========================================================================
 // 10e. Ask us page
 // =========================================================================
 function initAskPage() {
@@ -2343,6 +2599,8 @@ function initAskPage() {
 
   notice?.classList.toggle("hidden", !!email);
   question?.setAttribute("maxlength", String(MAX));
+  const fromSearch = new URLSearchParams(location.search).get("q");
+  if (question && fromSearch && !question.value) question.value = fromSearch.slice(0, MAX);
   const updateCounter = () => { if (counter) counter.textContent = `${question.value.length} / ${MAX}`; };
   question?.addEventListener("input", updateCounter);
   updateCounter();
@@ -2642,7 +2900,7 @@ function initFeedbackWidget() {
 // so one index covers majors, programs, countries, Kuwait, questions, guides and contacts.
 // Each result links to the exact place: a filtered results page, or a page section (#id).
 // =========================================================================
-const SEARCH_GROUPS = ["majors", "programs", "countries", "kuwait", "questions", "topics", "contacts", "pages"];
+const SEARCH_GROUPS = ["majors", "programs", "countries", "kuwait", "questions", "topics", "resources", "contacts", "pages"];
 const SEARCH_GROUP_LIMIT = 5; // results shown per group before "Show all"
 
 // Everyday words students type, mapped to the words the site uses
@@ -2688,6 +2946,8 @@ function collectText(value, suffix, out = []) {
 function buildSearchIndex() {
   const tr = (key, lang) => window.MOUSTAQBILI_TRANSLATIONS?.[lang]?.[key] ?? key;
   const entries = [];
+  // Joins short pieces of text ("10 KWD", "per test") as sentences, so a direct answer stops where a card does
+  const sentences = list => list.map(x => String(x).trim()).filter(Boolean).map(x => /[.!?؟:]$/.test(x) ? x : `${x}.`).join(" ");
   const add = (group, url, titleEn, titleAr, textEn, textAr, keywords = "") =>
     entries.push({ group, url, titleEn, titleAr: titleAr || titleEn, textEn: textEn || "", textAr: textAr || textEn || "", keywords });
 
@@ -2701,14 +2961,24 @@ function buildSearchIndex() {
       `${disc?.ar || ""}. أقل نسبة مقبولة: ${list.map(([c, p]) => `${countryAr(c)} ${p}%`).join("، ")}.`);
   });
 
-  // Detailed scholarship programs -> results for that country and major
+  // Detailed scholarship programs -> results for that country and major.
+  // Everything behind the program's tabs and pop-ups (exams, deadlines, visa, money) is searchable too.
+  const skipKeys = new Set(["id", "levels", "planMajors", "verifiedFields", "country", "countryAr", "title", "titleAr", "isMerit", "category"]);
+  const leafText = (obj, out = []) => {
+    if (typeof obj === "string") out.push(/[.!?؟:]$/.test(obj.trim()) ? obj.trim() : `${obj.trim()}.`);
+    else if (Array.isArray(obj)) obj.forEach(v => leafText(v, out));
+    else if (obj && typeof obj === "object") Object.entries(obj).forEach(([k, v]) => { if (!skipKeys.has(k)) leafText(v, out); });
+    return out;
+  };
   (window.MOUSTAQBILI_PROGRAMS || []).forEach(p => {
     const ar = window.MOUSTAQBILI_PROGRAMS_AR?.[p.id] || {};
     const params = new URLSearchParams({ country: p.country });
     if (p.planMajors?.[0]) params.set("major", p.planMajors[0]);
+    const { accreditedUniversities, majors, ...details } = p;
+    const { accreditedUniversities: arUnis, majors: arMajors, ...arDetails } = ar;
     add("programs", `results.html?${params}`, `${p.title} - ${p.country}`, `${p.titleAr || p.title} - ${p.countryAr || p.country}`,
-      `${p.category}. ${p.majors.join(", ")}. ${p.accreditedUniversities.join(", ")}. ${(p.monthlySalary?.allowancesSummary || []).join(" ")}`,
-      `${(ar.majors || p.majors).join("، ")}. ${(ar.accreditedUniversities || p.accreditedUniversities).join("، ")}. ${(ar.monthlySalary?.allowancesSummary || []).join(" ")}`);
+      `${p.category}. ${majors.join(", ")}. ${accreditedUniversities.join(", ")}. ${leafText(details).join(" ")}`,
+      `${(arMajors || majors).join("، ")}. ${(arUnis || accreditedUniversities).join("، ")}. ${leafText(arDetails).join(" ")}`);
   });
 
   // Monthly allowance per country (More Info table), used by countries and the money section
@@ -2726,15 +2996,21 @@ function buildSearchIndex() {
       `البعثات في ${c.labelAr}: ${count} تخصص في خطة 2026/2027. ${allowanceText(a, "ar")}`);
   });
 
-  // Universities and colleges in Kuwait
+  // Universities and colleges in Kuwait, with what is on the back of each card
+  // (lowest admitted per major, conditions, how the score is counted)
+  const weightText = (w, lang) => !w ? "" : Object.entries(w).map(([k, v]) =>
+    `${lang === "ar" ? { hs: "الثانوية", eng: "الإنجليزي", math: "الرياضيات", arb: "العربي" }[k] : { hs: "high school", eng: "English", math: "Math", arb: "Arabic" }[k]} ${Math.round(v * 1000) / 10}%`).join(lang === "ar" ? " + " : " + ");
   (window.KUWAIT_LOCAL_UNIVERSITIES || []).forEach(u => {
     const url = `local-universities.html#${u.id}`;
-    add("kuwait", url, u.name, u.nameAr, `${u.scholarshipFunding}. ${u.admissionSystem}`, `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""}`);
+    add("kuwait", url, u.name, u.nameAr,
+      `${u.scholarshipFunding}. ${u.admissionSystem} ${u.aptitudeExams || ""} ${u.campusLocation ? `Campus: ${u.campusLocation}.` : ""} ${u.sourceNote || ""}`,
+      `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""} ${u.aptitudeExamsAr || ""} ${u.campusLocationAr ? `المقر: ${u.campusLocationAr}.` : ""} ${u.sourceNoteAr || ""}`);
     (u.colleges || []).forEach(c => {
       const majors = c.majors || [];
+      const formula = c.weights || (window.KUWAIT_QUDRAT?.formulas || []).find(f => f.collegeEn === c.qudrat)?.weights;
       add("kuwait", url, `${c.collegeName} - ${u.name}`, `${c.collegeNameAr || c.collegeName} - ${u.nameAr}`,
-        `${c.minThanawiya ? `Lowest admitted ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : m.en).join(", ")}`,
-        `${c.minThanawiya ? `أدنى معدل مقبول ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : (m.ar || m.en)).join("، ")}`);
+        `${c.minThanawiya ? `${u.floorLabelEn || "Lowest admitted"}: ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : `${m.en}${m.grade ? ` ${m.grade}` : ""}`).join(", ")}. ${formula ? `Score counted as ${weightText(formula, "en")}.` : ""} ${c.conditionEn || ""}`,
+        `${c.minThanawiya ? `${u.floorLabelAr || "أدنى معدل مقبول"}: ${c.minThanawiyaAr || c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : `${m.ar || m.en}${m.grade ? ` ${m.grade}` : ""}`).join("، ")}. ${formula ? `تُحسب الدرجة: ${weightText(formula, "ar")}.` : ""} ${c.conditionAr || ""}`);
     });
   });
 
@@ -2742,39 +3018,71 @@ function buildSearchIndex() {
   (window.CLARIFICATIONS?.items || []).forEach(i =>
     add("questions", `clarifications.html#${i.id}`, i.questionEn, i.questionAr, i.answerEn, i.answerAr));
 
+  // Cards anywhere in the guides: a question with its answer (front) and details (back), a term with
+  // its meaning, or a titled box. Each one is its own result, so its answer can be shown directly.
+  const addCards = (value, url) => {
+    if (Array.isArray(value)) return value.forEach(v => addCards(v, url));
+    if (!value || typeof value !== "object") return;
+    if (value.questionEn && (value.answerEn || value.factEn)) {
+      const line = (x, lang) => [x[`answer${lang}`], x[`sub${lang}`]].filter(Boolean).join(" ") + ". " + (x[`fact${lang}`] || "");
+      add("topics", url, value.questionEn, value.questionAr, line(value, "En"), line(value, "Ar"));
+    } else if (value.termEn && value.defEn) {
+      add("topics", url, value.termEn, value.termAr, value.defEn, value.defAr);
+    } else if (value.titleEn && value.bodyEn && !value.blocks) {
+      add("topics", url, value.titleEn, value.titleAr, value.bodyEn, value.bodyAr);
+    }
+    Object.values(value).forEach(v => { if (v && typeof v === "object") addCards(v, url); });
+  };
+  (window.MORE_INFO?.sections || []).forEach(s => addCards(s.blocks, `more-info.html#${s.id}`));
+  if (window.KUWAIT_QUDRAT) {
+    addCards([window.KUWAIT_QUDRAT.currentCycle?.basics, window.KUWAIT_QUDRAT.goodToKnow], "qudrat.html#current-cycle");
+    // How Kuwait University counts each college's score
+    (window.KUWAIT_QUDRAT.formulas || []).forEach(f => add("kuwait", "qudrat.html#equivalent",
+      `${f.collegeEn}: equivalent average (Kuwait University)`, `${f.collegeAr}: المعدل المكافئ (جامعة الكويت)`,
+      `${weightText(f.weights, "en")}. ${f.conditionEn || ""}`, `${weightText(f.weights, "ar")}. ${f.conditionAr || ""}`,
+      "equivalent average weights المعدل المكافئ"));
+  }
+
+  // Official links (Resources page)
+  (window.RESOURCES?.groups || []).forEach(g => (g.items || []).forEach(i => {
+    add("resources", `resources.html#${g.id}`, i.labelEn, i.labelAr, i.descEn, i.descAr, `${g.keywords} ${i.url} link website official رابط موقع`);
+    Object.assign(entries[entries.length - 1], { ext: i.url, extAr: i.urlAr || i.url }); // the answer links straight to it
+  }));
+
   // Guides: More Info, Navigate, the application checklist, Qudrat
   (window.MORE_INFO?.sections || []).forEach(s => {
     const hasTable = (s.blocks || []).some(b => b.type === "allowances");
     add("topics", `more-info.html#${s.id}`, s.titleEn, s.titleAr,
-      `${collectText(s, "En").join(" ")} ${hasTable ? allowances.map(a => allowanceText(a, "en")).join(" ") : ""}`,
-      `${collectText(s, "Ar").join(" ")} ${hasTable ? allowances.map(a => allowanceText(a, "ar")).join(" ") : ""}`);
+      `${sentences(collectText(s, "En"))} ${hasTable ? allowances.map(a => allowanceText(a, "en")).join(" ") : ""}`,
+      `${sentences(collectText(s, "Ar"))} ${hasTable ? allowances.map(a => allowanceText(a, "ar")).join(" ") : ""}`);
   });
   (window.NAVIGATE_GUIDE?.sections || []).forEach(s =>
-    add("topics", `navigate.html#${s.id}`, s.titleEn, s.titleAr, collectText(s, "En").join(" "), collectText(s, "Ar").join(" ")));
+    add("topics", `navigate.html#${s.id}`, s.titleEn, s.titleAr, sentences(collectText(s, "En")), sentences(collectText(s, "Ar"))));
   (window.APPLY_STEPS?.steps || []).forEach(s =>
-    add("topics", "suggestions.html#scholarship-steps", s.titleEn, s.titleAr, collectText(s, "En").join(" "), collectText(s, "Ar").join(" "), "apply steps checklist"));
+    add("topics", "suggestions.html#scholarship-steps", s.titleEn, s.titleAr, sentences(collectText(s, "En")), sentences(collectText(s, "Ar")), "apply steps checklist"));
   const q = window.KUWAIT_QUDRAT;
   if (q) {
     add("topics", "qudrat.html#current-cycle", tr("nav_qudrat", "en"), tr("nav_qudrat", "ar"),
-      collectText(q, "En").join(" "), collectText(q, "Ar").join(" "), "qudrat aptitude test dates register القدرات");
+      sentences(collectText(q, "En")), sentences(collectText(q, "Ar")), "qudrat aptitude test dates register القدرات");
     add("topics", "qudrat.html#equivalent", tr("equiv_title", "en"), tr("equiv_title", "ar"),
       (q.formulas || []).map(f => f.collegeEn).join(", "), (q.formulas || []).map(f => f.collegeAr).join("، "), "equivalent score calculator weights المعدل المكافئ");
   }
 
   // Contacts -> that group on the Contact page
   (window.MOHE_CONTACTS?.groups || []).forEach(g => (g.entries || []).forEach(e => {
-    const values = (e.items || []).map(it => it.value || "").join(" ");
+    // "Phone: +44 20 7761 8500." so the answer gives the number itself
+    const pairs = lang => (e.items || []).map(it => `${it[`label${lang}`] || it.labelEn || ""}: ${it.value || ""}.`).join(" ");
     add("contacts", `contact.html#${g.id}`, `${e.nameEn} - ${g.titleEn}`, `${e.nameAr || e.nameEn} - ${g.titleAr || g.titleEn}`,
-      `${e.descEn || ""} ${collectText(e.items || [], "En").join(" ")} ${values}`,
-      `${e.descAr || ""} ${collectText(e.items || [], "Ar").join(" ")} ${values}`);
+      `${e.descEn ? `${e.descEn}.` : ""} ${pairs("En")}`, `${e.descAr ? `${e.descAr}.` : ""} ${pairs("Ar")}`);
   }));
 
   // Pages, using the header names and the home-page descriptions (SITE_NAV / FOOTER_EXTRA are in layout.js)
-  const pageDesc = { "results.html": "results_desc", "qudrat.html": "ql_qudrat_desc", "local-universities.html": "ql_local_desc", "suggestions.html": "ql_guide_desc", "clarifications.html": "ql_questions_desc", "more-info.html": "ql_more_desc", "contact.html": "ql_contact_desc", "navigate.html": "navigate_desc" };
+  const pageDesc = { "score.html": "score_desc", "resources.html": "resources_desc", "results.html": "results_desc", "qudrat.html": "ql_qudrat_desc", "local-universities.html": "ql_local_desc", "suggestions.html": "ql_guide_desc", "clarifications.html": "ql_questions_desc", "more-info.html": "ql_more_desc", "contact.html": "ql_contact_desc", "navigate.html": "navigate_desc" };
   const pages = (typeof SITE_NAV !== "undefined" ? SITE_NAV : []).concat(typeof FOOTER_EXTRA !== "undefined" ? FOOTER_EXTRA : []);
   pages.forEach(p => {
     const d = pageDesc[p.href];
-    add("pages", p.href, tr(p.key, "en"), tr(p.key, "ar"), d ? tr(d, "en") : "", d ? tr(d, "ar") : "");
+    const extra = { "resources.html": "resources links websites official useful مصادر روابط مواقع", "score.html": "chances competitive my score فرصتي نسبتي" }[p.href] || "";
+    add("pages", p.href, tr(p.key, "en"), tr(p.key, "ar"), d ? tr(d, "en") : "", d ? tr(d, "ar") : "", extra);
   });
 
   // Normalised copies for matching, in both languages, so either language finds the result
@@ -2807,7 +3115,9 @@ const SEARCH_MEANINGS = {
   exam: ["test", "exam"], test: ["test", "exam"],
   "شروط": ["شروط", "تحتاج", "متطلبات", "نسبه"], "رسوم": ["رسوم", "د.ك"], "سعر": ["رسوم", "د.ك"], "موعد": ["موعد", "اخر يوم"],
   "مخصص": ["مخصص", "مكافاه"], "جامعات": ["جامعه", "جامعات"], "تسجيل": ["تسجيل", "التسجيل"],
-  airplane: ["flight"]
+  airplane: ["flight"], ticket: ["flight", "ticket"], tickets: ["flight", "ticket"], "تذكره": ["تذكره", "طيران", "سفر"], "تذاكر": ["تذاكر", "طيران", "سفر"],
+  defer: ["year later", "freeze", "delay"], postpone: ["year later", "freeze", "delay"], delay: ["year later", "freeze"],
+  "تاجيل": ["بعد سنه", "تجميد"], "اجل": ["بعد سنه", "تجميد"]
 };
 
 // Rough word root, so "universities", "studies" or "tests" also find "university", "study", "test".
@@ -3440,7 +3750,7 @@ function initUpdateNote() {
 //     files, so it stays right after every weekly update.
 // =========================================================================
 const ANSWER_WORDS = {
-  money: ["money", "allowance", "allowances", "stipend", "salary", "pay", "paid", "monthly", "مخصص", "المخصص", "راتب", "فلوس", "مكافاه", "المكافاه", "مبلغ", "المبلغ"],
+  money: ["money", "allowance", "allowances", "stipend", "salary", "pay", "paid", "monthly", "شهري", "شهريا", "مخصص", "المخصص", "راتب", "فلوس", "مكافاه", "المكافاه", "مبلغ", "المبلغ"],
   qudrat: ["qudrat", "aptitude", "قدرات", "القدرات"],
   when: ["deadline", "last day", "when", "date", "dates", "register", "registration", "موعد", "مواعيد", "متى", "اخر", "تسجيل", "التسجيل"],
   cost: ["cost", "fee", "fees", "price", "رسوم", "الرسوم", "سعر", "تكلفه"],
@@ -3455,6 +3765,49 @@ const MAJOR_ALIASES = {
   "veterinary-medicine": ["vet", "vet medicine", "veterinary", "بيطري"]
 };
 
+// Questions with one official answer (ids in clarifications-data.js): when a search matches one,
+// that answer is shown first. Checked in this order, so specific ones come before general ones.
+// exam: the search must also be about Qudrat or a test. need/any/also: it must contain a word
+// from each list (words match whole words; Arabic "ال" is ignored).
+const EXAM_WORDS = ["qudrat", "aptitude", "exam", "exams", "test", "tests", "قدرات", "اختبار", "اختبارات", "امتحان", "الامتحان"];
+const NOT_QUDRAT = ["ielts", "toefl", "sat", "duolingo", "ايلتس", "الايلتس", "توفل", "التوفل"];
+const RESULT_WORDS = ["result", "results", "score", "scores", "نتيجه", "نتيجتي", "نتائج", "درجه", "درجتي", "درجات"];
+const UNI_WORDS = ["university", "universities", "uni", "college", "جامعه", "جامعتي", "جامعات"];
+const RESOURCE_WORDS = ["resource", "resources", "link", "links", "website", "websites", "portal", "official site", "useful sites", "مصادر", "مصدر", "روابط", "رابط", "مواقع", "موقع", "بوابه"];
+const LOWEST_WORDS = ["lowest", "minimum", "min", "cutoff", "cut off", "lowest accepted", "lowest admitted", "lowest percentage", "required percentage", "percentage needed", "اقل", "ادنى", "حد ادنى", "النسبه المطلوبه", "نسبه القبول", "نسب القبول"];
+// Universities in Kuwait by the names students type (ids in KUWAIT_LOCAL_UNIVERSITIES, data.js)
+const LOCAL_UNI_NAMES = {
+  "kuwait-university": ["kuwait university", "ku", "kuniv", "جامعه الكويت"],
+  aasu: ["aasu", "abdullah al salem", "abdullah alsalem", "abdullah al-salem university", "عبدالله السالم", "عبد الله السالم"],
+  puc: ["puc", "private universities", "private university", "internal scholarship", "internal scholarships", "الجامعات الخاصه", "مجلس الجامعات", "البعثات الداخليه", "بعثه داخليه"]
+};
+const SCORE_WORDS = ["chance", "chances", "competitive", "my score", "my percentage", "my grade", "what can i study", "what can i get", "فرصتي", "فرصي", "فرص", "تنافسي", "نسبتي", "معدلي", "ماذا ادرس", "وش ادرس"];
+const FAQ_INTENTS = [
+  { id: "university-not-listed", need: UNI_WORDS, any: ["not on", "not listed", "not in", "unlisted", "not recommended", "not approved", "non nbaq", "appeal", "add", "added", "غير موصى", "غير مدرجه", "غير معتمده", "غير موجوده", "مو موجوده", "تظلم", "اضافه", "اضافتها"] },
+  { id: "grant-countries", any: ["grant", "grants", "منحه", "منح"], also: ["country", "countries", "which", "دول", "دوله"] },
+  { id: "grant-vs-scholarship", any: ["grant", "grants", "منحه", "منح"] },
+  { id: "qudrat-equivalent-average", any: ["equivalent average", "equivalent score", "معدل مكافئ", "مكافئ"] },
+  { id: "qudrat-same-as-national-test", any: ["national test", "unified test", "وطني موحد", "اختبار وطني"] },
+  { id: "qudrat-appeal", exam: true, any: ["appeal", "regrade", "تظلم", "اعتراض"] },
+  { id: "qudrat-pass-mark", exam: true, any: ["pass", "passing", "pass mark", "نجاح"] },
+  { id: "qudrat-results-where", exam: true, not: SCORE_WORDS, any: RESULT_WORDS, also: ["how", "where", "see", "check", "view", "app", "sahel", "كيف", "وين", "اين", "اعرف", "سهل"] },
+  { id: "qudrat-results-when", exam: true, not: SCORE_WORDS, any: RESULT_WORDS },
+  { id: "qudrat-change-language", exam: true, any: ["language", "لغه"] },
+  { id: "qudrat-fee-refund", exam: true, any: ["refund", "cancel", "money back", "استرجاع", "استرداد", "الغاء", "الغي"] },
+  { id: "qudrat-late", exam: true, any: ["late", "miss", "missed", "absent", "تاخرت", "تاخر", "غياب", "غبت"] },
+  { id: "qudrat-forgot-password", exam: true, any: ["password", "forgot", "login", "log in", "سر", "نسيت", "مرور"] },
+  { id: "qudrat-what-to-bring", exam: true, any: ["bring", "allowed", "permitted", "calculator", "phone", "pencil", "id", "watch", "احضر", "احضار", "مسموح", "ممنوع", "حاسبه", "هاتف", "جوال", "هويه", "قلم"] },
+  { id: "qudrat-arrive", exam: true, any: ["arrive", "arrival", "early", "وصول", "اوصل"] },
+  { id: "qudrat-location", exam: true, any: ["location", "venue", "place", "hall", "room", "building", "مقر", "مكان", "قاعه", "مبنى"] },
+  { id: "qudrat-how-register", exam: true, any: ["how to register", "how do i register", "how can i register", "steps", "sign up", "طريقه", "خطوات", "كيف اسجل"] },
+  { id: "qudrat-samples", exam: true, any: ["sample", "samples", "past paper", "past papers", "practice", "نماذج", "نموذج"] },
+  { id: "qudrat-courses", exam: true, any: ["course", "courses", "prep", "training", "دورات", "دوره", "تقويه"] },
+  { id: "qudrat-retake-validity", exam: true, any: ["valid", "validity", "expire", "expires", "retake", "again", "how many times", "صلاحيه", "اعيد", "اعاده", "كم مره"] },
+  { id: "qudrat-who-can-take", exam: true, any: ["who can", "eligible", "international school", "يحق", "مؤهلين", "اجنبيه"] },
+  { id: "qudrat-change-details", exam: true, extra: "nextClose", any: ["change", "edit", "modify", "update", "تغيير", "لتغيير", "تعديل", "لتعديل", "اغير", "اعدل", "تحديث"] },
+  { id: "qudrat-subjects", exam: true, any: ["subjects", "which tests", "what tests", "مواد"] }
+];
+
 // Lower-case words with Arabic "ال" taken off, padded with spaces for whole-word matching
 function answerText(str) {
   return ` ${normalizeSearch(str).split(" ").map(w => w.replace(/^(وال|بال|فال|لل|ال)(?=..)/, "")).join(" ")} `;
@@ -3464,7 +3817,11 @@ function searchAnswer(query, results) {
   const ar = isArabic();
   const words = normalizeSearch(query).split(" ").filter(Boolean);
   // The question plus the site's synonyms ("uk" -> "united kingdom", "doctor" -> "medicine")
-  const q = answerText([query, ...words.flatMap(w => SEARCH_SYNONYMS[w] || [])].join(" "));
+  // Misspelled words ("medcine") also count as the real word they are closest to
+  const index0 = searchIndexCache || [];
+  const fixes = searchTerms(query, index0).filter(tm => /\p{L}{3}/u.test(tm.word) && !index0.some(e => searchHas(e._hay, [tm.word, searchStem(tm.word)])))
+    .flatMap(tm => tm.alts.filter(a => a !== tm.word));
+  const q = answerText([query, ...words.flatMap(w => SEARCH_SYNONYMS[w] || []), ...fixes].join(" "));
   const has = key => ANSWER_WORDS[key].some(w => q.includes(answerText(w)));
   const longest = (list, names) => list.map(x => [x, Math.max(...names(x).map(n => q.includes(answerText(n)) ? n.length : 0))])
     .filter(([, len]) => len > 0).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
@@ -3485,8 +3842,84 @@ function searchAnswer(query, results) {
     typeof a.merit === "number" ? t('ans_merit').replace("{amount}", both(a.merit, a.currency)) : ""
   ].filter(Boolean);
 
-  // 1. Qudrat dates or fee
+  // 0. A question with one official answer (FAQ_INTENTS), e.g. "when are qudrat results out"
   const qd = window.KUWAIT_QUDRAT;
+  const hasAny = list => list.some(w => q.includes(answerText(w)));
+  const aboutExam = !hasAny(NOT_QUDRAT) && (has("qudrat") || hasAny(EXAM_WORDS));
+  const intent = FAQ_INTENTS.find(i => (!i.exam || aboutExam) && (!i.need || hasAny(i.need)) && (!i.not || !hasAny(i.not)) && hasAny(i.any) && (!i.also || hasAny(i.also)));
+  const intentAnswer = intent && faqAnswer(intent.id);
+  if (intentAnswer) {
+    // "Last day to change": add the next real deadline from qudrat-data.js
+    const next = intent.extra === "nextClose" && (qd?.currentCycle.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
+    if (next) intentAnswer.lines.push(t('ans_qudrat_next').replace("{date}", `<strong>${formatDate(next.regClose)}</strong>`).replace("{test}", formatDate(next.test)));
+    return intentAnswer;
+  }
+
+  // 0b. Official links: "qudrat links", "ministry website", "resources"
+  if (hasAny(RESOURCE_WORDS) && window.RESOURCES) {
+    const groups = window.RESOURCES.groups;
+    const g = groups.find(x => x.id !== "abroad" && hasAny(x.keywords.split(" "))) || groups.find(x => hasAny(x.keywords.split(" ")));
+    const shown = g ? g.items.slice(0, 4) : groups.map(x => x.items[0]);
+    return { title: g ? L(g, 'title') : t('ans_resources_title'),
+      lines: [g ? t('ans_resources_group') : t('ans_resources_line'),
+        shown.map(i => `<a class="underline font-semibold" href="${ar ? (i.urlAr || i.url) : i.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(L(i, 'label'))}</a>`).join(" · ")],
+      url: `resources.html${g ? `#${g.id}` : ""}`, label: t('ans_resources_open') };
+  }
+
+  // The best result's own answer, used when a search asks something more specific than a rule covers
+  const top = results[0]?.entry;
+  // An Arabic search on the English site (or the other way round) is answered in the search's language
+  const textAr = /\p{Script=Arabic}/u.test(query) ? true : /[a-z]/i.test(query) ? false : ar;
+  // A word that is nowhere on the site was matched by its closest spelling: say the answer is the closest one
+  const guessed = () => terms.some(tm => /\p{L}{3}/u.test(tm.word) && !(searchIndexCache || []).some(e => searchHas(e._hay, [tm.word, searchStem(tm.word)])));
+  const fromTop = (list = results, note = "") => {
+    const best = bestAnswer(list, query, textAr);
+    if (!best) return null;
+    const ext = textAr ? best.entry.extAr : best.entry.ext; // an official link: link to it directly
+    return { entry: best.entry, title: textAr ? best.entry.titleAr : best.entry.titleEn,
+      lines: [note || (guessed() ? t('ans_closest') : ""), withFlags(escapeHtml(best.line)),
+        ext ? `<a class="underline font-semibold break-all" href="${ext}" target="_blank" rel="noopener noreferrer" dir="ltr">${escapeHtml(ext.replace(/^https?:\/\//, ""))}</a>` : ""].filter(Boolean),
+      url: best.entry.url, label: t('ans_open_result') };
+  };
+  // "books allowance", "visa for the uk", "ucas deadline medicine": words a rule does not explain
+  // ("books", "visa", "deadline") mean the student wants the detail, so the best result answers when it has them
+  const terms = searchTerms(query, searchIndexCache || []);
+  const specific = (...known) => {
+    const vocab = answerText([...known.flat(), ...ANSWER_WORDS.money, ...LOWEST_WORDS,
+      "scholarship scholarships plan accepted percentage majors major country countries university college بعثه بعثات خطه نسبه مقبوله تخصص تخصصات دوله جامعه كليه"].join(" "));
+    const extra = terms.filter(tm => /\p{L}{2}/u.test(tm.word) && !tm.alts.some(alt => vocab.includes(answerText(alt))));
+    if (!extra.length || !top) return null;
+    const found = extra.filter(tm => searchHas(top._hay, tm.alts)).length;
+    return found >= Math.ceil(extra.length / 2) ? fromTop() : null;
+  };
+
+  // 0c. A university in Kuwait: a college's lowest admitted grade, or every college's
+  const localUni = (window.KUWAIT_LOCAL_UNIVERSITIES || []).find(u => hasAny(LOCAL_UNI_NAMES[u.id] || []));
+  if (localUni) {
+    const detail = specific(LOCAL_UNI_NAMES[localUni.id], localUni.colleges.flatMap(c => [c.collegeName, c.collegeNameAr || ""]));
+    if (detail) return detail;
+    // Full names, or the short form students type ("Engineering" for "Engineering & Petroleum")
+    const college = longest(localUni.colleges || [], c => [c.collegeName, c.collegeNameAr, c.collegeName.split(/ & | \(/)[0],
+      (c.collegeNameAr || "").split(" ")[0]].filter(n => n && n.length >= 4));
+    const cName = c => ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+    const floor = c => ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya;
+    const url = `local-universities.html#${localUni.id}`;
+    if (college) {
+      const graded = (college.majors || []).filter(m => m.grade);
+      return { title: `${cName(college)} - ${ar ? localUni.nameAr : localUni.name}`,
+        lines: [`${escapeHtml(L(localUni, 'floorLabel'))}: <strong>${escapeHtml(floor(college))}</strong>`,
+          graded.length ? graded.map(m => `${escapeHtml(ar ? (m.ar || m.en) : m.en)} <strong>${m.grade}</strong>`).join(" · ") : "",
+          escapeHtml(L(college, 'condition'))].filter(Boolean),
+        url, label: t('ans_open_local') };
+    }
+    if (hasAny(LOWEST_WORDS)) {
+      return { title: ar ? localUni.nameAr : localUni.name,
+        lines: [`${escapeHtml(L(localUni, 'floorLabel'))}:`, localUni.colleges.map(c => `${escapeHtml(cName(c))} <strong>${escapeHtml(floor(c))}</strong>`).join(" · ")],
+        url, label: t('ans_open_local') };
+    }
+  }
+
+  // 1. Qudrat dates or fee
   if (qd && has("qudrat") && !major) {
     const c = qd.currentCycle;
     const next = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
@@ -3500,9 +3933,13 @@ function searchAnswer(query, results) {
   }
   // 2. The merit programme: its deadline, or when the extra money starts
   if (has("merit") && !major && !country) {
+    const detail = specific(ANSWER_WORDS.merit, ANSWER_WORDS.when, ["students", "student", "programme", "program", "طلبه", "طالب", "برنامج"]);
+    if (detail) return detail;
     return faqAnswer(has("money") ? "merit-bonus-start" : "merit-deadline-separate") || null;
   }
   // 3. A major, in one country or everywhere
+  const placeNames = [major ? [major.en, major.ar, ...(MAJOR_ALIASES[major.id] || [])] : [], country ? [country.value, country.label, country.labelAr || ""] : []];
+  if ((major || country) && specific(...placeNames)) return specific(...placeNames);
   if (major) {
     const offered = Object.entries(major.minPct);
     if (country) {
@@ -3522,26 +3959,117 @@ function searchAnswer(query, results) {
       lines: [t('ans_by_country'), offered.sort((a, b) => a[1] - b[1]).map(([c, p]) => `${ar ? (window.PLAN_COUNTRIES?.[c] || c) : c} <strong>${p}%</strong>`).join(" · ")],
       url: `results.html?major=${encodeURIComponent(major.id)}`, label: t('ans_choose_country') };
   }
-  // 4. A country: its monthly money and how many majors it offers
+  // 4. A country: the lowest % accepted there (when asked), its monthly money and how many majors it offers
+  if (country && hasAny(LOWEST_WORDS)) {
+    const list = (window.PLAN_MAJORS || []).filter(m => country.value in m.minPct).sort((x, y) => x.minPct[country.value] - y.minPct[country.value]);
+    if (list.length) {
+      const lo = list[0], hi = list[list.length - 1];
+      return { title: t('ans_lowest_country').replace("{country}", countryName(country)),
+        lines: [t('ans_lowest_range').replace("{low}", `<strong>${lo.minPct[country.value]}%</strong>`).replace("{lowMajor}", majorName(lo))
+          .replace("{high}", `<strong>${hi.minPct[country.value]}%</strong>`).replace("{highMajor}", majorName(hi)),
+          t('ans_majors_in').replace("{n}", list.length)],
+        url: `results.html?country=${encodeURIComponent(country.value)}`, label: t('allow_see_majors').replace("{country}", countryName(country)) };
+    }
+  }
   if (country) {
     const n = (window.PLAN_MAJORS || []).filter(m => country.value in m.minPct).length;
     return { title: t('ans_money_country').replace("{country}", countryName(country)),
       lines: [...moneyLines(countryAllowance(country.value)), t('ans_majors_in').replace("{n}", n)],
       url: `results.html?country=${encodeURIComponent(country.value)}`, label: t('allow_see_majors').replace("{country}", countryName(country)) };
   }
-  // 5. Money in general: every country at a glance
+  // 5. A percentage ("what can I study with 85%?") or "how competitive is my score": the score checker
+  const pctMatch = String(query).replace(/٪/g, "%").match(/(\d{2,3}(?:\.\d+)?)\s*%/);
+  const pct = pctMatch ? parseFloat(pctMatch[1]) : null;
+  if ((pct >= 50 && pct <= 100) || hasAny(SCORE_WORDS)) {
+    const majors = window.PLAN_MAJORS || [];
+    const meets = pct ? majors.filter(m => Object.values(m.minPct).some(v => pct >= v)).length : 0;
+    return { title: t('ans_score_title'),
+      lines: [pct ? t('ans_score_pct').replace("{pct}", `<strong>${pct}%</strong>`).replace("{n}", meets).replace("{m}", majors.length) : t('ans_score_line')],
+      url: `score.html${pct ? `?hs=${pct}` : ""}`, label: t('ans_score_open') };
+  }
+  // 5b. "Lowest accepted %" in general (or for a field such as engineering): abroad and at Kuwait University
+  if (hasAny(LOWEST_WORDS)) {
+    const field = (window.PLAN_DISCIPLINES || []).find(d => hasAny([d.en.split(/ & |, /)[0], d.ar.split(" ")[0]].filter(n => n.length >= 3)));
+    const pairs = (window.PLAN_MAJORS || []).filter(m => !field || m.discipline === field.id)
+      .flatMap(m => Object.entries(m.minPct).map(([c, p]) => ({ m, c, p }))).sort((x, y) => x.p - y.p);
+    const ku = (window.KUWAIT_LOCAL_UNIVERSITIES || []).find(u => u.id === "kuwait-university");
+    const cname = c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c;
+    if (pairs.length) {
+      const lo = pairs[0], hi = pairs[pairs.length - 1];
+      return { title: field ? `${t('ans_lowest_title')}: ${ar ? field.ar : field.en}` : t('ans_lowest_title'),
+        lines: [t('ans_lowest_abroad').replace("{low}", `<strong>${lo.p}%</strong>`).replace("{lowWhat}", `${majorName(lo.m)}, ${cname(lo.c)}`)
+          .replace("{high}", `<strong>${hi.p}%</strong>`).replace("{highWhat}", `${majorName(hi.m)}, ${cname(hi.c)}`),
+          ku?.generalMin ? t('ans_lowest_ku').replace("{sci}", `<strong>${ku.generalMin.science}%</strong>`).replace("{arts}", `<strong>${ku.generalMin.arts}%</strong>`) : "",
+          t('ans_lowest_more')].filter(Boolean),
+        url: "score.html", label: t('ans_score_open') };
+    }
+  }
+  // 6. Money in general: every country at a glance
   if (has("money")) {
+    const detail = specific([]);
+    if (detail) return detail;
     const all = window.MORE_INFO?.allowances || [];
     return { title: t('ans_money_all'),
       lines: [all.map(a => `${L(a, 'country')} <strong>${money(convertAmount(a.standard, a.currency, "KWD", FX.rates), "KWD")}</strong>`).join(" · "), t('home_read_2')],
       url: "more-info.html#money", label: t('ans_see_money') };
   }
-  // 6. Otherwise, when the best match is a common question, show its answer
-  const top = results[0]?.entry;
+  // 7. Otherwise, when the best match is a common question, show its answer
   if (top?.group === "questions") {
     return { entry: top, title: ar ? top.titleAr : top.titleEn, lines: [withFlags(ar ? top.textAr : top.textEn)], url: top.url, label: t('ans_read_answer') };
   }
-  return null;
+  // 8. Anything else: the sentence that best answers the search, from the best results
+  //    (wherever it sits on the site, including the backs of cards and folded sections)
+  if (top) {
+    const answer = fromTop();
+    if (answer) return answer;
+  }
+  // 9. No result has all the key words: the closest match for the rarest word that is on the site
+  const index = searchIndexCache || [];
+  const singles = terms.map(tm => ({ tm, found: index.filter(e => searchHas(e._hay, tm.alts)).length }))
+    .filter(x => x.found && x.tm.word.length >= 3).sort((x, y) => x.found - y.found);
+  for (const { tm } of singles) {
+    const closest = searchSite(tm.word, index);
+    if (closest.length) return fromTop(closest, t('ans_closest'));
+  }
+  // 10. Nothing on the site matches: say so, and offer to send the question to us
+  return { title: t('ans_none_title'), lines: [t('ans_none_line')], url: `ask.html?q=${encodeURIComponent(query)}`, label: t('ans_none_ask') };
+}
+
+// The best answering sentence among the first few results: the one with most of the search's
+// key words (longer words count a little more), then the more informative one, then the higher result
+function bestAnswer(results, query, ar) {
+  let best = null;
+  const terms = searchTerms(query, searchIndexCache || []);
+  results.slice(0, 5).forEach(({ entry }, rank) => {
+    const pick = bestSentences(entry, query, ar, true);
+    if (!pick) return;
+    // A result whose title is the question ("When does the allowance start?") answers it best
+    const title = normalizeSearch(`${entry.titleEn} ${entry.titleAr}`);
+    const titleScore = terms.filter(tm => searchHas(title, tm.alts)).length;
+    const score = pick.score + titleScore * 0.7 + Math.min(pick.line.length, 160) / 1000 - rank * 0.08;
+    if (!best || score > best.score) best = { entry, line: pick.line, score };
+  });
+  return best;
+}
+
+// The one or two sentences of a result that match the search best (most of its key words, rare
+// words counting more). Short answers ("10 KWD per test.") take the next sentence too.
+function bestSentences(entry, query, ar, withScore = false) {
+  const text = String((ar ? entry.textAr : entry.textEn) || entry.textEn || "").replace(/\s+/g, " ").trim();
+  if (!text) return ar ? entry.titleAr : entry.titleEn;
+  const sentences = text.split(/(?<=[.!?؟])\s+/).map(s => s.trim()).filter(s => s.length > 1 && !/^[.،,]+$/.test(s));
+  if (!sentences.length) return text.slice(0, 260);
+  const terms = searchTerms(query, searchIndexCache || []);
+  let best = 0, bestScore = -1;
+  sentences.forEach((s, i) => {
+    const n = normalizeSearch(s);
+    const score = terms.reduce((sum, term) => sum + (searchHas(n, term.alts) ? 1 + Math.min(term.word.length, 8) / 8 : 0), 0);
+    if (score > bestScore) { best = i; bestScore = score; }
+  });
+  let out = sentences[best];
+  if (out.length < 70 && sentences[best + 1]) out += ` ${sentences[best + 1]}`;
+  out = out.length > 320 ? `${out.slice(0, 317)}…` : out;
+  return withScore ? { line: out, score: Math.max(bestScore, 0) } : out;
 }
 
 function answerCardHtml(a) {
