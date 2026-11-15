@@ -71,6 +71,8 @@ def main():
             levels = {k for k in ("bachelor", "master", "phd") if r.get(k) == "yes"}
             prev = unis.get(name, (set(), 0))
             unis[name] = (prev[0] | levels, max(prev[1], 1 if r.get("merit_major") else 0))
+        # A university whose levels are all "stopped" is suspended for Kuwaiti students: leave it out
+        unis = {n: v for n, v in unis.items() if v[0]}
         if not unis:
             raise SystemExit(f"No NBAQ rows for {major_id}: {cfg['nbaq']}")
         rows_out = sorted(

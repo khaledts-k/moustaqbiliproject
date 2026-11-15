@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Security policy: only this site's own scripts may run, so injected code is blocked. Add a host here before loading anything new from another site. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self' https://open.er-api.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Check my score | moustaqbili</title>
+  <!-- Site icon (browser tab, bookmarks, phone home screen): assets/img/favicon.svg -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind styles, built from tailwind.config.js (see README). Loaded last so it wins over styles.css, as before. -->
+  <link rel="stylesheet" href="assets/css/tailwind.css">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+  <div id="site-header"></div>
+
+  <main class="flex-grow py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="mb-6 border-b border-slate-200 pb-5">
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight" data-i18n="score_title">How competitive is my score?</h1>
+        <p class="text-base text-slate-600 mt-1" data-i18n="score_desc">Enter your high school % (and Qudrat scores if you have them). We compare them with the Ministry's minimums and the lowest scores accepted last time.</p>
+      </div>
+
+      <!-- The student's numbers and choices (initScorePage in app.js reads them and keeps them in the address) -->
+      <form id="score-form" class="bg-white border border-slate-300 rounded-xl p-5 shadow-sm mb-6" novalidate>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="score-hs" class="block text-sm font-bold text-slate-900 mb-1" data-i18n="score_hs_label">High school %</label>
+            <input id="score-hs" name="hs" type="number" inputmode="decimal" min="50" max="100" step="0.01" placeholder="92.5" class="score-input">
+            <p id="score-hs-error" class="hidden text-sm text-red-700 mt-1" data-i18n="score_bad_hs">Enter a percentage between 50 and 100.</p>
+          </div>
+          <fieldset>
+            <legend class="block text-sm font-bold text-slate-900 mb-1" data-i18n="score_stream_label">Stream</legend>
+            <div class="flex gap-2">
+              <label class="score-choice"><input type="radio" name="stream" value="science" checked> <span data-i18n="score_stream_science">Science</span></label>
+              <label class="score-choice"><input type="radio" name="stream" value="arts"> <span data-i18n="score_stream_arts">Arts</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <details id="score-qudrat" class="mt-4">
+          <summary class="text-sm font-bold text-olive-900 cursor-pointer" data-i18n="score_qudrat_label">Qudrat scores (optional)</summary>
+          <div class="grid grid-cols-3 gap-3 mt-3">
+            <div><label for="score-eng" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="score_eng">English %</label><input id="score-eng" name="eng" type="number" inputmode="decimal" min="0" max="100" step="0.01" class="score-input"></div>
+            <div><label for="score-math" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="score_math">Math %</label><input id="score-math" name="math" type="number" inputmode="decimal" min="0" max="100" step="0.01" class="score-input"></div>
+            <div><label for="score-arb" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="score_arb">Arabic %</label><input id="score-arb" name="arb" type="number" inputmode="decimal" min="0" max="100" step="0.01" class="score-input"></div>
+          </div>
+          <p class="text-xs text-slate-500 mt-2" data-i18n="score_ielts_hint">No English test? Kuwait University counts IELTS 6.5 as 81%, 7.0 as 89% and 8.0 or more as 100%.</p>
+        </details>
+
+        <fieldset class="mt-5">
+          <legend class="block text-sm font-bold text-slate-900 mb-2" data-i18n="score_where_label">Where do you want to study?</legend>
+          <div class="flex flex-wrap gap-2">
+            <label class="score-choice"><input type="checkbox" name="where" value="abroad" checked> <span data-i18n="score_where_abroad">Scholarships abroad</span></label>
+            <label class="score-choice"><input type="checkbox" name="where" value="ku" checked> <span data-i18n="score_where_ku">Kuwait University</span></label>
+            <label class="score-choice"><input type="checkbox" name="where" value="aasu" checked> <span data-i18n="score_where_aasu">Abdullah Al-Salem University</span></label>
+            <label class="score-choice"><input type="checkbox" name="where" value="puc" checked> <span data-i18n="score_where_puc">Private universities (internal scholarship)</span></label>
+          </div>
+        </fieldset>
+
+        <div id="score-country-box" class="mt-4">
+          <label for="score-country" class="block text-sm font-bold text-slate-900 mb-1" data-i18n="score_country_label">Country (scholarships abroad)</label>
+          <select id="score-country" name="country" class="score-input"></select>
+        </div>
+      </form>
+
+      <!-- Results, drawn by renderScoreResults in app.js -->
+      <div id="score-results" aria-live="polite"></div>
+
+      <p class="mt-6 p-4 rounded-lg bg-amber-50 border border-amber-300 text-sm text-amber-950" data-i18n="score_note">This compares your numbers with published minimums and last year's lowest accepted scores. Cut-offs change every year, and meeting a minimum does not guarantee a place.</p>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/plan-majors-data.js"></script>
+  <script src="assets/js/qudrat-data.js"></script>
+  <script src="assets/js/data-ar.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

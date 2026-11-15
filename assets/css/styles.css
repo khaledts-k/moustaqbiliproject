@@ -1108,3 +1108,100 @@ html.dark .howto-item[open] .howto-head { color: #d5e6c8; }
 html.dark .home-step-num { background: #4b6b3d; }
 /* "Why no results?" page: each reason has a quiet amber edge */
 #why-root .why-reason { border-inline-start: 4px solid #f59e0b; } /* id beats Tailwind border colours, which load later */
+
+/* Degree-level letters: the full name appears above the letter on hover, tap or keyboard focus */
+.nbaq-level[data-tip] { position: relative; cursor: help; }
+.nbaq-level[data-tip]:focus { outline: none; }
+.nbaq-level[data-tip]:focus-visible { outline: 2px solid #384f33; outline-offset: 1px; }
+.nbaq-level[data-tip]::after,
+.nbaq-level[data-tip]::before {
+  position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none;
+  opacity: 0; visibility: hidden; transition: opacity 0.12s ease; z-index: 30;
+}
+.nbaq-level[data-tip]::after {
+  content: attr(data-tip); bottom: calc(100% + 7px); white-space: nowrap;
+  padding: 0.3rem 0.55rem; border-radius: 0.375rem; background: #141c12; color: #fff;
+  font-size: 0.75rem; font-weight: 600; line-height: 1.2; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.nbaq-level[data-tip]::before {
+  content: ""; bottom: calc(100% + 2px); border: 5px solid transparent; border-top-color: #141c12; border-bottom-width: 0;
+}
+.nbaq-level[data-tip]:hover::after, .nbaq-level[data-tip]:hover::before,
+.nbaq-level[data-tip]:focus::after, .nbaq-level[data-tip]:focus::before { opacity: 1; visibility: visible; }
+html.dark .nbaq-level[data-tip]::after { background: #eef2ee; color: #141c12; }
+html.dark .nbaq-level[data-tip]::before { border-top-color: #eef2ee; }
+
+/* Side panel on every page: the "Pages" list, then "On this page" topics (buildPageSidebar) */
+.page-sidebar-scroll { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
+.page-sidebar-scroll .page-sidebar-list { overflow: visible; flex: none; }
+.page-sidebar-group { padding: 0.9rem 1.1rem 0.35rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; }
+.page-sidebar-page-links { list-style: none; margin: 0; padding: 0 0.6rem 0.6rem; border-bottom: 1px solid #e2e8f0; }
+.page-sidebar-link { display: block; padding: 0.5rem 0.5rem; border-radius: 0.5rem; font-size: 0.9375rem; font-weight: 600; color: #1e293b; }
+.page-sidebar-link:hover { background: #f1f5f9; }
+.page-sidebar-link.is-current { color: #2d3e29; background: #eef3ed; font-weight: 800; }
+.page-sidebar-link:focus-visible { outline: 2px solid #384f33; outline-offset: -2px; }
+html.dark .page-sidebar-group { color: #8b9687; }
+html.dark .page-sidebar-page-links { border-color: #2b3628; }
+html.dark .page-sidebar-link { color: #d7ded5; }
+html.dark .page-sidebar-link:hover { background: #212b1f; }
+html.dark .page-sidebar-link.is-current { color: #d5e6c8; background: rgba(126, 158, 118, 0.16); }
+
+/* Home page search engine: the big search bar, example questions and the quick answer */
+.home-search-input {
+  flex: 1 1 auto; min-width: 0; padding: 0.95rem 1.1rem; border-radius: 0.75rem; border: 2px solid transparent;
+  background: #fff; color: #0f172a; font-size: 1.0625rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.home-search-input:focus { outline: none; border-color: #fbbf24; }
+.home-search-btn { padding: 0 1.4rem; border-radius: 0.75rem; background: #fbbf24; color: #141c12; font-weight: 800; font-size: 1rem; }
+.home-search-btn:hover { background: #fcd34d; }
+.home-search-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.home-example {
+  display: inline-block; padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8125rem; font-weight: 600;
+  color: #e2e8f0; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.22);
+}
+.home-example:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+.answer-card {
+  padding: 1.25rem 1.35rem; border-radius: 0.9rem; background: #fff; border: 2px solid #384f33;
+  border-inline-start-width: 6px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+/* The home page has its own big search bar, so the header one is hidden there */
+body.page-home .site-search-bar { display: none; }
+html.dark .home-search-input { background: #182016; color: #eef2ee; }
+html.dark .answer-card { background: #182016; border-color: #7e9e76; }
+
+/* Behind a card: one main fact, then "Official source: <document>" */
+.reveal-fact { font-size: 0.9375rem; line-height: 1.6; color: #1e293b; }
+.reveal-source {
+  display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.75rem;
+  font-size: 0.8125rem; font-weight: 700; color: #384f33; text-decoration: underline; text-underline-offset: 2px;
+}
+.reveal-source:focus-visible { outline: 2px solid #384f33; outline-offset: 2px; border-radius: 0.25rem; }
+html.dark .reveal-fact { color: #d7ded5; }
+html.dark .reveal-source { color: #b7cf9f; }
+
+/* Check my score (score.html) */
+.score-input { width: 100%; padding: 0.55rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.6rem; background: #fff; color: #0f172a; font-size: 1rem; }
+.score-input:focus { outline: 2px solid #476340; outline-offset: 1px; }
+.score-choice { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border: 1px solid #cbd5e1; border-radius: 9999px; background: #fff; font-size: 0.875rem; font-weight: 600; color: #334155; cursor: pointer; }
+.score-choice:has(input:checked) { background: #f4f6f3; border-color: #476340; color: #222d1d; }
+.score-choice input { accent-color: #384f33; }
+.score-group { border-top: 1px solid #e2e8f0; padding: 0.6rem 0; }
+.score-group > summary { cursor: pointer; }
+.score-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 0.6rem; background: #f8fafc; }
+.score-chip { flex-shrink: 0; padding: 0.15rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; border: 1px solid; }
+.score-chip-above { background: #f0f7ec; color: #2d4a22; border-color: #a8bfa2; }
+.score-chip-close { background: #fef7e6; color: #78501a; border-color: #f2d28b; }
+.score-chip-below { background: #f8eeee; color: #7a2e2e; border-color: #e3b7b7; }
+.score-chip-stream, .score-chip-need { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+html.dark .score-input { background: #182016; color: #eef2ee; border-color: #384f33; }
+html.dark .score-choice { background: #182016; color: #d6dfd3; border-color: #384f33; }
+html.dark .score-choice:has(input:checked) { background: #2d3e29; color: #fff; border-color: #7e9e76; }
+html.dark .score-group { border-color: #2d3e29; }
+html.dark .score-row { background: #141c12; border-color: #2d3e29; }
+html.dark .score-chip-above { background: #1f3318; color: #c7e0bd; border-color: #476340; }
+html.dark .score-chip-close { background: #3a2c10; color: #f6dfa6; border-color: #78501a; }
+html.dark .score-chip-below { background: #3a1c1c; color: #f0c4c4; border-color: #7a2e2e; }
+html.dark .score-chip-stream, html.dark .score-chip-need { background: #1e2a1b; color: #cbd5e1; border-color: #384f33; }
+/* Resources page */
+html.dark .resource-link { background: #141c12; border-color: #2d3e29; }
+html.dark .resource-link:hover { background: #182016; border-color: #7e9e76; }

@@ -9,7 +9,7 @@
  */
 
 const MORE_INFO = {
-  lastVerified: "2026-10-21",
+  lastVerified: "2026-11-08",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -92,40 +92,22 @@ const MORE_INFO = {
               questionEn: "How much more do merit students get?", questionAr: "كم يزيد مخصص طلبة التميز؟",
               answerEn: "+50%", answerAr: "+50%",
               subEn: "each month, after the foundation year", subAr: "شهرياً، بعد السنة التأسيسية",
-              detailsEn: [
-                "The extra 50% starts only after the preparatory (foundation) stage.",
-                "If a merit student's GPA drops below 2.67 (below 60% in the UK system), they lose merit status and go back to the normal amount."
-              ],
-              detailsAr: [
-                "تبدأ زيادة 50% بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط.",
-                "إذا قل معدل طالب التميز عن 2.67 (أو عن 60% في النظام البريطاني) يفقد صفة التميز ويعود إلى المخصص العادي."
-              ]
+              factEn: "It starts only after the foundation (preparatory) stage.",
+              factAr: "تبدأ الزيادة بعد انتهاء المرحلة التمهيدية (التأسيسية) فقط.", source: "mohe_merit"
             },
             {
               questionEn: "Is anything else paid?", questionAr: "هل تُدفع مبالغ أخرى؟",
               answerEn: "Yes", answerAr: "نعم",
               subEn: "books, equipment, clothing and more", subAr: "الكتب والأجهزة والملابس وغيرها",
-              detailsEn: [
-                "The Ministry's tables include money for books, equipment, clothing and clinical training.",
-                "The amounts depend on the country and major. Open a program on the Scholarships page to see them."
-              ],
-              detailsAr: [
-                "تتضمن جداول الوزارة مبالغ للكتب والأجهزة والملابس والتدريب السريري.",
-                "تختلف المبالغ حسب الدولة والتخصص. افتح أي برنامج في صفحة البعثات لتراها."
-              ]
+              factEn: "Books, equipment, clothing and clinical training are paid on top; the amounts depend on the country and major.",
+              factAr: "تُصرف مبالغ للكتب والأجهزة والملابس والتدريب السريري، وتختلف حسب الدولة والتخصص.", source: "mohe_allowances"
             },
             {
               questionEn: "When does the allowance start?", questionAr: "متى يبدأ صرف المخصص؟",
               answerEn: "When you arrive", answerAr: "عند وصولك",
               subEn: "in your study country", subAr: "إلى بلد الدراسة",
-              detailsEn: [
-                "It starts when you arrive in your study country, at most two weeks before classes.",
-                "Failing a year, missing classes or getting academic warnings reduces your allowance."
-              ],
-              detailsAr: [
-                "يبدأ عند وصولك إلى بلد الدراسة، وبحد أقصى أسبوعين قبل بدء الدراسة.",
-                "الرسوب أو الغياب أو الإنذارات الأكاديمية تؤدي إلى خفض المخصص."
-              ]
+              factEn: "It starts when you arrive in your study country, at most two weeks before classes.",
+              factAr: "يبدأ عند وصولك إلى بلد الدراسة، وبحد أقصى أسبوعين قبل بدء الدراسة.", source: "decree197"
             }
           ]
         }
@@ -143,14 +125,14 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Who can apply: 95% in high school for medicine, dentistry and pharmacy. For other majors the plan PDF says 90%, while the Ministry's merit page says \"the plan minimum\". {{unconfirmed}}",
+            "Who can apply: 95% in high school for medicine, dentistry and pharmacy. For other majors the Ministry's merit registration guide says 90%, while the Ministry's merit page says \"the plan minimum\". {{unconfirmed}}",
             "What you get: 50% more monthly allowance after the preparatory stage.",
             "Deadline for 2026/2027: 24 February 2027.",
             "The list of merit universities is kept by the National Bureau for Academic Accreditation. It was last changed in November 2025, when New Zealand and Australia lists were added.",
             "For the UK, the list comes from Ministerial Decree 16/2025. We found no newer decree."
           ],
           ar: [
-            "من يحق له التقديم: 95% في الثانوية للطب وطب الأسنان والصيدلة. ولبقية التخصصات تذكر خطة الوزارة (PDF) 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\". {{unconfirmed}}",
+            "من يحق له التقديم: 95% في الثانوية للطب وطب الأسنان والصيدلة. ولبقية التخصصات يذكر دليل التسجيل في برنامج التميز 90%، بينما تذكر صفحة التميز \"الحد الأدنى للخطة\". {{unconfirmed}}",
             "ما تحصل عليه: زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
             "آخر موعد للعام 2026/2027: 24 فبراير 2027.",
             "يحتفظ الجهاز الوطني للاعتماد الأكاديمي بقائمة جامعات التميز، وآخر تعديل عليها كان في نوفمبر 2025 بإضافة قوائم نيوزيلندا وأستراليا.",
@@ -189,15 +171,8 @@ const MORE_INFO = {
       introAr: "يعتمد البدء بسنة تأسيسية على الدولة ونظامك المدرسي.",
       flag: "unverified",
       blocks: [
-        {
-          type: "cards",
-          items: [
-            { titleEn: "UK, Kuwaiti public school", titleAr: "بريطانيا، مدرسة حكومية كويتية", bodyEn: "Usually a 1-year foundation year, then a 3-year degree. Medicine is longer. For medicine and dentistry it cannot be repeated. Other students may repeat it once.", bodyAr: "عادة سنة تأسيسية واحدة ثم 3 سنوات للبكالوريوس، والطب أطول. ولا تجوز إعادتها في الطب وطب الأسنان، ويجوز لغيرهم إعادتها مرة واحدة." },
-            { titleEn: "UK, British system (A-Levels)", titleAr: "بريطانيا، النظام البريطاني (A-Levels)", bodyEn: "Students with good A-Level grades usually start the degree directly.", bodyAr: "الطلبة الحاصلون على درجات جيدة في A-Levels يبدأون الدراسة الجامعية مباشرة عادةً." },
-            { titleEn: "United States", titleAr: "الولايات المتحدة", bodyEn: "A 4-year degree with no separate foundation year.", bodyAr: "بكالوريوس مدته 4 سنوات دون سنة تأسيسية منفصلة." },
-            { titleEn: "Australia, medicine", titleAr: "أستراليا، الطب", bodyEn: "Usually a foundation year first. You must reach a set grade in it to move on to medicine.", bodyAr: "عادة سنة تأسيسية أولاً، ويجب تحقيق درجة محددة فيها للانتقال إلى الطب." }
-          ]
-        }
+        { type: "text", en: "In the UK, graduates of Kuwaiti public schools usually start with a 1-year foundation year. In medicine, dentistry and pharmacy, failing it or the interview means the Ministry cannot give you a place.", ar: "في بريطانيا يبدأ خريجو المدارس الحكومية الكويتية عادةً بسنة تأسيسية واحدة. وفي الطب وطب الأسنان والصيدلة يتعذر على الوزارة توفير قبول عند عدم اجتيازها أو عدم اجتياز المقابلة." },
+        { type: "links", items: [{ labelEn: "Official source: Ministry plan registration guide (PDF, page 39)", labelAr: "المصدر الرسمي: إرشادات التسجيل في خطة البعثات (PDF، صفحة 39)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" }] }
       ]
     },
 
@@ -231,17 +206,10 @@ const MORE_INFO = {
       introEn: "Two checks that protect your degree.",
       introAr: "خطوتان تحميان شهادتك.",
       blocks: [
-        {
-          type: "cards",
-          items: [
-            { titleEn: "Check the university is approved", titleAr: "تأكد أن الجامعة معتمدة", bodyEn: "Before you apply, search the university and programme on the National Bureau for Academic Accreditation website. Studying somewhere not approved can mean your degree is not recognised in Kuwait.", bodyAr: "قبل التقديم، ابحث عن الجامعة والبرنامج في موقع الجهاز الوطني للاعتماد الأكاديمي. الدراسة في جهة غير معتمدة قد تعني عدم الاعتراف بشهادتك في الكويت." },
-            { titleEn: "Private or foreign school certificate", titleAr: "شهادة مدرسة خاصة أو أجنبية", bodyEn: "If you studied in a private, international or foreign school, your high school certificate needs an equivalency from the Ministry of Education before you can use it to apply.", bodyAr: "إذا درست في مدرسة خاصة أو دولية أو أجنبية، فتحتاج شهادتك الثانوية إلى معادلة من وزارة التربية قبل استخدامها في التقديم.", flag: "unverified" },
-            { titleEn: "University degree from abroad", titleAr: "شهادة جامعية من الخارج", bodyEn: "After you graduate, the Ministry of Higher Education makes the equivalency of your degree. You can request it and track it in the Sahel app.", bodyAr: "بعد تخرجك، تعادل وزارة التعليم العالي شهادتك الجامعية، ويمكنك طلبها ومتابعتها عبر تطبيق سهل." }
-          ]
-        },
+        { type: "text", en: "Before you apply, check on the NBAQ website that the university and programme are approved, or your degree may not be recognised in Kuwait.", ar: "قبل التقديم، تأكد من موقع الجهاز الوطني للاعتماد الأكاديمي أن الجامعة والبرنامج معتمدان، وإلا قد لا يُعترف بشهادتك في الكويت." },
         { type: "links", items: [
-          { labelEn: "Search approved universities (NBAQ)", labelAr: "البحث في الجامعات المعتمدة", url: "https://nbaq.edu.kw/search/" },
-          { labelEn: "Verify an equivalency certificate", labelAr: "التحقق من شهادة معادلة", url: "https://mohe.edu.kw/Verify/" }
+          { labelEn: "Official source: search approved universities (NBAQ)", labelAr: "المصدر الرسمي: البحث في الجامعات المعتمدة", url: "https://nbaq.edu.kw/search/" },
+          { labelEn: "Verify an equivalency certificate (Ministry)", labelAr: "التحقق من شهادة معادلة (الوزارة)", url: "https://mohe.edu.kw/Verify/" }
         ] }
       ]
     },
@@ -257,8 +225,8 @@ const MORE_INFO = {
         {
           type: "list",
           en: [
-            "Within 60 days of the results, hand in your school certificate and sign the pledge. Your guardian approves it in the Sahel app. If you miss this, the scholarship is cancelled.",
-            "Reach the English score your university asks for within one year, or the scholarship is cancelled.",
+            "Within 60 days of the results, take your original school certificate to the Ministry to be matched, or the scholarship is cancelled. Your guardian approves the financial and academic pledge in the Sahel app.",
+            "You have one full calendar year from your acceptance to reach the English score your university asks for, before you travel.",
             "Your monthly allowance starts when you arrive in your study country (at most two weeks before classes).",
             "You can change your major only once, and only after you start studying.",
             "You can move to another country only once, and only for set reasons (for example a refused visa).",
@@ -266,8 +234,8 @@ const MORE_INFO = {
             "Failing a year, missing classes or getting academic warnings reduces your allowance."
           ],
           ar: [
-            "خلال 60 يوماً من إعلان النتائج، قدّم شهادة الثانوية ووقّع التعهد، ويوافق عليه ولي الأمر عبر تطبيق سهل. وإن فاتتك المهلة تُلغى البعثة.",
-            "حقق درجة اللغة الإنجليزية التي تطلبها جامعتك خلال سنة واحدة، وإلا تُلغى البعثة.",
+            "خلال 60 يوماً من إعلان النتائج، راجع الوزارة لمطابقة شهادة الثانوية الأصلية، وإلا تُلغى البعثة. ويصادق ولي الأمر على التعهد المالي والأكاديمي عبر تطبيق سهل.",
+            "لديك عام ميلادي كامل من تاريخ قبولك لتحقيق درجة اللغة الإنجليزية التي تطلبها جامعتك، قبل سفرك إلى مقر البعثة.",
             "يبدأ المخصص الشهري عند وصولك إلى بلد الدراسة (وبحد أقصى أسبوعين قبل بدء الدراسة).",
             "يمكنك تغيير التخصص مرة واحدة فقط، وبعد بدء الدراسة.",
             "يمكنك نقل البعثة إلى دولة أخرى مرة واحدة فقط، ولأسباب محددة (مثل رفض التأشيرة).",
@@ -291,7 +259,7 @@ const MORE_INFO = {
           type: "links",
           items: [
             { labelEn: "Ministry of Higher Education", labelAr: "وزارة التعليم العالي", url: "https://www.mohe.edu.kw/site/" },
-            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf" },
+            { labelEn: "Scholarship plan 2026/2027 (PDF)", labelAr: "خطة البعثات 2026/2027 (PDF)", url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf" },
             { labelEn: "Monthly allowance tables", labelAr: "جداول المخصصات الشهرية", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3" },
             { labelEn: "Merit allowance tables", labelAr: "جداول مخصصات التميز", url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3" },
             { labelEn: "Scholarship registration portal", labelAr: "بوابة التسجيل في البعثات", url: "https://reg2.mohe.edu.kw/Account/Login" },

@@ -12,7 +12,7 @@
  * unis: [university, degree levels (B = Bachelor, M = Master, P = PhD), on merit list (1/0)], merit first.
  */
 
-const NBAQ_UK_CHECKED = "2026-10-22";
+const NBAQ_UK_CHECKED = "2026-11-08"; // NBAQ live data re-checked: same lists; suspended universities are hidden by app.js
 
 const NBAQ_UK = {
   "medicine": {

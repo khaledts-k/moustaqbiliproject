@@ -12,16 +12,18 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // The search page moved to the home page: keep old links (search.html?q=...) working
+  if (currentPageFile() === "search.html") { location.replace(`index.html${location.search}${location.hash}`); return; }
   initCommonNav();
   loadLiveRates();
 
   const page = currentPageFile();
   if (page === "index.html") {
-    initLandingSearch();
-    initSearchGuideVideo();
+    initSearchPage();          // the home page is the search engine
+    initLandingSearch();       // the folded-away filters
     initGpaCalculator();
-    renderQudratHomeBanner();
   }
+  if (page === "navigate.html") initSearchGuideVideo(); // "Start here" lives on the More info page
   if (page === "results.html") initResultsPage();
   if (page === "local-universities.html") initLocalUniversitiesPage();
   if (page === "qudrat.html") initQudratPage();
@@ -31,9 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "ask.html") initAskPage();
   if (page === "suggestions.html") initApplySteps();
   if (page === "navigate.html") initNavigatePage();
-  if (page === "search.html") initSearchPage();
   if (page === "why.html") initWhyPage();
+  if (page === "score.html") initScorePage();
+  if (page === "resources.html") initResourcesPage();
+  if (document.body.classList.contains("page-404")) init404Page(); // its address is whatever was mistyped
   initWhyLinks();
+  initUpdateNote();
   initPageSidebar();
   revealHashTarget();
 });
@@ -123,6 +128,41 @@ function revealCard({ question, answer, sub = "", tag = "", backTitle = "", back
       </div>
     </div>
   </div>`;
+}
+
+// Official documents a card's "Official source" link opens (`source` keys in the data files).
+// The Ministry's own PDFs where it is the source; otherwise the body that publishes the rule.
+const OFFICIAL = {
+  mohe_guide: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485248.pdf", en: "Ministry: plan registration guide (PDF)", ar: "الوزارة: إرشادات التسجيل في خطة البعثات (PDF)" },
+  mohe_majors: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf", en: "Ministry: majors in the 2026/2027 plan (PDF)", ar: "الوزارة: تخصصات خطة 2026/2027 (PDF)" },
+  mohe_merit_guide: { url: "https://www.mohe.edu.kw/site/assets/images/Uploads/20266149415.pdf", en: "Ministry: merit registration guide (PDF)", ar: "الوزارة: دليل التسجيل في برنامج التميز (PDF)" },
+  mohe_allowances: { url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/1?PageID=3", en: "Ministry: plan and allowance tables", ar: "الوزارة: الخطة وجداول المخصصات" },
+  mohe_merit: { url: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3", en: "Ministry: merit programme and allowances", ar: "الوزارة: برنامج التميز ومخصصاته" },
+  decree197: { url: "https://mesferlaw.com/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85-%D8%A7%D9%84%D8%B9%D8%A7%D9%84%D9%8A-%D9%82%D8%B1%D8%A7%D8%B1-%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A/", en: "Decree 197/2025 (no official copy online; copy on mesferlaw.com)", ar: "القرار 197/2025 (لا توجد نسخة رسمية على الإنترنت؛ نسخة على mesferlaw.com)" },
+  nbaq_search: { url: "https://nbaq.edu.kw/search/", en: "NBAQ: approved universities", ar: "الجهاز الوطني للاعتماد: الجامعات المعتمدة" },
+  nbaq_merit: { url: "https://nbaq.edu.kw/website/merits", en: "NBAQ: merit university lists", ar: "الجهاز الوطني للاعتماد: قوائم جامعات التميز" },
+  ku_dates: { url: "https://cem.ku.edu.kw/ar/at", en: "Kuwait University: Qudrat test dates", ar: "جامعة الكويت: مواعيد اختبارات القدرات" },
+  ku_guide: { url: "https://www.ku.edu.kw/sites/default/files/2026-09/2026APTE.pdf", en: "Kuwait University: Qudrat student guide 2026 (PDF)", ar: "جامعة الكويت: دليل الطالب لاختبارات القدرات 2026 (PDF)" },
+  ku_faq: { url: "https://cem.ku.edu.kw/faqs", en: "Kuwait University: Qudrat questions and answers", ar: "جامعة الكويت: أسئلة وأجوبة اختبارات القدرات" },
+  ku_portal: { url: "https://portal.ku.edu.kw/placement", en: "Kuwait University: Qudrat registration portal", ar: "جامعة الكويت: بوابة التسجيل في القدرات" },
+  ku_colleges: { url: "https://www.ku.edu.kw/sites/default/files/2026-06/ku_colleges_rules%20%D8%A7%D9%86%D8%AC%D9%84%D9%8A%D8%B2%D9%8A.pdf", en: "Kuwait University: required tests by college (PDF)", ar: "جامعة الكويت: الاختبارات المطلوبة لكل كلية (PDF)" },
+  ku_ielts: { url: "https://www.ku.edu.kw/sites/default/files/2025-06/english-ielts.pdf", en: "Kuwait University: IELTS conversion table (PDF)", ar: "جامعة الكويت: جدول معادلة IELTS (PDF)" },
+  ku_prep: { url: "https://www.ku.edu.kw/ar/media-center/announcements/jamt-alkwyt-tln-n-qd-dwrat-altqwyt-lakhtbarat-alqdrat-alfrst-alawly", en: "Kuwait University: prep course announcement", ar: "جامعة الكويت: إعلان دورات التقوية" },
+  ku_admission: { url: "https://www.ku.edu.kw/ar/media-center/news/jamt-alkwyt-tln-mwayd-tqdym-tlbat-alalthaq-llfsl-aldrasy-althany-2026-2027", en: "Kuwait University: admission announcement", ar: "جامعة الكويت: إعلان القبول" },
+  aasu: { url: "https://aasu.edu.kw/pages/undergraduate-admissions", en: "AASU: undergraduate admissions", ar: "جامعة عبد الله السالم: القبول للبكالوريوس" },
+  puc: { url: "https://www.puc.edu.kw", en: "Private Universities Council", ar: "مجلس الجامعات الخاصة" }
+};
+
+// "Official source: <document> ↗" under a card's main fact
+function officialLink(key) {
+  const o = OFFICIAL[key];
+  if (!o) return "";
+  return `<a href="${o.url}" target="_blank" rel="noopener noreferrer" class="reveal-source">${t('reveal_source')}: ${isArabic() ? o.ar : o.en} ${ICON_EXTERNAL}</a>`;
+}
+
+// The back of a card: one main fact, then the official link
+function factBack(text, source) {
+  return `<p class="reveal-fact">${withFlags(text)}</p>${officialLink(source)}`;
 }
 
 // Detail lines for the back of a card
@@ -1073,12 +1113,13 @@ function pathwayMoneyHtml(m, country) {
   }
 
   const nbaqList = nbaqMajorFor(m.id, country);
-  const unisBody = prog
+  const unisBody = (prog
     ? universitiesHtml(prog)
     : nbaqList
     ? nbaqMajorUnisHtml(nbaqList, ar ? m.ar : m.en)
     : `<p class="text-sm text-slate-600 mb-3">${t('pw_unis_plan_note')}</p>
-       <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`;
+       <a href="https://nbaq.edu.kw/website/merits" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-sm font-bold text-olive-900">${t('pw_unis_link')} ${ICON_EXTERNAL}</a>`)
+    + unlistedUniNote();
 
   return `
     <h2 class="text-lg font-extrabold text-slate-900 mb-4">${title}</h2>
@@ -1339,8 +1380,14 @@ function extrasCard(baseProg) {
     sub: t('salary_extras_n').replace("{n}", n),
     tag: n > (baseProg.verifiedAllowances ?? 1) ? flag('unverified') : "", // some lines are not checked yet
     backTitle: t('modal_allowances_heading'),
-    back: `<div class="grid grid-cols-1 gap-2">${allowanceItemsHtml(baseProg)}</div>`
+    back: factBack(extraAllowancesLine(baseProg), "mohe_allowances")
   });
+}
+
+// The main extra-allowance line for a program (books, equipment...), shown on the "What else is paid?" card
+function extraAllowancesLine(baseProg) {
+  const lines = localizeProgram(baseProg).monthlySalary.allowancesSummary;
+  return lines.find(l => /Extra allowances|مخصصات إضافية|المخصصات الإضافية/.test(l)) || lines[0] || "";
 }
 
 function universitiesHtml(baseProg, withHeading = true) {
@@ -1359,18 +1406,30 @@ function universitiesHtml(baseProg, withHeading = true) {
     </ul>`;
 }
 
+// Under every university list: what to do when your university is not on it
+function unlistedUniNote() {
+  return `<p class="text-sm text-slate-600 mt-4 pt-3 border-t border-slate-200"><strong class="text-slate-800">${t('unlisted_uni_q')}</strong> ${t('unlisted_uni_a')} <a class="font-semibold text-olive-900 underline" href="clarifications.html#university-not-listed">${t('unlisted_uni_link')}</a></p>`;
+}
+
 function universitiesFlag(baseProg) {
   return (baseProg.verifiedFields || []).includes('universities') ? '' : ` ${flag('unverified')}`;
 }
 
 // NBAQ's approved UK universities for a plan major (nbaq-uk-data.js), or null
+// Universities with no approved degree level are ones NBAQ has suspended ("stopped") for Kuwaiti
+// students, so they are left out: only approved universities are listed and counted.
 function nbaqMajorFor(majorId, country) {
-  return country === "United Kingdom" ? (window.NBAQ_UK?.[majorId] || null) : null;
+  const list = country === "United Kingdom" ? window.NBAQ_UK?.[majorId] : null;
+  return list ? { ...list, unis: list.unis.filter(u => u[1]) } : null;
 }
 
-// Degree-level letters ("BMP" -> B M D tags)
+// Degree-level letters ("BMP" -> B M D tags). Hovering, tapping or tabbing to a letter
+// shows its full name (data-tip, drawn by styles.css); screen readers read the name.
 function nbaqLevelsHtml(levels) {
-  return `<span class="nbaq-levels">${[...levels].map(l => `<span class="nbaq-level">${t(`nbaq_level_${l}`)}</span>`).join("")}</span>`;
+  return `<span class="nbaq-levels">${[...levels].map(l => {
+    const name = t(`nbaq_level_${l}_name`);
+    return `<span class="nbaq-level" tabindex="0" role="img" aria-label="${name}" data-tip="${name}">${t(`nbaq_level_${l}`)}</span>`;
+  }).join("")}</span>`;
 }
 
 // Universities approved for one major: merit ones first, the rest folded away
@@ -1520,7 +1579,12 @@ function openSalaryModal(baseProg, keepInputs = false) {
         sub: t('salary_unis_sub'),
         tag: nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country) ? "" : universitiesFlag(baseProg),
         backTitle: t('modal_institutions_heading'),
-        back: universitiesHtml(baseProg, false)
+        back: (() => {
+          const nbaq = nbaqMajorFor(baseProg.planMajors?.[0], baseProg.country);
+          return nbaq
+            ? factBack(t('ans_unis_nbaq').replace("{n}", nbaq.unis.length).replace("{m}", nbaq.unis.filter(u => u[2]).length), "nbaq_search")
+            : factBack(t('ans_unis_examples').replace("{list}", prog.accreditedUniversities.slice(0, 3).join(isArabic() ? "، " : ", ")), "nbaq_merit");
+        })()
       })}
       </div>
     </div>
@@ -1652,33 +1716,11 @@ function renderQudratPage() {
 
   // "Last day to register" card: the nearest deadline on the front, every date behind it
   const nextSession = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
-  const datesBack = `
-    <div class="overflow-x-auto rounded-lg border border-slate-200">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 text-slate-600 text-xs">
-          <tr>
-            <th class="p-2 text-start">${t('qudrat_col_test_date')}</th>
-            <th class="p-2 text-start">${t('qudrat_col_reg_close')}</th>
-            <th class="p-2 text-start">${t('qudrat_col_status')}</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${(c.sessions || []).map(s => {
-            const st = sessionStatus(s);
-            return `
-            <tr class="border-t border-slate-200">
-              <th scope="row" class="p-2 text-start font-bold text-slate-900">${formatDate(s.test)}</th>
-              <td class="p-2">${formatDate(s.regClose)}</td>
-              <td class="p-2"><span class="status-pill ${st.cls}">${t(`qudrat_${st.key}`)}</span></td>
-            </tr>`;
-          }).join("")}
-        </tbody>
-      </table>
-    </div>
-    <p class="mt-2">${t('qudrat_no_late')}</p>
-    <h4 class="font-bold text-slate-900 mt-4 mb-1">${t('qudrat_phases_title')}</h4>
-    <ul class="space-y-1">${(c.openingPhases || []).map(p => `<li><strong class="text-slate-900">${formatDate(p.date)}:</strong> ${L(p, 'who')}</li>`).join("")}</ul>
-    <p class="mt-4"><strong class="text-slate-900">${t('qudrat_next_cycle')}:</strong> ${L(data, 'nextCycle')} ${flag('unconfirmed')}</p>`;
+  // Behind the deadline card: the tests still ahead (or the next round), then the official dates page
+  const ahead = (c.sessions || []).filter(s => daysBetween(new Date(), s.regClose) >= 0);
+  const datesBack = factBack(ahead.length
+    ? `${t('qudrat_tests_left')} ${ahead.map(s => t('qudrat_test_by').replace("{test}", formatDate(s.test)).replace("{close}", formatDate(s.regClose))).join(" · ")}.`
+    : `${L(data, 'nextCycle')} {{unconfirmed}}`, "ku_dates");
   const deadlineCard = revealCard({
     id: "dates",
     question: t('qudrat_q_deadline'),
@@ -1714,7 +1756,7 @@ function renderQudratPage() {
       <p class="text-sm text-slate-600 mt-0.5 mb-4">${t('reveal_hint')}</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
         ${deadlineCard}
-        ${(c.basics || []).map(b => revealCard({ question: L(b, 'question'), answer: L(b, 'answer'), sub: L(b, 'sub'), back: revealList(arr(b, 'details')) })).join("")}
+        ${(c.basics || []).map(b => revealCard({ question: L(b, 'question'), answer: L(b, 'answer'), sub: L(b, 'sub'), back: factBack(L(b, 'fact'), b.source) })).join("")}
       </div>
     </section>
 
@@ -1730,7 +1772,7 @@ function renderQudratPage() {
             answer: L(s, 'pass'),
             sub: (colleges.length === 1 ? t('qudrat_colleges_one') : t('qudrat_colleges_n')).replace("{n}", colleges.length),
             backTitle: t('qudrat_who_needs').replace("{test}", L(s, 'name')),
-            back: `<p class="leading-relaxed">${colleges.join(isArabic() ? "، " : ", ")}</p>${L(s, 'note') ? `<p class="text-slate-500 mt-2">${L(s, 'note')}</p>` : ""}`
+            back: factBack(colleges.join(isArabic() ? "، " : ", "), "ku_colleges")
           });
         }).join("")}
       </div>
@@ -1772,7 +1814,7 @@ function renderQudratPage() {
     <section id="rules" class="scroll-mt-24">
       <h2 class="text-lg font-extrabold text-slate-900 mb-4">${t('qudrat_rules_title')}</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: revealList(arr(g, 'details')) })).join("")}
+        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: factBack(L(g, 'fact'), g.source) })).join("")}
       </div>
       ${L(data, 'warning') ? `<p class="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-900">${L(data, 'warning')}</p>` : ""}
     </section>
@@ -1831,10 +1873,12 @@ function renderQudratChecklist(cycle) {
               <input type="checkbox" data-step="${s.id}" ${done ? 'checked' : ''} aria-label="${t('steps_mark_done')}: ${L(s, 'text')}">
               <span class="step-num" aria-hidden="true">${num}</span>
             </label>
-            <div class="flex-1 min-w-0 pt-0.5">
-              <span class="step-title">${L(s, 'text')}</span>
-              ${L(s, 'hint') ? `<span class="step-summary">${L(s, 'hint')}</span>` : ''}
-            </div>
+            ${L(s, 'hint') ? `
+            <details class="step-details" data-step="${s.id}">
+              <summary><span class="step-title">${L(s, 'text')}</span></summary>
+              <p class="mt-2 text-sm text-slate-700 leading-relaxed">${L(s, 'hint')}</p>
+            </details>` : `
+            <div class="flex-1 min-w-0 pt-0.5"><span class="step-title">${L(s, 'text')}</span></div>`}
           </li>`;
         }).join("")}
       </ol>
@@ -2103,7 +2147,7 @@ function moreInfoBlock(block) {
       // Short answers on cards, the details behind them (items: question/answer/sub/details, En + Ar)
       return `<div class="grid grid-cols-1 sm:grid-cols-${Math.min(block.items.length, 3)} gap-4 items-start">${block.items.map(i => revealCard({
         question: L(i, 'question'), answer: L(i, 'answer'), sub: L(i, 'sub'),
-        back: revealList((ar ? i.detailsAr : i.detailsEn) || i.detailsEn || [])
+        back: i.factEn ? factBack(L(i, 'fact'), i.source) : revealList((ar ? i.detailsAr : i.detailsEn) || i.detailsEn || [])
       })).join("")}</div>`;
 
     case "terms":
@@ -2176,12 +2220,7 @@ function moreInfoBlock(block) {
           sub: t('allow_per_month').replace("{amount}", `${formatNumber(a.standard)} ${a.currency}`),
           tag: typeof a.merit === "number" ? `<span class="px-2 py-0.5 rounded text-xs font-bold merit-tag whitespace-nowrap">${t('allow_merit_tag')}</span>` : "",
           backTitle: t('allow_back_title').replace("{country}", country),
-          back: `
-            <dl class="space-y-2">
-              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_standard')}</dt><dd>${both(a.standard)}</dd></div>
-              <div><dt class="text-xs font-bold text-slate-500">${t('allow_col_merit')}</dt><dd>${merit}</dd></div>
-            </dl>
-            <a href="results.html?country=${encodeURIComponent(a.countryEn)}" class="inline-block mt-3 font-semibold text-olive-900 underline">${t('allow_see_majors').replace("{country}", country)}</a>`
+          back: factBack(`${t('allow_col_merit')}: ${merit}`, typeof a.merit === "number" ? "mohe_merit" : "mohe_allowances")
         });
       }).join("");
       return `
@@ -2239,6 +2278,7 @@ function faqMatches(item, query) {
 
 let faqTopic = "all";
 let faqQuery = "";
+let faqCountry = "all"; // "Living abroad" questions can be narrowed to one country
 
 function initClarificationsPage() {
   renderClarificationsPage();
@@ -2264,8 +2304,23 @@ function renderClarificationsPage() {
   }).join("");
   topicsBox.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
     faqTopic = b.dataset.topic;
+    faqCountry = "all";
     renderClarificationsPage();
   }));
+
+  // Questions about one country (housing, population, weather...): a second row to pick the country
+  const countriesBox = document.getElementById("faq-countries");
+  if (countriesBox) {
+    const countries = [...new Set(data.items.filter(i => i.country && (faqTopic === "all" || i.topic === faqTopic)).map(i => i.country))];
+    const show = countries.length > 1 && faqTopic !== "all";
+    countriesBox.classList.toggle("hidden", !show);
+    countriesBox.innerHTML = !show ? "" : ["all", ...countries].map(c => {
+      const label = c === "all" ? t('faq_country_all') : (isArabic() ? (window.PLAN_COUNTRIES?.[c] || c) : c);
+      const active = faqCountry === c;
+      return `<button type="button" data-country="${escapeHtml(c)}" aria-pressed="${active}" class="px-3 py-1 rounded-full border text-xs font-semibold transition ${active ? 'bg-olive-800 text-white border-olive-800' : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'}">${escapeHtml(label)}</button>`;
+    }).join("");
+    countriesBox.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { faqCountry = b.dataset.country; renderClarificationsPage(); }));
+  }
 
   const meta = document.getElementById("faq-meta");
   if (meta) meta.textContent = `${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
@@ -2278,7 +2333,7 @@ function renderFaqList() {
   const empty = document.getElementById("faq-empty");
   if (!data || !list) return;
 
-  const items = data.items.filter(i => (faqTopic === "all" || i.topic === faqTopic) && (!faqQuery.trim() || faqMatches(i, faqQuery)));
+  const items = data.items.filter(i => (faqTopic === "all" || i.topic === faqTopic) && (faqCountry === "all" || i.country === faqCountry) && (!faqQuery.trim() || faqMatches(i, faqQuery)));
   empty?.classList.toggle("hidden", items.length > 0);
 
   list.innerHTML = items.map(i => `
@@ -2291,9 +2346,258 @@ function renderFaqList() {
       </summary>
       <div class="px-4 pb-4 text-sm text-slate-700 leading-relaxed">
         <p>${withFlags(L(i, 'answer'))}${i.status === "unconfirmed" ? ` ${flag('unconfirmed')}` : ''}</p>
+        ${L(i, 'details') ? `<details class="faq-more mt-2"><summary class="text-sm font-bold text-olive-900 cursor-pointer">${t('ans_more_info')}</summary><p class="mt-1">${withFlags(L(i, 'details'))}</p></details>` : ''}
         ${i.sourceUrl ? `<p class="text-xs text-slate-500 mt-2">${t('faq_source')}: <a class="underline hover:text-slate-800" href="${i.sourceUrl}" target="_blank" rel="noopener noreferrer">${i.sourceLabel}</a></p>` : ''}
       </div>
     </details>`).join("");
+}
+
+// =========================================================================
+// 10h. Check my score (score.html): where a student's % stands against
+// the Ministry's minimums and last year's lowest accepted scores
+// =========================================================================
+const SCORE_WHERE = ["abroad", "ku", "aasu", "puc"];
+const SCORE_UNI_IDS = { ku: "kuwait-university", aasu: "aasu", puc: "puc" };
+
+function initScorePage() {
+  const form = document.getElementById("score-form");
+  if (!form) return;
+  // Choices live in the address (score.html?hs=92&stream=arts&where=abroad,ku), so a result can be shared
+  const p = new URLSearchParams(location.search);
+  ["hs", "eng", "math", "arb"].forEach(n => { if (p.get(n)) form.elements[n].value = p.get(n); });
+  if (p.get("stream") === "arts") form.querySelector('input[name="stream"][value="arts"]').checked = true;
+  if (p.get("where")) {
+    const where = p.get("where").split(",");
+    form.querySelectorAll('input[name="where"]').forEach(b => { b.checked = where.includes(b.value); });
+  }
+  if (["eng", "math", "arb"].some(n => p.get(n))) document.getElementById("score-qudrat").open = true;
+  fillScoreCountries(p.get("country") || "");
+
+  form.addEventListener("input", () => renderScoreResults(true));
+  form.addEventListener("change", () => renderScoreResults(true));
+  form.addEventListener("submit", e => e.preventDefault());
+  window.addEventListener("languageChanged", () => { fillScoreCountries(form.elements.country.value); renderScoreResults(false); });
+  renderScoreResults(false);
+}
+
+function fillScoreCountries(selected) {
+  const sel = document.getElementById("score-country");
+  if (!sel) return;
+  const names = window.PLAN_COUNTRIES || {};
+  sel.innerHTML = `<option value="">${t('score_country_all')}</option>` + Object.keys(names).map(c =>
+    `<option value="${escapeHtml(c)}"${c === selected ? " selected" : ""}>${escapeHtml(isArabic() ? names[c] : c)}</option>`).join("");
+}
+
+function readScoreForm() {
+  const f = document.getElementById("score-form");
+  const num = n => { const v = parseFloat(f.elements[n].value); return Number.isFinite(v) && v >= 0 && v <= 100 ? v : null; };
+  return {
+    hs: num("hs"), eng: num("eng"), math: num("math"), arb: num("arb"),
+    hsRaw: f.elements.hs.value.trim(),
+    stream: f.querySelector('input[name="stream"]:checked')?.value || "science",
+    where: [...f.querySelectorAll('input[name="where"]:checked')].map(b => b.value),
+    country: f.elements.country.value
+  };
+}
+
+function renderScoreResults(updateUrl) {
+  const box = document.getElementById("score-results");
+  if (!box) return;
+  const s = readScoreForm();
+  document.getElementById("score-country-box")?.classList.toggle("hidden", !s.where.includes("abroad"));
+
+  if (updateUrl) {
+    const p = new URLSearchParams();
+    ["hs", "eng", "math", "arb"].forEach(k => { if (s[k] != null) p.set(k, s[k]); });
+    if (s.stream === "arts") p.set("stream", "arts");
+    if (s.where.length < SCORE_WHERE.length) p.set("where", s.where.join(","));
+    if (s.country) p.set("country", s.country);
+    history.replaceState(null, "", location.pathname + (p.toString() ? `?${p}` : ""));
+  }
+
+  const badHs = s.hsRaw !== "" && (s.hs == null || s.hs < 50);
+  document.getElementById("score-hs-error")?.classList.toggle("hidden", !badHs);
+  if (s.hs == null || badHs) { box.innerHTML = `<p class="text-sm text-slate-600">${t('score_empty')}</p>`; return; }
+  if (!s.where.length) { box.innerHTML = `<p class="text-sm text-slate-600">${t('score_pick_where')}</p>`; return; }
+
+  const unis = window.KUWAIT_LOCAL_UNIVERSITIES || [];
+  box.innerHTML = s.where.map(w => {
+    if (w === "abroad") return scoreAbroadHtml(s);
+    const u = unis.find(x => x.id === SCORE_UNI_IDS[w]);
+    return u ? scoreLocalHtml(u, s) : "";
+  }).join("");
+}
+
+// Above / Close / Below. "min": a minimum to apply (close = less than 3 points above it).
+// "lowest": last year's lowest admitted score (close = within 1 point of it).
+function scoreStatus(score, floor, kind) {
+  if (kind === "min") return score < floor ? "below" : score < floor + 3 ? "close" : "above";
+  return score >= floor + 1 ? "above" : score >= floor - 1 ? "close" : "below";
+}
+
+function scorePct(n) {
+  return `${formatNumber(n, 2)}%`;
+}
+
+function scoreRow(name, url, meta, status) {
+  const title = url ? `<a href="${url}" class="font-bold text-slate-900 hover:underline">${name}</a>` : `<span class="font-bold text-slate-900">${name}</span>`;
+  return `<li class="score-row"><div class="min-w-0">${title}<p class="text-xs text-slate-600 mt-0.5">${meta}</p></div><span class="score-chip score-chip-${status}">${t('score_st_' + status)}</span></li>`;
+}
+
+function scoreSection(title, sub, body, foot) {
+  return `
+    <section class="bg-white border border-slate-300 rounded-xl p-5 shadow-sm mb-5">
+      <h2 class="text-lg font-extrabold text-slate-900">${title}</h2>
+      ${sub ? `<p class="text-sm text-slate-600 mt-1">${sub}</p>` : ""}
+      <div class="mt-4">${body}</div>
+      ${foot ? `<p class="text-xs text-slate-500 mt-4">${foot}</p>` : ""}
+    </section>`;
+}
+
+// Rows grouped Above / Close / Below (and "science stream only"); the groups fold away
+function scoreGroups(items, groupKey) {
+  return ["above", "close", "below", "stream", "need"].map(st => {
+    const list = items.filter(i => i.status === st);
+    if (!list.length) return "";
+    return `
+      <details class="score-group"${st === "above" || st === "close" ? " open" : ""}>
+        <summary><span class="font-bold text-slate-900">${t(`${groupKey}_${st}`).replace("{n}", list.length)}</span></summary>
+        <ul class="mt-2 space-y-2">${list.map(i => i.html).join("")}</ul>
+      </details>`;
+  }).join("");
+}
+
+// Scholarships abroad: every plan major against its minimum, in one country or the lowest anywhere
+function scoreAbroadHtml(s) {
+  const ar = isArabic();
+  const names = window.PLAN_COUNTRIES || {};
+  const countryName = c => ar ? (names[c] || c) : c;
+  const countries = s.country ? [s.country] : Object.keys(names);
+  const items = (window.PLAN_MAJORS || []).map(m => {
+    const offered = countries.filter(c => c in m.minPct);
+    if (!offered.length) return null;
+    const best = offered.reduce((a, c) => (m.minPct[c] < m.minPct[a] ? c : a));
+    const min = m.minPct[best];
+    const status = s.stream === "arts" && m.stream === "science" ? "stream" : scoreStatus(s.hs, min, "min");
+    const meets = offered.filter(c => s.hs >= m.minPct[c]).length;
+    const url = `results.html?major=${encodeURIComponent(m.id)}${s.country ? `&country=${encodeURIComponent(s.country)}&step=3` : ""}`;
+    const meta = (s.country ? t('score_min').replace("{pct}", scorePct(min))
+      : t('score_lowest_min').replace("{pct}", scorePct(min)).replace("{country}", countryName(best)))
+      + (m.unconfirmed?.includes(best) ? ` ${flag('unconfirmed')}` : "")
+      + (!s.country && status !== "stream" ? ` · ${t('score_meets_in').replace("{n}", meets).replace("{m}", offered.length)}` : "");
+    return { status, html: scoreRow(escapeHtml(ar ? m.ar : m.en), url, meta, status) };
+  }).filter(Boolean);
+  const meetsCount = items.filter(i => i.status === "above" || i.status === "close").length;
+  const sub = t('score_abroad_summary').replace("{n}", meetsCount).replace("{m}", items.length)
+    .replace("{where}", s.country ? t('score_in_country').replace("{country}", countryName(s.country)) : "");
+  return scoreSection(t('score_where_abroad'), sub, scoreGroups(items, 'score_group_min'),
+    `${t('score_abroad_ranked')} ${t('score_source_plan')}`);
+}
+
+// "80% science / 85% arts" -> that stream's number; "65.38 - 76.56%" -> a range; "90%" -> one number
+function scoreFloors(text, stream) {
+  const str = String(text || "");
+  const byStream = [...str.matchAll(/(\d+(?:\.\d+)?)%\s*(science|arts)/g)];
+  if (byStream.length) {
+    const m = byStream.find(x => x[2] === stream);
+    return m ? { low: +m[1], high: +m[1] } : { streamOnly: true };
+  }
+  const nums = (str.match(/\d+(?:\.\d+)?/g) || []).map(Number);
+  return nums.length ? { low: Math.min(...nums), high: Math.max(...nums) } : null;
+}
+
+// A Kuwait university: each college (or major) against its lowest admitted score or minimum.
+// Kuwait University compares the equivalent average (school % + Qudrat, with each college's
+// weights); AASU and PUC publish minimums to apply, which are high school percentages.
+function scoreLocalHtml(u, s) {
+  const ar = isArabic();
+  const isKu = u.id === "kuwait-university";
+  const kind = isKu ? "lowest" : "min";
+  const formulas = window.KUWAIT_QUDRAT?.formulas || [];
+  const testNames = { eng: t('score_eng'), math: t('score_math'), arb: t('score_arb') };
+  const general = u.generalMin?.[s.stream];
+  const items = [];
+
+  u.colleges.forEach(c => {
+    const cName = ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+    const formula = c.weights ? { weights: c.weights } : c.qudrat ? formulas.find(f => f.collegeEn === c.qudrat) : null;
+    const usesQudrat = formula && c.scoring !== "hs-only" && c.scoring !== "no-qudrat";
+    const missing = usesQudrat ? Object.keys(formula.weights).filter(k => k !== "hs" && formula.weights[k] > 0 && s[k] == null) : [];
+    const equiv = usesQudrat && !missing.length
+      ? Object.entries(formula.weights).reduce((sum, [k, w]) => sum + w * (k === "hs" ? s.hs : s[k]), 0) : null;
+    // Kuwait University's own high school condition for the college ("High school 85% or more")
+    const hsNeed = parseFloat((formula?.conditionEn || "").match(/^High school (\d+)%/)?.[1]);
+    // The score this college is compared on
+    const score = isKu && usesQudrat ? equiv : s.hs;
+    const yours = equiv != null ? t('score_your_equiv').replace("{pct}", scorePct(equiv)) : t('score_your_hs').replace("{pct}", scorePct(s.hs));
+
+    const rowsFor = [];
+    const graded = (c.majors || []).filter(m => m.grade);
+    if (graded.length) {
+      graded.forEach(m => rowsFor.push({ name: `${cName}: ${ar ? (m.ar || m.en) : m.en}`, floors: scoreFloors(m.grade, s.stream) }));
+      const all = scoreFloors(c.minThanawiya, s.stream);
+      const lowestMajor = Math.min(...graded.map(m => parseFloat(m.grade)));
+      if (all && all.low < lowestMajor) rowsFor.push({ name: `${cName}: ${t('score_other_majors')}`, floors: { low: all.low, high: all.low } });
+    } else {
+      rowsFor.push({ name: cName, floors: scoreFloors(c.minThanawiya, s.stream) }); // the English text says "science" / "arts"
+    }
+
+    rowsFor.forEach(r => {
+      let status, meta;
+      const f = r.floors;
+      if (!f) return;
+      const floorText = f.low === f.high ? scorePct(f.low) : t('score_range').replace("{low}", scorePct(f.low)).replace("{high}", scorePct(f.high));
+      const floorLine = (kind === "lowest" ? t('score_lowest') : t('score_min')).replace("{pct}", floorText);
+      if (f.streamOnly) { status = "stream"; meta = escapeHtml(ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya); }
+      else if (general && s.hs < general) { status = "below"; meta = t('score_general_below').replace("{pct}", scorePct(general)); }
+      else if (hsNeed && s.hs < hsNeed) { status = "below"; meta = t('score_hs_need').replace("{pct}", scorePct(hsNeed)); }
+      else if (score == null) { status = "need"; meta = `${floorLine} · ${t('score_add_tests').replace("{tests}", missing.map(k => testNames[k]).join(ar ? " و" : " and "))}`; }
+      else { status = scoreStatus(score, f.low, kind); meta = `${floorLine} · ${yours}`; }
+      const cond = L(c, 'condition');
+      if (cond) meta += `<br><span class="text-slate-500">${escapeHtml(cond)}</span>`;
+      items.push({ status, html: scoreRow(escapeHtml(r.name), "local-universities.html", meta, status) });
+    });
+  });
+
+  const sub = `${escapeHtml(L(u, 'floorLabel'))}${general ? ` · ${t('score_general_min').replace("{pct}", scorePct(general))}` : ""}`;
+  return scoreSection(escapeHtml(ar ? u.nameAr : u.name), sub, scoreGroups(items, isKu ? 'score_group_lowest' : 'score_group_min'),
+    escapeHtml(ar ? (u.sourceNoteAr || u.sourceNote) : u.sourceNote));
+}
+
+// =========================================================================
+// 10i. Resources page (resources.html): official links, grouped
+// =========================================================================
+function initResourcesPage() {
+  renderResourcesPage();
+  window.addEventListener("languageChanged", renderResourcesPage);
+  revealHashTarget();
+}
+
+function renderResourcesPage() {
+  const root = document.getElementById("resources-root");
+  const data = window.RESOURCES;
+  if (!root || !data) return;
+  const ar = isArabic();
+  const host = url => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return ""; } };
+  root.innerHTML = data.groups.map(g => `
+    <section id="${g.id}" class="scroll-mt-24 bg-white border border-slate-300 rounded-xl p-5 shadow-sm">
+      <h2 class="text-lg font-extrabold text-slate-900 mb-3">${escapeHtml(L(g, 'title'))}</h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        ${g.items.map(i => {
+          const url = ar ? (i.urlAr || i.url) : i.url;
+          return `
+          <li>
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="resource-link block h-full p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-olive-700 transition">
+              <span class="flex items-center gap-1.5 font-bold text-olive-900">${escapeHtml(L(i, 'label'))} ${ICON_EXTERNAL}</span>
+              <span class="block text-sm text-slate-600 mt-1">${escapeHtml(L(i, 'desc'))}</span>
+              <span class="block text-xs text-slate-400 mt-1" dir="ltr">${escapeHtml(host(url))}</span>
+            </a>
+          </li>`;
+        }).join("")}
+      </ul>
+    </section>`).join("");
+  const meta = document.getElementById("resources-meta");
+  if (meta) meta.textContent = `${t('last_verified_full')} ${formatDate(data.lastVerified)}.`;
 }
 
 // =========================================================================
@@ -2312,6 +2616,8 @@ function initAskPage() {
 
   notice?.classList.toggle("hidden", !!email);
   question?.setAttribute("maxlength", String(MAX));
+  const fromSearch = new URLSearchParams(location.search).get("q");
+  if (question && fromSearch && !question.value) question.value = fromSearch.slice(0, MAX);
   const updateCounter = () => { if (counter) counter.textContent = `${question.value.length} / ${MAX}`; };
   question?.addEventListener("input", updateCounter);
   updateCounter();
@@ -2443,7 +2749,7 @@ function scorePartName(code) {
 
 // One college as a flip card: the name and lowest admitted grade on the front;
 // how the score is counted, extra conditions and majors on the back
-function collegeRow(c, floorLabel) {
+function collegeRow(c, floorLabel, source = "") {
   const ar = isArabic();
   const weights = collegeWeights(c);
   const formula = c.qudrat && window.KUWAIT_QUDRAT?.formulas.find(f => f.collegeEn === c.qudrat);
@@ -2490,17 +2796,19 @@ function collegeRow(c, floorLabel) {
         </span>
         ${c.flag ? flag(c.flag) : ''}
       </span>`,
-    back: details ? `<div class="space-y-3">${details}</div>` : `<p class="text-slate-600">${t('local_no_details')}</p>`
+    // Main fact: how the score is counted; everything else is in the university's own document
+    back: factBack(weights ? `${t('local_how_counted')}: ${weights.map(([code, w]) => `${scorePartName(code)} ${+(w * 100).toFixed(1)}%`).join(" · ")}`
+      : c.scoring === "hs-only" ? t('local_hs_only') : c.scoring === "no-qudrat" ? t('local_no_qudrat') : t('local_no_details'), source)
   });
 }
 
 // One fact about a university (who pays, how you get in, tests) as a flip card
-function universityFactCard(title, text, extra = "") {
+function universityFactCard(title, text, source = "") {
   return revealCard({
     question: title,
     flip: true,
     front: `<span class="college-card-name">${title}</span>`,
-    back: `<p class="leading-relaxed">${text}</p>${extra}`
+    back: factBack(text, source)
   });
 }
 
@@ -2519,6 +2827,8 @@ function initLocalUniversitiesPage() {
     card.id = uni.id;
     card.className = "bg-white rounded-xl border border-slate-300 p-6 shadow-sm mb-6 scroll-mt-24";
     const pick = (en, ar) => isAr ? (uni[ar] || uni[en]) : uni[en];
+    // The official page behind this university's cards
+    const source = { "kuwait-university": "ku_admission", aasu: "aasu", puc: "puc" }[uni.id] || "";
 
     card.innerHTML = `
       <div class="border-b border-slate-200 pb-4 mb-4">
@@ -2529,15 +2839,14 @@ function initLocalUniversitiesPage() {
 
       <p class="text-sm text-slate-600 mb-3">${t('local_flip_hint')}</p>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-start mb-6">
-        ${universityFactCard(t('local_funding'), pick('scholarshipFunding', 'scholarshipFundingAr'))}
-        ${universityFactCard(t('local_admission'), pick('admissionSystem', 'admissionSystemAr'))}
-        ${universityFactCard(t('local_aptitude'), pick('aptitudeExams', 'aptitudeExamsAr'),
-          uni.id === 'kuwait-university' ? `<a href="qudrat.html" class="inline-block mt-2 font-semibold text-olive-900 underline">${t('local_qudrat_link')}</a>` : '')}
+        ${universityFactCard(t('local_funding'), pick('scholarshipFunding', 'scholarshipFundingAr'), source)}
+        ${universityFactCard(t('local_admission'), pick('admissionSystem', 'admissionSystemAr'), uni.id === "kuwait-university" ? "ku_admission" : source)}
+        ${universityFactCard(t('local_aptitude'), pick('aptitudeExams', 'aptitudeExamsAr'), uni.id === "kuwait-university" ? "ku_colleges" : source)}
       </div>
 
       <h3 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">${t('local_colleges')}</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 items-start">
-        ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'))).join("")}
+        ${uni.colleges.map(c => collegeRow(c, pick('floorLabelEn', 'floorLabelAr'), uni.id === "kuwait-university" ? "ku_colleges" : source)).join("")}
       </div>
       ${uni.sourceNote ? `<p class="text-xs text-slate-400 mt-3">${pick('sourceNote', 'sourceNoteAr')}</p>` : ''}
     `;
@@ -2608,7 +2917,7 @@ function initFeedbackWidget() {
 // so one index covers majors, programs, countries, Kuwait, questions, guides and contacts.
 // Each result links to the exact place: a filtered results page, or a page section (#id).
 // =========================================================================
-const SEARCH_GROUPS = ["majors", "programs", "countries", "kuwait", "questions", "topics", "contacts", "pages"];
+const SEARCH_GROUPS = ["majors", "programs", "countries", "kuwait", "questions", "topics", "resources", "contacts", "pages"];
 const SEARCH_GROUP_LIMIT = 5; // results shown per group before "Show all"
 
 // Everyday words students type, mapped to the words the site uses
@@ -2654,6 +2963,8 @@ function collectText(value, suffix, out = []) {
 function buildSearchIndex() {
   const tr = (key, lang) => window.MOUSTAQBILI_TRANSLATIONS?.[lang]?.[key] ?? key;
   const entries = [];
+  // Joins short pieces of text ("10 KWD", "per test") as sentences, so a direct answer stops where a card does
+  const sentences = list => list.map(x => String(x).trim()).filter(Boolean).map(x => /[.!?؟:]$/.test(x) ? x : `${x}.`).join(" ");
   const add = (group, url, titleEn, titleAr, textEn, textAr, keywords = "") =>
     entries.push({ group, url, titleEn, titleAr: titleAr || titleEn, textEn: textEn || "", textAr: textAr || textEn || "", keywords });
 
@@ -2667,14 +2978,24 @@ function buildSearchIndex() {
       `${disc?.ar || ""}. أقل نسبة مقبولة: ${list.map(([c, p]) => `${countryAr(c)} ${p}%`).join("، ")}.`);
   });
 
-  // Detailed scholarship programs -> results for that country and major
+  // Detailed scholarship programs -> results for that country and major.
+  // Everything behind the program's tabs and pop-ups (exams, deadlines, visa, money) is searchable too.
+  const skipKeys = new Set(["id", "levels", "planMajors", "verifiedFields", "country", "countryAr", "title", "titleAr", "isMerit", "category"]);
+  const leafText = (obj, out = []) => {
+    if (typeof obj === "string") out.push(/[.!?؟:]$/.test(obj.trim()) ? obj.trim() : `${obj.trim()}.`);
+    else if (Array.isArray(obj)) obj.forEach(v => leafText(v, out));
+    else if (obj && typeof obj === "object") Object.entries(obj).forEach(([k, v]) => { if (!skipKeys.has(k)) leafText(v, out); });
+    return out;
+  };
   (window.MOUSTAQBILI_PROGRAMS || []).forEach(p => {
     const ar = window.MOUSTAQBILI_PROGRAMS_AR?.[p.id] || {};
     const params = new URLSearchParams({ country: p.country });
     if (p.planMajors?.[0]) params.set("major", p.planMajors[0]);
+    const { accreditedUniversities, majors, ...details } = p;
+    const { accreditedUniversities: arUnis, majors: arMajors, ...arDetails } = ar;
     add("programs", `results.html?${params}`, `${p.title} - ${p.country}`, `${p.titleAr || p.title} - ${p.countryAr || p.country}`,
-      `${p.category}. ${p.majors.join(", ")}. ${p.accreditedUniversities.join(", ")}. ${(p.monthlySalary?.allowancesSummary || []).join(" ")}`,
-      `${(ar.majors || p.majors).join("، ")}. ${(ar.accreditedUniversities || p.accreditedUniversities).join("، ")}. ${(ar.monthlySalary?.allowancesSummary || []).join(" ")}`);
+      `${p.category}. ${majors.join(", ")}. ${accreditedUniversities.join(", ")}. ${leafText(details).join(" ")}`,
+      `${(arMajors || majors).join("، ")}. ${(arUnis || accreditedUniversities).join("، ")}. ${leafText(arDetails).join(" ")}`);
   });
 
   // Monthly allowance per country (More Info table), used by countries and the money section
@@ -2692,55 +3013,96 @@ function buildSearchIndex() {
       `البعثات في ${c.labelAr}: ${count} تخصص في خطة 2026/2027. ${allowanceText(a, "ar")}`);
   });
 
-  // Universities and colleges in Kuwait
+  // Universities and colleges in Kuwait, with what is on the back of each card
+  // (lowest admitted per major, conditions, how the score is counted)
+  const weightText = (w, lang) => !w ? "" : Object.entries(w).map(([k, v]) =>
+    `${lang === "ar" ? { hs: "الثانوية", eng: "الإنجليزي", math: "الرياضيات", arb: "العربي" }[k] : { hs: "high school", eng: "English", math: "Math", arb: "Arabic" }[k]} ${Math.round(v * 1000) / 10}%`).join(lang === "ar" ? " + " : " + ");
   (window.KUWAIT_LOCAL_UNIVERSITIES || []).forEach(u => {
     const url = `local-universities.html#${u.id}`;
-    add("kuwait", url, u.name, u.nameAr, `${u.scholarshipFunding}. ${u.admissionSystem}`, `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""}`);
+    add("kuwait", url, u.name, u.nameAr,
+      `${u.scholarshipFunding}. ${u.admissionSystem} ${u.aptitudeExams || ""} ${u.campusLocation ? `Campus: ${u.campusLocation}.` : ""} ${u.sourceNote || ""}`,
+      `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""} ${u.aptitudeExamsAr || ""} ${u.campusLocationAr ? `المقر: ${u.campusLocationAr}.` : ""} ${u.sourceNoteAr || ""}`);
     (u.colleges || []).forEach(c => {
       const majors = c.majors || [];
+      const formula = c.weights || (window.KUWAIT_QUDRAT?.formulas || []).find(f => f.collegeEn === c.qudrat)?.weights;
       add("kuwait", url, `${c.collegeName} - ${u.name}`, `${c.collegeNameAr || c.collegeName} - ${u.nameAr}`,
-        `${c.minThanawiya ? `Lowest admitted ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : m.en).join(", ")}`,
-        `${c.minThanawiya ? `أدنى معدل مقبول ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : (m.ar || m.en)).join("، ")}`);
+        `${c.minThanawiya ? `${u.floorLabelEn || "Lowest admitted"}: ${c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : `${m.en}${m.grade ? ` ${m.grade}` : ""}`).join(", ")}. ${formula ? `Score counted as ${weightText(formula, "en")}.` : ""} ${c.conditionEn || ""}`,
+        `${c.minThanawiya ? `${u.floorLabelAr || "أدنى معدل مقبول"}: ${c.minThanawiyaAr || c.minThanawiya}. ` : ""}${majors.map(m => typeof m === "string" ? m : `${m.ar || m.en}${m.grade ? ` ${m.grade}` : ""}`).join("، ")}. ${formula ? `تُحسب الدرجة: ${weightText(formula, "ar")}.` : ""} ${c.conditionAr || ""}`);
     });
   });
 
   // Common questions -> that question, opened
   (window.CLARIFICATIONS?.items || []).forEach(i =>
-    add("questions", `clarifications.html#${i.id}`, i.questionEn, i.questionAr, i.answerEn, i.answerAr));
+  {
+    add("questions", `clarifications.html#${i.id}`, i.questionEn, i.questionAr, `${i.answerEn} ${i.detailsEn || ""}`, `${i.answerAr} ${i.detailsAr || ""}`, i.country || "");
+    if (i.country) entries[entries.length - 1].country = i.country; // questions about living in one country
+  });
+
+  // Cards anywhere in the guides: a question with its answer (front) and details (back), a term with
+  // its meaning, or a titled box. Each one is its own result, so its answer can be shown directly.
+  const addCards = (value, url) => {
+    if (Array.isArray(value)) return value.forEach(v => addCards(v, url));
+    if (!value || typeof value !== "object") return;
+    if (value.questionEn && (value.answerEn || value.factEn)) {
+      const line = (x, lang) => [x[`answer${lang}`], x[`sub${lang}`]].filter(Boolean).join(" ") + ". " + (x[`fact${lang}`] || "");
+      add("topics", url, value.questionEn, value.questionAr, line(value, "En"), line(value, "Ar"));
+    } else if (value.termEn && value.defEn) {
+      add("topics", url, value.termEn, value.termAr, value.defEn, value.defAr);
+    } else if (value.titleEn && value.bodyEn && !value.blocks) {
+      add("topics", url, value.titleEn, value.titleAr, value.bodyEn, value.bodyAr);
+    }
+    Object.values(value).forEach(v => { if (v && typeof v === "object") addCards(v, url); });
+  };
+  (window.MORE_INFO?.sections || []).forEach(s => addCards(s.blocks, `more-info.html#${s.id}`));
+  if (window.KUWAIT_QUDRAT) {
+    addCards([window.KUWAIT_QUDRAT.currentCycle?.basics, window.KUWAIT_QUDRAT.goodToKnow], "qudrat.html#current-cycle");
+    // How Kuwait University counts each college's score
+    (window.KUWAIT_QUDRAT.formulas || []).forEach(f => add("kuwait", "qudrat.html#equivalent",
+      `${f.collegeEn}: equivalent average (Kuwait University)`, `${f.collegeAr}: المعدل المكافئ (جامعة الكويت)`,
+      `${weightText(f.weights, "en")}. ${f.conditionEn || ""}`, `${weightText(f.weights, "ar")}. ${f.conditionAr || ""}`,
+      "equivalent average weights المعدل المكافئ"));
+  }
+
+  // Official links (Resources page)
+  (window.RESOURCES?.groups || []).forEach(g => (g.items || []).forEach(i => {
+    add("resources", `resources.html#${g.id}`, i.labelEn, i.labelAr, i.descEn, i.descAr, `${g.keywords} ${i.url} link website official رابط موقع`);
+    Object.assign(entries[entries.length - 1], { ext: i.url, extAr: i.urlAr || i.url }); // the answer links straight to it
+  }));
 
   // Guides: More Info, Navigate, the application checklist, Qudrat
   (window.MORE_INFO?.sections || []).forEach(s => {
     const hasTable = (s.blocks || []).some(b => b.type === "allowances");
     add("topics", `more-info.html#${s.id}`, s.titleEn, s.titleAr,
-      `${collectText(s, "En").join(" ")} ${hasTable ? allowances.map(a => allowanceText(a, "en")).join(" ") : ""}`,
-      `${collectText(s, "Ar").join(" ")} ${hasTable ? allowances.map(a => allowanceText(a, "ar")).join(" ") : ""}`);
+      `${sentences(collectText(s, "En"))} ${hasTable ? allowances.map(a => allowanceText(a, "en")).join(" ") : ""}`,
+      `${sentences(collectText(s, "Ar"))} ${hasTable ? allowances.map(a => allowanceText(a, "ar")).join(" ") : ""}`);
   });
   (window.NAVIGATE_GUIDE?.sections || []).forEach(s =>
-    add("topics", `navigate.html#${s.id}`, s.titleEn, s.titleAr, collectText(s, "En").join(" "), collectText(s, "Ar").join(" ")));
+    add("topics", `navigate.html#${s.id}`, s.titleEn, s.titleAr, sentences(collectText(s, "En")), sentences(collectText(s, "Ar"))));
   (window.APPLY_STEPS?.steps || []).forEach(s =>
-    add("topics", "suggestions.html#scholarship-steps", s.titleEn, s.titleAr, collectText(s, "En").join(" "), collectText(s, "Ar").join(" "), "apply steps checklist"));
+    add("topics", "suggestions.html#scholarship-steps", s.titleEn, s.titleAr, sentences(collectText(s, "En")), sentences(collectText(s, "Ar")), "apply steps checklist"));
   const q = window.KUWAIT_QUDRAT;
   if (q) {
     add("topics", "qudrat.html#current-cycle", tr("nav_qudrat", "en"), tr("nav_qudrat", "ar"),
-      collectText(q, "En").join(" "), collectText(q, "Ar").join(" "), "qudrat aptitude test dates register القدرات");
+      sentences(collectText(q, "En")), sentences(collectText(q, "Ar")), "qudrat aptitude test dates register القدرات");
     add("topics", "qudrat.html#equivalent", tr("equiv_title", "en"), tr("equiv_title", "ar"),
       (q.formulas || []).map(f => f.collegeEn).join(", "), (q.formulas || []).map(f => f.collegeAr).join("، "), "equivalent score calculator weights المعدل المكافئ");
   }
 
   // Contacts -> that group on the Contact page
   (window.MOHE_CONTACTS?.groups || []).forEach(g => (g.entries || []).forEach(e => {
-    const values = (e.items || []).map(it => it.value || "").join(" ");
+    // "Phone: +44 20 7761 8500." so the answer gives the number itself
+    const pairs = lang => (e.items || []).map(it => `${it[`label${lang}`] || it.labelEn || ""}: ${it.value || ""}.`).join(" ");
     add("contacts", `contact.html#${g.id}`, `${e.nameEn} - ${g.titleEn}`, `${e.nameAr || e.nameEn} - ${g.titleAr || g.titleEn}`,
-      `${e.descEn || ""} ${collectText(e.items || [], "En").join(" ")} ${values}`,
-      `${e.descAr || ""} ${collectText(e.items || [], "Ar").join(" ")} ${values}`);
+      `${e.descEn ? `${e.descEn}.` : ""} ${pairs("En")}`, `${e.descAr ? `${e.descAr}.` : ""} ${pairs("Ar")}`);
   }));
 
   // Pages, using the header names and the home-page descriptions (SITE_NAV / FOOTER_EXTRA are in layout.js)
-  const pageDesc = { "results.html": "results_desc", "qudrat.html": "ql_qudrat_desc", "local-universities.html": "ql_local_desc", "suggestions.html": "ql_guide_desc", "clarifications.html": "ql_questions_desc", "more-info.html": "ql_more_desc", "contact.html": "ql_contact_desc", "navigate.html": "navigate_desc" };
+  const pageDesc = { "score.html": "score_desc", "resources.html": "resources_desc", "results.html": "results_desc", "qudrat.html": "ql_qudrat_desc", "local-universities.html": "ql_local_desc", "suggestions.html": "ql_guide_desc", "clarifications.html": "ql_questions_desc", "more-info.html": "ql_more_desc", "contact.html": "ql_contact_desc", "navigate.html": "navigate_desc" };
   const pages = (typeof SITE_NAV !== "undefined" ? SITE_NAV : []).concat(typeof FOOTER_EXTRA !== "undefined" ? FOOTER_EXTRA : []);
   pages.forEach(p => {
     const d = pageDesc[p.href];
-    add("pages", p.href, tr(p.key, "en"), tr(p.key, "ar"), d ? tr(d, "en") : "", d ? tr(d, "ar") : "");
+    const extra = { "resources.html": "resources links websites official useful مصادر روابط مواقع", "score.html": "chances competitive my score فرصتي نسبتي" }[p.href] || "";
+    add("pages", p.href, tr(p.key, "en"), tr(p.key, "ar"), d ? tr(d, "en") : "", d ? tr(d, "ar") : "", extra);
   });
 
   // Normalised copies for matching, in both languages, so either language finds the result
@@ -2758,6 +3120,9 @@ const SEARCH_STOPWORDS = new Set([
   "will", "would", "should", "how", "what", "which", "who", "when", "where", "why", "much", "many", "there", "this",
   "that", "these", "those", "get", "got", "want", "need", "know", "tell", "please", "any", "some", "into", "instead", "use",
   "study", "studying", "studies",
+  "they", "them", "their", "he", "she", "his", "her", "our", "has", "have", "had", "must", "might", "shall",
+  "been", "being", "than", "then", "also", "just", "so", "very", "really", "here", "there's", "it's", "i'm", "im", "give", "gives",
+  "هم", "لهم", "نحن", "لنا", "انت", "عندي", "عندهم", "يعني", "بس", "لو", "اللي",
   "كم", "ما", "ماذا", "هل", "متى", "كيف", "اين", "لماذا", "في", "من", "الى", "على", "عن", "هي", "هو", "انا", "اريد",
   "ابي", "ابغى", "ممكن", "يمكن", "يمكنني", "لي", "او", "و", "مع", "هذا", "هذه", "التي", "الذي", "ان", "اذا", "عند", "بدل", "بدلا",
   "دراسة", "ادرس", "الدراسة"
@@ -2773,7 +3138,15 @@ const SEARCH_MEANINGS = {
   exam: ["test", "exam"], test: ["test", "exam"],
   "شروط": ["شروط", "تحتاج", "متطلبات", "نسبه"], "رسوم": ["رسوم", "د.ك"], "سعر": ["رسوم", "د.ك"], "موعد": ["موعد", "اخر يوم"],
   "مخصص": ["مخصص", "مكافاه"], "جامعات": ["جامعه", "جامعات"], "تسجيل": ["تسجيل", "التسجيل"],
-  airplane: ["flight"]
+  parent: ["guardian", "parent"], parents: ["guardian", "parent"], mother: ["guardian", "mother"], father: ["guardian", "father"], family: ["guardian", "family"],
+  "اهل": ["ولي الامر", "اهل"], "الاهل": ["ولي الامر"], "والدين": ["ولي الامر"], "ابوي": ["ولي الامر"], "امي": ["ولي الامر"],
+  acceptance: ["accepted", "acceptance"], accepted: ["accepted", "acceptance"],
+  live: ["live", "housing", "accommodation", "residence", "halls"], living: ["living", "housing", "accommodation"], stay: ["stay", "housing", "accommodation"],
+  "سكن": ["سكن", "اقامه", "سكني"], "اسكن": ["سكن", "اقامه"],
+  change: ["change", "move", "transfer", "switch"], transfer: ["transfer", "move", "change"], switch: ["change", "move", "transfer"],
+  airplane: ["flight"], ticket: ["flight", "ticket"], tickets: ["flight", "ticket"], "تذكره": ["تذكره", "طيران", "سفر"], "تذاكر": ["تذاكر", "طيران", "سفر"],
+  defer: ["year later", "freeze", "delay"], postpone: ["year later", "freeze", "delay"], delay: ["year later", "freeze"],
+  "تاجيل": ["بعد سنه", "تجميد"], "اجل": ["بعد سنه", "تجميد"]
 };
 
 // Rough word root, so "universities", "studies" or "tests" also find "university", "study", "test".
@@ -2900,7 +3273,9 @@ function renderSearchPage() {
   const ar = isArabic();
   const input = document.getElementById("search-page-input");
   const summary = document.getElementById("search-summary");
+  const answerBox = document.getElementById("search-answer");
   const bestBox = document.getElementById("search-best");
+  const home = currentPageFile() === "index.html";
   const box = document.getElementById("search-results");
   const suggest = document.getElementById("search-suggestions");
   if (!box) return;
@@ -2913,28 +3288,33 @@ function renderSearchPage() {
   const title = e => ar ? e.titleAr : e.titleEn;
   const text = e => ar ? e.textAr : e.textEn;
 
-  document.title = query ? `${query} | ${t('search_title')} | moustaqbili` : `${t('search_title')} | moustaqbili`;
+  renderHomeExamples();
+  if (query || !home) document.title = query ? `${query} | ${t('search_title')} | moustaqbili` : `${t('search_title')} | moustaqbili`;
   if (summary) {
-    summary.textContent = !query.trim() ? t('search_empty_prompt')
+    summary.textContent = !query.trim() ? (home ? "" : t('search_empty_prompt'))
       : results.length ? t(results.length === 1 ? 'search_count_one' : 'search_count').replace("{n}", results.length).replace("{q}", query)
       : t('search_none').replace("{q}", query);
   }
 
   // Popular searches when the box is empty or nothing matched
-  suggest?.classList.toggle("hidden", results.length > 0);
+  suggest?.classList.toggle("hidden", results.length > 0 || (home && !query.trim()));
   const chips = document.getElementById("search-suggestion-chips");
   if (chips) {
     const popular = ar ? ["الطب", "الأيلتس", "القدرات", "التميز", "المخصص الشهري", "بريطانيا", "التمريض", "الهندسة"]
                        : ["Medicine", "IELTS", "Qudrat", "Merit", "Allowance", "United Kingdom", "Nursing", "Engineering"];
-    chips.innerHTML = popular.map(p => `<a href="search.html?q=${encodeURIComponent(p)}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">${escapeHtml(p)}</a>`).join("");
+    chips.innerHTML = popular.map(p => `<a href="index.html?q=${encodeURIComponent(p)}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50">${escapeHtml(p)}</a>`).join("");
   }
 
   document.getElementById("search-why")?.classList.toggle("hidden", !query.trim() || results.length > 0);
+  // Quick answer: a short, direct answer built from the site's data, above the results
+  const answer = query.trim() ? searchAnswer(query, results) : null;
+  if (answerBox) answerBox.innerHTML = answer ? answerCardHtml(answer) : "";
   if (!results.length) { box.innerHTML = ""; if (bestBox) bestBox.innerHTML = ""; return; }
 
-  // Best match: the top result, shown large, linking straight to it
+  // Best match: the top result, shown large, linking straight to it (unless the answer already is it)
   const best = results[0].entry;
-  if (bestBox) {
+  if (bestBox) bestBox.innerHTML = "";
+  if (bestBox && !answer) {
     bestBox.innerHTML = `
       <a href="${best.url}" class="block mb-8 p-5 rounded-xl bg-white border-2 border-olive-900 hover:bg-slate-50 transition">
         <span class="text-xs font-bold uppercase tracking-wider text-olive-900">${t('search_best')} &middot; ${t('search_group_' + best.group)}</span>
@@ -2944,8 +3324,8 @@ function renderSearchPage() {
       </a>`;
   }
 
-  box.innerHTML = SEARCH_GROUPS.map(group => {
-    const rows = results.filter(r => r.entry.group === group && r.entry !== best);
+  const groupsHtml = SEARCH_GROUPS.map(group => {
+    const rows = results.filter(r => r.entry.group === group && (answer || r.entry !== best));
     if (!rows.length) return "";
     const item = ({ entry }, i) => `
       <li class="${i >= SEARCH_GROUP_LIMIT ? 'hidden search-extra' : ''}">
@@ -2961,6 +3341,12 @@ function renderSearchPage() {
         ${rows.length > SEARCH_GROUP_LIMIT ? `<button type="button" class="search-more mt-3 text-sm font-bold text-olive-900 underline">${t('search_show_all').replace("{n}", rows.length)}</button>` : ""}
       </section>`;
   }).join("");
+  // Too much at once is hard to read: with a direct answer, the full list waits behind one click
+  box.innerHTML = answer ? `
+    <details class="search-all">
+      <summary class="cursor-pointer text-sm font-bold text-olive-900">${t('search_all_results').replace("{n}", results.length)}</summary>
+      <div class="mt-4 space-y-8">${groupsHtml}</div>
+    </details>` : groupsHtml;
 
   box.querySelectorAll(".search-more").forEach(btn => btn.addEventListener("click", () => {
     btn.closest("section").querySelectorAll(".search-extra").forEach(li => li.classList.remove("hidden"));
@@ -2974,9 +3360,9 @@ function renderSearchPage() {
 //     Each heading opens a short version of a section that used to sit in the page,
 //     so the page itself keeps only what most students came for.
 // =========================================================================
-// Which sections move into the panel, per page (CSS selectors, in panel order)
+// Which sections move into the panel, per page (CSS selectors, in panel order).
+// Every page gets the panel: it always lists the site's other pages first.
 const PAGE_SIDEBAR = {
-  "index.html": ["#home-gpa", "#home-links"],
   "qudrat.html": ["#rules", "#help", "#sources"],
   "more-info.html": ["#words", "#entry", "#certificates", "#links"],
   "navigate.html": ["#howto", "#data", "#degrees", "#tools", "#privacy", "#contact"],
@@ -2988,9 +3374,10 @@ const PAGE_SIDEBAR = {
 const sidebarState = { open: false, item: -1 };
 
 function initPageSidebar() {
-  if (!PAGE_SIDEBAR[currentPageFile()]) return;
+  if (currentPageFile() === "search.html") return; // it forwards to the home page
   buildPageSidebar();
-  addShowAllButton();
+  // "Show everything" only where something is folded away (cards or panel topics)
+  if (document.querySelector(".reveal-card") || (PAGE_SIDEBAR[currentPageFile()] || []).length) addShowAllButton();
   // Pages redraw themselves when the language or exchange rates change; move the fresh
   // sections across once every redraw has run (a microtask runs before the next paint)
   const rebuild = () => queueMicrotask(buildPageSidebar);
@@ -3018,7 +3405,14 @@ function sidebarShell() {
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <ul class="page-sidebar-list"></ul>
+      <div class="page-sidebar-scroll">
+        <nav class="page-sidebar-pages" aria-labelledby="page-sidebar-pages-title">
+          <h3 id="page-sidebar-pages-title" class="page-sidebar-group"></h3>
+          <ul class="page-sidebar-page-links"></ul>
+        </nav>
+        <h3 class="page-sidebar-group page-sidebar-onpage"></h3>
+        <ul class="page-sidebar-list"></ul>
+      </div>
     </aside>`);
   panel = document.getElementById("page-sidebar");
   document.getElementById("page-sidebar-tab").addEventListener("click", () => setSidebarOpen(!sidebarState.open));
@@ -3047,15 +3441,23 @@ function sidebarShell() {
 
 function buildPageSidebar() {
   const found = (PAGE_SIDEBAR[currentPageFile()] || []).map(sel => document.querySelector(sel)).filter(Boolean);
-  if (!found.length) return;
   const panel = sidebarShell();
+  // Pages: everything that is not in the top menu (SITE_PAGES in layout.js)
+  const here = currentPageFile();
+  panel.querySelector("#page-sidebar-pages-title").textContent = t('sidebar_pages');
+  panel.querySelector(".page-sidebar-page-links").innerHTML = (typeof SITE_PAGES !== "undefined" ? SITE_PAGES : []).map(p => `
+    <li><a href="${p.href}" class="page-sidebar-link ${p.href === here ? "is-current" : ""}" ${p.href === here ? 'aria-current="page"' : ""}>${t(p.key)}</a></li>`).join("");
+  panel.querySelector(".page-sidebar-onpage").textContent = t('sidebar_on_page');
+  panel.querySelector(".page-sidebar-onpage").classList.toggle("hidden", !found.length);
   // The heading comes from the section's own title (read before the section is moved)
   const items = found.map(el => ({
     el,
     title: el.dataset.sidebarTitle ? t(el.dataset.sidebarTitle) : (el.querySelector("h2, h3")?.textContent || "").replace(/\s+/g, " ").trim()
   }));
   document.querySelector("#page-sidebar-tab .page-sidebar-tab-text").textContent = t('sidebar_tab');
-  document.querySelector("#page-sidebar-tab .page-sidebar-tab-count").textContent = items.length;
+  const count = document.querySelector("#page-sidebar-tab .page-sidebar-tab-count");
+  count.textContent = items.length;
+  count.classList.toggle("hidden", !items.length);
   document.getElementById("page-sidebar-tab").setAttribute("aria-label", `${t('sidebar_tab')}: ${t('sidebar_topics').replace("{n}", items.length)}`);
   document.getElementById("page-sidebar-title").textContent = t('sidebar_title');
   panel.querySelector(".page-sidebar-hint").textContent = t('sidebar_hint');
@@ -3170,7 +3572,7 @@ function applyShowAll(force) {
   const list = document.querySelector(".page-sidebar-list");
   if (!list) return;
   let inline = document.getElementById("page-more-inline");
-  if (on) {
+  if (on && list.children.length) {
     if (sidebarState.open) setSidebarOpen(false, false);
     if (!inline) {
       document.querySelector("main").insertAdjacentHTML("beforeend", `
@@ -3187,7 +3589,7 @@ function applyShowAll(force) {
       li.querySelector(".page-sidebar-body").hidden = false;
     });
   } else if (inline) {
-    document.getElementById("page-sidebar")?.appendChild(list);
+    document.querySelector("#page-sidebar .page-sidebar-scroll")?.appendChild(list);
     inline.remove();
     setSidebarItem(sidebarState.item, false);
   }
@@ -3223,6 +3625,33 @@ function initWhyLinks() {
 }
 
 // The reasons a search came back empty: [{ text, fix: { label, url } }]
+// Countries and fields students search for that the 2026/2027 plan does not cover (Why page).
+// grant: the Ministry FAQ lists this country as offering study grants (منح) to Kuwaiti students.
+const WHY_OTHER_COUNTRIES = [
+  { en: "Canada", ar: "كندا", names: ["canada", "كندا"] },
+  { en: "Germany", ar: "ألمانيا", names: ["germany", "المانيا"] },
+  { en: "France", ar: "فرنسا", names: ["france", "فرنسا"] },
+  { en: "Egypt", ar: "مصر", names: ["egypt", "مصر"], grant: true },
+  { en: "Jordan", ar: "الأردن", names: ["jordan", "الاردن", "اردن"], grant: true },
+  { en: "Qatar", ar: "قطر", names: ["qatar", "قطر"], grant: true },
+  { en: "Oman", ar: "عُمان", names: ["oman", "عمان"], grant: true },
+  { en: "the Netherlands", ar: "هولندا", names: ["netherlands", "holland", "هولندا"] },
+  { en: "Japan", ar: "اليابان", names: ["japan", "اليابان"] },
+  { en: "Malaysia", ar: "ماليزيا", names: ["malaysia", "ماليزيا"] },
+  { en: "Turkey", ar: "تركيا", names: ["turkey", "turkiye", "تركيا"] },
+  { en: "Italy", ar: "إيطاليا", names: ["italy", "ايطاليا"] },
+  { en: "Spain", ar: "إسبانيا", names: ["spain", "اسبانيا"] },
+  { en: "Switzerland", ar: "سويسرا", names: ["switzerland", "سويسرا"] },
+  { en: "China", ar: "الصين", names: ["china", "الصين"] },
+  { en: "South Korea", ar: "كوريا الجنوبية", names: ["korea", "كوريا"] }
+];
+// The plan has no Law, Education or Social Science majors (plan-majors-data.js)
+const WHY_OTHER_FIELDS = [
+  { en: "Law", ar: "الحقوق", names: ["law", "lawyer", "حقوق", "محاماه", "قانون"] },
+  { en: "Education (teaching)", ar: "التربية (التدريس)", names: ["education", "teaching", "teacher", "تربيه", "تدريس", "معلم"] },
+  { en: "Social sciences", ar: "العلوم الاجتماعية", names: ["social science", "sociology", "psychology", "اجتماع", "علم النفس"] }
+];
+
 function whyReasons(params) {
   const ar = isArabic();
   const cfg = getFilterConfig();
@@ -3245,8 +3674,33 @@ function whyReasons(params) {
   const reasons = [];
 
   if (q) {
+    const qn = answerText(q);
+    // A country the 2026/2027 plan does not cover
+    const other = WHY_OTHER_COUNTRIES.find(c => c.names.some(n => qn.includes(answerText(n))));
+    if (other) reasons.push({ text: t('why_q_country').replace("{country}", ar ? other.ar : other.en)
+      .replace("{list}", Object.keys(window.PLAN_COUNTRIES || {}).map(c => countryName(c)).join(ar ? "، " : ", ")),
+      tips: other.grant ? [t('why_q_grant').replace("{country}", ar ? other.ar : other.en)] : null,
+      fix: { label: t('why_fix_all_countries_plain'), url: "results.html" } });
+    // A field the plan has no majors in
+    const field = WHY_OTHER_FIELDS.find(f => f.names.some(n => qn.includes(answerText(n))));
+    if (field) reasons.push({ text: t('why_q_field').replace("{field}", ar ? field.ar : field.en), tips: [t('why_q_field_tip')],
+      fix: { label: t('nav_local'), url: "local-universities.html" } });
+    // Spelling: words that are nowhere on the site, with the closest real words
+    if (window.MOUSTAQBILI_TRANSLATIONS) {
+      searchIndexCache = searchIndexCache || buildSearchIndex();
+      const idx = searchIndexCache;
+      idx._vocab = idx._vocab || [...new Set(idx.flatMap(e => e._hay.split(" ")).filter(w => w.length > 3))];
+      let changed = false;
+      const fixed = normalizeSearch(q).split(" ").map(w => {
+        if (w.length < 4 || idx.some(e => searchHas(e._hay, [w, searchStem(w)]))) return w;
+        const best = idx._vocab.map(v => [v, editDistance(w, v, 2)]).filter(([, d]) => d <= 2).sort((x, y) => x[1] - y[1])[0];
+        if (best) { changed = true; return best[0]; }
+        return w;
+      }).join(" ");
+      if (changed) reasons.push({ text: t('why_q_spelling').replace("{q}", escapeHtml(fixed)), fix: { label: t('why_q_try').replace("{q}", escapeHtml(fixed)), url: `index.html?q=${encodeURIComponent(fixed)}` } });
+    }
     reasons.push({ text: t('why_site_search').replace("{q}", escapeHtml(q)), tips: [t('why_tip_spelling'), t('why_tip_language'), t('why_tip_topics')],
-      fix: { label: t('why_fix_new_search'), url: "search.html" } });
+      fix: { label: t('why_fix_ask'), url: `ask.html?q=${encodeURIComponent(q)}` } });
   }
   if (merit) {
     reasons.push({ text: t('why_merit').replace("{n}", programs.filter(p => p.isMerit).length), fix: { label: t('why_fix_no_merit'), url: without("merit") } });
@@ -3324,7 +3778,7 @@ function renderWhyPage() {
 
   root.innerHTML = !chips.length ? `
     <p class="text-base text-slate-700">${t('why_no_search')}</p>
-    <a href="index.html#home-search" class="inline-block px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('home_search_title')}</a>` : `
+    <a href="index.html#home-filters" class="inline-block px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${t('home_search_title')}</a>` : `
     <section>
       <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">${t('why_your_search')}</h2>
       <div class="flex flex-wrap gap-2">${chips.map(c => `<span class="px-3 py-1 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-800">${escapeHtml(c)}</span>`).join("")}</div>
@@ -3351,4 +3805,563 @@ function renderWhyPage() {
       <p class="text-sm text-slate-600 mt-1">${t('why_stuck_desc')}</p>
       <a href="ask.html" class="inline-block mt-3 text-sm font-bold text-olive-900 underline">${t('nav_ask')}</a>
     </section>`;
+}
+
+// =========================================================================
+// 15. Footer update note: "Next update: <date>" (every Thursday, 4:00 PM Kuwait time)
+// =========================================================================
+const UPDATE_WEEKDAY = 4;   // Thursday (Sunday = 0)
+const UPDATE_HOUR_KW = 16;  // 4:00 PM in Kuwait
+
+// The next update as an ISO date (yyyy-mm-dd) in Kuwait. Kuwait is UTC+3 all year.
+function nextUpdateDate(now = new Date()) {
+  const kw = new Date(now.getTime() + 3 * 3600 * 1000); // Kuwait clock, read with the UTC getters
+  let days = (UPDATE_WEEKDAY - kw.getUTCDay() + 7) % 7;
+  if (days === 0 && kw.getUTCHours() >= UPDATE_HOUR_KW) days = 7; // today's update has passed
+  const next = new Date(Date.UTC(kw.getUTCFullYear(), kw.getUTCMonth(), kw.getUTCDate() + days));
+  return next.toISOString().slice(0, 10);
+}
+
+function initUpdateNote() {
+  const show = () => {
+    const el = document.getElementById("footer-next-update");
+    if (el) el.textContent = t('footer_next_update').replace("{date}", formatDate(nextUpdateDate()));
+  };
+  show();
+  window.addEventListener("languageChanged", show);
+}
+
+// =========================================================================
+// 16. Quick answers (home page search)
+//     A short, direct answer above the results, built from the site's own data
+//     files, so it stays right after every weekly update.
+// =========================================================================
+const ANSWER_WORDS = {
+  money: ["money", "allowance", "allowances", "stipend", "salary", "pay", "paid", "monthly", "شهري", "شهريا", "مخصص", "المخصص", "راتب", "فلوس", "مكافاه", "المكافاه", "مبلغ", "المبلغ"],
+  qudrat: ["qudrat", "aptitude", "قدرات", "القدرات"],
+  when: ["deadline", "last day", "when", "date", "dates", "register", "registration", "موعد", "مواعيد", "متى", "اخر", "تسجيل", "التسجيل"],
+  cost: ["cost", "fee", "fees", "price", "رسوم", "الرسوم", "سعر", "تكلفه"],
+  merit: ["merit", "excellence", "تميز", "التميز", "متميز"]
+};
+
+// Short names students type for a major (the plan's own names are longer, e.g. "الطب البشري")
+const MAJOR_ALIASES = {
+  medicine: ["doctor", "md", "mbbs", "mbchb", "طب", "طبيب"],
+  dentistry: ["dentist", "dental", "اسنان", "طبيب اسنان"],
+  pharmacy: ["pharmacist", "صيدلي"],
+  "veterinary-medicine": ["vet", "vet medicine", "veterinary", "بيطري"]
+};
+
+// Questions with one official answer (ids in clarifications-data.js): when a search matches one,
+// that answer is shown first. Checked in this order, so specific ones come before general ones.
+// exam: the search must also be about Qudrat or a test. need/any/also: it must contain a word
+// from each list (words match whole words; Arabic "ال" is ignored).
+const EXAM_WORDS = ["qudrat", "aptitude", "exam", "exams", "test", "tests", "قدرات", "اختبار", "اختبارات", "امتحان", "الامتحان"];
+const NOT_QUDRAT = ["ielts", "toefl", "sat", "duolingo", "ايلتس", "الايلتس", "توفل", "التوفل"];
+const RESULT_WORDS = ["result", "results", "score", "scores", "نتيجه", "نتيجتي", "نتائج", "درجه", "درجتي", "درجات"];
+const UNI_WORDS = ["university", "universities", "uni", "college", "جامعه", "جامعتي", "جامعات"];
+// Words that only say how a question is asked ("can I", "get into", "options"): they do not change the answer
+const ASKING_WORDS = ["apply", "applying", "application", "admission", "admitted", "accept", "entry", "enter", "qualify", "possible", "options", "option", "info", "information",
+  "details", "about", "go", "going", "get", "into", "chance", "chances", "study", "studying", "become", "available", "offered", "offer", "exist", "there", "متاح", "متوفر", "موجود", "التقديم", "قبول", "دراسه", "ادرس", "لدراسه", "معلومات", "تفاصيل", "اقدر", "استطيع", "ابي", "ابغى"];
+const REQUIREMENT_WORDS = ["requirement", "requirements", "require", "required", "conditions", "condition", "eligibility", "eligible", "criteria", "what do i need", "what i need", "need to apply", "شروط", "شرط", "متطلبات", "المطلوب", "احتاج", "يحتاج"];
+// Majors that need Qudrat for the scholarship (clarifications-data.js: "qudrat-not-all-scholarships")
+const QUDRAT_MAJORS = ["medicine", "dentistry", "pharmacy", "veterinary-medicine"];
+const RESOURCE_WORDS = ["resource", "resources", "link", "links", "website", "websites", "portal", "official site", "useful sites", "مصادر", "مصدر", "روابط", "رابط", "مواقع", "موقع", "بوابه"];
+const LOWEST_WORDS = ["lowest", "minimum", "min", "cutoff", "cut off", "lowest accepted", "lowest admitted", "lowest percentage", "required percentage", "percentage needed", "اقل", "ادنى", "حد ادنى", "النسبه المطلوبه", "نسبه القبول", "نسب القبول"];
+// Universities in Kuwait by the names students type (ids in KUWAIT_LOCAL_UNIVERSITIES, data.js)
+const LOCAL_UNI_NAMES = {
+  "kuwait-university": ["kuwait university", "ku", "kuniv", "جامعه الكويت"],
+  aasu: ["aasu", "abdullah al salem", "abdullah alsalem", "abdullah al-salem university", "عبدالله السالم", "عبد الله السالم"],
+  puc: ["puc", "private universities", "private university", "internal scholarship", "internal scholarships", "الجامعات الخاصه", "مجلس الجامعات", "البعثات الداخليه", "بعثه داخليه"]
+};
+const SCORE_WORDS = ["chance", "chances", "competitive", "my score", "my percentage", "my grade", "what can i study", "what can i get", "فرصتي", "فرصي", "فرص", "تنافسي", "نسبتي", "معدلي", "ماذا ادرس", "وش ادرس"];
+const DEFINE_WORDS = ["what is", "what are", "whats", "what s", "what does", "meaning", "define", "definition", "ما هو", "ما هي", "ما معنى", "معنى", "وش يعني", "شنو", "ايش"];
+const MAJOR_LIST_WORDS = ["what majors", "which majors", "majors available", "available majors", "list of majors", "what can i study", "what to study", "majors in", "majors offered", "majors are there",
+  "ما التخصصات", "التخصصات المتاحه", "وش التخصصات", "ايش التخصصات", "شنو التخصصات", "ماذا ادرس", "وش ادرس"];
+const VISA_WORDS = ["visa", "visas", "evisa", "student visa", "تاشيره", "التاشيره", "فيزا", "الفيزا"];
+const SCHOLARSHIP_WORDS = ["scholarship", "scholarships", "plan", "abroad", "بعثه", "البعثه", "بعثات", "البعثات", "ابتعاث", "خطه"];
+const IELTS_WORDS = ["ielts", "toefl", "english test", "english exam", "ايلتس", "الايلتس", "توفل", "التوفل", "اختبار اللغه", "اختبار الانجليزي"];
+const FAQ_INTENTS = [
+  // noMajor: only when no major is named ("IELTS for medicine in the UK" is answered by the major answer)
+  { id: "apply-choices", any: ["how many universities", "how many choices", "choose my university", "which universities can i", "كم رغبه", "اختار جامعتي"] },
+  { id: "apply-when", any: ["deadline", "last day", "اخر موعد", "اخر يوم"], also: SCHOLARSHIP_WORDS, not: ["qudrat", "قدرات", "merit", "تميز", "paperwork", "documents", "اوراق", "مستندات"] },
+  { id: "apply-results", any: ["got accepted", "if i am accepted", "was i accepted", "am i accepted", "know if i", "هل انقبلت", "انقبلت", "قبلت"], not: ["qudrat", "قدرات", "ielts", "ايلتس"] },
+  { id: "ielts-taken-abroad", noMajor: true, any: ["outside kuwait", "outside", "abroad", "another country", "خارج الكويت", "خارج"], also: IELTS_WORDS },
+  { id: "ukvi-for-uk", noMajor: true, any: ["ukvi"] },
+  { id: "ukvi-for-uk", noMajor: true, any: IELTS_WORDS, also: ["uk", "united kingdom", "britain", "england", "بريطانيا", "المملكه المتحده"] },
+  { id: "ielts-before-registration", noMajor: true, any: IELTS_WORDS },
+  { id: "annual-flight-ticket", any: ["ticket", "tickets", "flight", "flights", "تذكره", "تذاكر", "طيران"], not: ["family", "spouse", "wife", "husband", "children", "kids", "اسره", "عائله", "زوج", "زوجه", "اطفال", "ابناء"] },
+  { id: "graduation-benefits", any: ["graduate", "graduation", "after i graduate", "التخرج", "بعد التخرج", "اتخرج"], not: ["high school", "school", "ثانويه", "2024", "2025", "2023"] },
+  { id: "allowance-start", any: ["first allowance", "allowance start", "allowance starts", "first payment", "when do i get", "when will i get", "start getting", "اول مخصص", "متى ينزل", "متى يبدا"], also: ["allowance", "money", "paid", "salary", "stipend", "مخصص", "راتب", "فلوس"] },
+  { id: "ministry-contact", any: ["ministry", "mohe", "وزاره", "الوزاره"], also: ["phone", "number", "call", "contact", "email", "reach", "appointment", "هاتف", "رقم", "تواصل", "اتصل", "موعد"] },
+  { id: "gpa-convert", any: ["gpa", "معدل تراكمي", "المعدل التراكمي"], also: ["convert", "converter", "percentage", "percent", "تحويل", "احول", "نسبه"] },
+  { id: "american-diploma", any: ["american diploma", "american high school", "american school", "us diploma", "us high school", "ثانويه امريكيه", "الثانويه الامريكيه", "مدرسه امريكيه"] },
+  { id: "british-ib-certificate", any: ["igcse", "a level", "a levels", "as level", "british school", "british certificate", "ib", "international baccalaureate", "بكالوريا", "ثانويه انجليزيه", "ثانويه بريطانيه", "شهاده بريطانيه"] },
+  { id: "apply-documents", any: ["documents", "document", "papers", "paperwork needed", "مستندات", "المستندات", "اوراق", "الاوراق", "وثائق"], not: ["qudrat", "قدرات", "equivalency", "معادله", "visa", "تاشيره"] },
+  { id: "apply-results", any: ["results", "result", "accepted", "acceptance list", "نتائج", "النتائج", "المقبولين", "قبولي"], also: SCHOLARSHIP_WORDS },
+  { id: "apply-results", any: ["how many students", "how many accepted", "كم طالب", "عدد المقبولين"] },
+  { id: "apply-when", any: ["when", "dates", "date", "deadline", "open", "opens", "start", "متى", "موعد", "مواعيد", "يفتح", "يبدا"], also: ["apply", "register", "registration", "application", "تسجيل", "التسجيل", "اقدم", "التقديم"], not: ["qudrat", "قدرات", "merit", "تميز", "ielts", "ايلتس", "university", "جامعه"] },
+  { id: "apply-how", any: ["how", "where", "كيف", "وين", "اين"], also: ["apply", "register", "application", "اقدم", "التقديم", "اسجل", "التسجيل"], not: ["qudrat", "قدرات", "merit", "تميز", "ielts", "ايلتس", "university", "halls", "housing", "جامعه", "سكن"] },
+  { id: "apply-who", any: ["who can apply", "eligible", "eligibility", "age limit", "how old", "age", "من يحق", "العمر", "السن", "عمري"] },
+  { id: "apply-arts-stream", any: ["arts", "literary", "ادبي", "الادبي"], also: ["scholarship", "abroad", "apply", "can", "بعثه", "اقدر", "يحق"] },
+  { id: "apply-choices", any: ["choose", "choices", "pick", "how many universities", "اختار", "رغبات", "الرغبات"] },
+  { id: "tuition-paid", any: ["tuition", "fees", "رسوم", "الرسوم الدراسيه"], not: ["qudrat", "قدرات", "ielts", "ايلتس"] },
+  { id: "housing-paid", any: ["housing", "rent", "accommodation", "سكن", "ايجار"], also: ["pay", "paid", "pays", "cover", "covered", "تدفع", "يدفع", "مدفوع"] },
+  { id: "not-accepted", any: ["not accepted", "dont get accepted", "don t get accepted", "rejected", "didn t get", "not get in", "ما انقبلت", "لم اقبل", "لم أقبل", "رفض"] },
+  { id: "qudrat-good-score", exam: true, any: ["good score", "good qudrat", "high score", "درجه جيده", "درجه عاليه"] },
+  { id: "qudrat-not-all-scholarships", exam: true, any: ["do i need", "need qudrat", "required", "necessary", "must i", "هل احتاج", "مطلوب", "لازم", "ضروري"] },
+  { id: "qudrat-what", exam: true, any: ["what is", "what are", "whats", "meaning", "explain", "ما هو", "ما هي", "وش", "شنو", "معنى"], not: ["score", "result", "pass", "fee", "cost", "date", "درجه", "نتيجه", "رسوم", "موعد"] },
+  { id: "university-not-listed", need: UNI_WORDS, any: ["not on", "not listed", "not in", "unlisted", "not recommended", "not approved", "non nbaq", "appeal", "add", "added", "غير موصى", "غير مدرجه", "غير معتمده", "غير موجوده", "مو موجوده", "تظلم", "اضافه", "اضافتها"] },
+  { id: "grant-countries", any: ["grant", "grants", "منحه", "منح"], also: ["country", "countries", "which", "دول", "دوله"] },
+  { id: "grant-vs-scholarship", any: ["grant", "grants", "منحه", "منح"] },
+  { id: "qudrat-equivalent-average", any: ["equivalent average", "equivalent score", "معدل مكافئ", "مكافئ"] },
+  { id: "qudrat-same-as-national-test", any: ["national test", "unified test", "وطني موحد", "اختبار وطني"] },
+  { id: "qudrat-appeal", exam: true, any: ["appeal", "regrade", "تظلم", "اعتراض"] },
+  { id: "qudrat-pass-mark", exam: true, any: ["pass", "passing", "pass mark", "نجاح"] },
+  { id: "qudrat-results-where", exam: true, not: SCORE_WORDS, any: RESULT_WORDS, also: ["how", "where", "see", "check", "view", "app", "sahel", "كيف", "وين", "اين", "اعرف", "سهل"] },
+  { id: "qudrat-results-when", exam: true, not: SCORE_WORDS, any: RESULT_WORDS },
+  { id: "qudrat-change-language", exam: true, any: ["language", "لغه"] },
+  { id: "qudrat-fee-refund", exam: true, any: ["refund", "cancel", "money back", "استرجاع", "استرداد", "الغاء", "الغي"] },
+  { id: "qudrat-late", exam: true, any: ["late", "miss", "missed", "absent", "تاخرت", "تاخر", "غياب", "غبت"] },
+  { id: "qudrat-forgot-password", exam: true, any: ["password", "forgot", "login", "log in", "سر", "نسيت", "مرور"] },
+  { id: "qudrat-what-to-bring", exam: true, any: ["bring", "allowed", "permitted", "calculator", "phone", "pencil", "id", "watch", "احضر", "احضار", "مسموح", "ممنوع", "حاسبه", "هاتف", "جوال", "هويه", "قلم"] },
+  { id: "qudrat-arrive", exam: true, any: ["arrive", "arrival", "early", "وصول", "اوصل"] },
+  { id: "qudrat-location", exam: true, any: ["location", "venue", "place", "hall", "room", "building", "مقر", "مكان", "قاعه", "مبنى"] },
+  { id: "qudrat-how-register", exam: true, any: ["how to register", "how do i register", "how can i register", "steps", "sign up", "طريقه", "خطوات", "كيف اسجل"] },
+  { id: "qudrat-samples", exam: true, any: ["sample", "samples", "past paper", "past papers", "practice", "نماذج", "نموذج"] },
+  { id: "qudrat-courses", exam: true, any: ["course", "courses", "prep", "training", "دورات", "دوره", "تقويه"] },
+  { id: "qudrat-retake-validity", exam: true, any: ["valid", "validity", "expire", "expires", "retake", "again", "how many times", "صلاحيه", "اعيد", "اعاده", "كم مره"] },
+  { id: "qudrat-who-can-take", exam: true, any: ["who can", "eligible", "international school", "يحق", "مؤهلين", "اجنبيه"] },
+  { id: "qudrat-change-details", exam: true, extra: "nextClose", any: ["change", "edit", "modify", "update", "تغيير", "لتغيير", "تعديل", "لتعديل", "اغير", "اعدل", "تحديث"] },
+  { id: "qudrat-subjects", exam: true, any: ["subjects", "which tests", "what tests", "مواد"] }
+];
+
+// Lower-case words with Arabic "ال" taken off, padded with spaces for whole-word matching
+function answerText(str) {
+  return ` ${normalizeSearch(str).split(" ").map(w => w.replace(/^(وال|بال|فال|لل|ال)(?=..)/, "")).join(" ")} `;
+}
+
+function searchAnswer(query, results) {
+  const ar = isArabic();
+  const words = normalizeSearch(query).split(" ").filter(Boolean);
+  // The question plus the site's synonyms ("uk" -> "united kingdom", "doctor" -> "medicine")
+  // Misspelled words ("medcine") also count as the real word they are closest to
+  const index0 = searchIndexCache || [];
+  const fixes = searchTerms(query, index0).filter(tm => /\p{L}{3}/u.test(tm.word) && !index0.some(e => searchHas(e._hay, [tm.word, searchStem(tm.word)])))
+    .flatMap(tm => tm.alts.filter(a => a !== tm.word));
+  const q = answerText([query, ...words.flatMap(w => SEARCH_SYNONYMS[w] || []), ...fixes].join(" "));
+  const has = key => ANSWER_WORDS[key].some(w => q.includes(answerText(w)));
+  const longest = (list, names) => list.map(x => [x, Math.max(...names(x).map(n => q.includes(answerText(n)) ? n.length : 0))])
+    .filter(([, len]) => len > 0).sort((a, b) => b[1] - a[1])[0]?.[0] || null;
+
+  const major = longest(window.PLAN_MAJORS || [], m => [m.en, m.ar, ...(MAJOR_ALIASES[m.id] || [])]);
+  const country = longest(getFilterConfig().countries || [], c => [c.value, c.label, c.labelAr].filter(Boolean));
+  // English sentences need "the" before "United Kingdom", "United States" and "United Arab Emirates"
+  const countryName = c => ar ? (c.labelAr || c.label) : (/^United /.test(c.label) ? `the ${c.label}` : c.label);
+  // A question from the Questions page, shown as the answer (by its id in clarifications-data.js)
+  const faqAnswer = id => {
+    const entry = (searchIndexCache || []).find(e => e.url === `clarifications.html#${id}`);
+    const item = (window.CLARIFICATIONS?.items || []).find(i => i.id === id);
+    if (!entry || !item) return null;
+    const lang = /\p{Script=Arabic}/u.test(query) ? "Ar" : /[a-z]/i.test(query) ? "En" : (ar ? "Ar" : "En");
+    return { entry, title: item[`question${lang}`], url: entry.url, label: t('ans_read_answer'),
+      lines: [withFlags(item[`answer${lang}`]), item[`details${lang}`] ? withFlags(item[`details${lang}`]) : ""].filter(Boolean) };
+  };
+  const majorName = m => ar ? m.ar : m.en;
+  const both = (amount, cur) => `<strong>${money(convertAmount(amount, cur, "KWD", FX.rates), "KWD")}</strong> (${formatNumber(amount)} ${cur})`;
+  const moneyLines = a => !a ? [] : [
+    t('ans_allowance').replace("{amount}", both(a.standard, a.currency)),
+    typeof a.merit === "number" ? t('ans_merit').replace("{amount}", both(a.merit, a.currency)) : ""
+  ].filter(Boolean);
+
+  // 0. A question with one official answer (FAQ_INTENTS), e.g. "when are qudrat results out"
+  const qd = window.KUWAIT_QUDRAT;
+  const hasAny = list => list.some(w => q.includes(answerText(w)));
+  const aboutExam = !hasAny(NOT_QUDRAT) && (has("qudrat") || hasAny(EXAM_WORDS));
+  const intent = FAQ_INTENTS.find(i => (!i.exam || aboutExam) && (!i.noMajor || !major) && (!i.need || hasAny(i.need)) && (!i.not || !hasAny(i.not)) && hasAny(i.any) && (!i.also || hasAny(i.also)));
+  const intentAnswer = intent && faqAnswer(intent.id);
+  if (intentAnswer) {
+    // "Last day to change": add the next real deadline from qudrat-data.js
+    const next = intent.extra === "nextClose" && (qd?.currentCycle.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
+    if (next) intentAnswer.lines.push(t('ans_qudrat_next').replace("{date}", `<strong>${formatDate(next.regClose)}</strong>`).replace("{test}", formatDate(next.test)));
+    return intentAnswer;
+  }
+
+  // 0b. Official links: "qudrat links", "ministry website", "resources"
+  if (hasAny(RESOURCE_WORDS) && window.RESOURCES) {
+    const groups = window.RESOURCES.groups;
+    const g = groups.find(x => x.id !== "abroad" && hasAny(x.keywords.split(" "))) || groups.find(x => hasAny(x.keywords.split(" ")));
+    const shown = g ? g.items.slice(0, 4) : groups.map(x => x.items[0]);
+    return { title: g ? L(g, 'title') : t('ans_resources_title'),
+      lines: [g ? t('ans_resources_group') : t('ans_resources_line'),
+        shown.map(i => `<a class="underline font-semibold" href="${ar ? (i.urlAr || i.url) : i.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(L(i, 'label'))}</a>`).join(" · ")],
+      url: `resources.html${g ? `#${g.id}` : ""}`, label: t('ans_resources_open') };
+  }
+
+  // The best result's own answer, used when a search asks something more specific than a rule covers
+  const top = results[0]?.entry;
+  // An Arabic search on the English site (or the other way round) is answered in the search's language
+  const textAr = /\p{Script=Arabic}/u.test(query) ? true : /[a-z]/i.test(query) ? false : ar;
+  // A word that is nowhere on the site was matched by its closest spelling: say the answer is the closest one
+  const guessed = () => terms.some(tm => /\p{L}{3}/u.test(tm.word) && !(searchIndexCache || []).some(e => searchHas(e._hay, [tm.word, searchStem(tm.word)]))
+    && tm.alts.some(alt => alt !== tm.word && alt.length > 3 && editDistance(tm.word, alt, 2) <= 2));
+  const fromTop = (list = results, note = "") => {
+    if (country) {
+      // "where do students live in ireland": results about Ireland first, so another country's answer is not picked
+      const names = [country.value, country.label, country.labelAr || ""].filter(Boolean).map(n => normalizeSearch(n));
+      const about = r => names.some(n => r.entry._hay.includes(n));
+      list = [...list.filter(about), ...list.filter(r => !about(r))];
+    }
+    const best = bestAnswer(list, query, textAr, country?.value);
+    if (!best) return null;
+    // A question card answers with its own short answer (details behind "Details")
+    if (best.entry.group === "questions") {
+      const card = faqAnswer(best.entry.url.split("#")[1]);
+      if (card) { if (note || guessed()) card.lines.unshift(note || t('ans_closest')); return card; }
+    }
+    const ext = textAr ? best.entry.extAr : best.entry.ext; // an official link: link to it directly
+    return { entry: best.entry, title: textAr ? best.entry.titleAr : best.entry.titleEn,
+      lines: [note || (guessed() ? t('ans_closest') : ""), withFlags(escapeHtml(best.line)),
+        ext ? `<a class="underline font-semibold break-all" href="${ext}" target="_blank" rel="noopener noreferrer" dir="ltr">${escapeHtml(ext.replace(/^https?:\/\//, ""))}</a>` : ""].filter(Boolean),
+      url: best.entry.url, label: t('ans_open_result') };
+  };
+  // "books allowance", "visa for the uk", "ucas deadline medicine": words a rule does not explain
+  // ("books", "visa", "deadline") mean the student wants the detail, so the best result answers when it has them
+  const terms = searchTerms(query, searchIndexCache || []);
+  const specific = (...known) => {
+    const vocab = answerText([...known.flat(), ...ANSWER_WORDS.money, ...LOWEST_WORDS,
+      "scholarship scholarships plan accepted percentage majors major country countries university college بعثه بعثات خطه نسبه مقبوله تخصص تخصصات دوله جامعه كليه",
+      ...REQUIREMENT_WORDS, ...ASKING_WORDS].join(" "));
+    const index = searchIndexCache || [];
+    const common = tm => index.filter(e => searchHas(e._hay, tm.alts)).length > index.length * 0.25;
+    const extra = terms.filter(tm => /\p{L}{2}/u.test(tm.word) && !common(tm) && !tm.alts.some(alt => vocab.includes(answerText(alt))));
+    if (!extra.length || !top) return null;
+    const found = extra.filter(tm => searchHas(top._hay, tm.alts)).length;
+    return found >= Math.ceil(extra.length / 2) ? fromTop() : null;
+  };
+
+  // 0c. A university in Kuwait: a college's lowest admitted grade, or every college's
+  const localUni = (window.KUWAIT_LOCAL_UNIVERSITIES || []).find(u => hasAny(LOCAL_UNI_NAMES[u.id] || []));
+  if (localUni) {
+    const detail = specific(LOCAL_UNI_NAMES[localUni.id], localUni.colleges.flatMap(c => [c.collegeName, c.collegeNameAr || ""]));
+    if (detail) return detail;
+    // Full names, or the short form students type ("Engineering" for "Engineering & Petroleum")
+    const college = longest(localUni.colleges || [], c => [c.collegeName, c.collegeNameAr,
+      ...[c.collegeName.split(/ & | \(/)[0], (c.collegeNameAr || "").split(" ")[0]].filter(n => n && n.length >= 4)].filter(Boolean));
+    const cName = c => ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+    const floor = c => ar ? (c.minThanawiyaAr || c.minThanawiya) : c.minThanawiya;
+    const url = `local-universities.html#${localUni.id}`;
+    if (college) {
+      const graded = (college.majors || []).filter(m => m.grade);
+      return { title: `${cName(college)} - ${ar ? localUni.nameAr : localUni.name}`,
+        lines: [`${escapeHtml(L(localUni, 'floorLabel'))}: <strong>${escapeHtml(floor(college))}</strong>`,
+          graded.length ? graded.map(m => `${escapeHtml(ar ? (m.ar || m.en) : m.en)} <strong>${m.grade}</strong>`).join(" · ") : "",
+          escapeHtml(L(college, 'condition'))].filter(Boolean),
+        url, label: t('ans_open_local') };
+    }
+    if (hasAny(LOWEST_WORDS)) {
+      return { title: ar ? localUni.nameAr : localUni.name,
+        lines: [`${escapeHtml(L(localUni, 'floorLabel'))}:`, localUni.colleges.map(c => `${escapeHtml(cName(c))} <strong>${escapeHtml(floor(c))}</strong>`).join(" · ")],
+        url, label: t('ans_open_local') };
+    }
+  }
+
+  // 7b. A country or field the 2026/2027 plan does not cover ("study law in canada"), unless the
+  //     student is looking for a contact (the cultural office in Canada is still on the site)
+  const otherCountry = WHY_OTHER_COUNTRIES.find(c => hasAny(c.names));
+  const otherField = !major && WHY_OTHER_FIELDS.find(f => hasAny(f.names));
+  if ((otherCountry || otherField) && !localUni && !hasAny(["office", "contact", "phone", "email", "cultural", "مكتب", "تواصل", "هاتف", "ثقافي"])) {
+    return { title: t('ans_not_in_plan'),
+      lines: [otherCountry ? t('why_q_country').replace("{country}", ar ? otherCountry.ar : otherCountry.en)
+          .replace("{list}", Object.keys(window.PLAN_COUNTRIES || {}).map(c => ar ? window.PLAN_COUNTRIES[c] : c).join(ar ? "، " : ", "))
+        : t('why_q_field').replace("{field}", ar ? otherField.ar : otherField.en),
+        otherCountry?.grant ? t('why_q_grant').replace("{country}", ar ? otherCountry.ar : otherCountry.en) : "",
+        otherField ? t('why_q_field_tip') : "",
+        major && otherCountry ? t('ans_major_offered_in').replace("{major}", majorName(major))
+          .replace("{list}", Object.keys(major.minPct).map(c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c).join(ar ? "، " : ", ")) : ""].filter(Boolean),
+      url: `why.html?q=${encodeURIComponent(query)}`, label: t('ans_why_more') };
+  }
+  // 1. Qudrat dates or fee
+  if (qd && has("qudrat") && !major && (has("when") || has("cost") || hasAny(["next", "deadline", "القادم"]) || terms.length <= 1)) {
+    const c = qd.currentCycle;
+    const next = (c.sessions || []).find(s => daysBetween(new Date(), s.regClose) >= 0);
+    const cost = (c.basics || []).find(b => b.id === "cost");
+    const lines = [
+      next ? t('ans_qudrat_next').replace("{date}", `<strong>${formatDate(next.regClose)}</strong>`).replace("{test}", formatDate(next.test)) : qudratStatusText(qudratStatus(c)),
+      cost ? t('ans_qudrat_fee').replace("{fee}", `<strong>${L(cost, 'answer')}</strong> ${L(cost, 'sub')}`) : ""
+    ].filter(Boolean);
+    if (has("cost") && !has("when")) lines.reverse();
+    return { title: t('ans_qudrat_title'), lines, url: "qudrat.html", label: t('ans_open_qudrat') };
+  }
+  // 2. The merit programme: its deadline, or when the extra money starts
+  if (has("merit") && !major && !country) {
+    const detail = specific(ANSWER_WORDS.merit, ANSWER_WORDS.when, ["students", "student", "programme", "program", "طلبه", "طالب", "برنامج"]);
+    if (detail) return detail;
+    return faqAnswer(has("money") ? "merit-bonus-start" : has("when") ? "merit-deadline-separate" : "merit-what") || null;
+  }
+  // The English test cards on More Info, and the general conditions every student must meet
+  const infoCard = title => (window.MORE_INFO?.sections || []).flatMap(s => (s.blocks || []).flatMap(b => b.items || [])).find(i => i.titleEn === title);
+  const english = infoCard("To register for the scholarship");
+  const ukvi = country?.value === "United Kingdom" ? infoCard("Studying in the UK") : null;
+  const general = t('ans_req_general');
+
+  // One answer for a major (and a country), however the question is asked: "pharmacy in the UK",
+  // "what do I need for pharmacy in the UK", "requirements pharmacy uk" and "can I study pharmacy
+  // in Britain" all get this. The base line has the % and what else is needed; money and the
+  // English test details are under "Details".
+  const majorAnswer = () => {
+    const offered = Object.entries(major.minPct).sort((a, b) => a[1] - b[1]);
+    const needs = t(major.stream === "science" ? 'ans_req_science' : 'ans_req_both') + ((QUDRAT_MAJORS.includes(major.id) || /engineering/i.test(major.en)) ? t('ans_req_qudrat') : "");
+    const cname = c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c;
+    const englishLines = [english ? escapeHtml(L(english, 'body')) : "", ukvi ? escapeHtml(L(ukvi, 'body')) : ""];
+    if (country && !(country.value in major.minPct)) {
+      return { title: t('ans_major_country').replace("{major}", majorName(major)).replace("{country}", countryName(country)),
+        lines: [t('why_not_offered').replace("{major}", majorName(major)).replace("{country}", countryName(country)).replace("{list}", offered.map(([c]) => cname(c)).join(ar ? "، " : ", ")),
+          `${t('ans_req_elsewhere')} ${t('ans_major_base').replace("{pct}", t('ans_req_range').replace("{low}", `<strong>${offered[0][1]}%</strong>`).replace("{high}", `<strong>${offered[offered.length - 1][1]}%</strong>`)).replace("{needs}", needs)}`,
+          englishLines[0], general].filter(Boolean),
+        url: `results.html?major=${encodeURIComponent(major.id)}`, label: t('ans_choose_country') };
+    }
+    if (country) {
+      const pct = major.minPct[country.value];
+      const program = (window.MOUSTAQBILI_PROGRAMS || []).find(p => p.country === country.value && (p.planMajors || []).includes(major.id));
+      const programEnglish = program && (ar ? window.MOUSTAQBILI_PROGRAMS_AR?.[program.id]?.necessaryExams?.englishProficiency : program.necessaryExams?.englishProficiency);
+      return { title: t('ans_major_country').replace("{major}", majorName(major)).replace("{country}", countryName(country)),
+        lines: [t('ans_major_base').replace("{pct}", `<strong>${pct}%</strong>`).replace("{needs}", needs) + (major.unconfirmed?.includes(country.value) ? ` ${flag('unconfirmed')}` : ""),
+          ...moneyLines(countryAllowance(country.value)), ...englishLines, programEnglish ? escapeHtml(programEnglish) : "", general].filter(Boolean),
+        url: `results.html?major=${encodeURIComponent(major.id)}&country=${encodeURIComponent(country.value)}&step=3`, label: t('ans_more_info') };
+    }
+    return { title: majorName(major),
+      lines: [`${t('ans_by_country')} ${offered.map(([c, p]) => `${cname(c)} <strong>${p}%</strong>`).join(" · ")}`,
+        t('ans_major_needs').replace("{needs}", needs), englishLines[0], general].filter(Boolean),
+      url: `results.html?major=${encodeURIComponent(major.id)}`, label: t('ans_choose_country') };
+  };
+
+  // 2b. Requirements: "pharmacy in the UK requirements", "what do I need to apply"
+  if (hasAny(REQUIREMENT_WORDS) && !localUni) {
+    if (major) return majorAnswer();
+    const field = !major && (window.PLAN_DISCIPLINES || []).find(d => hasAny([d.en.split(/ & |, /)[0], d.ar.split(" ")[0]].filter(n => n.length >= 3)));
+    if (field) {
+      // A field ("engineering requirements australia"): the range of minimums for its majors
+      const majors = (window.PLAN_MAJORS || []).filter(m => m.discipline === field.id && (!country || country.value in m.minPct));
+      const pcts = majors.flatMap(m => country ? [m.minPct[country.value]] : Object.values(m.minPct));
+      if (pcts.length) {
+        const qudrat = majors.some(m => QUDRAT_MAJORS.includes(m.id) || /engineering/i.test(m.en));
+        return {
+          title: t('ans_req_title').replace("{major}", ar ? field.ar : field.en).replace("{where}", country ? t('ans_req_in').replace("{country}", countryName(country)) : ""),
+          lines: [t('ans_req_base').replace("{pct}", t('ans_req_range').replace("{low}", `<strong>${Math.min(...pcts)}%</strong>`).replace("{high}", `<strong>${Math.max(...pcts)}%</strong>`).replace(/ \(.*\)| \(.*\)/, ""))
+              .replace("{stream}", t(majors.every(m => m.stream === "science") ? 'ans_req_science' : 'ans_req_both')).replace("{qudrat}", qudrat ? t('ans_req_qudrat_eng') : ""),
+            t('ans_req_field_majors').replace("{n}", majors.length), english ? escapeHtml(L(english, 'body')) : "", ukvi ? escapeHtml(L(ukvi, 'body')) : "", general].filter(Boolean),
+          url: country ? `results.html?country=${encodeURIComponent(country.value)}` : "results.html", label: t('ans_more_info') };
+      }
+    }
+    {
+      return { title: t('ans_req_general_title'),
+        lines: [t('ans_req_general_base'), english ? escapeHtml(L(english, 'body')) : "", ukvi ? escapeHtml(L(ukvi, 'body')) : "", general].filter(Boolean),
+        url: "more-info.html#entry", label: t('ans_more_info') };
+    }
+  }
+
+  // 2c. "What is a foundation year?", "what is UCAS": the card or link whose name is in the question
+  if (hasAny(DEFINE_WORDS) && !major && !country && !has("merit")) {
+    const strip = x => normalizeSearch(String(x || "").replace(/\(.*?\)/g, " ")).trim();
+    const named = (searchIndexCache || []).filter(e => (e.group === "topics" || e.group === "resources") && e.titleEn.length < 45)
+      .map(e => ({ e, len: Math.max(0, ...[strip(e.titleEn), strip(e.titleAr)].filter(n => n.length >= 3 && q.includes(answerText(n))).map(n => n.length)) }))
+      .filter(x => x.len).sort((x, y) => y.len - x.len);
+    if (named.length) { const def = fromTop([{ entry: named[0].e }]); if (def) return def; }
+  }
+
+  // 2d. "What majors are available?", "what can I study in Australia", "is engineering available in Ireland"
+  const fieldNamed = !major && (window.PLAN_DISCIPLINES || []).find(d => hasAny([d.en.split(/ & |, /)[0], d.ar.split(" ")[0]].filter(n => n.length >= 3)));
+  if (!major && (hasAny(MAJOR_LIST_WORDS) || (fieldNamed && country && hasAny(["available", "offered", "متاح", "متوفر", "موجود"])))) {
+    const list = (window.PLAN_MAJORS || []).filter(m => (!country || country.value in m.minPct) && (!fieldNamed || m.discipline === fieldNamed.id))
+      .sort((x, y) => country ? x.minPct[country.value] - y.minPct[country.value] : majorName(x).localeCompare(majorName(y)));
+    const where = country ? t('ans_req_in').replace("{country}", countryName(country)) : "";
+    const what = fieldNamed ? (ar ? fieldNamed.ar : fieldNamed.en) : "";
+    if (!list.length) {
+      return { title: t('ans_majors_title').replace("{where}", where), lines: [t('ans_field_none').replace("{field}", what).replace("{where}", where)],
+        url: country ? `results.html?country=${encodeURIComponent(country.value)}` : "results.html", label: t('ans_more_info') };
+    }
+    const shown = list.slice(0, 12).map(m => `${escapeHtml(majorName(m))}${country ? ` <strong>${m.minPct[country.value]}%</strong>` : ""}`).join(" · ");
+    return { title: (what ? `${what}: ` : "") + t('ans_majors_title').replace("{where}", where),
+      lines: [t('ans_majors_count').replace("{n}", list.length) + " " + shown + (list.length > 12 ? ` ${t('ans_majors_more').replace("{n}", list.length - 12)}` : "")],
+      url: country ? `results.html?country=${encodeURIComponent(country.value)}` : "results.html", label: t('ans_more_info') };
+  }
+
+  // 2e. Visas: the visa card for the country, or the visa section
+  if (hasAny(VISA_WORDS) && !major) {
+    const cards = (searchIndexCache || []).filter(e => e.url === "more-info.html#visa");
+    const names = country ? [country.value, country.label, country.labelAr || ""].filter(Boolean).map(n => normalizeSearch(n)) : [];
+    const card = country ? cards.find(e => names.some(n => normalizeSearch(`${e.titleEn} ${e.titleAr}`).includes(n))) : cards.find(e => e.group === "topics" && !/\(/.test(e.titleEn));
+    if (card) {
+      const text = (textAr ? card.textAr : card.textEn) || card.textEn;
+      const parts = text.split(/(?<=[.!?؟])\s+/).filter(Boolean);
+      if (parts.length > 1 && normalizeSearch(parts[0]).replace(/\.$/, "") === normalizeSearch(textAr ? card.titleAr : card.titleEn)) parts.shift(); // the section text starts with its title
+      return { entry: card, title: textAr ? card.titleAr : card.titleEn, lines: [withFlags(escapeHtml(parts[0] || text)), parts.length > 1 ? withFlags(escapeHtml(parts.slice(1).join(" "))) : ""].filter(Boolean),
+        url: card.url, label: t('ans_more_info') };
+    }
+  }
+
+  // 3. A major, in one country or everywhere
+  const placeNames = [major ? [major.en, major.ar, ...(MAJOR_ALIASES[major.id] || [])] : [], country ? [country.value, country.label, country.labelAr || ""] : []];
+  if ((major || country) && specific(...placeNames)) return specific(...placeNames);
+  if (major) return majorAnswer();
+  // 4. A country: the lowest % accepted there (when asked), its monthly money and how many majors it offers
+  if (country && hasAny(LOWEST_WORDS)) {
+    const list = (window.PLAN_MAJORS || []).filter(m => country.value in m.minPct).sort((x, y) => x.minPct[country.value] - y.minPct[country.value]);
+    if (list.length) {
+      const lo = list[0], hi = list[list.length - 1];
+      return { title: t('ans_lowest_country').replace("{country}", countryName(country)),
+        lines: [t('ans_lowest_range').replace("{low}", `<strong>${lo.minPct[country.value]}%</strong>`).replace("{lowMajor}", majorName(lo))
+          .replace("{high}", `<strong>${hi.minPct[country.value]}%</strong>`).replace("{highMajor}", majorName(hi)),
+          t('ans_majors_in').replace("{n}", list.length)],
+        url: `results.html?country=${encodeURIComponent(country.value)}`, label: t('allow_see_majors').replace("{country}", countryName(country)) };
+    }
+  }
+  if (country) {
+    const n = (window.PLAN_MAJORS || []).filter(m => country.value in m.minPct).length;
+    return { title: t('ans_money_country').replace("{country}", countryName(country)),
+      lines: [...moneyLines(countryAllowance(country.value)), t('ans_majors_in').replace("{n}", n)],
+      url: `results.html?country=${encodeURIComponent(country.value)}`, label: t('allow_see_majors').replace("{country}", countryName(country)) };
+  }
+  // 5. A percentage ("what can I study with 85%?") or "how competitive is my score": the score checker
+  const pctMatch = String(query).replace(/٪/g, "%").match(/(\d{2,3}(?:\.\d+)?)\s*%/);
+  const pct = pctMatch ? parseFloat(pctMatch[1]) : null;
+  if ((pct >= 50 && pct <= 100) || hasAny(SCORE_WORDS)) {
+    const majors = window.PLAN_MAJORS || [];
+    const meets = pct ? majors.filter(m => Object.values(m.minPct).some(v => pct >= v)).length : 0;
+    return { title: t('ans_score_title'),
+      lines: [pct ? t('ans_score_pct').replace("{pct}", `<strong>${pct}%</strong>`).replace("{n}", meets).replace("{m}", majors.length) : t('ans_score_line')],
+      url: `score.html${pct ? `?hs=${pct}` : ""}`, label: t('ans_score_open') };
+  }
+  // 5b. "Lowest accepted %" in general (or for a field such as engineering): abroad and at Kuwait University
+  if (hasAny(LOWEST_WORDS)) {
+    const field = (window.PLAN_DISCIPLINES || []).find(d => hasAny([d.en.split(/ & |, /)[0], d.ar.split(" ")[0]].filter(n => n.length >= 3)));
+    const pairs = (window.PLAN_MAJORS || []).filter(m => !field || m.discipline === field.id)
+      .flatMap(m => Object.entries(m.minPct).map(([c, p]) => ({ m, c, p }))).sort((x, y) => x.p - y.p);
+    const ku = (window.KUWAIT_LOCAL_UNIVERSITIES || []).find(u => u.id === "kuwait-university");
+    const cname = c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c;
+    if (pairs.length) {
+      const lo = pairs[0], hi = pairs[pairs.length - 1];
+      return { title: field ? `${t('ans_lowest_title')}: ${ar ? field.ar : field.en}` : t('ans_lowest_title'),
+        lines: [t('ans_lowest_abroad').replace("{low}", `<strong>${lo.p}%</strong>`).replace("{lowWhat}", `${majorName(lo.m)}, ${cname(lo.c)}`)
+          .replace("{high}", `<strong>${hi.p}%</strong>`).replace("{highWhat}", `${majorName(hi.m)}, ${cname(hi.c)}`),
+          ku?.generalMin ? t('ans_lowest_ku').replace("{sci}", `<strong>${ku.generalMin.science}%</strong>`).replace("{arts}", `<strong>${ku.generalMin.arts}%</strong>`) : "",
+          t('ans_lowest_more')].filter(Boolean),
+        url: "score.html", label: t('ans_score_open') };
+    }
+  }
+  // 6. Money in general: every country at a glance
+  if (has("money")) {
+    const detail = specific([]);
+    if (detail) return detail;
+    const all = window.MORE_INFO?.allowances || [];
+    return { title: t('ans_money_all'),
+      lines: [all.map(a => `${L(a, 'country')} <strong>${money(convertAmount(a.standard, a.currency, "KWD", FX.rates), "KWD")}</strong>`).join(" · "), t('home_read_2')],
+      url: "more-info.html#money", label: t('ans_see_money') };
+  }
+  // 7. Otherwise, when the best match is a common question, show its answer
+  if (top?.group === "questions") {
+    const fa = faqAnswer(top.url.split("#")[1]);
+    if (fa) return fa;
+  }
+  // 8. Anything else: the sentence that best answers the search, from the best results
+  //    (wherever it sits on the site, including the backs of cards and folded sections)
+  if (top) {
+    const answer = fromTop();
+    if (answer) return answer;
+  }
+  // 9. No result has all the key words: the closest match for the rarest word that is on the site
+  const index = searchIndexCache || [];
+  const singles = terms.map(tm => ({ tm, found: index.filter(e => searchHas(e._hay, tm.alts)).length }))
+    .filter(x => x.found && x.tm.word.length >= 3).sort((x, y) => x.found - y.found);
+  for (const { tm } of singles) {
+    const closest = searchSite(tm.word, index);
+    if (closest.length) return fromTop(closest, t('ans_closest'));
+  }
+  // 10. Nothing on the site matches: say so, and offer to send the question to us
+  return { title: t('ans_none_title'), lines: [t('ans_none_line'), `<a class="underline font-semibold" href="ask.html?q=${encodeURIComponent(query)}">${t('ans_none_ask')}</a>`],
+    url: `why.html?q=${encodeURIComponent(query)}`, label: t('ans_why') };
+}
+
+// The best answering sentence among the first few results: the one with most of the search's
+// key words (longer words count a little more), then the more informative one, then the higher result
+function bestAnswer(results, query, ar, country = null) {
+  let best = null;
+  const terms = searchTerms(query, searchIndexCache || []);
+  results.slice(0, 5).forEach(({ entry }, rank) => {
+    const pick = bestSentences(entry, query, ar, true);
+    if (!pick) return;
+    // A result whose title is the question ("When does the allowance start?") answers it best
+    const title = normalizeSearch(`${entry.titleEn} ${entry.titleAr}`);
+    const titleScore = terms.filter(tm => searchHas(title, tm.alts)).length;
+    const score = pick.score + titleScore * 0.7 + (entry.group === "questions" ? 0.6 - Math.min(entry.titleEn.length, 120) / 2000 : 0) + (country && entry.country === country ? 1.5 : 0) + Math.min(pick.line.length, 160) / 1000 - rank * 0.08;
+    if (!best || score > best.score) best = { entry, line: pick.line, score };
+  });
+  return best;
+}
+
+// The one or two sentences of a result that match the search best (most of its key words, rare
+// words counting more). Short answers ("10 KWD per test.") take the next sentence too.
+function bestSentences(entry, query, ar, withScore = false) {
+  const text = String((ar ? entry.textAr : entry.textEn) || entry.textEn || "").replace(/\s+/g, " ").trim();
+  if (!text) return ar ? entry.titleAr : entry.titleEn;
+  const sentences = text.split(/(?<=[.!?؟])\s+/).map(s => s.trim()).filter(s => s.length > 1 && !/^[.،,]+$/.test(s));
+  if (!sentences.length) return text.slice(0, 260);
+  const terms = searchTerms(query, searchIndexCache || []);
+  const title = normalizeSearch(`${entry.titleEn} ${entry.titleAr}`);
+  let best = 0, bestScore = -1;
+  sentences.forEach((s, i) => {
+    const n = normalizeSearch(s);
+    // "emergency number australia": "Call 000" answers it because the title says "emergency" and "Australia"
+    const titleWeight = entry.group === "questions" ? 1 : 0.6;
+    const score = terms.reduce((sum, term) => sum + (1 + Math.min(term.word.length, 8) / 8) * (searchHas(n, term.alts) ? 1 : searchHas(title, term.alts) ? titleWeight : 0), 0);
+    if (score > bestScore) { best = i; bestScore = score; }
+  });
+  let out = sentences[best];
+  if (out.length < 70 && sentences[best + 1]) out += ` ${sentences[best + 1]}`;
+  out = out.length > 320 ? `${out.slice(0, 317)}…` : out;
+  return withScore ? { line: out, score: Math.max(bestScore, 0) } : out;
+}
+
+// The answer card shows the base answer only (the first line, or two when the first is a short
+// note such as "Closest answer on the site:"); the rest folds away under "Details", and the
+// button opens the page with everything
+function answerCardHtml(a) {
+  const lead = a.lines[0] && a.lines[0].length < 45 && a.lines.length > 1 && !/\d/.test(a.lines[0]) ? 2 : 1;
+  const base = a.lines.slice(0, lead), more = a.lines.slice(lead);
+  return `
+    <section class="answer-card mb-6" aria-labelledby="answer-title">
+      <span class="text-xs font-bold uppercase tracking-wider text-olive-900">${t('ans_label')}</span>
+      <h2 id="answer-title" class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">${a.title}</h2>
+      <div class="mt-2 space-y-1.5 text-base text-slate-800 leading-relaxed">${base.map(l => `<p>${l}</p>`).join("")}</div>
+      ${more.length ? `<details class="answer-more mt-3">
+        <summary class="text-sm font-bold text-olive-900 cursor-pointer">${t('ans_details')}</summary>
+        <div class="mt-2 space-y-1.5 text-sm text-slate-700 leading-relaxed">${more.map(l => `<p>${l}</p>`).join("")}</div>
+      </details>` : ""}
+      <a href="${a.url}" class="inline-flex items-center gap-1 mt-4 px-4 py-2 rounded-lg bg-olive-900 hover:bg-olive-800 text-white text-sm font-bold">${a.label} <span class="flip-rtl inline-block" aria-hidden="true">&rarr;</span></a>
+    </section>`;
+}
+
+// Example questions under the home search bar
+// "Page not found" (404.html): list every page, and put the mistyped page name in the
+// search bar (e.g. ".../qudrat-dates" becomes "qudrat dates") so one click searches for it
+function init404Page() {
+  const pages = document.getElementById("nf-pages");
+  if (pages) {
+    pages.innerHTML = SITE_PAGES.map(p =>
+      `<a href="${p.href}" class="px-3 py-1.5 rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-100" data-i18n="${p.key}">${escapeHtml(t(p.key))}</a>`).join("");
+  }
+  const input = document.getElementById("nf-search-input");
+  if (!input) return;
+  let words = "";
+  try { words = decodeURIComponent(location.pathname.split("/").filter(Boolean).pop() || ""); } catch (e) { /* a broken % code */ }
+  words = words.replace(/\.[a-z]{2,4}$/i, "").replace(/[-_+.]+/g, " ").trim();
+  if (/\p{L}{3}/u.test(words) && words.length <= 60) input.value = words;
+}
+
+function renderHomeExamples() {
+  const box = document.getElementById("home-examples");
+  if (!box) return;
+  box.innerHTML = [1, 2, 3, 4].map(i => t(`home_ex_${i}`)).map(q =>
+    `<a href="index.html?q=${encodeURIComponent(q)}" class="home-example">${escapeHtml(q)}</a>`).join("");
 }
