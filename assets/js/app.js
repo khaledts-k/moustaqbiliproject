@@ -3923,7 +3923,17 @@ const FIELD_IN_KUWAIT = {
 };
 const SCHOLARSHIP_WORDS = ["scholarship", "scholarships", "plan", "abroad", "بعثه", "البعثه", "بعثات", "البعثات", "ابتعاث", "خطه"];
 const IELTS_WORDS = ["ielts", "toefl", "english test", "english exam", "ايلتس", "الايلتس", "توفل", "التوفل", "اختبار اللغه", "اختبار الانجليزي"];
+const AVIATION_WORDS = ["aviation", "pilot", "pilots", "flight school", "flying", "fly planes", "aircraft", "aerospace", "aeronautical", "aeronautics", "air traffic", "airline", "cadet", "طيران", "الطيران", "طيار", "طيارين", "ملاحه جويه", "مراقبه جويه", "هندسه طيران", "فضاء"];
 const FAQ_INTENTS = [
+  // Aviation: specific questions first, then the overview (clarifications-data.js, topic "aviation")
+  { id: "jazeera-cadet-programme-baa", any: ["jazeera", "الجزيره"], also: AVIATION_WORDS },
+  { id: "kac-mpl-scholarship-status", any: ["kuwait airways", "الخطوط الكويتيه", "الكويتيه"], also: AVIATION_WORDS },
+  { id: "au-aircraft-maintenance-diploma", any: ["aircraft maintenance", "maintenance engineer", "صيانه الطائرات", "صيانه طائرات"] },
+  { id: "au-air-traffic-control-diploma", any: ["air traffic", "traffic controller", "مراقبه جويه", "مراقبه الملاحه", "مراقب جوي"] },
+  { id: "dgca-pilot-licensing", any: ["licence", "license", "رخصه", "ترخيص"], also: AVIATION_WORDS },
+  { id: "dgca-approved-training-organisations", any: ["flight school", "flying school", "approved school", "مدرسه طيران", "معهد طيران"] },
+  { id: "military-ali-al-sabah-college-admission", any: ["military", "air force", "army", "عسكري", "عسكريه", "الجيش", "القوه الجويه"] , also: AVIATION_WORDS },
+  { id: "aviation-overview", any: AVIATION_WORDS, not: ["ticket", "tickets", "تذكره", "تذاكر", "allowance", "مخصص"] },
   // noMajor: only when no major is named ("IELTS for medicine in the UK" is answered by the major answer)
   { id: "apply-choices", any: ["how many universities", "how many choices", "choose my university", "which universities can i", "كم رغبه", "اختار جامعتي"] },
   { id: "apply-when", any: ["deadline", "last day", "اخر موعد", "اخر يوم"], also: SCHOLARSHIP_WORDS, not: ["qudrat", "قدرات", "merit", "تميز", "paperwork", "documents", "اوراق", "مستندات"] },
