@@ -89,9 +89,9 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Chemistry", minGrade: "90% in Thanawiya, A at AS/A-Level, or A- in the US system" },
-      { subject: "Biology", minGrade: "90% in Thanawiya, A at AS/A-Level, or A- in the US system" },
-      { subject: "Math", minGrade: "90% in Thanawiya, B at AS/A-Level, or A- in the US system" }
+      { subject: "Chemistry", minGrade: "90% in high school, A at AS/A-Level, or A- in the US system" },
+      { subject: "Biology", minGrade: "90% in high school, A at AS/A-Level, or A- in the US system" },
+      { subject: "Math", minGrade: "90% in high school, B at AS/A-Level, or A- in the US system" }
     ],
 
     pathway: {
@@ -195,9 +195,9 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Chemistry", minGrade: "90% in Thanawiya, or A at AS-Level" },
-      { subject: "Biology or physics", minGrade: "90% in Thanawiya, or B at AS-Level" },
-      { subject: "Math", minGrade: "90% in Thanawiya, or B at AS-Level" }
+      { subject: "Chemistry", minGrade: "90% in high school, or A at AS-Level" },
+      { subject: "Biology or physics", minGrade: "90% in high school, or B at AS-Level" },
+      { subject: "Math", minGrade: "90% in high school, or B at AS-Level" }
     ],
 
     pathway: {
@@ -293,8 +293,8 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Advanced math / calculus", minGrade: "A, or 88% in Thanawiya" },
-      { subject: "Physics or computing", minGrade: "B+, or 85% in Thanawiya" },
+      { subject: "Advanced math / calculus", minGrade: "A, or 88% in high school" },
+      { subject: "Physics or computing", minGrade: "B+, or 85% in high school" },
       { subject: "English", minGrade: "TOEFL 90 or IELTS 7.0" }
     ],
 
@@ -400,8 +400,8 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Chemistry", minGrade: "A, or 95% in Thanawiya (75% in the Monash foundation year)" },
-      { subject: "Biology", minGrade: "A, or 95% in Thanawiya" },
+      { subject: "Chemistry", minGrade: "A, or 95% in high school (75% in the Monash foundation year)" },
+      { subject: "Biology", minGrade: "A, or 95% in high school" },
       { subject: "English", minGrade: "IELTS 7.0 (no part below 6.5 at Monash)" }
     ],
 
@@ -501,9 +501,9 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Chemistry", minGrade: "90% in Thanawiya, or B at A-Level" },
-      { subject: "Biology", minGrade: "90% in Thanawiya, or B at A-Level" },
-      { subject: "Math or physics", minGrade: "90% in Thanawiya" }
+      { subject: "Chemistry", minGrade: "90% in high school, or B at A-Level" },
+      { subject: "Biology", minGrade: "90% in high school, or B at A-Level" },
+      { subject: "Math or physics", minGrade: "90% in high school" }
     ],
 
     pathway: {
@@ -594,8 +594,8 @@ const MOUSTAQBILI_PROGRAMS = [
     },
 
     courseSubjectFloors: [
-      { subject: "Chemistry", minGrade: "90% in Thanawiya, or B at AS-Level" },
-      { subject: "Biology", minGrade: "90% in Thanawiya, or B at AS-Level" },
+      { subject: "Chemistry", minGrade: "90% in high school, or B at AS-Level" },
+      { subject: "Biology", minGrade: "90% in high school, or B at AS-Level" },
       { subject: "English", minGrade: "IELTS 6.0 (writing 6.0), or TOEFL iBT 80" }
     ],
 

@@ -3839,7 +3839,7 @@ function initUpdateNote() {
 const ANSWER_WORDS = {
   money: ["money", "allowance", "allowances", "stipend", "salary", "pay", "paid", "monthly", "شهري", "شهريا", "مخصص", "المخصص", "راتب", "فلوس", "مكافاه", "المكافاه", "مبلغ", "المبلغ"],
   qudrat: ["qudrat", "aptitude", "قدرات", "القدرات"],
-  when: ["deadline", "last day", "when", "date", "dates", "register", "registration", "موعد", "مواعيد", "متى", "اخر", "تسجيل", "التسجيل"],
+  when: ["deadline", "last day", "when", "date", "dates", "register", "registration", "موعد", "مواعيد", "متى", "اخر", "تسجيل", "التسجيل", "تاريخ", "تواريخ"],
   cost: ["cost", "fee", "fees", "price", "رسوم", "الرسوم", "سعر", "تكلفه"],
   merit: ["merit", "excellence", "تميز", "التميز", "متميز"]
 };
@@ -3879,6 +3879,48 @@ const DEFINE_WORDS = ["what is", "what are", "whats", "what s", "what does", "me
 const MAJOR_LIST_WORDS = ["what majors", "which majors", "majors available", "available majors", "list of majors", "what can i study", "what to study", "majors in", "majors offered", "majors are there",
   "ما التخصصات", "التخصصات المتاحه", "وش التخصصات", "ايش التخصصات", "شنو التخصصات", "ماذا ادرس", "وش ادرس"];
 const VISA_WORDS = ["visa", "visas", "evisa", "student visa", "تاشيره", "التاشيره", "فيزا", "الفيزا"];
+// Majors students search for that are not in the 2026/2027 plan (checked against PLAN_MAJORS:
+// a search that names a plan major is answered by the major answer first). field = PLAN_DISCIPLINES id.
+const OTHER_MAJORS = [
+  { en: "Mechanical Engineering", ar: "الهندسة الميكانيكية", field: "engineering", names: ["mechanical engineering", "mechanical", "هندسه ميكانيكيه", "ميكانيكيه", "ميكانيك"] },
+  { en: "Electrical Engineering", ar: "الهندسة الكهربائية", field: "engineering", names: ["electrical engineering", "هندسه كهربائيه", "كهربائيه"] },
+  { en: "Civil Engineering", ar: "الهندسة المدنية", field: "engineering", names: ["civil engineering", "هندسه مدنيه", "مدنيه"] },
+  { en: "Chemical Engineering", ar: "الهندسة الكيميائية", field: "engineering", names: ["chemical engineering", "هندسه كيميائيه", "كيميائيه"] },
+  { en: "Petroleum Engineering", ar: "هندسة البترول", field: "engineering", names: ["petroleum engineering", "petroleum", "oil engineering", "هندسه بترول", "بترول", "نفط"] },
+  { en: "Industrial Engineering", ar: "الهندسة الصناعية", field: "engineering", names: ["industrial engineering", "هندسه صناعيه", "صناعيه"] },
+  { en: "Aerospace Engineering", ar: "هندسة الطيران والفضاء", field: "engineering", aviation: true, names: ["aerospace engineering", "aerospace", "aeronautical engineering", "aeronautical", "aeronautics", "هندسه طيران", "هندسه الطيران", "فضاء", "هندسه فضاء"] },
+  { en: "Aviation (pilot training)", ar: "الطيران (تدريب الطيارين)", field: "engineering", aviation: true, names: ["aviation", "pilot", "pilots", "flight school", "flying", "air traffic", "aircraft", "طيران", "طيار", "طيارين", "ملاحه جويه", "مراقبه جويه", "الطيران"] },
+  { en: "Nuclear Engineering", ar: "الهندسة النووية", field: "engineering", names: ["nuclear engineering", "nuclear", "نوويه"] },
+  { en: "Marine Engineering", ar: "الهندسة البحرية", field: "engineering", names: ["marine engineering", "naval", "هندسه بحريه"] },
+  { en: "Business Administration", ar: "إدارة الأعمال", field: "business", names: ["business administration", "business", "mba", "اداره اعمال", "ادارة الاعمال", "بزنس"] },
+  { en: "Accounting", ar: "المحاسبة", field: "business", names: ["accounting", "accountant", "محاسبه", "محاسب"] },
+  { en: "Finance", ar: "التمويل", field: "business", names: ["finance", "banking", "تمويل", "مصرفيه"] },
+  { en: "Economics", ar: "الاقتصاد", field: "business", names: ["economics", "economy", "اقتصاد"] },
+  { en: "Marketing", ar: "التسويق", field: "business", names: ["marketing", "تسويق"] },
+  { en: "Management Information Systems", ar: "نظم المعلومات الإدارية", field: "computing", names: ["management information systems", "mis", "information systems", "نظم معلومات"] },
+  { en: "Information Technology", ar: "تقنية المعلومات", field: "computing", names: ["information technology", "تقنيه معلومات", "تكنولوجيا المعلومات"] },
+  { en: "Media and Journalism", ar: "الإعلام والصحافة", field: "arts", names: ["media", "journalism", "mass communication", "اعلام", "صحافه"] },
+  { en: "Interior Design", ar: "التصميم الداخلي", field: "arts", names: ["interior design", "تصميم داخلي"] },
+  { en: "Fashion Design", ar: "تصميم الأزياء", field: "arts", names: ["fashion", "تصميم ازياء", "ازياء"] },
+  { en: "Translation", ar: "الترجمة", field: "arts", names: ["translation", "translator", "ترجمه", "مترجم"] },
+  { en: "History", ar: "التاريخ", field: "arts", names: ["history"] },
+  { en: "Philosophy", ar: "الفلسفة", field: "arts", names: ["philosophy", "فلسفه"] },
+  { en: "Political Science", ar: "العلوم السياسية", field: "arts", names: ["political science", "politics", "علوم سياسيه"] },
+  { en: "Islamic Studies", ar: "الشريعة والدراسات الإسلامية", field: "arts", names: ["islamic studies", "sharia", "شريعه", "دراسات اسلاميه"] },
+  { en: "Geology", ar: "الجيولوجيا", field: "science", names: ["geology", "جيولوجيا"] },
+  { en: "Environmental Science", ar: "العلوم البيئية", field: "science", names: ["environmental science", "علوم بيئيه"] },
+  { en: "Astronomy", ar: "علم الفلك", field: "science", names: ["astronomy", "astrophysics", "فلك"] },
+  { en: "Public Health", ar: "الصحة العامة", field: "health", names: ["public health", "صحه عامه"] },
+  { en: "Midwifery", ar: "القبالة", field: "health", names: ["midwifery", "midwife", "قباله"] },
+  { en: "Anaesthesia", ar: "التخدير", field: "health", names: ["anesthesia", "anaesthesia", "anesthesiology", "تخدير"] },
+  { en: "Music", ar: "الموسيقى", field: "arts", names: ["music", "موسيقى"] },
+  { en: "Film and Photography", ar: "السينما والتصوير", field: "arts", names: ["film", "cinema", "photography", "سينما"] }
+];
+// Where each field can be studied in Kuwait (from the Kuwait universities data on the Study in Kuwait page)
+const FIELD_IN_KUWAIT = {
+  engineering: "nomajor_kw_engineering", business: "nomajor_kw_business", computing: "nomajor_kw_computing",
+  science: "nomajor_kw_science", health: "nomajor_kw_health", arts: "nomajor_kw_arts", agriculture: ""
+};
 const SCHOLARSHIP_WORDS = ["scholarship", "scholarships", "plan", "abroad", "بعثه", "البعثه", "بعثات", "البعثات", "ابتعاث", "خطه"];
 const IELTS_WORDS = ["ielts", "toefl", "english test", "english exam", "ايلتس", "الايلتس", "توفل", "التوفل", "اختبار اللغه", "اختبار الانجليزي"];
 const FAQ_INTENTS = [
@@ -3977,6 +4019,10 @@ function searchAnswer(query, results) {
   // 0. A question with one official answer (FAQ_INTENTS), e.g. "when are qudrat results out"
   const qd = window.KUWAIT_QUDRAT;
   const hasAny = list => list.some(w => q.includes(answerText(w)));
+  // 0a. "How competitive is IELTS 6.5 / UCAT 2100 / SAT 1350 / Qudrat 75 / an equivalent average of 88?"
+  //     Each exam is compared with the thresholds already on the site (each with its source page).
+  const scoreAnswer = examScoreAnswer(query, q, hasAny, ar);
+  if (scoreAnswer) return scoreAnswer;
   const aboutExam = !hasAny(NOT_QUDRAT) && (has("qudrat") || hasAny(EXAM_WORDS));
   const intent = FAQ_INTENTS.find(i => (!i.exam || aboutExam) && (!i.noMajor || !major) && (!i.need || hasAny(i.need)) && (!i.not || !hasAny(i.not)) && hasAny(i.any) && (!i.also || hasAny(i.also)));
   const intentAnswer = intent && faqAnswer(intent.id);
@@ -4081,6 +4127,29 @@ function searchAnswer(query, results) {
           .replace("{list}", Object.keys(major.minPct).map(c => ar ? (window.PLAN_COUNTRIES?.[c] || c) : c).join(ar ? "، " : ", ")) : ""].filter(Boolean),
       url: `why.html?q=${encodeURIComponent(query)}`, label: t('ans_why_more') };
   }
+  // 7c. A major that is not in the 2026/2027 plan ("mechanical engineering", "هندسة مدنية"): say so,
+  //     then the closest plan majors and where the field is taught in Kuwait
+  const otherMajor = !major && OTHER_MAJORS.filter(m => hasAny(m.names)).sort((x, y) => Math.max(...y.names.filter(n => hasAny([n])).map(n => n.length)) - Math.max(...x.names.filter(n => hasAny([n])).map(n => n.length)))[0];
+  // Any "<word> engineering" / "هندسة <word>" that is not a plan major counts too
+  const engMatch = !major && !otherMajor && (String(query).match(/\b([a-z]{4,})\s+engineering\b/i) || String(query).match(/هندسة\s+(\S{3,})/));
+  if ((otherMajor || engMatch) && !localUni && !(otherMajor?.aviation && window.CLARIFICATIONS?.items?.some(i => i.topic === "aviation"))) {
+    const name = otherMajor ? (ar ? otherMajor.ar : otherMajor.en) : engMatch[0].replace(/^./, ch => ch.toUpperCase());
+    const fieldId = otherMajor ? otherMajor.field : "engineering";
+    const plan = window.PLAN_MAJORS || [];
+    // Closest plan majors: ones sharing a specific word with the search ("electrical" -> Electrical & Renewable Energy Engineering), then the same field
+    const generic = new Set(["engineering", "science", "sciences", "studies", "management", "technology", "health", "design", "هندسه", "علوم", "اداره"]);
+    const words = normalizeSearch(name).split(" ").filter(w => w.length > 3 && !generic.has(w));
+    const sharing = plan.filter(m => words.some(w => normalizeSearch(`${m.en} ${m.ar}`).includes(w)));
+    const sameField = plan.filter(m => m.discipline === fieldId && !sharing.includes(m));
+    const closest = [...sharing, ...sameField].filter(m => !country || country.value in m.minPct).slice(0, 6);
+    const where = country ? t('ans_req_in').replace("{country}", countryName(country)) : "";
+    return { title: t('nomajor_title').replace("{major}", escapeHtml(name)),
+      lines: [t('nomajor_base').replace("{major}", escapeHtml(name)),
+        closest.length ? `${t('nomajor_closest').replace("{where}", where)} ${closest.map(m => `${escapeHtml(majorName(m))}${country ? ` <strong>${m.minPct[country.value]}%</strong>` : ""}`).join(" · ")}` : "",
+        FIELD_IN_KUWAIT[fieldId] ? t(FIELD_IN_KUWAIT[fieldId]) : ""].filter(Boolean),
+      url: closest.length ? `results.html?major=${encodeURIComponent(closest[0].id)}${country ? `&country=${encodeURIComponent(country.value)}` : ""}` : "results.html",
+      label: t('nomajor_see_closest') };
+  }
   // 1. Qudrat dates or fee
   if (qd && has("qudrat") && !major && (has("when") || has("cost") || hasAny(["next", "deadline", "القادم"]) || terms.length <= 1)) {
     const c = qd.currentCycle;
@@ -4172,7 +4241,7 @@ function searchAnswer(query, results) {
 
   // 2d. "What majors are available?", "what can I study in Australia", "is engineering available in Ireland"
   const fieldNamed = !major && (window.PLAN_DISCIPLINES || []).find(d => hasAny([d.en.split(/ & |, /)[0], d.ar.split(" ")[0]].filter(n => n.length >= 3)));
-  if (!major && (hasAny(MAJOR_LIST_WORDS) || (fieldNamed && country && hasAny(["available", "offered", "متاح", "متوفر", "موجود"])))) {
+  if (!major && !/\d{2,3}(?:\.\d+)?\s*[%٪]/.test(query) && (hasAny(MAJOR_LIST_WORDS) || (fieldNamed && country && hasAny(["available", "offered", "متاح", "متوفر", "موجود"])))) {
     const list = (window.PLAN_MAJORS || []).filter(m => (!country || country.value in m.minPct) && (!fieldNamed || m.discipline === fieldNamed.id))
       .sort((x, y) => country ? x.minPct[country.value] - y.minPct[country.value] : majorName(x).localeCompare(majorName(y)));
     const where = country ? t('ans_req_in').replace("{country}", countryName(country)) : "";
@@ -4326,6 +4395,100 @@ function bestSentences(entry, query, ar, withScore = false) {
 // The answer card shows the base answer only (the first line, or two when the first is a short
 // note such as "Closest answer on the site:"); the rest folds away under "Details", and the
 // button opens the page with everything
+// ---------------------------------------------------------------------------
+// How competitive is a score in an exam. Thresholds (and where they come from):
+//   IELTS  Ministry minimum 5.5 overall and in every band (plan conditions page); AASU medicine
+//          6.5 in every band (AASU admissions); UK medicine foundation year 7.0, no band below 6.5
+//          (Ministry rule); Kuwait University counts 6.5 = 81%, 7.0 = 89%, 8.0+ = 100% (KU IELTS PDF)
+//   TOEFL  Ministry minimum 47 (plan conditions page)
+//   UCAT   Ministry minimum 1,650 for UK medicine; the 2026 average was 1,918 (data.js, UK medicine)
+//   SAT    not required everywhere; top US universities expect 1400+ (data.js, US programmes)
+//   Qudrat pass marks 60% English, 50% Math and Arabic (KU Qudrat FAQ); colleges then compare the
+//          equivalent average with last year's lowest admitted (data.js, Kuwait University)
+// ---------------------------------------------------------------------------
+const EXAM_NAMES = {
+  ielts: ["ielts", "ايلتس", "الايلتس", "آيلتس"],
+  toefl: ["toefl", "توفل", "التوفل"],
+  ucat: ["ucat"],
+  sat: ["sat"],
+  equivalent: ["equivalent average", "equivalent score", "equivalent", "معدل مكافئ", "المعدل المكافئ", "مكافئ"],
+  qudrat: ["qudrat", "aptitude", "قدرات", "القدرات"]
+};
+const QUDRAT_SUBJECTS = { eng: ["english", "انجليزي", "الانجليزي", "انجليزيه"], math: ["math", "maths", "mathematics", "رياضيات", "الرياضيات"], arb: ["arabic", "عربي", "العربي"] };
+const COMPETITIVE_WORDS = ["competitive", "good", "enough", "ok", "okay", "high", "low", "bad", "chance", "chances", "compare", "how is", "is my", "my score", "my result",
+  "تنافسي", "جيد", "جيده", "كافي", "كافيه", "عالي", "منخفض", "فرصتي", "فرص", "درجتي", "نتيجتي", "تكفي", "يكفي"];
+
+function examScoreAnswer(query, q, hasAnySyn, ar) {
+  const typed = answerText(query);
+  const hasAny = list => list.some(w => typed.includes(answerText(w)));
+  for (const exam of Object.keys(EXAM_NAMES).filter(k => hasAny(EXAM_NAMES[k]))) {
+    const answer = examScoreFor(exam, query, hasAny, ar);
+    if (answer) return answer;
+  }
+  return null;
+}
+
+function examScoreFor(exam, query, hasAny, ar) {
+  // The score in the question (not a year such as 2026)
+  const nums = (String(query).replace(/٫/g, ".").match(/\d+(?:[.,]\d+)?/g) || []).map(n => parseFloat(n.replace(",", "."))).filter(n => !(n >= 2020 && n <= 2035 && exam !== "ucat"));
+  const x = nums.length ? nums[0] : null;
+  if (x == null && !hasAny(COMPETITIVE_WORDS)) return null;
+  const fmt = n => formatNumber(n, 2);
+  const mark = ok => ok ? t('sc_meets') : t('sc_below');
+  const line = (ok, text) => `<strong>${mark(ok)}</strong> · ${text}`;
+  const title = name => x != null ? t('sc_title').replace("{exam}", name).replace("{score}", fmt(x)) : t('sc_title_general').replace("{exam}", name);
+
+  if (exam === "ielts" && (x == null || x <= 9)) {
+    const lines = x == null ? [t('sc_ielts_min'), t('sc_ielts_aasu'), t('sc_ielts_ukmed'), t('sc_ielts_ku')] : [
+      x >= 5.5 ? t('sc_ielts_ok').replace("{x}", fmt(x)) : t('sc_ielts_low').replace("{x}", fmt(x)),
+      line(x >= 5.5, t('sc_ielts_min')), line(x >= 6.5, t('sc_ielts_aasu')), line(x >= 7, t('sc_ielts_ukmed')), t('sc_ielts_ku')];
+    return { title: title("IELTS"), lines, url: "more-info.html#english", label: t('ans_more_info') };
+  }
+  if (exam === "toefl" && (x == null || x <= 120)) {
+    return { title: title("TOEFL"), lines: [x == null ? t('sc_toefl_min') : (x >= 47 ? t('sc_toefl_ok') : t('sc_toefl_low')).replace("{x}", fmt(x))],
+      url: "more-info.html#english", label: t('ans_more_info') };
+  }
+  if (exam === "ucat" && (x == null || (x >= 900 && x <= 3600))) {
+    return { title: title("UCAT"), lines: x == null ? [t('sc_ucat_min'), t('sc_ucat_avg_only')] : [
+      (x >= 1650 ? t('sc_ucat_ok') : t('sc_ucat_low')).replace("{x}", fmt(x)), t(x >= 1918 ? 'sc_ucat_above_avg' : 'sc_ucat_below_avg')],
+      url: "results.html?major=medicine&country=United%20Kingdom&step=3", label: t('ans_more_info') };
+  }
+  if (exam === "sat" && (x == null || (x >= 400 && x <= 1600))) {
+    return { title: title("SAT"), lines: [t('sc_sat'), x == null ? "" : t(x >= 1400 ? 'sc_sat_above' : 'sc_sat_below').replace("{x}", fmt(x))].filter(Boolean),
+      url: "results.html?country=United%20States", label: t('ans_more_info') };
+  }
+  // The Kuwait University colleges and majors that use the equivalent average, with last year's lowest admitted
+  const kuFloors = () => {
+    const ku = (window.KUWAIT_LOCAL_UNIVERSITIES || []).find(u => u.id === "kuwait-university");
+    return (ku?.colleges || []).filter(c => c.qudrat && c.scoring !== "hs-only" && c.scoring !== "no-qudrat").flatMap(c => {
+      const name = ar ? (c.collegeNameAr || c.collegeName) : c.collegeName;
+      const graded = (c.majors || []).filter(m => m.grade);
+      return graded.length ? graded.map(m => ({ name: `${name}: ${ar ? (m.ar || m.en) : m.en}`, floor: parseFloat(m.grade) }))
+        : [{ name, floor: parseFloat(String(c.minThanawiya).match(/\d+(?:\.\d+)?/)?.[0]) }];
+    }).filter(f => Number.isFinite(f.floor));
+  };
+  if (exam === "equivalent" && (x == null || x <= 100)) {
+    const floors = kuFloors();
+    if (x == null) return { title: title(ar ? "المعدل المكافئ" : "equivalent average"), lines: [t('sc_equiv_general')], url: "score.html", label: t('sc_open_check') };
+    const above = floors.filter(f => x >= f.floor);
+    const near = floors.filter(f => x < f.floor).sort((a, b) => a.floor - b.floor).slice(0, 3);
+    return { title: title(ar ? "المعدل المكافئ" : "equivalent average"),
+      lines: [t('sc_equiv').replace("{x}", fmt(x)).replace("{n}", above.length).replace("{m}", floors.length),
+        near.length ? `${t('sc_equiv_next')} ${near.map(f => `${escapeHtml(f.name)} <strong>${fmt(f.floor)}%</strong>`).join(" · ")}` : ""].filter(Boolean),
+      url: "score.html", label: t('sc_open_check') };
+  }
+  if (exam === "qudrat" && (x == null || x <= 100)) {
+    const subject = Object.keys(QUDRAT_SUBJECTS).find(k => hasAny(QUDRAT_SUBJECTS[k]));
+    const subjectName = subject ? t(`score_${subject}`).replace(" %", "").replace("%", "").trim() : "";
+    const pass = subject === "eng" ? 60 : 50;
+    const lines = x == null || !subject ? [t('sc_qudrat_pass'), t('sc_qudrat_more')] : [
+      (x >= pass ? t('sc_qudrat_ok') : t('sc_qudrat_low')).replace("{subject}", subjectName).replace("{x}", fmt(x)).replace("{pass}", pass), t('sc_qudrat_more')];
+    if (x != null && !subject) lines.unshift(t('sc_qudrat_which').replace("{x}", fmt(x)));
+    return { title: title(ar ? "القدرات" : "Qudrat"), lines, url: `score.html${x != null && subject ? `?${subject}=${x}` : ""}`, label: t('sc_open_check') };
+  }
+  return null;
+}
+
 function answerCardHtml(a) {
   const lead = a.lines[0] && a.lines[0].length < 45 && a.lines.length > 1 && !/\d/.test(a.lines[0]) ? 2 : 1;
   const base = a.lines.slice(0, lead), more = a.lines.slice(lead);
