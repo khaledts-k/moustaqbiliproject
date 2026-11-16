@@ -24,7 +24,7 @@ const MORE_INFO = {
           type: "terms",
           items: [
             { termEn: "Scholarship plan", termAr: "خطة البعثات", defEn: "The Ministry's yearly list of countries, majors and minimum grades it will pay for.", defAr: "قائمة سنوية من الوزارة بالدول والتخصصات والنسب الدنيا التي تتكفل بها." },
-            { termEn: "High school % (Thanawiya)", termAr: "نسبة الثانوية", defEn: "Your final percentage in grade 12. Most rules on this site use it.", defAr: "نسبتك النهائية في الصف الثاني عشر، وتعتمد عليها معظم الشروط في هذا الموقع." },
+            { termEn: "High school %", termAr: "نسبة الثانوية", defEn: "Your final percentage in grade 12. Most rules on this site use it.", defAr: "نسبتك النهائية في الصف الثاني عشر، وتعتمد عليها معظم الشروط في هذا الموقع." },
             { termEn: "Science / Arts stream", termAr: "القسم العلمي / الأدبي", defEn: "Your track in high school. Medicine, engineering and most health majors need the science stream.", defAr: "مسارك في الثانوية. الطب والهندسة ومعظم التخصصات الصحية تتطلب القسم العلمي." },
             { termEn: "Monthly allowance", termAr: "المخصص الشهري", defEn: "Money the Ministry pays you every month to live on while you study abroad. Tuition is paid separately.", defAr: "مبلغ تدفعه الوزارة لك كل شهر للمعيشة أثناء دراستك في الخارج. الرسوم الدراسية تُدفع بشكل منفصل." },
             { termEn: "Merit programme", termAr: "برنامج التميز", defEn: "A special track for high achievers who get into top universities on the Ministry's list. It pays 50% more each month.", defAr: "مسار خاص للمتفوقين المقبولين في جامعات متميزة من قائمة الوزارة، ويزيد المخصص الشهري بنسبة 50%." },
