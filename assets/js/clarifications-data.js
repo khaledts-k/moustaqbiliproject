@@ -27,7 +27,7 @@ const NBAQ_FAQ = { label: "NBAQ FAQ", url: "https://nbaq.edu.kw/website/%d8%a7%d
 const NBAQ_CONTACT = { label: "NBAQ complaints and suggestions", url: "https://nbaq.edu.kw/website/%d9%84%d9%84%d8%b4%d9%83%d8%a7%d9%88%d9%8a-%d9%88%d8%a7%d9%84%d8%a5%d9%82%d8%aa%d8%b1%d8%a7%d8%ad%d8%a7%d8%aa" };
 
 const CLARIFICATIONS = {
-  lastVerified: "2026-11-15",
+  lastVerified: "2026-11-16",
 
   topics: [
     { id: "scholarships", labelEn: "Applying", labelAr: "التقديم" },
@@ -41,6 +41,7 @@ const CLARIFICATIONS = {
     { id: "after-acceptance", labelEn: "After you are accepted", labelAr: "بعد القبول" },
     { id: "guardians", labelEn: "For parents", labelAr: "لأولياء الأمور" },
     { id: "universities", labelEn: "Universities abroad", labelAr: "الجامعات في الخارج" },
+    { id: "aviation", labelEn: "Aviation", labelAr: "الطيران" },
     { id: "living", labelEn: "Living abroad", labelAr: "الحياة في الخارج" },
     { id: "grants", labelEn: "Grants", labelAr: "المنح الدراسية" },
     { id: "equivalency", labelEn: "Certificates", labelAr: "الشهادات" }
@@ -1973,6 +1974,237 @@ const CLARIFICATIONS = {
       detailsEn: "A September 2026 news report on remarks by the GCC Secretary-General says citizens who move to live in another GCC state can usually exchange their licence for a local one. We could not confirm this on an official UAE page.",
       detailsAr: "ذكر تقرير إخباري في سبتمبر 2026 عن تصريحات الأمين العام لمجلس التعاون أن المواطن الذي ينتقل للإقامة في دولة خليجية أخرى يمكنه غالباً استبدال رخصته برخصة محلية. ولم نتمكن من تأكيد ذلك من صفحة إماراتية رسمية.",
       status: "unconfirmed", sourceLabel: "Khaleej Times (news report, 9 Sep 2026)", sourceUrl: "https://www.khaleejtimes.com/gcc-travel-citizens-easier-driving-licence-recognition-edicated-lanes-security-linking"
+    },
+    // ---------------- Aviation (researched and re-checked 2026-11-16) ----------------
+    {
+      id: "aviation-overview", topic: "aviation",
+      questionEn: "How can I study aviation or become a pilot?",
+      questionAr: "كيف أدرس الطيران أو أصبح طياراً؟",
+      answerEn: "Not through the 2026/2027 scholarship plan abroad, which has no aviation majors; the routes are airline cadet programmes, colleges in Kuwait and the military.",
+      answerAr: "ليس عن طريق خطة البعثات الخارجية 2026/2027، فلا توجد فيها تخصصات طيران؛ والطرق هي برامج الطيارين المتدربين في شركات الطيران، والكليات في الكويت، والجهات العسكرية.",
+      detailsEn: "Pilots: Jazeera Airways trains cadet pilots with BAA Training in Spain. Aircraft maintenance, air traffic control and airport operations: Australian University and the College of Technology and Aviation through PUC internal scholarships, and PAAET's navigation institute. Military pilots: the Ministry of Defence (Ali Al-Sabah Military College). Any flight school must be on the civil aviation authority's approved list.",
+      detailsAr: "الطيارون: تدرّب طيران الجزيرة طيارين متدربين مع BAA Training في إسبانيا. صيانة الطائرات والمراقبة الجوية وتشغيل المطارات: الجامعة الأسترالية وكلية التكنولوجيا والطيران عبر البعثات الداخلية لمجلس الجامعات الخاصة، ومعهد الاتصالات والملاحة في الهيئة العامة للتعليم التطبيقي. الطيارون العسكريون: وزارة الدفاع (كلية علي الصباح العسكرية). ويجب أن تكون أي مدرسة طيران ضمن قائمة الطيران المدني المعتمدة.",
+      status: "confirmed", sourceLabel: "Ministry majors list 2026/2027 (no aviation majors); details and sources in each aviation question", sourceUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf"
+    },
+    {
+      id: "kac-mohe-pilot-scholarship-protocol", topic: "aviation",
+      questionEn: "Is there a government scholarship to train as a Kuwait Airways commercial pilot?",
+      questionAr: "هل توجد بعثة حكومية لدراسة الطيران التجاري مع الخطوط الجوية الكويتية؟",
+      answerEn: "Yes: in October 2023 the Ministry of Higher Education agreed to fund 24-month pilot scholarships for students Kuwait Airways nominates.",
+      answerAr: "نعم، في أكتوبر 2023 وافقت وزارة التعليم العالي على تمويل بعثات لمدة 24 شهرًا لدراسة الطيران للطلبة الذين ترشحهم الخطوط الجوية الكويتية.",
+      detailsEn: "Kuwait Airways chooses the students using its own academic requirements and tests, agreed with the Ministry. The Ministry pays within its budget and according to the airline's yearly needs, for three years. This is a 2023 source; we could not confirm whether an intake is open for 2026/2027.",
+      detailsAr: "تختار الخطوط الكويتية الطلبة وفق اشتراطاتها الأكاديمية واختباراتها بالتوافق مع الوزارة، وتتحمل الوزارة النفقات في حدود الميزانية وحسب حاجة الشركة السنوية ولمدة ثلاث سنوات. المصدر من عام 2023، ولم نتمكن من التأكد من وجود دفعة مفتوحة للعام 2026/2027.",
+      status: "unconfirmed", sourceLabel: "KUNA, 18 Oct 2023 (older than 2024, may be out of date)", sourceUrl: "https://www.kuna.net.kw/ArticleDetails.aspx?id=3119095"
+    },
+    {
+      id: "kac-two-scholarship-plans-2024", topic: "aviation",
+      questionEn: "Where do Kuwait Airways scholarship pilots study?",
+      questionAr: "أين يدرس المبتعثون لدراسة الطيران مع الخطوط الكويتية؟",
+      answerEn: "At flight colleges approved by Kuwait's civil aviation authority (DGCA), under the Ministry of Higher Education's supervision.",
+      answerAr: "في كليات طيران معتمدة من الإدارة العامة للطيران المدني، وتحت إشراف وزارة التعليم العالي.",
+      detailsEn: "In February 2024 Kuwait Airways said it had two scholarship plans for students wanting to study flying, the first soon and the second the following summer. It did not publish requirements in this statement. Check the DGCA list of approved training organisations before enrolling anywhere.",
+      detailsAr: "في فبراير 2024 أعلنت الخطوط الكويتية وجود خطتين لابتعاث الراغبين في دراسة الطيران، الأولى قريبًا والثانية في الصيف التالي، ولم يتضمن التصريح شروط القبول. راجع قائمة منظمات التدريب المعتمدة لدى الطيران المدني قبل التسجيل في أي مكان.",
+      status: "unconfirmed", sourceLabel: "KUNA, 27 Feb 2024", sourceUrl: "https://www.kuna.net.kw/ArticleDetails.aspx?id=3139696&language=ar"
+    },
+    {
+      id: "kac-mpl-scholarship-status", topic: "aviation",
+      questionEn: "Is the Kuwait Airways pilot scholarship open right now?",
+      questionAr: "هل باب التقديم على بعثة الطيران في الخطوط الكويتية مفتوح الآن؟",
+      answerEn: "Not as far as we can see: its MPL pilot-scholarship posting is no longer available (checked 16 November 2026).",
+      answerAr: "لا يبدو ذلك: إعلان بعثة دراسة الطيران (MPL) لم يعد متاحًا (تم التحقق في 16 نوفمبر 2026).",
+      detailsEn: "MPL means Multi-crew Pilot Licence (a licence designed for flying airliners as part of a crew). Kuwait Airways posts openings on careers.kuwaitairways.com, which listed no openings when checked. Its official age, percentage, English-test and bond (service commitment) rules were not published on any page we could read.",
+      detailsAr: "MPL تعني رخصة طيار الطاقم المتعدد (رخصة مصممة لقيادة طائرات الركاب ضمن طاقم). تنشر الخطوط الكويتية فرصها على موقع careers.kuwaitairways.com، ولم يكن فيه أي إعلان عند التحقق. ولم نجد في أي صفحة رسمية شروط العمر أو النسبة أو اختبار اللغة الإنجليزية أو الالتزام بالخدمة بعد التخرج.",
+      status: "confirmed", sourceLabel: "Kuwait Airways careers site, checked 16 Nov 2026", sourceUrl: "https://careers.kuwaitairways.com/jobs/Careers/691536000014644187/MPL--%D8%A8%D8%B9%D8%AB%D8%A9-%D9%84%D8%AF%D8%B1%D8%A7%D8%B3%D8%A9-%D8%A7%D9%84%D8%B7%D9%8A%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D8%AA%D8%AC%D8%A7%D8%B1%D9%8A"
+    },
+    {
+      id: "jazeera-cadet-programme-baa", topic: "aviation",
+      questionEn: "Does Jazeera Airways train cadet pilots?",
+      questionAr: "هل تدرّب طيران الجزيرة طيارين متدربين؟",
+      answerEn: "Yes: Jazeera sends cadet pilots (trainees the airline trains) on an 18-month course with BAA Training in Spain.",
+      answerAr: "نعم، ترسل طيران الجزيرة طيارين متدربين (تتولى الشركة تدريبهم) إلى دورة مدتها 18 شهرًا لدى BAA Training في إسبانيا.",
+      detailsEn: "The course leads to an ATPL (Airline Transport Pilot Licence, the licence airline captains need) and includes multi-crew training. Two groups were planned; the first started in August 2026 in Lleida-Alguaire, Spain. Jazeera has not published entry requirements, and its pilot jobs page showed no vacancies on 16 November 2026.",
+      detailsAr: "تؤهل الدورة لرخصة طيار النقل الجوي ATPL (الرخصة التي يحتاجها قادة طائرات الركاب) وتشمل التدريب على العمل ضمن طاقم. خُطط لدفعتين، بدأت الأولى في أغسطس 2026 في ليدا-ألغوايري بإسبانيا. لم تنشر الجزيرة شروط القبول، ولم تكن في صفحة وظائف الطيارين أي شواغر في 16 نوفمبر 2026.",
+      status: "confirmed", sourceLabel: "Jazeera Airways press release, 21 Oct 2026; Jazeera careers (Pilots), checked 16 Nov 2026", sourceUrl: "https://www.jazeeraairways.com/en-kw/media/latest-news/jazeera-airways-baa-training-partnership-pilot-talent"
+    },
+    {
+      id: "jazeera-second-cohort-kuwaiti-woman", topic: "aviation",
+      questionEn: "Are Kuwaitis, including women, in Jazeera's cadet pilot programme?",
+      questionAr: "هل يضم برنامج الطيارين المتدربين في الجزيرة كويتيين وكويتيات؟",
+      answerEn: "Reportedly yes: Jazeera's second group of 11 cadets includes its first Kuwaiti woman trainee pilot.",
+      answerAr: "وفق ما نُشر، نعم: تضم الدفعة الثانية من 11 طيارًا متدربًا أول طيارة كويتية متدربة في الجزيرة.",
+      detailsEn: "Newspaper report from November 2026, not an official Jazeera page. The report also says Jazeera is building its own approved training centre (ATO) with a full flight simulator in Kuwait, so some pilot training may move to Kuwait later.",
+      detailsAr: "خبر صحفي من نوفمبر 2026 وليس صفحة رسمية للجزيرة. ويذكر الخبر أيضًا أن الجزيرة تطور منشأة تدريب معتمدة (ATO) في الكويت تضم جهاز محاكاة طيران كاملًا، ما قد ينقل جزءًا من التدريب إلى الكويت لاحقًا.",
+      status: "unconfirmed", sourceLabel: "Al-Rai newspaper, 4 Nov 2026", sourceUrl: "https://www.alraimedia.com/article/1784995"
+    },
+    {
+      id: "jazeera-introduction-to-aviation-course", topic: "aviation",
+      questionEn: "Is there a short course in Kuwait to try out being a pilot?",
+      questionAr: "هل توجد دورة قصيرة في الكويت لتجربة مجال الطيران قبل اتخاذ القرار؟",
+      answerEn: "Yes: Jazeera Airways runs an Introduction to Aviation course for people aged 17 and over.",
+      answerAr: "نعم، تقدم طيران الجزيرة دورة «مقدمة في الطيران» لمن هم في سن 17 عامًا فأكثر.",
+      detailsEn: "It is open to citizens and residents of Kuwait with good English; seats are limited, first come, first served. Modules include aviation English, principles of flight, a pilot medical check, a simulator session and an aptitude (psychometric) test. It is a taster course, not a pilot licence. Fees and dates are not on the page.",
+      detailsAr: "متاحة للمواطنين والمقيمين في الكويت ممن يجيدون الإنجليزية، والمقاعد محدودة بأولوية التسجيل. تشمل الوحدات: الإنجليزية للطيران، ومبادئ الطيران، وفحصًا طبيًا للطيارين، وجلسة على جهاز المحاكاة، واختبار قدرات نفسي. هي دورة تعريفية وليست رخصة طيران، ولا تذكر الصفحة الرسوم أو المواعيد.",
+      status: "confirmed", sourceLabel: "Jazeera Airways, Aviation Course page (undated, checked 16 Nov 2026)", sourceUrl: "https://www.jazeeraairways.com/en-kw/aviation-course"
+    },
+    {
+      id: "jazeera-graduate-development-program", topic: "aviation",
+      questionEn: "Can a high-school graduate join an airline training programme in Kuwait without a degree?",
+      questionAr: "هل يمكن لخريج الثانوية الالتحاق ببرنامج تدريب في شركة طيران بالكويت دون شهادة جامعية؟",
+      answerEn: "Yes: Jazeera's Graduate Development Program accepts young Kuwaitis aged 21 or over with at least a high-school diploma.",
+      answerAr: "نعم، يقبل برنامج تطوير الخريجين في طيران الجزيرة الشباب الكويتيين من عمر 21 عامًا فأكثر بشهادة الثانوية كحد أدنى.",
+      detailsEn: "You also need a medical clearance certificate, a police clearance certificate, and strong English and Arabic. Training areas include aircraft maintenance engineering, flight operations and ground operations. It is not a pilot-licence course. Note: most students finish school before 21, so this route usually comes a few years later.",
+      detailsAr: "يُشترط أيضًا شهادة لياقة طبية وشهادة حسن سير وسلوك (خلو سوابق) وإجادة الإنجليزية والعربية. تشمل مجالات التدريب هندسة صيانة الطائرات وعمليات الطيران والعمليات الأرضية، وهو ليس برنامجًا للحصول على رخصة طيار. ملاحظة: معظم الطلبة ينهون الثانوية قبل سن 21، لذا يأتي هذا المسار عادة بعد سنوات.",
+      status: "confirmed", sourceLabel: "Jazeera Airways, Graduate Development Program page (undated, checked 16 Nov 2026)", sourceUrl: "https://www.jazeeraairways.com/en-kw/graduate-development-program"
+    },
+    {
+      id: "au-school-of-aviation-programmes", topic: "aviation",
+      questionEn: "Which private university in Kuwait teaches aviation?",
+      questionAr: "ما الجامعة الخاصة في الكويت التي تدرّس تخصصات الطيران؟",
+      answerEn: "Australian University (AU) in Mishref has a School of Aviation with six diploma and bachelor's programmes.",
+      answerAr: "الجامعة الأسترالية (AU) في مشرف لديها مدرسة للطيران تقدم ستة برامج دبلوم وبكالوريوس.",
+      detailsEn: "Diplomas: Aircraft Maintenance Engineering (Mechanical B1.1 and Avionics B2), Air Traffic Control, and Logistics and Supply Chain Management. Bachelor's: Aircraft Maintenance Engineering (for diploma graduates) and Aviation and Airport Operations. AU does not list a pilot (flying) programme.",
+      detailsAr: "الدبلوم: هندسة صيانة الطائرات (ميكانيكا B1.1 وإلكترونيات الطيران B2)، والمراقبة الجوية، والخدمات اللوجستية وسلاسل الإمداد. البكالوريوس: هندسة صيانة الطائرات (لخريجي الدبلوم)، وتشغيل الطيران والمطارات. ولا تذكر الجامعة برنامجًا لتعليم قيادة الطائرات.",
+      status: "confirmed", sourceLabel: "Australian University, Our Programs page, 2026", sourceUrl: "https://www.au.edu.kw/our-programs/"
+    },
+    {
+      id: "au-aircraft-maintenance-diploma", topic: "aviation",
+      questionEn: "What do I need for AU's Aircraft Maintenance Engineering diploma?",
+      questionAr: "ما شروط دبلوم هندسة صيانة الطائرات في الجامعة الأسترالية؟",
+      answerEn: "A scientific-stream high-school certificate with at least 65%, for AU's own admission.",
+      answerAr: "شهادة ثانوية من القسم العلمي بنسبة 65% على الأقل، وذلك لقبول الجامعة نفسها.",
+      detailsEn: "The diploma takes about 2.5 years (87 credit hours), is approved by DGCA (Kuwait's civil aviation authority), EASA and GCAA, and includes 300 hours of practical training at Kuwait Airways. A PUC scholarship needs a higher mark (80%, see the PUC question). Graduates can continue to AU's 2+2 bachelor's in the same field.",
+      detailsAr: "مدة الدبلوم نحو سنتين ونصف (87 ساعة معتمدة)، وهو معتمد من الطيران المدني الكويتي ووكالة سلامة الطيران الأوروبية (EASA) وجهة GCAA، ويتضمن 300 ساعة تدريب عملي في الخطوط الكويتية. البعثة الداخلية تتطلب نسبة أعلى (80%، انظر سؤال مجلس الجامعات الخاصة). ويمكن للخريج إكمال بكالوريوس 2+2 في التخصص نفسه.",
+      status: "confirmed", sourceLabel: "AU Admissions Policy (approved Oct 2023, file published Aug 2026) and AU programme page, 2026", sourceUrl: "https://www.au.edu.kw/wp-content/uploads/2026/08/AU-Admissions-Policy.pdf"
+    },
+    {
+      id: "au-air-traffic-control-diploma", topic: "aviation",
+      questionEn: "Can I study air traffic control in Kuwait at a private university?",
+      questionAr: "هل يمكنني دراسة المراقبة الجوية في جامعة خاصة بالكويت؟",
+      answerEn: "Yes: AU offers a 2-year Diploma of Air Traffic Control; minimum 65% from the scientific or literary stream.",
+      answerAr: "نعم، تقدم الجامعة الأسترالية دبلوم المراقبة الجوية لمدة سنتين، بحد أدنى 65% من القسم العلمي أو الأدبي.",
+      detailsEn: "Air traffic controllers guide planes safely on the ground and in the air. The diploma has 20 courses (60 credit hours) over four semesters. DGCA lists AU as an approved air-traffic-control training organisation (valid to 2 December 2027). Literary-stream students are also accepted.",
+      detailsAr: "المراقب الجوي يوجّه الطائرات بأمان على الأرض وفي الجو. يتكون الدبلوم من 20 مقررًا (60 ساعة معتمدة) على أربعة فصول دراسية. وتدرج الإدارة العامة للطيران المدني الجامعة الأسترالية منظمةَ تدريب معتمدة للمراقبة الجوية (سارية حتى 2 ديسمبر 2027). ويُقبل طلبة القسم الأدبي أيضًا.",
+      status: "confirmed", sourceLabel: "AU Admissions Policy and ATC programme page, 2026; DGCA ATO list, checked 16 Nov 2026", sourceUrl: "https://www.au.edu.kw/academics/school-of-aviation/diploma-of-air-traffic-control/"
+    },
+    {
+      id: "au-aviation-airport-operations-bachelor", topic: "aviation",
+      questionEn: "Is there a bachelor's degree in aviation management in Kuwait?",
+      questionAr: "هل توجد درجة بكالوريوس في إدارة الطيران في الكويت؟",
+      answerEn: "Yes: AU's Bachelor of Aviation and Airport Operations is a 4-year degree; AU's minimum is 65% (scientific or literary).",
+      answerAr: "نعم، بكالوريوس تشغيل الطيران والمطارات في الجامعة الأسترالية مدته 4 سنوات، والحد الأدنى للجامعة 65% (علمي أو أدبي).",
+      detailsEn: "It prepares students to manage airline and airport operations (120 credit hours over 8 semesters). It is a management degree, not pilot training. It is in the PUC 2026/2027 scholarship plan, where the general bachelor's minimum applies (78% scientific, 80% literary).",
+      detailsAr: "يؤهل الطلبة لإدارة عمليات شركات الطيران والمطارات (120 ساعة معتمدة على 8 فصول دراسية). وهو تخصص إداري وليس تدريبًا على قيادة الطائرات. والبرنامج مدرج في خطة البعثات الداخلية 2026/2027، وينطبق عليه الحد الأدنى العام للبكالوريوس (78% علمي و80% أدبي).",
+      status: "confirmed", sourceLabel: "AU programme page and Admissions Policy, 2026; PUC internal scholarship plan 2026/2027", sourceUrl: "https://www.au.edu.kw/academics/school-of-aviation/baao/"
+    },
+    {
+      id: "au-english-requirement-diploma", topic: "aviation",
+      questionEn: "Do I need IELTS or TOEFL for AU's aviation diplomas?",
+      questionAr: "هل أحتاج إلى IELTS أو TOEFL لدبلومات الطيران في الجامعة الأسترالية؟",
+      answerEn: "No, you can take AU's own English placement test (KD 25 fee) instead of submitting IELTS or TOEFL.",
+      answerAr: "لا، يمكنك أداء اختبار تحديد المستوى في اللغة الإنجليزية الخاص بالجامعة (رسومه 25 دينارًا) بدلًا من تقديم IELTS أو TOEFL.",
+      detailsEn: "AU's diploma page also accepts TOEFL iBT with at least 71, or an IELTS certificate (confirm the IELTS score with AU admissions). All AU programmes are taught in English; students who are not ready may start in AU's Intensive English Program.",
+      detailsAr: "وتقبل صفحة الدبلوم أيضاً TOEFL iBT بدرجة 71 على الأقل، أو شهادة IELTS (تأكد من الدرجة المطلوبة من قسم القبول في الجامعة). وتُدرّس جميع البرامج بالإنجليزية، وقد يبدأ الطالب غير الجاهز ببرنامج اللغة الإنجليزية المكثف.",
+      status: "confirmed", sourceLabel: "AU, 2-Year Diploma Applicants page, 2026; AU Admissions Policy", sourceUrl: "https://www.au.edu.kw/admissions/diploma-applicant/"
+    },
+    {
+      id: "puc-scholarship-aviation-programmes-2026", topic: "aviation",
+      questionEn: "Which aviation programmes are in the PUC internal scholarship plan for 2026/2027?",
+      questionAr: "ما تخصصات الطيران المشمولة في خطة البعثات الداخلية لمجلس الجامعات الخاصة 2026/2027؟",
+      answerEn: "Aircraft maintenance, air traffic control, engines and airframes engineering, and aviation and airport operations.",
+      answerAr: "صيانة الطائرات، والمراقبة الجوية، وهندسة المحركات والهياكل، وتشغيل الطيران والمطارات.",
+      detailsEn: "PUC (Private Universities Council) runs the internal scholarship plan for study at private colleges in Kuwait. Diplomas: Australian University (aircraft maintenance engineering, scientific only; air navigation control) and College of Technology and Aviation (engines and airframes engineering; electrical and electronics engineering, both scientific only). Bachelor's: Australian University (aviation and airport operations).",
+      detailsAr: "تدير الأمانة العامة لمجلس الجامعات الخاصة خطة البعثات الداخلية للدراسة في الجامعات والكليات الخاصة بالكويت. الدبلوم: الجامعة الأسترالية (هندسة صيانة الطائرات للعلمي فقط، ومراقبة الملاحة الجوية)، وكلية التكنولوجيا والطيران (هندسة المحركات والهياكل، وهندسة الكهرباء والإلكترونيات، للعلمي فقط). البكالوريوس: الجامعة الأسترالية (تشغيل الطيران والمطارات).",
+      status: "confirmed", sourceLabel: "PUC internal scholarship plan, first semester 2026/2027", sourceUrl: "https://www.puc.edu.kw/pdf/PUC%202026.pdf"
+    },
+    {
+      id: "puc-minimum-percentages-aviation-2026", topic: "aviation",
+      questionEn: "What percentage do I need for a PUC scholarship in aircraft maintenance?",
+      questionAr: "ما النسبة المطلوبة لبعثة مجلس الجامعات الخاصة في صيانة الطائرات؟",
+      answerEn: "At least 80% in the scientific stream for the aircraft maintenance and engines-and-airframes diplomas (2026/2027).",
+      answerAr: "80% على الأقل من القسم العلمي لدبلوم هندسة صيانة الطائرات ودبلوم هندسة المحركات والهياكل (2026/2027).",
+      detailsEn: "Engineering diplomas, such as electrical and electronics engineering, need 77% (science stream); other PUC diplomas, including air navigation control, need 70% (science or arts). Bachelor's minimums are 78% science and 80% arts. PUC notes that applying, or holding a university acceptance letter, does not guarantee a scholarship.",
+      detailsAr: "تحتاج دبلومات الهندسة، مثل هندسة الكهرباء والإلكترونيات، إلى 77% (علمي)، وبقية الدبلومات ومنها مراقبة الملاحة الجوية 70% (علمي أو أدبي). والحد الأدنى للبكالوريوس 78% علمي و80% أدبي. ويذكر المجلس أن قبول طلب التقديم أو الحصول على ورقة قبول من الجامعة لا يعني القبول في البعثة.",
+      status: "confirmed", sourceLabel: "PUC internal scholarship plan, first semester 2026/2027", sourceUrl: "https://www.puc.edu.kw/pdf/PUC%202026.pdf"
+    },
+    {
+      id: "dgca-approved-training-organisations", topic: "aviation",
+      questionEn: "Can I train as a pilot at any flight school abroad?",
+      questionAr: "هل يمكنني التدرب على الطيران في أي مدرسة طيران بالخارج؟",
+      answerEn: "No: Kuwait's civil aviation authority only recognises training from organisations on its approved list.",
+      answerAr: "لا، الطيران المدني في الكويت لا يعترف إلا بالتدريب في المنظمات المدرجة في قائمته المعتمدة.",
+      detailsEn: "Flying schools marked valid include Gulf Aviation Academy (Bahrain), Flight Training Europe (Jerez, Spain), BAA Training (Spain), Jazeera's J9 ATO and the Kuwait Airways Training Organization. Some expiry dates shown have already passed although marked valid, so confirm with the DGCA (safety@dgca.gov.kw) before paying or enrolling.",
+      detailsAr: "من مدارس الطيران المصنفة «سارية»: أكاديمية الخليج للطيران (البحرين)، وFlight Training Europe (خيريز، إسبانيا)، وBAA Training (إسبانيا)، ومنظمة التدريب J9 التابعة للجزيرة، ومنظمة التدريب في الخطوط الكويتية. بعض تواريخ الانتهاء المذكورة مضت رغم تصنيفها «سارية»، لذا تأكد من الطيران المدني (safety@dgca.gov.kw) قبل الدفع أو التسجيل.",
+      status: "confirmed", sourceLabel: "DGCA Aviation Safety Dept, Approved Training Organizations list, checked 16 Nov 2026", sourceUrl: "https://kcasr.dgca.gov.kw/en/approved-training-organizations-ato/"
+    },
+    {
+      id: "dgca-approved-maintenance-training", topic: "aviation",
+      questionEn: "Where in Kuwait can I train as an aircraft maintenance engineer with DGCA approval?",
+      questionAr: "أين يمكنني التدرب في الكويت على هندسة صيانة الطائرات بتدريب معتمد من الطيران المدني؟",
+      answerEn: "DGCA lists three approved maintenance training organisations in Kuwait: Kuwait Airways, Australian University and College of Aviation Technology.",
+      answerAr: "تدرج الإدارة العامة للطيران المدني ثلاث منظمات معتمدة لتدريب الصيانة في الكويت: الخطوط الكويتية، والجامعة الأسترالية، وكلية تكنولوجيا الطيران.",
+      detailsEn: "These are Part-147 organisations (schools approved to teach for aircraft maintenance licences). The College of Aviation Technology is in Abu Halifa. The expiry dates listed for Kuwait Airways (17 Jan 2026), AU (16 May 2026) and the college (12 Oct 2026) have passed though still marked valid, so check the current status with the DGCA.",
+      detailsAr: "هذه منظمات Part-147 (مدارس معتمدة للتدريب على رخص صيانة الطائرات). وتقع كلية تكنولوجيا الطيران في أبو حليفة. تواريخ الانتهاء المذكورة للخطوط الكويتية (17 يناير 2026) والجامعة الأسترالية (16 مايو 2026) والكلية (12 أكتوبر 2026) مضت رغم تصنيفها «سارية»، لذا تحقق من الوضع الحالي لدى الطيران المدني.",
+      status: "confirmed", sourceLabel: "DGCA Aviation Safety Dept, Approved Training Organizations list, checked 16 Nov 2026", sourceUrl: "https://kcasr.dgca.gov.kw/en/approved-training-organizations-ato/"
+    },
+    {
+      id: "dgca-pilot-licensing", topic: "aviation",
+      questionEn: "Who issues pilot and aviation licences in Kuwait?",
+      questionAr: "من يصدر رخص الطيارين ورخص الطيران في الكويت؟",
+      answerEn: "Kuwait's civil aviation authority (DGCA), which sets personnel licensing rules for pilots, air traffic controllers and maintenance engineers.",
+      answerAr: "الإدارة العامة للطيران المدني، وهي التي تضع قواعد ترخيص الطيارين والمراقبين الجويين ومهندسي الصيانة.",
+      detailsEn: "The rules are the Kuwait Civil Aviation Safety Regulations (KCASR 1, Personnel Licensing): Part-FCL for flight crew, Part-ATCO for air traffic controllers, Part-66 for maintenance engineers and Part-MED for medical fitness. The authority's website now uses the name General Authority of Civil Aviation.",
+      detailsAr: "القواعد هي لوائح سلامة الطيران المدني الكويتية (KCASR 1 – ترخيص الأفراد): Part-FCL لطاقم القيادة، وPart-ATCO للمراقبين الجويين، وPart-66 لمهندسي الصيانة، وPart-MED للياقة الطبية. ويستخدم موقع الجهة حاليًا اسم «الهيئة العامة للطيران المدني».",
+      status: "confirmed", sourceLabel: "DGCA Responsibilities page and KCASR page, 2026", sourceUrl: "https://kcasr.dgca.gov.kw/en/kuwait-civil-aviation-safety-regulations-kcasr/"
+    },
+    {
+      id: "dgca-aviation-medical-examiners", topic: "aviation",
+      questionEn: "Where can I get an aviation medical exam in Kuwait?",
+      questionAr: "أين يمكنني إجراء الفحص الطبي للطيران في الكويت؟",
+      answerEn: "DGCA-approved aviation medical examiners are at the Aero-Medical Centre of Kuwait Airways.",
+      answerAr: "الأطباء المعتمدون من الطيران المدني لفحوص الطيران موجودون في المركز الطبي للطيران التابع للخطوط الكويتية.",
+      detailsEn: "The listed examiners can issue Class 1, Class 2 and Class 3 medical certificates, plus cabin-crew certificates. Ask your airline or flight school which medical class it requires before you pay any fees.",
+      detailsAr: "يمكن للأطباء المدرجين إصدار شهادات طبية من الفئة الأولى والثانية والثالثة، وشهادات طاقم الضيافة. اسأل شركة الطيران أو مدرسة الطيران عن الفئة الطبية المطلوبة قبل دفع أي رسوم.",
+      status: "confirmed", sourceLabel: "DGCA Approved Aero-Medical Examiners page, checked 16 Nov 2026", sourceUrl: "https://kcasr.dgca.gov.kw/en/dgca-approved-aero-medical-examiners/"
+    },
+    {
+      id: "paaet-hitn-aviation-programmes", topic: "aviation",
+      questionEn: "Does PAAET offer any aviation programmes?",
+      questionAr: "هل تقدم الهيئة العامة للتعليم التطبيقي والتدريب برامج في مجال الطيران؟",
+      answerEn: "Yes: PAAET's Higher Institute for Telecommunication and Navigation trains air traffic controllers and other airport specialists.",
+      answerAr: "نعم، يدرّب المعهد العالي للاتصالات والملاحة التابع للهيئة مراقبين جويين وتخصصات مطارات أخرى.",
+      detailsEn: "Its Navigation Department lists Air Traffic Control (with ICAO academic accreditation), Aeronautical Information, Airport Facilitation, Security and Safety of Airports, and Meteorology. Graduates work in places such as the civil aviation authority. Admission percentages were not on this page. DGCA's training list shows the institute's air-traffic-control approval as cancelled (expired 29 Oct 2023).",
+      detailsAr: "يذكر قسم الملاحة برامج: المراقبة الجوية (باعتماد أكاديمي من منظمة الطيران المدني الدولي ICAO)، والمعلومات الملاحية الجوية، وتسهيلات المطار، وأمن وسلامة المطارات، والأرصاد الجوية. يعمل الخريجون في جهات منها الطيران المدني. لم تُذكر نسب القبول في الصفحة. وتُظهر قائمة الطيران المدني أن اعتماد المعهد لتدريب المراقبة الجوية «ملغى» (انتهى في 29 أكتوبر 2023).",
+      status: "confirmed", sourceLabel: "PAAET, Navigation Department page (site footer 2024); DGCA ATO list, checked 16 Nov 2026", sourceUrl: "https://www.paaet.edu.kw/en/higher-institute-for-communications-and-navigation/training-departments/navigation-department/"
+    },
+    {
+      id: "paaet-kac-ground-services-diploma", topic: "aviation",
+      questionEn: "Is there a PAAET diploma linked to jobs at Kuwait Airways?",
+      questionAr: "هل يوجد دبلوم في التطبيقي مرتبط بالعمل في الخطوط الكويتية؟",
+      answerEn: "Reportedly yes: an Air Transport Ground Services diploma at PAAET's telecommunication and navigation institute, created with Kuwait Airways.",
+      answerAr: "وفق ما نُشر، نعم: دبلوم «الخدمات الأرضية للنقل الجوي» في المعهد العالي للاتصالات والملاحة، أُنشئ بالتعاون مع الخطوط الكويتية.",
+      detailsEn: "In September 2025 Kuwait Airways accepted the second group of students. Training covers airline operations such as traffic, cargo, sales and security, to prepare students to join the airline. Newspaper report only; PAAET's own page did not list this programme, and current admission rules were not found.",
+      detailsAr: "في سبتمبر 2025 قبلت الخطوط الكويتية الدفعة الثانية من الطلبة. يشمل التدريب قطاعات تشغيلية مثل الحركة والشحن والمبيعات والأمن، تمهيدًا لانضمامهم إلى الشركة. هذا خبر صحفي فقط، ولم تذكر صفحة الهيئة هذا البرنامج، ولم نجد شروط القبول الحالية.",
+      status: "unconfirmed", sourceLabel: "Al-Rai newspaper, 18 Sep 2025", sourceUrl: "https://www.alraimedia.com/article/1740464"
+    },
+    {
+      id: "military-ali-al-sabah-college-admission", topic: "aviation",
+      questionEn: "How does a high-school graduate apply to Ali Al-Sabah Military College?",
+      questionAr: "كيف يتقدم خريج الثانوية للالتحاق بكلية علي الصباح العسكرية؟",
+      answerEn: "In person at the college, as a cadet officer on a 3-year bachelor's in military science.",
+      answerAr: "بالحضور إلى مقر الكلية، للالتحاق كطالب ضابط في برنامج بكالوريوس العلوم العسكرية لمدة ثلاث سنوات.",
+      detailsEn: "General conditions: Kuwaiti nationality, good conduct, no relevant criminal record, medical fitness for field service, a recognised school certificate, and passing the interview and admission tests. This official page does not describe a pilot track or give dates; watch Ministry of Defence announcements.",
+      detailsAr: "الشروط العامة: الجنسية الكويتية، وحسن السيرة والسلوك، وعدم وجود أحكام مخلة، واللياقة الصحية للخدمة الميدانية، وشهادة معترف بها، واجتياز المقابلة الشخصية واختبارات القبول. لا تذكر هذه الصفحة الرسمية مسارًا للطيارين ولا مواعيد، لذا تابع إعلانات وزارة الدفاع.",
+      status: "confirmed", sourceLabel: "Kuwait Government Portal (e.gov.kw), Ministry of Defence service page (undated, checked 16 Nov 2026)", sourceUrl: "https://e.gov.kw/sites/kgoArabic/Pages/Services/MOD/RequestedAttendCollegeMilitaryCampaignGeneralCertificateSecondaryEducation.aspx"
+    },
+    {
+      id: "military-air-force-pilot-graduation-2025", topic: "aviation",
+      questionEn: "Does the Kuwait Air Force train its own pilots?",
+      questionAr: "هل تدرّب القوة الجوية الكويتية طياريها؟",
+      answerEn: "Yes: in May 2025 the Ministry of Defence graduated a new batch of 28 Kuwaiti Air Force pilots.",
+      answerAr: "نعم، في مايو 2025 خرّجت وزارة الدفاع دفعة جديدة من 28 طيارًا في القوة الجوية الكويتية.",
+      detailsEn: "Training facilities at Salem Al-Sabah and Ali Al-Salem air bases include a flight simulation wing. The report does not explain how to apply; military pilot entry is through the Ministry of Defence, so follow its official announcements.",
+      detailsAr: "تشمل مرافق التدريب في قاعدتي سالم الصباح وعلي السالم الجويتين جناحًا للمحاكاة. لا يوضح الخبر طريقة التقديم، فالالتحاق كطيار عسكري يتم عبر وزارة الدفاع، لذا تابع إعلاناتها الرسمية.",
+      status: "confirmed", sourceLabel: "KUNA, 5 May 2025", sourceUrl: "https://www.kuna.net.kw/ArticleDetails.aspx?id=3229010&Language=en"
     },
     // ---------------- Universities abroad (NBAQ) ----------------
     {
