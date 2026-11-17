@@ -4,25 +4,26 @@
  * Current cycle: First Opportunity, academic year 2026/2027.
  *
  * Collected 2026-10-11 from Kuwait University's official pages and PDFs
- * (ku.edu.kw, cem.ku.edu.kw). See `sources` below. Update this file when KU
+ * (ku.edu.kw, cem.ku.edu.kw). Re-checked 2026-11-17 (no Second Opportunity
+ * announcement yet). See `sources` below. Update this file when KU
  * announces the next cycle (expected in January for the Second Opportunity).
  */
 
 const KUWAIT_QUDRAT = {
-  lastVerified: "2026-11-08",
+  lastVerified: "2026-11-17",
 
   currentCycle: {
     nameEn: "Academic Aptitude Tests - First Opportunity 2026/2027",
     nameAr: "اختبارات القدرات الأكاديمية - الفرصة الأولى 2026/2027",
-    termEn: "Also called the Unified National Test. For grade 12 students and secondary-school graduates applying to Kuwait University, Abdullah Al-Salem University, and medicine or engineering scholarships.",
+    termEn: "Also called the Unified National Test. For grade 12 students and high school graduates applying to Kuwait University, Abdullah Al-Salem University, and medicine or engineering scholarships.",
     termAr: "ويُسمى أيضاً الاختبار الوطني الموحد. لطلبة الصف الثاني عشر وخريجي الثانوية المتقدمين لجامعة الكويت وجامعة عبد الله السالم وبعثات الطب والهندسة.",
 
     // Overall window (first opening phase -> last registration deadline)
     registration: { start: "2026-10-06", end: "2026-11-25" },
     tests: { start: "2026-11-07", end: "2026-12-05" },
     results: null,
-    resultsNoteEn: "About 2 weeks after each test (cemapp.ku.edu.kw/results or the Sahel app)",
-    resultsNoteAr: "خلال أسبوعين تقريباً من كل اختبار (cemapp.ku.edu.kw/results أو تطبيق سهل)",
+    resultsNoteEn: "About 2 weeks after each test, in the Sahel app (KU's results page, cemapp.ku.edu.kw/results, now asks you to sign in)",
+    resultsNoteAr: "خلال أسبوعين تقريباً من كل اختبار، في تطبيق سهل (صفحة النتائج في الجامعة cemapp.ku.edu.kw/results تطلب الآن تسجيل الدخول)",
 
     // Each test date has its own registration deadline
     sessions: [
@@ -159,8 +160,34 @@ const KUWAIT_QUDRAT = {
   goodToKnow: [
     { id: "prep", questionEn: "Are there prep courses?", questionAr: "هل توجد دورات تقوية؟",
       answerEn: "Yes, optional", answerAr: "نعم، اختيارية", subEn: "Last Math round: 19 November, 50 KWD", subAr: "آخر دورة رياضيات: 19 نوفمبر، 50 د.ك",
-      factEn: "Math (15 hours, in Arabic or English): the last round is 19-23 November 2026, 5:00 - 9:00 pm. Register by WhatsApp on 24983724.",
-      factAr: "الرياضيات (15 ساعة بالعربية أو الإنجليزية): آخر دورة من 19 إلى 23 نوفمبر 2026، من 5:00 إلى 9:00 مساءً، والتسجيل عبر واتساب على 24983724.", source: "ku_prep" },
+      factEn: "Math (15 hours, in Arabic or English): the last round is 19-23 November 2026, 5:00 - 9:00 pm (the last day ends at 8:00 pm). The fee is not refundable. Register by WhatsApp on 24983724.",
+      factAr: "الرياضيات (15 ساعة بالعربية أو الإنجليزية): آخر دورة من 19 إلى 23 نوفمبر 2026، من 5:00 إلى 9:00 مساءً (وينتهي اليوم الأخير الساعة 8:00 مساءً). الرسوم غير مستردة، والتسجيل عبر واتساب على 24983724.", source: "ku_prep",
+      // Other known prep courses (each website checked 17 November 2026). Not ranked or endorsed;
+      // dates and prices are not listed because they change and were not confirmed.
+      coursesNoteEn: "Other places students use. Not ranked or endorsed, and not checked by Kuwait University: confirm dates and prices with them.",
+      coursesNoteAr: "أماكن أخرى يستخدمها الطلبة. ليست مرتبة ولا نوصي بها، ولم تتحقق منها جامعة الكويت: تأكد من المواعيد والأسعار معهم.",
+      courses: [
+        { nameEn: "Kuwait University Centre for Community Service and Continuing Education", nameAr: "مركز خدمة المجتمع والتعليم المستمر - جامعة الكويت",
+          descEn: "Kuwait University's own centre. Its Graduate Preparation Section ran Qudrat and national test courses in Math (Arabic or English) and English in summer 2026, at Sabah Al-Salem University City.",
+          descAr: "مركز تابع لجامعة الكويت. نظّم قسم تهيئة الخريجين فيه دورات للقدرات والاختبار الوطني في الرياضيات (بالعربية أو الإنجليزية) واللغة الإنجليزية في صيف 2026 بمدينة صباح السالم الجامعية.",
+          url: "https://dcsce.ku.edu.kw/ar" },
+        { nameEn: "Wazzan Math Learning Lab", nameAr: "مختبر وزان لتعلم الرياضيات",
+          descEn: "A math centre with prep for the KU aptitude and national Math tests: an intensive 5-day course, then reviews.",
+          descAr: "مركز رياضيات يجهّز لاختبار القدرات والاختبار الوطني في الرياضيات: دورة مكثفة لخمسة أيام ثم مراجعات.",
+          url: "https://courses.wazzanmath.com/" },
+        { nameEn: "Smart Mind Educational Group", nameAr: "مجموعة سمارت مايند التعليمية",
+          descEn: "A private institute with Qudrat courses in English, Math (in English or Arabic) and Chemistry.",
+          descAr: "معهد خاص يقدّم دورات القدرات في اللغة الإنجليزية والرياضيات (بالإنجليزية أو العربية) والكيمياء.",
+          url: "https://smartmindkw.com/" },
+        { nameEn: "Smart Study Campus (online)", nameAr: "سمارت ستادي كامبس (عبر الإنترنت)",
+          descEn: "An online Math revision course for the Kuwait aptitude test.",
+          descAr: "دورة مراجعة رياضيات عبر الإنترنت لاختبار القدرات في الكويت.",
+          url: "https://smartstudycampus.com/products/kuwait-aptitude-test-revision-1-2-bundle-math" },
+        { nameEn: "Forsa course listing", nameAr: "دورة على منصة فرصة",
+          descEn: "A listed prep course for the KU aptitude Math test, in English and Arabic.",
+          descAr: "دورة تحضيرية مدرجة لاختبار القدرات في الرياضيات، بالإنجليزية والعربية.",
+          url: "https://www.for9a.com/en/courses/kuwait-university-academic-aptitude-test-mathematics-preparation-course" }
+      ] },
     { id: "ielts", questionEn: "Can IELTS replace the English test?", questionAr: "هل يغني IELTS عن اختبار الإنجليزي؟",
       answerEn: "Yes", answerAr: "نعم", subEn: "KU converts your IELTS score", subAr: "تعادل الجامعة درجة IELTS",
       factEn: "IELTS 6.5 = 81%, 7.0 = 89%, 8.0 or more = 100%.",
@@ -193,6 +220,8 @@ const KUWAIT_QUDRAT = {
   sources: [
     { label: "Kuwait University news: Qudrat registration dates for grade 12 (Arabic)", url: "https://www.ku.edu.kw/ar/media-center/news/jamt-alkwyt-tln-mwayd-altsjyl-lakhtbar-alqdrat-alakadymyt-ltlbt-alsf-althany-shr", date: "2026-09-29" },
     { label: "Center for Evaluation & Measurement: First Opportunity test dates", url: "https://cem.ku.edu.kw/ar/at", date: "2026-09-29" },
+    { label: "Center for Evaluation & Measurement: test dates and which registrations are still open", url: "https://cemapp.ku.edu.kw/site", date: "2026-11-17" },
+    { label: "Kuwait University news: first First Opportunity test held on 7 November 2026 with 5,995 students (Arabic)", url: "https://www.ku.edu.kw/ar/media-center/news/jamt-alkwyt-tqd-alakhtbar-alawl-llfrst-alawly-lakhtbarat-alqdrat-alakadymyt", date: "2026-11-07" },
     { label: "Aptitude Tests Student Guide 2026 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-09/2026APTE.pdf", date: "2026-09-01" },
     { label: "Required aptitude tests for KU colleges 2026/2027 (PDF)", url: "https://www.ku.edu.kw/sites/default/files/2026-06/ku_colleges_rules%20%D8%A7%D9%86%D8%AC%D9%84%D9%8A%D8%B2%D9%8A.pdf", date: "2026-06-01" },
     { label: "Kuwait University: third Qudrat session held on 23 May 2026", url: "https://www.ku.edu.kw/media-center/news/jamt-alkwyt-tqd-akhtbar-alqdrat-alakadymyt-llfrst-althaltht-bmsharkt-8898-talbana", date: "2026-05-23" },

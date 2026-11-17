@@ -4,6 +4,8 @@
  *
  * Collected 2026-10-11 from mohe.edu.kw (Cultural Offices, E-Services, Technical
  * Support and Departments pages), puc.edu.kw, ku.edu.kw and aasu.edu.kw.
+ * Re-checked 2026-11-17 (MoHE contact, visit and cultural office pages; plan guide p. 39 for
+ * reg_support; office websites).
  * MoHE does not publish a public phone number or street address on its site
  * (it is moving to a new building in Kaifan), so none is listed here.
  *
@@ -13,7 +15,7 @@
 const MOHE = "https://www.mohe.edu.kw/site/AR";
 
 const MOHE_CONTACTS = {
-  lastVerified: "2026-11-08",
+  lastVerified: "2026-11-17",
 
   groups: [
     {
@@ -107,7 +109,10 @@ const MOHE_CONTACTS = {
           descEn: "Check whether a university abroad is accredited before you apply.",
           descAr: "تحقق من اعتماد الجامعة في الخارج قبل التقديم.",
           items: [
-            { type: "text", labelEn: "Phone and email", labelAr: "الهاتف والبريد", valueEn: "Not available from an official source", valueAr: "غير متوفر من مصدر رسمي", flag: "unconfirmed" },
+            // From NBAQ's own contact page (nbaq.edu.kw/website, "اتصل بنا"), read 10 November 2026
+            { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+965 22906386" },
+            { type: "email", labelEn: "Email", labelAr: "البريد", value: "info@nbaq.edu.kw" },
+            { type: "text", labelEn: "Visiting hours", labelAr: "أوقات المراجعة", valueEn: "Sunday - Thursday, 8:00 am - 1:00 pm", valueAr: "الأحد - الخميس، 8:00 صباحاً - 1:00 ظهراً" },
             { type: "url", labelEn: "Accredited universities search", labelAr: "البحث في الجامعات المعتمدة", value: "https://nbaq.edu.kw/search/" },
             { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://nbaq.edu.kw/website/" }
           ]
@@ -149,7 +154,7 @@ const MOHE_CONTACTS = {
         { nameEn: "United States - Washington D.C.", nameAr: "الولايات المتحدة - واشنطن", descEn: "2111 Wilson Blvd, Suite 500, Arlington, VA 22201", descAr: "2111 Wilson Blvd, Suite 500, Arlington, VA 22201", items: [
           { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+1 202 364 2100" },
           { type: "email", labelEn: "Email", labelAr: "البريد", value: "info@kuwaitculture.com" },
-          { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.kuwaitculturedc.org" } ] },
+          { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://kuwaitculture.com" } ] },
         { nameEn: "United States - Los Angeles", nameAr: "الولايات المتحدة - لوس أنجلوس", descEn: "801 S Figueroa St, Suite 1900, Los Angeles", descAr: "801 S Figueroa St, Suite 1900, Los Angeles", items: [
           { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+1 310 746 4789" },
           { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.kuwaitculturela.org" } ] },
@@ -182,7 +187,7 @@ const MOHE_CONTACTS = {
         { nameEn: "United Arab Emirates - Dubai", nameAr: "الإمارات - دبي", items: [
           { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+971 4 397 9768" },
           { type: "email", labelEn: "Email", labelAr: "البريد", value: "Info@Kuwaitculture.ae" },
-          { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.kuwaitculture.ae" } ] },
+          { type: "text", labelEn: "Website", labelAr: "الموقع", valueEn: "kuwaitculture.ae was not working when we checked in November 2026", valueAr: "موقع kuwaitculture.ae لم يكن يعمل عند التحقق في نوفمبر 2026", flag: "unconfirmed" } ] },
         { nameEn: "Jordan - Amman", nameAr: "الأردن - عمّان", items: [
           { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+962 6 562 6638" },
           { type: "email", labelEn: "Email", labelAr: "البريد", value: "Jordan_g2g@mohe.edu.kw" } ] },
@@ -192,6 +197,8 @@ const MOHE_CONTACTS = {
           { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.kwcultureg.com" } ] },
         { nameEn: "Egypt - Alexandria", nameAr: "مصر - الإسكندرية", items: [
           { type: "phone", labelEn: "Phone", labelAr: "الهاتف", value: "+20 3 392 5566" },
+          // The Ministry lists the number above; the office's own website (kwalexculture.org) shows another one
+          { type: "text", labelEn: "Other number", labelAr: "رقم آخر", valueEn: "+20 3 496 0645 (on the office's own website; the Ministry lists the number above)", valueAr: "+20 3 496 0645 (في موقع المكتب نفسه؛ والوزارة تذكر الرقم أعلاه)", flag: "unconfirmed" },
           { type: "email", labelEn: "Email", labelAr: "البريد", value: "Info@KWalexculture.org" },
           { type: "url", labelEn: "Website", labelAr: "الموقع", value: "https://www.kwalexculture.org" } ] },
         { nameEn: "Full list on the Ministry website", nameAr: "القائمة الكاملة على موقع الوزارة", items: [

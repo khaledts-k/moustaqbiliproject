@@ -4,14 +4,15 @@
  *
  * Sources: Foreign Scholarship Plan 2026/2027 conditions (mohe.edu.kw),
  * Decree 197/2025 (scholarship regulation), Ministry statements reported by
- * Al-Jarida (June/July 2026). Checked 2026-10-12.
+ * Al-Jarida (June/July 2026). Checked 2026-10-12. Re-checked 2026-11-17 against the
+ * Ministry's plan and merit pages (unchanged; next registration window still not announced).
  *
  * Each step: titleEn/Ar, summaryEn/Ar (shown when closed), points (list),
  * links. Add flag: "unconfirmed" | "unverified" to a point that needs it.
  */
 
 const APPLY_STEPS = {
-  lastVerified: "2026-11-08",
+  lastVerified: "2026-11-17",
 
   steps: [
     {

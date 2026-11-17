@@ -7,6 +7,7 @@
  * https://www.mohe.edu.kw/site/assets/images/Uploads/20251119135614.pdf - checked 2026-10-12.
  * Re-checked 2026-10-21 against the June 2026 majors list the plan page links (same majors and %);
  * re-checked 2026-10-29: https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf
+ * Re-checked 2026-11-17: the plan page still links the same majors list (created 14 June 2026); no 2027/2028 plan yet.
  * The plan has no Law, Education or Social Science majors; Malta lists 3 majors, the UAE 6.
  *
  * Row format: [id, English, Arabic, discipline id, stream, { country: min % }, [countries whose % is "unconfirmed"]]
@@ -17,7 +18,7 @@
 
 const PLAN_MAJORS_SOURCE = {
   url: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf",
-  lastVerified: "2026-11-08"
+  lastVerified: "2026-11-17"
 };
 
 const PLAN_DISCIPLINES = [

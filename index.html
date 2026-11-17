@@ -26,19 +26,28 @@
 
     <!-- The search engine: ask anything; a quick answer and the results appear below -->
     <section class="home-hero gov-hero-gradient text-white pt-12 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-      <!-- A rocket launch behind the search bar (CSS only: "Home page rockets" in styles.css): 2 s of ignition,
-           then a 2.25 s climb to the far right, repeating. Hidden for "reduce motion". -->
+      <!-- A rocket behind the search bar that launches when clicked ("Home page rocket" in styles.css): 2 s of ignition,
+           2.25 s to the moon, 3.75 s around it, 2.25 s back to the launch pad. Hidden for "reduce motion". -->
       <!-- Stars that wobble very slightly, so the rockets look like they fly through space -->
       <div class="hero-stars" aria-hidden="true"><i class="hero-star" style="left:13.4%;top:49.2%;width:2px;height:2px;animation-duration:4.5s;animation-delay:-3.8s"></i><i class="hero-star" style="left:86.9%;top:84.5%;width:2px;height:2px;animation-duration:4.3s;animation-delay:-3.1s"></i><i class="hero-star" style="left:54.6%;top:69.7%;width:2px;height:2px;animation-duration:4.8s;animation-delay:-2.3s"></i><i class="hero-star" style="left:25.0%;top:59.3%;width:1px;height:1px;animation-duration:3.6s;animation-delay:-0.4s"></i><i class="hero-star" style="left:3.1%;top:84.2%;width:2px;height:2px;animation-duration:4.6s;animation-delay:-0.8s"></i><i class="hero-star" style="left:26.1%;top:92.2%;width:1.5px;height:1.5px;animation-duration:5.0s;animation-delay:-4.0s"></i><i class="hero-star" style="left:51.3%;top:10.9%;width:1.5px;height:1.5px;animation-duration:3.0s;animation-delay:-2.2s"></i><i class="hero-star" style="left:29.6%;top:16.7%;width:2.5px;height:2.5px;animation-duration:4.7s;animation-delay:-2.3s"></i><i class="hero-star" style="left:4.4%;top:68.0%;width:1.5px;height:1.5px;animation-duration:4.0s;animation-delay:-0.4s"></i><i class="hero-star" style="left:87.5%;top:53.9%;width:1px;height:1px;animation-duration:3.9s;animation-delay:-3.2s"></i><i class="hero-star" style="left:85.2%;top:82.8%;width:2px;height:2px;animation-duration:5.3s;animation-delay:-1.0s"></i><i class="hero-star" style="left:42.3%;top:87.4%;width:2px;height:2px;animation-duration:4.2s;animation-delay:-3.2s"></i><i class="hero-star" style="left:57.2%;top:72.9%;width:1px;height:1px;animation-duration:5.4s;animation-delay:-2.1s"></i><i class="hero-star" style="left:66.4%;top:68.6%;width:2px;height:2px;animation-duration:4.1s;animation-delay:-1.9s"></i><i class="hero-star" style="left:24.0%;top:83.7%;width:2.5px;height:2.5px;animation-duration:4.7s;animation-delay:-2.7s"></i><i class="hero-star" style="left:70.6%;top:90.4%;width:2px;height:2px;animation-duration:3.5s;animation-delay:-1.6s"></i><i class="hero-star" style="left:97.8%;top:53.3%;width:2.5px;height:2.5px;animation-duration:4.2s;animation-delay:-1.9s"></i><i class="hero-star" style="left:86.9%;top:43.0%;width:1.5px;height:1.5px;animation-duration:5.0s;animation-delay:-0.0s"></i><i class="hero-star" style="left:16.4%;top:83.4%;width:2px;height:2px;animation-duration:5.0s;animation-delay:-3.7s"></i><i class="hero-star" style="left:36.6%;top:22.0%;width:2.5px;height:2.5px;animation-duration:4.1s;animation-delay:-2.0s"></i><i class="hero-star" style="left:81.3%;top:76.7%;width:2px;height:2px;animation-duration:4.6s;animation-delay:-0.1s"></i><i class="hero-star" style="left:29.8%;top:45.2%;width:1px;height:1px;animation-duration:4.0s;animation-delay:-2.9s"></i><i class="hero-star" style="left:94.4%;top:27.3%;width:1.5px;height:1.5px;animation-duration:5.4s;animation-delay:-3.4s"></i><i class="hero-star" style="left:48.0%;top:9.8%;width:1.5px;height:1.5px;animation-duration:5.2s;animation-delay:-1.5s"></i><i class="hero-star" style="left:20.7%;top:81.1%;width:1.5px;height:1.5px;animation-duration:4.0s;animation-delay:-0.1s"></i><i class="hero-star" style="left:2.0%;top:56.3%;width:1px;height:1px;animation-duration:4.4s;animation-delay:-0.8s"></i></div>
       <div class="hero-rockets" aria-hidden="true">
+        <!-- The solar system: the sun and the 8 planets on their orbits ("Home page solar system" in styles.css) -->
+        <span class="hero-solar"><i class="hero-sun"></i><span class="hero-orbit hero-orbit-mercury"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-venus"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-earth"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-mars"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-jupiter"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-saturn"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-uranus"><i class="hero-planet"></i></span><span class="hero-orbit hero-orbit-neptune"><i class="hero-planet"></i></span></span>
+        <!-- The moon the rocket flies to (top right) -->
+        <span class="hero-moon"></span>
         <!-- Launch spot: smoke while the rocket ignites -->
         <span class="hero-pad-smoke"><i></i><i></i><i></i></span>
         <span class="hero-rocket"><span class="hero-rocket-shake"><span class="hero-rocket-body"><svg viewBox="-6 -8 12 17" width="24" height="34"><path class="hero-flame" d="M-1.3 4.6 L0 8.8 L1.3 4.6 Z" fill="#fbbf24"/><path d="M0 -6.5 C2.6 -3.9 2.6 1.9 1.8 4.6 H-1.8 C-2.6 1.9 -2.6 -3.9 0 -6.5 Z M-2 1.7 L-3.6 5.4 L-1.7 4.6 Z M2 1.7 L3.6 5.4 L1.7 4.6 Z" fill="#e5ebe3"/></svg></span></span></span>
       </div>
+      <!-- Click the alien (or the rocket on its pad) to launch the rocket: initHeroLaunch() in app.js -->
+      <button type="button" id="hero-launch" class="hero-launch">
+        <span class="sr-only" data-i18n="hero_launch_label">Launch the rocket to the moon</span>
+        <span class="hero-alien" aria-hidden="true"><span class="hero-alien-sign" data-i18n="hero_click_me">Click me</span><svg viewBox="0 0 22 34" width="22" height="34"><path d="M8 7 L6 2 M14 7 L16 2 M15 21 L19 16 M9.5 27 L8.5 33 M12.5 27 L13.5 33" stroke="#a3d9a5" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="2" r="1.3" fill="#fbbf24"/><circle cx="16" cy="2" r="1.3" fill="#fbbf24"/><ellipse cx="11" cy="12" rx="8" ry="6.5" fill="#a3d9a5"/><ellipse cx="8" cy="12.5" rx="2" ry="2.7" fill="#1f2a1c"/><ellipse cx="14" cy="12.5" rx="2" ry="2.7" fill="#1f2a1c"/><rect x="7.5" y="18" width="7" height="10" rx="3" fill="#a3d9a5"/></svg></span>
+      </button>
       <div class="hero-content max-w-3xl mx-auto text-center">
         <span class="inline-block px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold mb-4" data-i18n="hero_badge">Academic Year 2026/2027</span>
         <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-3" data-i18n="home_q_title">What do you want to know?</h1>
-        <p class="text-sm sm:text-base text-slate-300 leading-relaxed" data-i18n="home_q_desc">Ask about scholarships, Qudrat, universities in Kuwait or the Ministry, in English or Arabic.</p>
+        <p class="home-hero-desc text-sm sm:text-base text-slate-300 leading-relaxed" data-i18n="home_q_desc">Ask about scholarships, Qudrat, universities in Kuwait or the Ministry, in English or Arabic.</p>
         <form id="search-page-form" action="index.html" method="get" role="search" class="mt-6 flex gap-2">
           <label for="search-page-input" class="sr-only" data-i18n="site_search_label">Search the site</label>
           <input id="search-page-input" name="q" type="search" autocomplete="off"
@@ -46,8 +55,14 @@
             class="home-search-input">
           <button type="submit" class="home-search-btn" data-i18n="site_search_btn">Search</button>
         </form>
-        <!-- Example questions (renderHomeExamples in app.js) -->
-        <div id="home-examples" class="mt-4 flex flex-wrap justify-center gap-2"></div>
+        <!-- Example questions in a dropdown: closed on phones, open on wider screens (renderHomeExamples in app.js) -->
+        <details id="home-examples-drop" class="home-examples-drop mt-4">
+          <summary class="home-examples-toggle">
+            <span data-i18n="search_group_questions">Common questions</span>
+            <svg class="home-examples-chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div id="home-examples" class="mt-3 flex flex-wrap justify-center gap-2"></div>
+        </details>
       </div>
     </section>
 

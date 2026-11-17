@@ -9,7 +9,7 @@
  */
 
 const MORE_INFO = {
-  lastVerified: "2026-11-08",
+  lastVerified: "2026-11-17",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -56,7 +56,7 @@ const MORE_INFO = {
           type: "steps",
           items: [
             { whenEn: "October - December", whenAr: "أكتوبر - ديسمبر", whatEn: "Take the Qudrat tests (first round) if you want medicine, dentistry, pharmacy, engineering, Kuwait University or AASU.", whatAr: "أدِّ اختبارات القدرات (الفرصة الأولى) إذا كنت تريد الطب أو طب الأسنان أو الصيدلة أو الهندسة أو جامعة الكويت أو جامعة عبد الله السالم." },
-            { whenEn: "Autumn - winter", whenAr: "الخريف - الشتاء", whatEn: "Take IELTS or TOEFL in Kuwait. Apply to universities abroad if you want (UK medicine closes on 15 October; most UK courses in mid-January).", whatAr: "أدِّ اختبار IELTS أو TOEFL داخل الكويت. وقدّم على الجامعات في الخارج إن رغبت (الطب في بريطانيا يُغلق في 15 أكتوبر، ومعظم التخصصات الأخرى منتصف يناير).", flag: "unverified" },
+            { whenEn: "Autumn - winter", whenAr: "الخريف - الشتاء", whatEn: "Take IELTS or TOEFL in Kuwait. Apply to universities abroad if you want. For UK courses starting in 2027, medicine and dentistry closed on 15 October 2026; most other courses close on 13 January 2027.", whatAr: "أدِّ اختبار IELTS أو TOEFL داخل الكويت. وقدّم على الجامعات في الخارج إن رغبت. للدراسة في بريطانيا عام 2027، أُغلق التقديم على الطب وطب الأسنان في 15 أكتوبر 2026، ومعظم التخصصات الأخرى تُغلق في 13 يناير 2027." },
             { whenEn: "January - April", whenAr: "يناير - أبريل", whatEn: "Second Qudrat round, if you need a better score. Not announced yet for 2027.", whatAr: "الفرصة الثانية لاختبارات القدرات إن احتجت درجة أفضل. لم يُعلن عنها بعد لعام 2027.", flag: "unconfirmed" },
             { whenEn: "June - July", whenAr: "يونيو - يوليو", whatEn: "Register for a scholarship on the Ministry's portal after your results. In 2026 this ran from 14 June to 7 July.", whatAr: "سجّل في البعثة على بوابة الوزارة بعد ظهور نتيجتك. في 2026 كان التسجيل من 14 يونيو إلى 7 يوليو." },
             { whenEn: "July - August", whenAr: "يوليو - أغسطس", whatEn: "The Ministry announces who is accepted. Then you get a university offer, the financial guarantee letter and your visa.", whatAr: "تعلن الوزارة أسماء المقبولين، ثم تحصل على قبول الجامعة والكتاب المالي والتأشيرة." },

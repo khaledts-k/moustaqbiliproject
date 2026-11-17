@@ -6,7 +6,7 @@
  */
 
 const NAVIGATE_GUIDE = {
-  lastVerified: "2026-11-08",
+  lastVerified: "2026-11-17",
 
   sections: [
     // ---------------------------------------------------------------------
@@ -218,14 +218,15 @@ const NAVIGATE_GUIDE = {
       id: "tools",
       titleEn: "Built-in tools",
       titleAr: "الأدوات المتوفرة",
-      introEn: "Calculators and helpers you can use anywhere on the site.",
-      introAr: "حاسبات وأدوات مساعدة يمكنك استخدامها في الموقع.",
+      introEn: "Calculators and helpers you can use anywhere on the site. The \"Calculators\" tab on the side of every page opens all of them.",
+      introAr: "حاسبات وأدوات مساعدة يمكنك استخدامها في الموقع. وتفتحها كلها لسان \"الحاسبات\" على جانب كل صفحة.",
       blocks: [
         {
           type: "cards",
           items: [
             { titleEn: "GPA to % converter", titleAr: "محوّل المعدل إلى نسبة", url: "index.html", bodyEn: "On the home page. A rough guide only; the official conversion is done by the Ministry of Education.", bodyAr: "في الصفحة الرئيسية. تقدير تقريبي فقط، والمعادلة الرسمية تقوم بها وزارة التربية." },
             { titleEn: "Currency calculator", titleAr: "حاسبة العملات", url: "results.html", bodyEn: "In every program's \"Money & calculator\" window. Converts between 12 currencies with today's rates.", bodyAr: "في نافذة \"المبلغ والحاسبة\" لكل برنامج. تحوّل بين 12 عملة بأسعار اليوم." },
+            { titleEn: "Check my score", titleAr: "تحقق من نسبتي", url: "score.html", bodyEn: "Enter your high school % (and Qudrat scores if you have them) to see how competitive it is in Kuwait and abroad.", bodyAr: "أدخل نسبتك في الثانوية (ودرجات القدرات إن وُجدت) لترى مدى قوتها في الكويت والخارج." },
             { titleEn: "Kuwait University score calculator", titleAr: "حاسبة درجة جامعة الكويت", url: "qudrat.html#equivalent", bodyEn: "On the Qudrat page. Uses each college's official 2026/2027 weights.", bodyAr: "في صفحة القدرات، وتستخدم الأوزان الرسمية لكل كلية للعام 2026/2027." },
             { titleEn: "Scholarship checklist", titleAr: "قائمة خطوات البعثة", url: "suggestions.html#scholarship-steps", bodyEn: "On the How to Apply page. Tick off each step as you finish it.", bodyAr: "في صفحة طريقة التقديم. ضع علامة على كل خطوة عند إنجازها." }
           ]

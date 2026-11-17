@@ -9,7 +9,9 @@
  * 3. Scholarships regulation, Ministerial Decree 197/2025 (merit +50%: Art. 25)
  * 4. Merit university lists (NBAQ): UK Decree 16/2025, US Decree 15/2025, Ireland Decree 22/2025, Australia Decision 60/2025
  * 5. University and government pages (UCAS, UCAT, GOV.UK, Irish Immigration, US State Dept / ICE,
- *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-11-08
+ *    Monash, Western Sydney, Curtin, RCSI Dublin and Bahrain, AGU, University of Malta), checked 2026-10-13; plan, allowances, visa fees and rates re-checked 2026-11-08 and again 2026-11-17
+ *    (2026-11-17: no 2027/2028 plan yet; allowance tables, UK visa £558 / IHS £776, SEVIS $350, Irish €10,000 funds,
+ *    UCAS/CAO dates, UCAT 2026 mean 1,918 and RCSI Casper date all unchanged)
  *
  * verifiedFields lists the details checked against those sources on 2026-10-13. Every other
  * detail shown in the "What you need" window carries a "Not checked yet" label.
@@ -168,7 +170,7 @@ const MOUSTAQBILI_PROGRAMS = [
     deadlines: {
       earlyAction: null,
       earlyDecision: null,
-      regularDecision: "RCSI (non-EU applicants): 1 November 2026 - 15 January 2027. Through CAO (the Irish application system): opens 5 November 2026 (12:00 noon), closes 1 February 2027, 5:00 pm.",
+      regularDecision: "RCSI (non-EU applicants): 1 November 2026 - 15 January 2027. Through CAO (the Irish application system): opened 5 November 2026 (12:00 noon), closes 1 February 2027, 5:00 pm.",
       mohePortalWindow: PLAN_WINDOW_EN
     },
 
@@ -676,14 +678,14 @@ const MOUSTAQBILI_CURRENCIES = {
 };
 
 // Offline fallback: units per 1 KWD. Live rates (open.er-api.com) replace these when reachable.
-// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-11-08.
-// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-11-08 (CBK does not publish them).
+// USD, GBP, EUR, SAR, AED, BHD: Central Bank of Kuwait, updated 2026-11-17.
+// AUD, NZD, CAD, JOD, EGP: open.er-api.com, 2026-11-17 (CBK does not publish them).
 const MOUSTAQBILI_FX_FALLBACK = {
-  date: "2026-11-08",
+  date: "2026-11-17",
   rates: {
     KWD: 1,
-    USD: 3.2441, GBP: 2.4300, EUR: 2.9111, SAR: 12.1655, AED: 11.9157, BHD: 1.2201,
-    AUD: 4.6896, NZD: 5.7874, CAD: 4.5483, JOD: 2.2833, EGP: 174.8992
+    USD: 3.2383, GBP: 2.4545, EUR: 2.9422, SAR: 12.1437, AED: 11.8944, BHD: 1.2179,
+    AUD: 4.7681, NZD: 5.8303, CAD: 4.6024, JOD: 2.2784, EGP: 172.7743
   }
 };
 
@@ -739,8 +741,8 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     campusLocationAr: "مدينة صباح السالم الجامعية - الشدادية",
     scholarshipFunding: "Free tuition for Kuwaiti students",
     scholarshipFundingAr: "دراسة مجانية للطلبة الكويتيين",
-    admissionSystem: "Kuwait University admission portal (portal.ku.edu.kw). General minimum: 70% science stream, 78% arts stream. Second semester 2026/2027: apply online 16-23 December 2026 at portal.ku.edu.kw/admission; other categories apply in person 20-23 December.",
-    admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي. الفصل الثاني 2026/2027: التقديم إلكترونياً من 16 إلى 23 ديسمبر 2026 عبر portal.ku.edu.kw/admission، وتتقدم الفئات الأخرى حضورياً من 20 إلى 23 ديسمبر.",
+    admissionSystem: "Kuwait University admission portal (portal.ku.edu.kw). General minimum: 70% science stream, 78% arts stream. Second semester 2026/2027: apply online 16-23 December 2026 at portal.ku.edu.kw/admission; other categories apply in person 20-23 December. The second-semester minimums are the same as the Fall ones below, but Medicine, Dentistry, Pharmacy, Allied Health, Public Health, Architecture and Law are not on the second-semester list.",
+    admissionSystemAr: "بوابة القبول بجامعة الكويت (portal.ku.edu.kw). الحد الأدنى العام: 70% للقسم العلمي و78% للقسم الأدبي. الفصل الثاني 2026/2027: التقديم إلكترونياً من 16 إلى 23 ديسمبر 2026 عبر portal.ku.edu.kw/admission، وتتقدم الفئات الأخرى حضورياً من 20 إلى 23 ديسمبر. والحدود الدنيا للفصل الثاني هي نفسها حدود الفصل الأول أدناه، لكن الطب وطب الأسنان والصيدلة والعلوم الطبية المساعدة والصحة العامة والعمارة والحقوق غير موجودة في قائمة الفصل الثاني.",
     aptitudeExams: "Aptitude tests (Qudrat) in English, Math and Arabic, weighted by college.",
     aptitudeExamsAr: "اختبارات القدرات في الإنجليزي والرياضيات والعربي، بأوزان تختلف حسب الكلية.",
     generalMin: { science: 70, arts: 78 }, // the general minimum in admissionSystem above (used by score.html)
@@ -791,8 +793,8 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
         ]
       }
     ],
-    sourceNote: "Source: Kuwait University, minimum averages for Kuwaiti students, Fall 2026/2027 (published 30 July 2026).",
-    sourceNoteAr: "المصدر: جامعة الكويت، الحدود الدنيا للطلبة الكويتيين، الفصل الأول 2026/2027 (نُشر في 30 يوليو 2026)."
+    sourceNote: "Source: Kuwait University, minimum averages for Kuwaiti students, Fall 2026/2027 (published 30 July 2026), and the second-semester 2026/2027 minimums and timetable (do.ku.edu.kw, checked 17 November 2026).",
+    sourceNoteAr: "المصدر: جامعة الكويت، الحدود الدنيا للطلبة الكويتيين، الفصل الأول 2026/2027 (نُشر في 30 يوليو 2026)، والحدود الدنيا والجدول الزمني للفصل الثاني 2026/2027 (do.ku.edu.kw، آخر مراجعة 17 نوفمبر 2026)."
   },
   {
     id: "aasu",
@@ -810,7 +812,7 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     aptitudeExamsAr: "يُرتب المتقدمون حسب نسبة الثانوية مع اختباري الإنجليزي والرياضيات في القدرات بجامعة الكويت، وتختلف الأوزان حسب الكلية.",
     floorLabelEn: "Minimum to apply, 2026/27",
     floorLabelAr: "الحد الأدنى للتقديم 2026/2027",
-    // Official AASU undergraduate admissions page, AY 2026/2027 (checked 2026-10-13).
+    // Official AASU undergraduate admissions page, AY 2026/2027 (checked 2026-10-13, re-checked 2026-11-17).
     // weights: AASU's own ranking formula (hs = high school, eng/math = Qudrat tests)
     colleges: [
       {
@@ -853,8 +855,8 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
         ]
       }
     ],
-    sourceNote: "Source: Abdullah Al-Salem University undergraduate admissions, AY 2026/2027 (checked 13 October 2026). These are minimums to apply, not the lowest grades admitted.",
-    sourceNoteAr: "المصدر: صفحة القبول للبكالوريوس بجامعة عبد الله السالم للعام 2026/2027 (آخر مراجعة 13 أكتوبر 2026). هذه حدود دنيا للتقديم، وليست أدنى معدلات مقبولة."
+    sourceNote: "Source: Abdullah Al-Salem University undergraduate admissions, AY 2026/2027 (checked 17 November 2026). These are minimums to apply, not the lowest grades admitted.",
+    sourceNoteAr: "المصدر: صفحة القبول للبكالوريوس بجامعة عبد الله السالم للعام 2026/2027 (آخر مراجعة 17 نوفمبر 2026). هذه حدود دنيا للتقديم، وليست أدنى معدلات مقبولة."
   },
   {
     id: "puc",
@@ -866,33 +868,48 @@ const KUWAIT_LOCAL_UNIVERSITIES = [
     campusLocationAr: "AUM، GUST، AUK، KCST، ACK، AU وغيرها من الجامعات الخاصة المعتمدة",
     scholarshipFunding: "Tuition paid by the government",
     scholarshipFundingAr: "الرسوم الدراسية على نفقة الحكومة",
-    admissionSystem: "registration.puc.edu.kw. Registration for 2026/2027 ran 3 - 13 August 2026, and 7,989 students were accepted.",
-    admissionSystemAr: "registration.puc.edu.kw. أُقيم التسجيل للعام 2026/2027 من 3 إلى 13 أغسطس 2026، وقُبل 7,989 طالباً وطالبة.",
+    admissionSystem: "registration.puc.edu.kw. Registration for 2026/2027 ran 3 - 13 August 2026, and 7,989 students were accepted. No new plan was open on 17 November 2026. Applying, or getting an acceptance letter from the university, does not mean you have the scholarship.",
+    admissionSystemAr: "registration.puc.edu.kw. أُقيم التسجيل للعام 2026/2027 من 3 إلى 13 أغسطس 2026، وقُبل 7,989 طالباً وطالبة. ولم تكن هناك خطة جديدة مفتوحة في 17 نوفمبر 2026. وقبول طلب التقديم أو الحصول على ورقة قبول من الجامعة لا يعني القبول في البعثة.",
     aptitudeExams: "Engineering selection: high school 65% + Math test 20% + English test 15%.",
     aptitudeExamsAr: "المفاضلة للهندسة: الثانوية 65% + اختبار الرياضيات 20% + اختبار الإنجليزي 15%.",
     floorLabelEn: "Minimum",
     floorLabelAr: "الحد الأدنى",
-    // weights: PUC's own selection formula (not Kuwait University Qudrat); reported by Al-Jarida, 30 June 2026
+    // weights: PUC's own selection formula (not Kuwait University Qudrat); PUC plan PDF for the first semester 2026/2027 (checked 2026-11-17)
     colleges: [
       {
-        collegeName: "Engineering", collegeNameAr: "الهندسة", minThanawiya: "90%",
+        collegeName: "Engineering", collegeNameAr: "الهندسة", minThanawiya: "85 - 90%",
         weights: { hs: 0.65, math: 0.20, eng: 0.15 },
-        majors: [ { en: "Systems and Computer Engineering", ar: "هندسة النظم والكمبيوتر", grade: "85%" } ]
+        majors: [
+          { en: "Most engineering programmes", ar: "معظم برامج الهندسة", grade: "90%" },
+          { en: "Systems Engineering and Computer Engineering", ar: "هندسة النظم وهندسة الكمبيوتر", grade: "85%" }
+        ]
       },
       { collegeName: "Law", collegeNameAr: "الحقوق", minThanawiya: "90%" },
+      {
+        collegeName: "Media and Education (English or Math)", collegeNameAr: "الإعلام والتربية (لغة إنجليزية أو رياضيات)", minThanawiya: "85%",
+        conditionEn: "Education (Math) is for the science stream only.", conditionAr: "تربية رياضيات للقسم العلمي فقط."
+      },
+      { collegeName: "Accounting, Architecture and Design", collegeNameAr: "المحاسبة، والعمارة والتصميم", minThanawiya: "80%" },
+      {
+        collegeName: "Computer Science and Information Systems", collegeNameAr: "علوم الكمبيوتر ونظم المعلومات", minThanawiya: "75% science / 78% arts", minThanawiyaAr: "75% علمي / 78% أدبي",
+        conditionEn: "Arts stream: Management Information Systems only.", conditionAr: "القسم الأدبي: إدارة نظم المعلومات فقط."
+      },
       {
         collegeName: "Other bachelor's programmes", collegeNameAr: "برامج البكالوريوس الأخرى", minThanawiya: "78% science / 80% arts", minThanawiyaAr: "78% علمي / 80% أدبي",
         majors: [
           { en: "Business", ar: "إدارة الأعمال" },
-          { en: "Information Technology", ar: "تقنية المعلومات" },
-          { en: "Media", ar: "الإعلام" },
-          { en: "Design", ar: "التصميم" }
+          { en: "Finance", ar: "التمويل" },
+          { en: "English Language", ar: "اللغة الإنجليزية" }
         ]
       },
-      { collegeName: "Diploma", collegeNameAr: "الدبلوم", minThanawiya: "70%" }
+      {
+        collegeName: "Diploma", collegeNameAr: "الدبلوم", minThanawiya: "70%",
+        conditionEn: "Some diplomas need more: aircraft maintenance and engines-and-airframes 80% (science), most other engineering diplomas 77% (science) but computer engineering 70%, graphic design, interior design and law 75%.",
+        conditionAr: "بعض الدبلومات تتطلب نسبة أعلى: هندسة صيانة الطائرات وهندسة المحركات والهياكل 80% (علمي)، ومعظم دبلومات الهندسة الأخرى 77% (علمي، وهندسة الكمبيوتر 70%)، والتصميم الجرافيكي والتصميم الداخلي والحقوق 75%."
+      }
     ],
-    sourceNote: "Source: PUC announcement for 2026/2027 (Al-Jarida, 30 June 2026).",
-    sourceNoteAr: "المصدر: إعلان مجلس الجامعات الخاصة للعام 2026/2027 (الجريدة، 30 يونيو 2026)."
+    sourceNote: "Source: PUC minimums for the first semester 2026/2027 (puc.edu.kw, checked 17 November 2026); registration dates and numbers from Al-Jarida.",
+    sourceNoteAr: "المصدر: الحدود الدنيا لمجلس الجامعات الخاصة للفصل الأول 2026/2027 (puc.edu.kw، آخر مراجعة 17 نوفمبر 2026)؛ ومواعيد التسجيل والأعداد من جريدة الجريدة."
   }
 ];
 
