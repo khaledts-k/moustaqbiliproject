@@ -9,7 +9,7 @@
  */
 
 const RESOURCES = {
-  lastVerified: "2026-11-10",
+  lastVerified: "2026-11-17",
 
   groups: [
     {

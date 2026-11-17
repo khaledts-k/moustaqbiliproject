@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initSearchPage();          // the home page is the search engine
     initLandingSearch();       // the folded-away filters
     initGpaCalculator();
+    initHeroLaunch();         // the rocket behind the search bar
   }
   if (page === "navigate.html") initSearchGuideVideo(); // "Start here" lives on the More info page
   if (page === "results.html") initResultsPage();
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initWhyLinks();
   initUpdateNote();
   initPageSidebar();
+  initToolsSidebar();          // the "Calculators" tab under "More info"
   revealHashTarget();
 });
 
@@ -163,6 +165,28 @@ function officialLink(key) {
 // The back of a card: one main fact, then the official link
 function factBack(text, source) {
   return `<p class="reveal-fact">${withFlags(text)}</p>${officialLink(source)}`;
+}
+
+// "Known courses" under a card's details (the Qudrat prep-course card): the heading shows, and
+// the list (name, link, short description) sits in a "Details" dropdown so the card stays short
+function knownCoursesHtml(item) {
+  if (!item.courses?.length) return "";
+  return `
+    <div class="known-courses">
+      <h4 class="known-courses-title">${t('qudrat_known_courses')}</h4>
+      <details class="known-courses-more">
+        <summary class="known-courses-toggle">${t('ans_details')}
+          <svg class="known-courses-chevron w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <p class="known-courses-note">${escapeHtml(L(item, 'coursesNote'))}</p>
+        <ul class="known-courses-list">${item.courses.map(c => `
+          <li>
+            <a href="${c.url}" target="_blank" rel="noopener noreferrer" class="known-course-name">${escapeHtml(L(c, 'name'))}<span class="sr-only"> ${t('opens_new_tab')}</span></a>
+            <span class="known-course-desc">${escapeHtml(L(c, 'desc'))}</span>
+          </li>`).join("")}
+        </ul>
+      </details>
+    </div>`;
 }
 
 // Detail lines for the back of a card
@@ -298,8 +322,32 @@ function fxNote() {
 }
 
 // =========================================================================
-// 3. GPA to percentage converter
+// 3. GPA to percentage converter (home page, and the Calculators side panel)
 // =========================================================================
+// A rough guide only: the official conversion is done by the Ministry of Education
+function gpaToPercent(gpa) {
+  let percentage;
+  if (gpa >= 3.90) percentage = 98.0 + ((gpa - 3.90) / 0.10) * 2.0;
+  else if (gpa >= 3.70) percentage = 93.0 + ((gpa - 3.70) / 0.20) * 4.9;
+  else if (gpa >= 3.50) percentage = 88.0 + ((gpa - 3.50) / 0.20) * 4.9;
+  else if (gpa >= 3.20) percentage = 82.0 + ((gpa - 3.20) / 0.30) * 5.9;
+  else if (gpa >= 3.00) percentage = 77.0 + ((gpa - 3.00) / 0.20) * 4.9;
+  else if (gpa >= 2.80) percentage = 72.0 + ((gpa - 2.80) / 0.20) * 4.9;
+  else if (gpa >= 2.50) percentage = 67.0 + ((gpa - 2.50) / 0.30) * 4.9;
+  else percentage = 60.0 + ((gpa - 2.0) / 0.50) * 6.9;
+  return Math.min(100.0, Math.max(60.0, percentage));
+}
+
+// Which majors that % is high enough for (gpa_tier_1 ... gpa_tier_6)
+function gpaTierKey(percentage) {
+  if (percentage >= 97.0) return "gpa_tier_1";
+  if (percentage >= 95.0) return "gpa_tier_2";
+  if (percentage >= 90.0) return "gpa_tier_3";
+  if (percentage >= 85.0) return "gpa_tier_4";
+  if (percentage >= 80.0) return "gpa_tier_5";
+  return "gpa_tier_6";
+}
+
 function initGpaCalculator() {
   const gpaInput = document.getElementById("gpa-calc-input");
   const calcBtn = document.getElementById("gpa-calc-btn");
@@ -319,27 +367,11 @@ function initGpaCalculator() {
       return;
     }
 
-    let percentage;
-    if (gpa >= 3.90) percentage = 98.0 + ((gpa - 3.90) / 0.10) * 2.0;
-    else if (gpa >= 3.70) percentage = 93.0 + ((gpa - 3.70) / 0.20) * 4.9;
-    else if (gpa >= 3.50) percentage = 88.0 + ((gpa - 3.50) / 0.20) * 4.9;
-    else if (gpa >= 3.20) percentage = 82.0 + ((gpa - 3.20) / 0.30) * 5.9;
-    else if (gpa >= 3.00) percentage = 77.0 + ((gpa - 3.00) / 0.20) * 4.9;
-    else if (gpa >= 2.80) percentage = 72.0 + ((gpa - 2.80) / 0.20) * 4.9;
-    else if (gpa >= 2.50) percentage = 67.0 + ((gpa - 2.50) / 0.30) * 4.9;
-    else percentage = 60.0 + ((gpa - 2.0) / 0.50) * 6.9;
-    percentage = Math.min(100.0, Math.max(60.0, percentage));
+    const percentage = gpaToPercent(gpa);
     lastPercentage = percentage;
 
-    let tierKey = "gpa_tier_6";
-    if (percentage >= 97.0) tierKey = "gpa_tier_1";
-    else if (percentage >= 95.0) tierKey = "gpa_tier_2";
-    else if (percentage >= 90.0) tierKey = "gpa_tier_3";
-    else if (percentage >= 85.0) tierKey = "gpa_tier_4";
-    else if (percentage >= 80.0) tierKey = "gpa_tier_5";
-
     if (percentDisplay) percentDisplay.textContent = `${percentage.toFixed(2)}%`;
-    if (tierDisplay) tierDisplay.textContent = t(tierKey);
+    if (tierDisplay) tierDisplay.textContent = t(gpaTierKey(percentage));
     resultBox?.classList.remove("hidden");
   }
 
@@ -1814,7 +1846,7 @@ function renderQudratPage() {
     <section id="rules" class="scroll-mt-24">
       <h2 class="text-lg font-extrabold text-slate-900 mb-4">${t('qudrat_rules_title')}</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: factBack(L(g, 'fact'), g.source) })).join("")}
+        ${(data.goodToKnow || []).map(g => revealCard({ question: L(g, 'question'), answer: L(g, 'answer'), sub: L(g, 'sub'), back: factBack(L(g, 'fact'), g.source) + knownCoursesHtml(g) })).join("")}
       </div>
       ${L(data, 'warning') ? `<p class="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200 text-sm font-semibold text-amber-900">${L(data, 'warning')}</p>` : ""}
     </section>
@@ -3020,8 +3052,8 @@ function buildSearchIndex() {
   (window.KUWAIT_LOCAL_UNIVERSITIES || []).forEach(u => {
     const url = `local-universities.html#${u.id}`;
     add("kuwait", url, u.name, u.nameAr,
-      `${u.scholarshipFunding}. ${u.admissionSystem} ${u.aptitudeExams || ""} ${u.campusLocation ? `Campus: ${u.campusLocation}.` : ""} ${u.sourceNote || ""}`,
-      `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""} ${u.aptitudeExamsAr || ""} ${u.campusLocationAr ? `المقر: ${u.campusLocationAr}.` : ""} ${u.sourceNoteAr || ""}`);
+      `${u.scholarshipFunding}. ${u.admissionSystem} ${u.aptitudeExams || ""} ${u.campusLocation ? `Campus: ${u.campusLocation}.` : ""}`, // the source note is not an answer, so it is left out
+      `${u.scholarshipFundingAr || ""}. ${u.admissionSystemAr || ""} ${u.aptitudeExamsAr || ""} ${u.campusLocationAr ? `المقر: ${u.campusLocationAr}.` : ""}`);
     (u.colleges || []).forEach(c => {
       const majors = c.majors || [];
       const formula = c.weights || (window.KUWAIT_QUDRAT?.formulas || []).find(f => f.collegeEn === c.qudrat)?.weights;
@@ -3046,6 +3078,8 @@ function buildSearchIndex() {
     if (value.questionEn && (value.answerEn || value.factEn)) {
       const line = (x, lang) => [x[`answer${lang}`], x[`sub${lang}`]].filter(Boolean).join(" ") + ". " + (x[`fact${lang}`] || "");
       add("topics", url, value.questionEn, value.questionAr, line(value, "En"), line(value, "Ar"));
+      // Known prep courses: findable by name ("smart mind", "wazzan")
+      (value.courses || []).forEach(c => add("topics", url, c.nameEn, c.nameAr, c.descEn, c.descAr));
     } else if (value.termEn && value.defEn) {
       add("topics", url, value.termEn, value.termAr, value.defEn, value.defAr);
     } else if (value.titleEn && value.bodyEn && !value.blocks) {
@@ -3065,7 +3099,10 @@ function buildSearchIndex() {
 
   // Official links (Resources page)
   (window.RESOURCES?.groups || []).forEach(g => (g.items || []).forEach(i => {
-    add("resources", `resources.html#${g.id}`, i.labelEn, i.labelAr, i.descEn, i.descAr, `${g.keywords} ${i.url} link website official رابط موقع`);
+    // only the site name counts as a keyword (words in a link's path, like "media-center", gave wrong matches)
+    let host = "";
+    try { host = new URL(i.url).hostname.replace(/^www\./, ""); } catch (e) { /* not a full address */ }
+    add("resources", `resources.html#${g.id}`, i.labelEn, i.labelAr, i.descEn, i.descAr, `${g.keywords} ${host} link website official رابط موقع`);
     Object.assign(entries[entries.length - 1], { ext: i.url, extAr: i.urlAr || i.url }); // the answer links straight to it
   }));
 
@@ -3490,6 +3527,7 @@ function setSidebarOpen(open, moveFocus = true) {
   const panel = document.getElementById("page-sidebar");
   const tab = document.getElementById("page-sidebar-tab");
   if (!panel || !tab) return;
+  if (open && toolsState.open) setToolsOpen(false, false); // one panel at a time
   sidebarState.open = open;
   document.documentElement.classList.toggle("sidebar-open", open);
   panel.inert = !open;
@@ -3516,6 +3554,180 @@ function openSidebarAt(el, moveFocus) {
   setSidebarOpen(true, moveFocus);
   setSidebarItem(items.indexOf(li), false);
   li?.scrollIntoView({ block: "start" });
+}
+
+// -------------------------------------------------------------------------
+// Calculators side panel: every calculation tool on Moustaqbili, one tab away on every page.
+// The currency and GPA calculators work inside the panel; the score check and the
+// Kuwait University score calculator open their own pages. The tab sits under "More info".
+// -------------------------------------------------------------------------
+const toolsState = { open: false, item: -1, amount: "100", from: "GBP", to: "KWD", gpa: "" };
+
+function initToolsSidebar() {
+  if (currentPageFile() === "search.html") return; // it forwards to the home page
+  document.body.insertAdjacentHTML("beforeend", `
+    <button type="button" id="tools-tab" class="tools-tab" aria-controls="tools-panel" aria-expanded="false">
+      <svg class="tools-tab-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg>
+      <span class="tools-tab-text"></span>
+    </button>
+    <div id="tools-backdrop" class="tools-backdrop"></div>
+    <aside id="tools-panel" class="tools-panel bg-white border-slate-300" aria-labelledby="tools-title" inert>
+      <div class="page-sidebar-top border-b border-slate-200">
+        <div>
+          <h2 id="tools-title" class="text-base font-extrabold text-slate-900"></h2>
+          <p class="tools-hint text-xs text-slate-500"></p>
+        </div>
+        <button type="button" class="tools-close page-sidebar-close text-slate-500 hover:text-slate-900">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <ul class="tools-list page-sidebar-list"></ul>
+    </aside>`);
+  const panel = document.getElementById("tools-panel");
+  document.getElementById("tools-tab").addEventListener("click", () => setToolsOpen(!toolsState.open));
+  document.getElementById("tools-backdrop").addEventListener("click", () => setToolsOpen(false));
+  panel.querySelector(".tools-close").addEventListener("click", () => setToolsOpen(false));
+  panel.addEventListener("click", e => {
+    const head = e.target.closest(".page-sidebar-head");
+    if (head) setToolsItem(toolsState.item === +head.dataset.index ? -1 : +head.dataset.index);
+    // A link to a calculator further down this same page: close the panel so it can be seen
+    const link = e.target.closest("a.tools-open-link");
+    if (!link) return;
+    const url = new URL(link.href, location.href);
+    if (url.pathname !== location.pathname) return; // another page: the link opens it
+    e.preventDefault();
+    setToolsOpen(false, false);
+    const target = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null;
+    if (url.hash) history.replaceState(null, "", url.hash);
+    (target || document.querySelector("main") || document.body).scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && toolsState.open) setToolsOpen(false); });
+  renderToolsPanel();
+  window.addEventListener("languageChanged", renderToolsPanel);
+  window.addEventListener("fxUpdated", renderToolsPanel);
+}
+
+function renderToolsPanel() {
+  const panel = document.getElementById("tools-panel");
+  if (!panel) return;
+  const here = currentPageFile();
+  const currencies = Object.keys(window.MOUSTAQBILI_CURRENCIES || { KWD: {} });
+  const options = selected => currencies.map(c => `<option value="${c}" ${c === selected ? "selected" : ""}>${escapeHtml(currencyLabel(c))}</option>`).join("");
+  const field = "bg-white border border-slate-300 rounded px-2 py-2 text-xs font-bold focus:ring-2 focus:ring-olive-800 focus:outline-none";
+  const openLink = (href, page) => page === here
+    ? `<a href="${href}" class="tools-open-link">${t('tools_on_this_page')}</a>`
+    : `<a href="${href}" class="tools-open-link">${t('tools_open')} <span class="flip-rtl" aria-hidden="true">&rarr;</span></a>`;
+
+  const tools = [
+    { title: t('calc_heading'), body: `
+      <p class="text-xs text-slate-600 mb-3">${t('tools_currency_desc')}</p>
+      <label for="tools-calc-amount" class="block text-xs font-bold text-slate-700 mb-1">${t('calc_amount')}</label>
+      <div class="flex gap-1">
+        <input id="tools-calc-amount" type="number" min="0" step="any" inputmode="decimal" value="${escapeHtml(toolsState.amount)}" class="w-full min-w-0 ${field} text-sm">
+        <select id="tools-calc-from" class="${field}" aria-label="${t('calc_from')}">${options(toolsState.from)}</select>
+      </div>
+      <div class="flex items-end gap-2 mt-2">
+        <div class="flex-1 min-w-0">
+          <label for="tools-calc-to" class="block text-xs font-bold text-slate-700 mb-1">${t('calc_to')}</label>
+          <select id="tools-calc-to" class="w-full ${field}">${options(toolsState.to)}</select>
+        </div>
+        <button type="button" id="tools-calc-swap" class="px-3 py-2 rounded border border-slate-300 bg-white hover:bg-slate-50 text-xs font-bold text-slate-700" aria-label="${t('calc_swap')}">&#8646;</button>
+      </div>
+      <div class="mt-3 p-3 rounded-lg bg-slate-50 border border-slate-200 flex items-baseline justify-between gap-3">
+        <span class="text-xs font-bold text-slate-500">${t('calc_result')}</span>
+        <output id="tools-calc-result" class="text-lg font-black text-slate-900" aria-live="polite"></output>
+      </div>
+      <p id="tools-calc-rate" class="text-xs text-slate-500 mt-2"></p>
+      <p class="text-xs text-slate-400 mt-1">${fxNote()}</p>` },
+    { title: t('tool1_title'), body: `
+      <p class="text-xs text-slate-600 mb-3">${t('tool1_desc')}</p>
+      <label for="tools-gpa" class="block text-xs font-bold text-slate-700 mb-1">${t('gpa_input_label')}</label>
+      <input id="tools-gpa" type="number" min="1" max="4" step="0.01" inputmode="decimal" placeholder="3.85" value="${escapeHtml(toolsState.gpa)}" class="w-full ${field} text-sm">
+      <div id="tools-gpa-result" class="hidden mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-xs" aria-live="polite">
+        <span class="font-bold text-emerald-900">${t('gpa_result_label')}</span>
+        <span id="tools-gpa-percent" class="text-lg font-black text-emerald-950"></span>
+        <span id="tools-gpa-tier" class="block mt-1 font-semibold text-emerald-800"></span>
+      </div>
+      <p class="text-xs text-slate-500 mt-2">${t('gpa_ref_note')}</p>` },
+    { title: t('nav_score'), body: `<p class="text-xs text-slate-600 mb-3">${t('score_desc')}</p>${openLink("score.html", "score.html")}` },
+    { title: t('equiv_title'), body: `<p class="text-xs text-slate-600 mb-3">${t('equiv_desc')}</p>${openLink("qudrat.html#equivalent", "qudrat.html")}` }
+  ];
+
+  document.querySelector("#tools-tab .tools-tab-text").textContent = t('tools_tab');
+  document.getElementById("tools-tab").setAttribute("aria-label", t('tools_title'));
+  document.getElementById("tools-title").textContent = t('tools_title');
+  panel.querySelector(".tools-hint").textContent = t('tools_hint');
+  panel.querySelector(".tools-close").setAttribute("aria-label", t('sidebar_close'));
+  panel.querySelector(".tools-list").innerHTML = tools.map((tool, i) => `
+    <li class="page-sidebar-item border-b border-slate-200">
+      <button type="button" class="page-sidebar-head text-slate-900 hover:bg-slate-50" data-index="${i}" id="tsh-${i}" aria-controls="tsb-${i}" aria-expanded="false">
+        <span class="page-sidebar-head-text">${escapeHtml(tool.title)}</span>
+        <svg class="page-sidebar-chevron w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="page-sidebar-body" id="tsb-${i}" role="region" aria-labelledby="tsh-${i}" hidden>${tool.body}</div>
+    </li>`).join("");
+
+  // Currency calculator
+  const amountEl = panel.querySelector("#tools-calc-amount");
+  const fromEl = panel.querySelector("#tools-calc-from");
+  const toEl = panel.querySelector("#tools-calc-to");
+  const updateMoney = () => {
+    Object.assign(toolsState, { amount: amountEl.value, from: fromEl.value, to: toEl.value });
+    const amount = parseFloat(amountEl.value);
+    const converted = Number.isFinite(amount) ? convertAmount(amount, fromEl.value, toEl.value, FX.rates) : null;
+    panel.querySelector("#tools-calc-result").textContent = converted === null ? "-" : money(converted, toEl.value);
+    const unit = convertAmount(1, fromEl.value, toEl.value, FX.rates);
+    panel.querySelector("#tools-calc-rate").textContent = unit === null ? "" : `1 ${fromEl.value} = ${formatNumber(unit, 4)} ${toEl.value}`;
+  };
+  amountEl.addEventListener("input", updateMoney);
+  fromEl.addEventListener("change", updateMoney);
+  toEl.addEventListener("change", updateMoney);
+  panel.querySelector("#tools-calc-swap").addEventListener("click", () => {
+    [fromEl.value, toEl.value] = [toEl.value, fromEl.value];
+    updateMoney();
+  });
+  updateMoney();
+
+  // GPA to %
+  const gpaEl = panel.querySelector("#tools-gpa");
+  const updateGpa = () => {
+    toolsState.gpa = gpaEl.value;
+    const gpa = parseFloat(gpaEl.value);
+    const ok = Number.isFinite(gpa) && gpa >= 1 && gpa <= 4;
+    panel.querySelector("#tools-gpa-result").classList.toggle("hidden", !ok);
+    if (!ok) return;
+    const pct = gpaToPercent(gpa);
+    panel.querySelector("#tools-gpa-percent").textContent = `${pct.toFixed(2)}%`;
+    panel.querySelector("#tools-gpa-tier").textContent = t(gpaTierKey(pct));
+  };
+  gpaEl.addEventListener("input", updateGpa);
+  updateGpa();
+
+  setToolsItem(toolsState.item, false); // keep the open calculator open across a redraw
+}
+
+function setToolsOpen(open, moveFocus = true) {
+  const panel = document.getElementById("tools-panel");
+  const tab = document.getElementById("tools-tab");
+  if (!panel || !tab) return;
+  if (open && sidebarState.open) setSidebarOpen(false, false); // one panel at a time
+  toolsState.open = open;
+  document.documentElement.classList.toggle("tools-open", open);
+  panel.inert = !open;
+  tab.setAttribute("aria-expanded", String(open));
+  if (moveFocus) (open ? panel.querySelector(".tools-close") : tab).focus({ preventScroll: true });
+}
+
+// Open one calculator at a time (-1 closes them all)
+function setToolsItem(index, scroll = true) {
+  toolsState.item = index;
+  document.querySelectorAll("#tools-panel .page-sidebar-item").forEach((li, i) => {
+    const open = i === index;
+    li.classList.toggle("is-open", open);
+    li.querySelector(".page-sidebar-head").setAttribute("aria-expanded", String(open));
+    li.querySelector(".page-sidebar-body").hidden = !open;
+    if (open && scroll) li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  });
 }
 
 // -------------------------------------------------------------------------
@@ -3935,6 +4147,9 @@ const FAQ_INTENTS = [
   { id: "military-ali-al-sabah-college-admission", any: ["military", "air force", "army", "عسكري", "عسكريه", "الجيش", "القوه الجويه"] , also: AVIATION_WORDS },
   { id: "aviation-overview", any: AVIATION_WORDS, not: ["ticket", "tickets", "تذكره", "تذاكر", "allowance", "مخصص"] },
   // noMajor: only when no major is named ("IELTS for medicine in the UK" is answered by the major answer)
+  // Applying to Kuwait University (not the Ministry's scholarship plan, not Qudrat)
+  { id: "ku-apply-second-semester", any: ["kuwait university", "جامعه الكويت", "لجامعه الكويت", "بجامعه الكويت"], also: ["when", "apply", "dates", "deadline", "second semester", "admission", "متى", "موعد", "مواعيد", "التقديم", "اقدم", "الفصل الثاني", "القبول"],
+    not: ["qudrat", "قدرات", "القدرات", "result", "results", "نتائج", "النتائج", "without", "دون", "بدون", "minimum", "lowest", "اقل", "الحد الادنى", "نسبه"] },
   { id: "apply-choices", any: ["how many universities", "how many choices", "choose my university", "which universities can i", "كم رغبه", "اختار جامعتي"] },
   { id: "apply-when", any: ["deadline", "last day", "اخر موعد", "اخر يوم"], also: SCHOLARSHIP_WORDS, not: ["qudrat", "قدرات", "merit", "تميز", "paperwork", "documents", "اوراق", "مستندات"] },
   { id: "apply-results", any: ["got accepted", "if i am accepted", "was i accepted", "am i accepted", "know if i", "هل انقبلت", "انقبلت", "قبلت"], not: ["qudrat", "قدرات", "ielts", "ايلتس"] },
@@ -4537,4 +4752,29 @@ function renderHomeExamples() {
   if (!box) return;
   box.innerHTML = [1, 2, 3, 4].map(i => t(`home_ex_${i}`)).map(q =>
     `<a href="index.html?q=${encodeURIComponent(q)}" class="home-example">${escapeHtml(q)}</a>`).join("");
+  // The "Common questions" dropdown starts open on wider screens and closed on phones (less clutter)
+  const drop = document.getElementById("home-examples-drop");
+  if (drop && !drop.dataset.ready) {
+    drop.dataset.ready = "1";
+    drop.open = window.matchMedia("(min-width: 640px)").matches;
+  }
+}
+
+// Home page: the rocket waits on its launch pad until someone clicks it (or the alien's "Click me" sign).
+// A click adds .is-launching to the hero, which plays the trip once ("Home page rocket" in styles.css).
+function initHeroLaunch() {
+  const btn = document.getElementById("hero-launch");
+  const hero = btn ? btn.closest(".home-hero") : null;
+  const rocket = hero ? hero.querySelector(".hero-rocket") : null;
+  if (!rocket) return;
+  btn.addEventListener("click", () => {
+    if (hero.classList.contains("is-launching")) return; // already on its way
+    hero.classList.add("is-launching");
+    btn.setAttribute("aria-disabled", "true");
+  });
+  rocket.addEventListener("animationend", (e) => {
+    if (e.animationName !== "hero-trip-x") return;
+    hero.classList.remove("is-launching");             // back on the pad, ready for the next click
+    btn.removeAttribute("aria-disabled");
+  });
 }

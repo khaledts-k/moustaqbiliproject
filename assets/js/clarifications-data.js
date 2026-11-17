@@ -7,8 +7,10 @@
  * reports). Answers come from official sources, checked 2026-10-12. Added 2026-11-10: Kuwait
  * University's Qudrat FAQ and student guide, NBAQ's FAQ, and the Ministry FAQ (scholarships,
  * grants, degree equivalency).
- * Decree 197/2025 (the scholarship regulation) has no official copy online;
- * its text was read from a legal publisher's copy (mesferlaw.com).
+ * Living-abroad answers re-checked 2026-11-17.
+ * Scholarship/merit/money/after-acceptance/parent/grant/certificate/university answers re-checked 2026-11-17.
+ * Decree 197/2025 (the scholarship regulation): first read from a legal publisher's copy (mesferlaw.com);
+ * now checked against the official copy on kcouk.org (DECREE_197 below).
  *
  * status: "confirmed" | "unconfirmed" (shows a "Not confirmed" label)
  */
@@ -27,7 +29,7 @@ const NBAQ_FAQ = { label: "NBAQ FAQ", url: "https://nbaq.edu.kw/website/%d8%a7%d
 const NBAQ_CONTACT = { label: "NBAQ complaints and suggestions", url: "https://nbaq.edu.kw/website/%d9%84%d9%84%d8%b4%d9%83%d8%a7%d9%88%d9%8a-%d9%88%d8%a7%d9%84%d8%a5%d9%82%d8%aa%d8%b1%d8%a7%d8%ad%d8%a7%d8%aa" };
 
 const CLARIFICATIONS = {
-  lastVerified: "2026-11-16",
+  lastVerified: "2026-11-17",
 
   topics: [
     { id: "scholarships", labelEn: "Applying", labelAr: "التقديم" },
@@ -48,177 +50,177 @@ const CLARIFICATIONS = {
   ],
 
   items: [
-    {
-      id: "american-diploma", topic: "equivalency",
-      questionEn: "Can I apply with an American high school diploma?",
-      questionAr: "هل يمكنني التقديم بشهادة الثانوية الأمريكية؟",
-      answerEn: "Yes, with an equivalency letter from the Ministry of Education's Private Education Department.",
-      answerAr: "نعم، مع إفادة معادلة من إدارة التعليم الخاص بوزارة التربية.",
-      detailsEn: "You count as science stream if you passed Biology, Chemistry, Physics, Algebra 2 and Calculus or Pre-calculus over two regular semesters (not an intensive course). To study in the UAE, US and Canadian school graduates also need a UAE equivalency and the SAT.",
-      detailsAr: "تُصنَّف من القسم العلمي إذا اجتزت الأحياء والكيمياء والفيزياء والجبر 2 والتفاضل والتكامل أو التمهيدي له خلال فصلين دراسيين اعتياديين (وليس فصلاً مكثفاً). وللدراسة في الإمارات يحتاج خريجو الثانوية الأمريكية والكندية أيضاً إلى معادلة إماراتية واختبار SAT.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "british-ib-certificate", topic: "equivalency",
-      questionEn: "Can I apply with a British (IGCSE, A-Level) or IB certificate?",
-      questionAr: "هل يمكنني التقديم بالشهادة البريطانية (IGCSE وA-Level) أو البكالوريا الدولية؟",
-      answerEn: "Yes, with an equivalency letter from the Ministry of Education's Private Education Department, if you meet the subject rules.",
-      answerAr: "نعم، مع إفادة معادلة من إدارة التعليم الخاص بوزارة التربية، إذا استوفيت شروط المواد.",
-      detailsEn: "British: at least 8 subjects, two or more at AS or A-Level, passed within 36 months; the science stream needs Math, Physics, Chemistry and Biology. IB: the full diploma with at least 6 subjects, 3 at Higher Level, including Math and English, plus TOK and the Extended Essay.",
-      detailsAr: "البريطانية: 8 مواد على الأقل، منها مادتان أو أكثر بمستوى AS أو A-Level، خلال 36 شهراً، ويُشترط للقسم العلمي الرياضيات والفيزياء والكيمياء والأحياء. البكالوريا الدولية: الشهادة النهائية بست مواد على الأقل، منها ثلاث بالمستوى العالي، وتشمل الرياضيات والإنجليزي، مع نظرية المعرفة والمقالة الموسعة.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "gpa-convert", topic: "scholarships",
-      questionEn: "How do I convert my American GPA to a percentage?",
-      questionAr: "كيف أحوّل معدلي الأمريكي (GPA) إلى نسبة مئوية؟",
-      answerEn: "Use the GPA converter on the home page: open \"Prefer filters?\" under the search bar.",
-      answerAr: "استخدم أداة تحويل المعدل في الصفحة الرئيسية: افتح \"تفضّل الفلاتر؟\" تحت شريط البحث.",
-      detailsEn: "Then use that % in \"Check my score\" to compare it with each major's minimum.",
-      detailsAr: "ثم استخدم النسبة في صفحة \"تحقق من نسبتي\" لمقارنتها بالحد الأدنى لكل تخصص.",
-      status: "confirmed", sourceLabel: "Moustaqbili: GPA converter", sourceUrl: "index.html#home-filters"
-    },
-    {
-      id: "ministry-contact", topic: "scholarships",
-      questionEn: "How do I contact the Ministry of Higher Education?",
-      questionAr: "كيف أتواصل مع وزارة التعليم العالي؟",
-      answerEn: "The Ministry does not publish a public phone number {{unconfirmed}}; book an appointment (also in the Sahel app) or use its video-call service.",
-      answerAr: "لا تنشر الوزارة رقم هاتف عاماً {{unconfirmed}}، فاحجز موعداً (متاح أيضاً في تطبيق سهل) أو استخدم خدمة الاتصال المرئي.",
-      detailsEn: "Video calls through the Skiplino app run Sunday to Thursday, 8:30 am to 12:30 pm. Each department's email is on the Contact page.",
-      detailsAr: "خدمة الاتصال المرئي عبر تطبيق Skiplino من الأحد إلى الخميس، من 8:30 صباحاً حتى 12:30 ظهراً، وبريد كل إدارة في صفحة التواصل.",
-      status: "confirmed", sourceLabel: "Ministry website", sourceUrl: "https://www.mohe.edu.kw/site/"
-    },
+    {
+      id: "american-diploma", topic: "equivalency",
+      questionEn: "Can I apply with an American high school diploma?",
+      questionAr: "هل يمكنني التقديم بشهادة الثانوية الأمريكية؟",
+      answerEn: "Yes, with an equivalency letter from the Ministry of Education's Private Education Department.",
+      answerAr: "نعم، مع إفادة معادلة من إدارة التعليم الخاص بوزارة التربية.",
+      detailsEn: "You count as science stream if you passed Biology, Chemistry, Physics, Algebra 2 and Calculus or Pre-calculus over two regular semesters (not an intensive course). To study in the UAE, US and Canadian school graduates also need a UAE equivalency and the SAT.",
+      detailsAr: "تُصنَّف من القسم العلمي إذا اجتزت الأحياء والكيمياء والفيزياء والجبر 2 والتفاضل والتكامل أو التمهيدي له خلال فصلين دراسيين اعتياديين (وليس فصلاً مكثفاً). وللدراسة في الإمارات يحتاج خريجو الثانوية الأمريكية والكندية أيضاً إلى معادلة إماراتية واختبار SAT.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "british-ib-certificate", topic: "equivalency",
+      questionEn: "Can I apply with a British (IGCSE, A-Level) or IB certificate?",
+      questionAr: "هل يمكنني التقديم بالشهادة البريطانية (IGCSE وA-Level) أو البكالوريا الدولية؟",
+      answerEn: "Yes, with an equivalency letter from the Ministry of Education's Private Education Department, if you meet the subject rules.",
+      answerAr: "نعم، مع إفادة معادلة من إدارة التعليم الخاص بوزارة التربية، إذا استوفيت شروط المواد.",
+      detailsEn: "British: at least 8 subjects, two or more at AS or A-Level, passed within 36 months; the science stream needs Math, Physics, Chemistry and Biology. IB: the full diploma with at least 6 subjects, 3 at Higher Level, including Math and English, plus TOK and the Extended Essay.",
+      detailsAr: "البريطانية: 8 مواد على الأقل، منها مادتان أو أكثر بمستوى AS أو A-Level، خلال 36 شهراً، ويُشترط للقسم العلمي الرياضيات والفيزياء والكيمياء والأحياء. البكالوريا الدولية: الشهادة النهائية بست مواد على الأقل، منها ثلاث بالمستوى العالي، وتشمل الرياضيات والإنجليزي، مع نظرية المعرفة والمقالة الموسعة.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "gpa-convert", topic: "scholarships",
+      questionEn: "How do I convert my American GPA to a percentage?",
+      questionAr: "كيف أحوّل معدلي الأمريكي (GPA) إلى نسبة مئوية؟",
+      answerEn: "Use the GPA converter on the home page: open \"Prefer filters?\" under the search bar.",
+      answerAr: "استخدم أداة تحويل المعدل في الصفحة الرئيسية: افتح \"تفضّل الفلاتر؟\" تحت شريط البحث.",
+      detailsEn: "Then use that % in \"Check my score\" to compare it with each major's minimum.",
+      detailsAr: "ثم استخدم النسبة في صفحة \"تحقق من نسبتي\" لمقارنتها بالحد الأدنى لكل تخصص.",
+      status: "confirmed", sourceLabel: "Moustaqbili: GPA converter", sourceUrl: "index.html#home-filters"
+    },
+    {
+      id: "ministry-contact", topic: "scholarships",
+      questionEn: "How do I contact the Ministry of Higher Education?",
+      questionAr: "كيف أتواصل مع وزارة التعليم العالي؟",
+      answerEn: "The Ministry does not publish a public phone number {{unconfirmed}}; book an appointment (also in the Sahel app) or use its video-call service.",
+      answerAr: "لا تنشر الوزارة رقم هاتف عاماً {{unconfirmed}}، فاحجز موعداً (متاح أيضاً في تطبيق سهل) أو استخدم خدمة الاتصال المرئي.",
+      detailsEn: "Appointments are booked on the Mata platform or in the Sahel app. Video calls through the Skiplino app run Sunday to Thursday, 8:30 am to 12:30 pm. For scholarship questions you can also email Scholarship_Guidance_Eservice@mohe.edu.kw. Each department's email is on the Contact page.",
+      detailsAr: "يُحجز الموعد عبر منصة متى أو تطبيق سهل. وخدمة الاتصال المرئي عبر تطبيق Skiplino من الأحد إلى الخميس، من 8:30 صباحاً حتى 12:30 ظهراً. ولأسئلة البعثات يمكنك أيضاً مراسلة Scholarship_Guidance_Eservice@mohe.edu.kw، وبريد كل إدارة في صفحة التواصل.",
+      status: "confirmed", sourceLabel: "Ministry: remote contact (Skiplino) page; visiting the Ministry page", sourceUrl: "https://www.mohe.edu.kw/site/AR/TechnicalSupport?PageID=15"
+    },
     // ---------------- Applying ----------------
-    {
-      id: "apply-when", topic: "scholarships",
-      questionEn: "When can I apply for the scholarship?",
-      questionAr: "متى يمكنني التقديم على البعثة؟",
-      answerEn: "Registration for 2026/2027 ran 14 June to 7 July 2026 and is closed. Merit applications are open until 24 February 2027.",
-      answerAr: "سجّل الطلبة في خطة 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق التسجيل. والتقديم على برنامج التميز مفتوح حتى 24 فبراير 2027.",
-      detailsEn: "Registration opens after the school year ends, for graduates of public and private schools. The Ministry has not announced the 2027/2028 dates yet.",
-      detailsAr: "يبدأ التسجيل بعد انتهاء العام الدراسي لخريجي التعليم العام والخاص، ولم تعلن الوزارة مواعيد 2027/2028 بعد.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "apply-how", topic: "scholarships",
-      questionEn: "How do I apply for the scholarship?",
-      questionAr: "كيف أقدّم على البعثة؟",
-      answerEn: "Online, on the Ministry's registration system: log in with your Civil ID and confirm with the Hawiyati (Kuwait Mobile ID) app.",
-      answerAr: "إلكترونياً عبر نظام التسجيل في موقع الوزارة: ادخل بالرقم المدني وصادق عبر تطبيق هويتي.",
-      detailsEn: "Enter your details, your choices and your documents, then send the application after confirming in Hawiyati. Applications with missing information or documents are excluded.",
-      detailsAr: "أدخل بياناتك ورغباتك ومستنداتك، ثم أرسل الطلب بعد المصادقة عبر هويتي. وتُستبعد الطلبات الناقصة البيانات أو المستندات.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "apply-documents", topic: "scholarships",
-      questionEn: "What documents do I need to apply for the scholarship?",
-      questionAr: "ما المستندات المطلوبة للتقديم على البعثة؟",
-      answerEn: "Your final high school transcript, your IELTS or TOEFL result, and copies of your Civil ID, your guardian's Civil ID and your passport.",
-      answerAr: "كشف درجات الثانوية النهائي المعتمد، ونتيجة الآيلتس أو التوفل، ونسخة من بطاقتك المدنية والبطاقة المدنية لولي الأمر وجواز سفرك.",
-      detailsEn: "Graduates of foreign (international) schools also need an equivalency letter from the Ministry of Education's Private Education Department. Saudi high school graduates add their Qudrat and Tahsili certificates.",
-      detailsAr: "ويحتاج خريجو المدارس الأجنبية إلى إفادة معادلة من إدارة التعليم الخاص بوزارة التربية، ويضيف حملة الثانوية السعودية شهادتي القدرات والتحصيلي.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "apply-who", topic: "scholarships",
-      questionEn: "Who can apply for a scholarship abroad?",
-      questionAr: "من يحق له التقديم على البعثة الخارجية؟",
-      answerEn: "Kuwaiti citizens aged 16 to 23, with a high school certificate from 2024/2025 or 2025/2026 and IELTS 5.5 or TOEFL 47 taken in Kuwait.",
-      answerAr: "الكويتيون من عمر 16 إلى 23 سنة، الحاصلون على الثانوية في 2024/2025 أو 2025/2026، مع آيلتس 5.5 أو توفل 47 من مركز داخل الكويت.",
-      detailsEn: "You must not already have a bachelor's degree, must not have had a scholarship that ended in dismissal or withdrawal after starting, cannot hold a scholarship and a grant at the same time, and must not work for a government body.",
-      detailsAr: "ويُشترط ألا تكون حاصلاً على البكالوريوس، وألا تكون قد حصلت على بعثة انتهت بالفصل أو الانسحاب بعد الالتحاق، وألا تجمع بين بعثة ومنحة، وألا تكون موظفاً في جهة حكومية.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "apply-arts-stream", topic: "scholarships",
-      questionEn: "Can arts-stream students get a scholarship abroad?",
-      questionAr: "هل يحق لطلبة القسم الأدبي الحصول على بعثة خارجية؟",
-      answerEn: "Yes, but only in majors open to both streams; most majors in the 2026/2027 plan are for the science stream.",
-      answerAr: "نعم، لكن في التخصصات المتاحة للقسمين فقط، ومعظم تخصصات خطة 2026/2027 للقسم العلمي.",
-      detailsEn: "Use \"Check my score\" and choose the arts stream to see which majors accept you.",
-      detailsAr: "استخدم صفحة \"تحقق من نسبتي\" واختر القسم الأدبي لترى التخصصات المتاحة لك.",
-      status: "confirmed", sourceLabel: "Ministry: majors and minimum percentages 2026/2027 (PDF)", sourceUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf"
-    },
-    {
-      id: "apply-results", topic: "scholarships",
-      questionEn: "When are scholarship results announced?",
-      questionAr: "متى تُعلن نتائج البعثات؟",
-      answerEn: "After registration closes. For 2026/2027 the Ministry announced the results on 11 July 2026 and accepted 2,704 students.",
-      answerAr: "بعد إغلاق التسجيل. ففي خطة 2026/2027 أعلنت الوزارة النتائج في 11 يوليو 2026 وقُبل 2,704 طلاب وطالبات.",
-      detailsEn: "Students list up to 8 choices. Medicine and engineering are ranked by the equivalent average, and other majors by the high school %. After acceptance, the guardian approves the pledge and medical form in the Sahel app.",
-      detailsAr: "يختار الطالب حتى 8 رغبات، ويُرتب المتقدمون للطب والهندسة حسب المعدل المكافئ، وبقية التخصصات حسب نسبة الثانوية. وبعد القبول يصادق ولي الأمر على التعهد ونموذج الفحص الطبي عبر تطبيق سهل.",
-      status: "confirmed", sourceLabel: "Al-Jarida, 11 July 2026 (Ministry results announcement)", sourceUrl: "https://www.aljarida.com/article/137333"
-    },
-    {
-      id: "apply-choices", topic: "scholarships",
-      questionEn: "How many choices can I list, and can I choose my university?",
-      questionAr: "كم رغبة يمكنني اختيارها؟ وهل أختار جامعتي؟",
-      answerEn: "You list up to 8 choices of major and country. You then apply to universities yourself; the Ministry only pays for universities and programmes NBAQ recommends.",
-      answerAr: "تختار حتى 8 رغبات من التخصص والدولة، ثم تقدّم بنفسك على الجامعات، ولا تتكفل الوزارة إلا بالجامعات والبرامج الموصى بها من الجهاز الوطني للاعتماد.",
-      detailsEn: "Your admission is then certified through the Kuwait cultural office for the country you study in.",
-      detailsAr: "ثم يُصدّق قبولك عن طريق المكتب الثقافي في بلد الدراسة.",
-      status: "confirmed", sourceLabel: "Al-Jarida, 11 July 2026 (Ministry results announcement)", sourceUrl: "https://www.aljarida.com/article/137333"
-    },
-    {
-      id: "merit-what", topic: "scholarships",
-      questionEn: "What is the merit programme?",
-      questionAr: "ما هو برنامج البعثات المتميزة؟",
-      answerEn: "A scholarship for students accepted at a university on the merit list, with 50% more monthly allowance after the preparatory stage.",
-      answerAr: "بعثة للطلبة المقبولين في جامعة من قائمة التميز، مع زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
-      detailsEn: "You need 95% for medicine, dentistry and pharmacy; for other majors the Ministry's merit guide says 90% {{unconfirmed}}. Applications for 2026/2027 are open until 24 February 2027. The merit lists are on NBAQ's website.",
-      detailsAr: "تحتاج إلى 95% للطب وطب الأسنان والصيدلة، ولبقية التخصصات يذكر دليل التميز 90% {{unconfirmed}}. والتقديم لعام 2026/2027 مفتوح حتى 24 فبراير 2027، وقوائم التميز في موقع الجهاز الوطني للاعتماد.",
-      status: "confirmed", sourceLabel: "Ministry: merit programme 2026/2027", sourceUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3"
-    },
-    {
-      id: "tuition-paid", topic: "scholarships",
-      questionEn: "Does the scholarship pay my tuition fees?",
-      questionAr: "هل تدفع البعثة رسومي الدراسية؟",
-      answerEn: "Yes. The Ministry pays your tuition directly to the university, and you also get a monthly allowance to live on.",
-      answerAr: "نعم. تدفع الوزارة رسومك الدراسية للجامعة مباشرة، وتحصل أيضاً على مخصص شهري للمعيشة.",
-      detailsEn: "On top of the monthly allowance there are yearly amounts for books, equipment, clothing and clinical training, which depend on the country and major.",
-      detailsAr: "وفوق المخصص الشهري تُصرف مبالغ سنوية للكتب والأدوات والملابس والتدريب السريري، وتختلف حسب الدولة والتخصص.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "housing-paid", topic: "scholarships",
-      questionEn: "Does the Ministry pay for my housing?",
-      questionAr: "هل تدفع الوزارة إيجار سكني؟",
-      answerEn: "There is no separate housing payment: the Ministry's allowance table has no housing item, so rent comes from your monthly allowance.",
-      answerAr: "لا يوجد بدل سكن مستقل في جدول مخصصات الوزارة، فيُدفع الإيجار من المخصص الشهري.",
-      detailsEn: "The table lists the monthly allowance, a pre-travel allowance, and yearly amounts for books, equipment, clothing and clinical training.",
-      detailsAr: "يتضمن الجدول المخصص الشهري ومخصصات ما قبل السفر ومبالغ سنوية للكتب والأدوات والملابس والتدريب السريري.",
-      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
-    },
-    {
-      id: "qudrat-what", topic: "scholarships",
-      questionEn: "What is Qudrat?",
-      questionAr: "ما هي اختبارات القدرات؟",
-      answerEn: "Kuwait University's academic aptitude tests in Math, English and Arabic, also called the Unified National Test.",
-      answerAr: "اختبارات القدرات الأكاديمية في جامعة الكويت في الرياضيات والإنجليزي والعربي، وتُسمى أيضاً الاختبار الوطني الموحد.",
-      detailsEn: "You need them for most Kuwait University colleges, for Abdullah Al-Salem University, and for medicine, dentistry, veterinary medicine, pharmacy and engineering scholarships.",
-      detailsAr: "وتحتاجها لمعظم كليات جامعة الكويت، ولجامعة عبدالله السالم، وللبعثات في الطب وطب الأسنان والطب البيطري والصيدلة والهندسة.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-good-score", topic: "scholarships",
-      questionEn: "What is a good Qudrat score?",
-      questionAr: "ما الدرجة الجيدة في القدرات؟",
-      answerEn: "The passing score is 60% in English and 50% in Math and Arabic, but colleges compare your equivalent average, so a higher score helps.",
-      answerAr: "درجة النجاح 60% في الإنجليزي و50% في الرياضيات والعربي، لكن الكليات تقارن معدلك المكافئ، فكلما ارتفعت درجتك كان أفضل.",
-      detailsEn: "Use \"Check my score\" to see your equivalent average next to last year's lowest admitted for each Kuwait University college.",
-      detailsAr: "استخدم صفحة \"تحقق من نسبتي\" لترى معدلك المكافئ مقارنة بأدنى معدل مقبول في كل كلية بجامعة الكويت العام الماضي.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "not-accepted", topic: "scholarships",
-      questionEn: "What can I do if I am not accepted for a scholarship?",
-      questionAr: "ماذا أفعل إذا لم أُقبل في البعثة؟",
-      answerEn: "You can still apply to the merit programme (until 24 February 2027) or study in Kuwait: Kuwait University, AASU or a PUC internal scholarship.",
-      answerAr: "يمكنك التقديم على برنامج التميز (حتى 24 فبراير 2027) أو الدراسة في الكويت: جامعة الكويت أو جامعة عبدالله السالم أو بعثة داخلية من مجلس الجامعات الخاصة.",
-      detailsEn: "In 2025 the Ministry also opened an appeals window by email after the results {{unconfirmed}}.",
-      detailsAr: "وفي 2025 فتحت الوزارة باب التظلم عبر البريد الإلكتروني بعد النتائج {{unconfirmed}}.",
-      status: "confirmed", sourceLabel: "Al-Jarida: appeals for the 2025-2026 plan", sourceUrl: "https://www.aljarida.com/article/102705"
-    },
+    {
+      id: "apply-when", topic: "scholarships",
+      questionEn: "When can I apply for the scholarship?",
+      questionAr: "متى يمكنني التقديم على البعثة؟",
+      answerEn: "Registration for 2026/2027 ran 14 June to 7 July 2026 and is closed. Merit applications are open until 24 February 2027.",
+      answerAr: "سجّل الطلبة في خطة 2026/2027 من 14 يونيو إلى 7 يوليو 2026 وقد أُغلق التسجيل. والتقديم على برنامج التميز مفتوح حتى 24 فبراير 2027.",
+      detailsEn: "Registration opens after the school year ends, for graduates of public and private schools. Holders of British (IGCSE/A-Level) and IB certificates had a separate window, 11 to 18 August 2026. The Ministry has not announced the 2027/2028 plan or dates yet.",
+      detailsAr: "يبدأ التسجيل بعد انتهاء العام الدراسي لخريجي التعليم العام والخاص، وكان لحملة الشهادة البريطانية والبكالوريا الدولية تسجيل منفصل من 11 إلى 18 أغسطس 2026. ولم تعلن الوزارة خطة 2027/2028 ولا مواعيدها بعد.",
+      status: "confirmed", sourceLabel: "Ministry: Plan 2026/2027 conditions; Al-Rai, 11 August 2026 (British/IB registration)", sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "apply-how", topic: "scholarships",
+      questionEn: "How do I apply for the scholarship?",
+      questionAr: "كيف أقدّم على البعثة؟",
+      answerEn: "Online, on the Ministry's registration system: log in with your Civil ID and confirm with the Hawiyati (Kuwait Mobile ID) app.",
+      answerAr: "إلكترونياً عبر نظام التسجيل في موقع الوزارة: ادخل بالرقم المدني وصادق عبر تطبيق هويتي.",
+      detailsEn: "Enter your details, your choices and your documents, then send the application after confirming in Hawiyati. Applications with missing information or documents are excluded.",
+      detailsAr: "أدخل بياناتك ورغباتك ومستنداتك، ثم أرسل الطلب بعد المصادقة عبر هويتي. وتُستبعد الطلبات الناقصة البيانات أو المستندات.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "apply-documents", topic: "scholarships",
+      questionEn: "What documents do I need to apply for the scholarship?",
+      questionAr: "ما المستندات المطلوبة للتقديم على البعثة؟",
+      answerEn: "Your final high school transcript, your IELTS or TOEFL result, and copies of your Civil ID, your guardian's Civil ID and your passport.",
+      answerAr: "كشف درجات الثانوية النهائي المعتمد، ونتيجة الآيلتس أو التوفل، ونسخة من بطاقتك المدنية والبطاقة المدنية لولي الأمر وجواز سفرك.",
+      detailsEn: "Graduates of foreign (international) schools also need an equivalency letter from the Ministry of Education's Private Education Department. Saudi high school graduates add their Qudrat and Tahsili certificates.",
+      detailsAr: "ويحتاج خريجو المدارس الأجنبية إلى إفادة معادلة من إدارة التعليم الخاص بوزارة التربية، ويضيف حملة الثانوية السعودية شهادتي القدرات والتحصيلي.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "apply-who", topic: "scholarships",
+      questionEn: "Who can apply for a scholarship abroad?",
+      questionAr: "من يحق له التقديم على البعثة الخارجية؟",
+      answerEn: "Kuwaiti citizens aged 16 to 23, with a high school certificate from 2024/2025 or 2025/2026 and IELTS 5.5 or TOEFL 47 taken in Kuwait.",
+      answerAr: "الكويتيون من عمر 16 إلى 23 سنة، الحاصلون على الثانوية في 2024/2025 أو 2025/2026، مع آيلتس 5.5 أو توفل 47 من مركز داخل الكويت.",
+      detailsEn: "You must not already have a bachelor's degree, must not have had a scholarship that ended in dismissal or withdrawal after starting, cannot hold a scholarship and a grant at the same time, and must not work for a government body. If you already had a bachelor's scholarship inside Kuwait or a grant, you must first pay back what was spent on it.",
+      detailsAr: "ويُشترط ألا تكون حاصلاً على البكالوريوس، وألا تكون قد حصلت على بعثة انتهت بالفصل أو الانسحاب بعد الالتحاق، وألا تجمع بين بعثة ومنحة، وألا تكون موظفاً في جهة حكومية. وإذا سبق أن حصلت على بعثة داخلية أو منحة للبكالوريوس، فيجب أولاً استرداد ما صُرف عليك.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "apply-arts-stream", topic: "scholarships",
+      questionEn: "Can arts-stream students get a scholarship abroad?",
+      questionAr: "هل يحق لطلبة القسم الأدبي الحصول على بعثة خارجية؟",
+      answerEn: "Yes, but only in majors open to both streams; most majors in the 2026/2027 plan are for the science stream.",
+      answerAr: "نعم، لكن في التخصصات المتاحة للقسمين فقط، ومعظم تخصصات خطة 2026/2027 للقسم العلمي.",
+      detailsEn: "Use \"Check my score\" and choose the arts stream to see which majors accept you.",
+      detailsAr: "استخدم صفحة \"تحقق من نسبتي\" واختر القسم الأدبي لترى التخصصات المتاحة لك.",
+      status: "confirmed", sourceLabel: "Ministry: majors and minimum percentages 2026/2027 (PDF)", sourceUrl: "https://www.mohe.edu.kw/site/assets/images/Uploads/202661485330.pdf"
+    },
+    {
+      id: "apply-results", topic: "scholarships",
+      questionEn: "When are scholarship results announced?",
+      questionAr: "متى تُعلن نتائج البعثات؟",
+      answerEn: "After registration closes. For 2026/2027 the Ministry announced the results on 11 July 2026 and accepted 2,704 students.",
+      answerAr: "بعد إغلاق التسجيل. ففي خطة 2026/2027 أعلنت الوزارة النتائج في 11 يوليو 2026 وقُبل 2,704 طلاب وطالبات.",
+      detailsEn: "British and IB certificate holders, who registered separately, got their results on 20 August 2026 (33 accepted). Students list up to 8 choices. Medicine and engineering are ranked by the equivalent average, and other majors by the high school %. After acceptance, the guardian approves the pledge and medical form in the Sahel app.",
+      detailsAr: "وأُعلنت نتائج حملة الشهادة البريطانية والبكالوريا الدولية، الذين سجلوا بشكل منفصل، في 20 أغسطس 2026 (قُبل 33 طالباً وطالبة). يختار الطالب حتى 8 رغبات، ويُرتب المتقدمون للطب والهندسة حسب المعدل المكافئ، وبقية التخصصات حسب نسبة الثانوية. وبعد القبول يصادق ولي الأمر على التعهد ونموذج الفحص الطبي عبر تطبيق سهل.",
+      status: "confirmed", sourceLabel: "Al-Jarida, 11 July 2026 (Ministry results announcement); Al-Rai, 20 August 2026 (British/IB results)", sourceUrl: "https://www.aljarida.com/article/137333"
+    },
+    {
+      id: "apply-choices", topic: "scholarships",
+      questionEn: "How many choices can I list, and can I choose my university?",
+      questionAr: "كم رغبة يمكنني اختيارها؟ وهل أختار جامعتي؟",
+      answerEn: "You list up to 8 choices of major and country. You then apply to universities yourself; the Ministry only pays for universities and programmes NBAQ recommends.",
+      answerAr: "تختار حتى 8 رغبات من التخصص والدولة، ثم تقدّم بنفسك على الجامعات، ولا تتكفل الوزارة إلا بالجامعات والبرامج الموصى بها من الجهاز الوطني للاعتماد.",
+      detailsEn: "Your admission is then certified through the Kuwait cultural office for the country you study in.",
+      detailsAr: "ثم يُصدّق قبولك عن طريق المكتب الثقافي في بلد الدراسة.",
+      status: "confirmed", sourceLabel: "Al-Jarida, 11 July 2026 (Ministry results announcement)", sourceUrl: "https://www.aljarida.com/article/137333"
+    },
+    {
+      id: "merit-what", topic: "scholarships",
+      questionEn: "What is the merit programme?",
+      questionAr: "ما هو برنامج البعثات المتميزة؟",
+      answerEn: "A scholarship for students accepted at a university on the merit list, with 50% more monthly allowance after the preparatory stage.",
+      answerAr: "بعثة للطلبة المقبولين في جامعة من قائمة التميز، مع زيادة 50% في المخصص الشهري بعد المرحلة التمهيدية.",
+      detailsEn: "You need 95% for medicine, dentistry and pharmacy; for other majors the Ministry's merit guide says 90% {{unconfirmed}}. Applications for 2026/2027 are open until 24 February 2027. The merit lists are on NBAQ's website.",
+      detailsAr: "تحتاج إلى 95% للطب وطب الأسنان والصيدلة، ولبقية التخصصات يذكر دليل التميز 90% {{unconfirmed}}. والتقديم لعام 2026/2027 مفتوح حتى 24 فبراير 2027، وقوائم التميز في موقع الجهاز الوطني للاعتماد.",
+      status: "confirmed", sourceLabel: "Ministry: merit programme 2026/2027", sourceUrl: "https://www.mohe.edu.kw/site/AR/eServices/ServiceDetails/6?PageID=3"
+    },
+    {
+      id: "tuition-paid", topic: "scholarships",
+      questionEn: "Does the scholarship pay my tuition fees?",
+      questionAr: "هل تدفع البعثة رسومي الدراسية؟",
+      answerEn: "Yes. The Ministry pays your tuition directly to the university, and you also get a monthly allowance to live on.",
+      answerAr: "نعم. تدفع الوزارة رسومك الدراسية للجامعة مباشرة، وتحصل أيضاً على مخصص شهري للمعيشة.",
+      detailsEn: "On top of the monthly allowance there are yearly amounts for books, equipment, clothing and clinical training, which depend on the country and major.",
+      detailsAr: "وفوق المخصص الشهري تُصرف مبالغ سنوية للكتب والأدوات والملابس والتدريب السريري، وتختلف حسب الدولة والتخصص.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "housing-paid", topic: "scholarships",
+      questionEn: "Does the Ministry pay for my housing?",
+      questionAr: "هل تدفع الوزارة إيجار سكني؟",
+      answerEn: "There is no separate housing payment: the Ministry's allowance table has no housing item, so rent comes from your monthly allowance.",
+      answerAr: "لا يوجد بدل سكن مستقل في جدول مخصصات الوزارة، فيُدفع الإيجار من المخصص الشهري.",
+      detailsEn: "The table lists the monthly allowance, a pre-travel allowance, and yearly amounts for books, equipment, clothing and clinical training.",
+      detailsAr: "يتضمن الجدول المخصص الشهري ومخصصات ما قبل السفر ومبالغ سنوية للكتب والأدوات والملابس والتدريب السريري.",
+      status: "confirmed", sourceLabel: PLAN_PAGE.label, sourceUrl: PLAN_PAGE.url
+    },
+    {
+      id: "qudrat-what", topic: "scholarships",
+      questionEn: "What is Qudrat?",
+      questionAr: "ما هي اختبارات القدرات؟",
+      answerEn: "Kuwait University's academic aptitude tests in Math, English and Arabic, also called the Unified National Test.",
+      answerAr: "اختبارات القدرات الأكاديمية في جامعة الكويت في الرياضيات والإنجليزي والعربي، وتُسمى أيضاً الاختبار الوطني الموحد.",
+      detailsEn: "You need them for most Kuwait University colleges, for Abdullah Al-Salem University, and for medicine, dentistry, veterinary medicine, pharmacy and engineering scholarships.",
+      detailsAr: "وتحتاجها لمعظم كليات جامعة الكويت، ولجامعة عبدالله السالم، وللبعثات في الطب وطب الأسنان والطب البيطري والصيدلة والهندسة.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-good-score", topic: "scholarships",
+      questionEn: "What is a good Qudrat score?",
+      questionAr: "ما الدرجة الجيدة في القدرات؟",
+      answerEn: "The passing score is 60% in English and 50% in Math and Arabic, but colleges compare your equivalent average, so a higher score helps.",
+      answerAr: "درجة النجاح 60% في الإنجليزي و50% في الرياضيات والعربي، لكن الكليات تقارن معدلك المكافئ، فكلما ارتفعت درجتك كان أفضل.",
+      detailsEn: "Use \"Check my score\" to see your equivalent average next to last year's lowest admitted for each Kuwait University college.",
+      detailsAr: "استخدم صفحة \"تحقق من نسبتي\" لترى معدلك المكافئ مقارنة بأدنى معدل مقبول في كل كلية بجامعة الكويت العام الماضي.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "not-accepted", topic: "scholarships",
+      questionEn: "What can I do if I am not accepted for a scholarship?",
+      questionAr: "ماذا أفعل إذا لم أُقبل في البعثة؟",
+      answerEn: "You can still apply to the merit programme (until 24 February 2027) or study in Kuwait: Kuwait University, AASU or a PUC internal scholarship.",
+      answerAr: "يمكنك التقديم على برنامج التميز (حتى 24 فبراير 2027) أو الدراسة في الكويت: جامعة الكويت أو جامعة عبدالله السالم أو بعثة داخلية من مجلس الجامعات الخاصة.",
+      detailsEn: "In 2025 the Ministry opened a one-week appeals window by email right after the results (7 to 12 July 2025). We found no such announcement for 2026/2027.",
+      detailsAr: "وفي 2025 فتحت الوزارة باب التظلم عبر البريد الإلكتروني لمدة أسبوع بعد النتائج مباشرة (من 7 إلى 12 يوليو 2025)، ولم نجد إعلاناً مماثلاً لخطة 2026/2027.",
+      status: "confirmed", sourceLabel: "Al-Jarida: appeals for the 2025-2026 plan", sourceUrl: "https://www.aljarida.com/article/102705"
+    },
     {
       id: "register-early-no-advantage", topic: "scholarships",
       questionEn: "If I register on the first day, do I have a better chance?",
@@ -253,29 +255,29 @@ const CLARIFICATIONS = {
       status: "confirmed", sourceLabel: DECREE_197.label, sourceUrl: DECREE_197.url
     },
 
-    {
-      id: "how-register-scholarship", topic: "scholarships",
-      questionEn: "How do I register for the Ministry's scholarship plan, and where are the majors and percentages?",
-      questionAr: "كيف أسجل في خطة بعثات الوزارة؟ وأين أجد التخصصات والنسب؟",
-      answerEn: "When the plan is announced: go to mohe.edu.kw, choose E-services, then scholarship registration, then the plan you want. The majors, minimum percentages and conditions are in the same E-services section. You can also check them on this site's search.",
-      answerAr: "عند إعلان الخطة: ادخل إلى mohe.edu.kw واختر الخدمات الإلكترونية ثم التسجيل في البعثات ثم الخطة المطلوبة. وتجد التخصصات ونسب القبول والشروط في خانة الخدمات الإلكترونية نفسها، ويمكنك أيضاً البحث عنها في هذا الموقع.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
-    },
-    {
-      id: "certify-university-admission", topic: "scholarships",
-      questionEn: "How do I get my university admission certified?",
-      questionAr: "كيف أصدّق قبولي الجامعي؟",
-      answerEn: "Open an account on the website of the Kuwait cultural office for the country you will study in, and upload all the required documents there.",
-      answerAr: "افتح حساباً في الموقع الإلكتروني للمكتب الثقافي التابع لبلد الدراسة، وأرفق جميع المستندات المطلوبة.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
-    },
-    {
-      id: "self-funded-join", topic: "scholarships",
-      questionEn: "I study abroad at my own expense. Can I join the Ministry scholarship?",
-      questionAr: "أدرس على نفقتي الخاصة، هل يمكنني الضم لبعثة الوزارة؟",
-      answerEn: "Possibly. The Ministry's FAQ says the conditions for joining (for self-funded students and applied-college diploma holders) are in Article 10 of the scholarship regulation, under Ministerial decisions on mohe.edu.kw.",
-      answerAr: "ربما. تذكر الأسئلة الشائعة للوزارة أن شروط الضم للطلبة الدارسين على نفقتهم الخاصة وحملة دبلوم الكليات التطبيقية موجودة في المادة (10) من لائحة البعثات، في خانة القرارات الوزارية بموقع الوزارة.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    {
+      id: "how-register-scholarship", topic: "scholarships",
+      questionEn: "How do I register for the Ministry's scholarship plan, and where are the majors and percentages?",
+      questionAr: "كيف أسجل في خطة بعثات الوزارة؟ وأين أجد التخصصات والنسب؟",
+      answerEn: "When the plan is announced: go to mohe.edu.kw, choose E-services, then scholarship registration, then the plan you want. The majors, minimum percentages and conditions are in the same E-services section. You can also check them on this site's search.",
+      answerAr: "عند إعلان الخطة: ادخل إلى mohe.edu.kw واختر الخدمات الإلكترونية ثم التسجيل في البعثات ثم الخطة المطلوبة. وتجد التخصصات ونسب القبول والشروط في خانة الخدمات الإلكترونية نفسها، ويمكنك أيضاً البحث عنها في هذا الموقع.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    },
+    {
+      id: "certify-university-admission", topic: "scholarships",
+      questionEn: "How do I get my university admission certified?",
+      questionAr: "كيف أصدّق قبولي الجامعي؟",
+      answerEn: "Open an account on the website of the Kuwait cultural office for the country you will study in, and upload all the required documents there.",
+      answerAr: "افتح حساباً في الموقع الإلكتروني للمكتب الثقافي التابع لبلد الدراسة، وأرفق جميع المستندات المطلوبة.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    },
+    {
+      id: "self-funded-join", topic: "scholarships",
+      questionEn: "I study abroad at my own expense. Can I join the Ministry scholarship?",
+      questionAr: "أدرس على نفقتي الخاصة، هل يمكنني الضم لبعثة الوزارة؟",
+      answerEn: "Possibly. The Ministry's FAQ says the conditions for joining (for self-funded students and applied-college diploma holders) are in Article 10 of the scholarship regulation, under Ministerial decisions on mohe.edu.kw.",
+      answerAr: "ربما. تذكر الأسئلة الشائعة للوزارة أن شروط الضم للطلبة الدارسين على نفقتهم الخاصة وحملة دبلوم الكليات التطبيقية موجودة في المادة (10) من لائحة البعثات، في خانة القرارات الوزارية بموقع الوزارة.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
     },
 
     // ---------------- English tests ----------------
@@ -330,189 +332,189 @@ const CLARIFICATIONS = {
       status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
     },
 
-    {
-      id: "qudrat-same-as-national-test", topic: "qudrat",
-      questionEn: "Is the Unified National Test the same as Qudrat?",
-      questionAr: "هل الاختبار الوطني الموحد هو نفسه اختبار القدرات؟",
-      answerEn: "Yes. The Unified National Test is the Academic Aptitude Test (Qudrat).",
-      answerAr: "نعم. الاختبار الوطني الموحد هو اختبار القدرات الأكاديمية.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-who-can-take", topic: "qudrat",
-      questionEn: "Who can take Qudrat? Can international-school students take it?",
-      questionAr: "من يحق له دخول اختبار القدرات؟ وهل يحق لطلبة المدارس الأجنبية؟",
-      answerEn: "Grade 12 students (or the equivalent) and high school graduates who want Kuwait University, Abdullah Al Salem University, or a medicine or engineering scholarship (inside or outside Kuwait). International-school students can take it too. Students already enrolled at Kuwait University cannot, except the French test for those who want to major in French.",
-      answerAr: "طلبة الصف الثاني عشر أو ما يعادله وخريجو الثانوية الراغبون في جامعة الكويت أو جامعة عبدالله السالم أو التخصصات الطبية والهندسية في البعثات الداخلية والخارجية. ويحق لطلبة المدارس الأجنبية التقديم. ولا يحق للطالب المقيد في جامعة الكويت التسجيل، إلا في اختبار اللغة الفرنسية لمن يرغب في التخصص فيها.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-pass-mark", topic: "qudrat",
-      questionEn: "What is the passing score in Qudrat?",
-      questionAr: "ما هي نسبة النجاح في اختبارات القدرات؟",
-      answerEn: "60% in the English test. 50% in the Math, Arabic, French and Chemistry tests.",
-      answerAr: "60% في اختبار اللغة الإنجليزية، و50% في اختبارات الرياضيات واللغة العربية واللغة الفرنسية والكيمياء.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-subjects", topic: "qudrat",
-      questionEn: "Which Qudrat tests can I register for?",
-      questionAr: "ما هي اختبارات القدرات المتاحة للتسجيل؟",
-      answerEn: "Math, English and Arabic. French is offered twice a year. Chemistry is only a placement test for students already admitted to Kuwait University programmes that need it.",
-      answerAr: "الرياضيات واللغة الإنجليزية واللغة العربية، واللغة الفرنسية مرتين في السنة. أما الكيمياء فهي اختبار تحديد مستوى فقط للطلبة المقبولين في جامعة الكويت في تخصصات تتطلبه.",
-      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
-    },
-    {
-      id: "qudrat-equivalent-average", topic: "qudrat",
-      questionEn: "What is the equivalent average, and how is it calculated?",
-      questionAr: "ما هو المعدل المكافئ وكيف يُحسب؟",
-      answerEn: "It is your high school percentage combined with your Qudrat scores. Each college uses its own weights. Example from Kuwait University's guide, College of Medicine: 75% of the school grade + 15% of English + 10% of Math. A student with 98% at school, 90% in English and 80% in Math gets 73.5 + 13.5 + 8 = 95%.",
-      answerAr: "هو نسبة الثانوية مضافاً إليها نتائج اختبارات القدرات، ولكل كلية أوزانها. مثال من دليل جامعة الكويت لكلية الطب: 75% من نسبة الثانوية + 15% من اختبار الإنجليزي + 10% من اختبار الرياضيات. طالب نسبته 98% وحصل على 90% في الإنجليزي و80% في الرياضيات: 73.5 + 13.5 + 8 = 95%.",
-      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
-    },
-    {
-      id: "qudrat-samples", topic: "qudrat",
-      questionEn: "Are there sample tests or past papers for Qudrat?",
-      questionAr: "هل توجد نماذج لاختبارات القدرات السابقة؟",
-      answerEn: "Yes. Kuwait University posts the topics and sample tests for Math, English and Arabic in the \"Test Samples\" section of its Evaluation and Measurement website (cem.ku.edu.kw).",
-      answerAr: "نعم. تنشر جامعة الكويت موضوعات الاختبارات ونماذج سابقة للرياضيات والإنجليزي والعربي في قسم \"نماذج اختبارات\" بموقع مكتب التقييم والقياس (cem.ku.edu.kw).",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-courses", topic: "qudrat",
-      questionEn: "Does Kuwait University run Qudrat prep courses?",
-      questionAr: "هل تقدم جامعة الكويت دورات لاختبارات القدرات؟",
-      answerEn: "The Qudrat testing office itself does not run training courses. Kuwait University does announce separate paid prep rounds from time to time; the latest are on the Qudrat page.",
-      answerAr: "مكتب التقييم والقياس نفسه لا يقدم دورات للاختبارات، لكن جامعة الكويت تعلن أحياناً عن دورات تقوية منفصلة برسوم، وتجد آخرها في صفحة القدرات.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-how-register", topic: "qudrat-register",
-      questionEn: "How do I register for Qudrat?",
-      questionAr: "كيف أسجل في اختبار القدرات؟",
-      answerEn: "On Kuwait University's Qudrat portal: log in with your full Civil ID number as the username and its last 5 digits as the password. Check your details (phone, email, school), choose your tests, the Math test language and a date with free seats, accept the rules, then pay by K-Net. After \"Payment Successful\", print your admission ticket. If you see \"No Compatible Tests\", try another date.",
-      answerAr: "عبر بوابة القدرات في جامعة الكويت: ادخل بالرقم المدني كاملاً كاسم مستخدم وآخر 5 أرقام منه ككلمة سر، وتأكد من بياناتك (الهاتف والبريد والمدرسة)، ثم اختر الاختبارات ولغة اختبار الرياضيات وتاريخاً فيه مقاعد، ووافق على الضوابط وادفع عبر كي-نت. بعد ظهور \"تمت عملية الدفع\" اطبع بطاقة الدخول. وإذا ظهرت \"لا توجد اختبارات متوافقة\" جرّب تاريخاً آخر.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-fee-refund", topic: "qudrat-register",
-      questionEn: "How much is Qudrat, and can I cancel and get a refund?",
-      questionAr: "كم رسوم القدرات؟ وهل يمكنني الإلغاء واسترجاع المبلغ؟",
-      answerEn: "10 KWD per test, paid by K-Net only. Once you have paid, you cannot cancel and the fee is not refunded.",
-      answerAr: "10 د.ك لكل اختبار، تُدفع عبر كي-نت فقط. وبعد الدفع لا يمكن إلغاء التسجيل ولا تُسترجع الرسوم.",
-      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
-    },
-    {
-      id: "qudrat-registration-complete", topic: "qudrat-register",
-      questionEn: "How do I know my Qudrat registration is complete?",
-      questionAr: "كيف أعرف أن تسجيلي في القدرات اكتمل؟",
-      answerEn: "When the \"Payment Successful\" page appears. Click \"Continue Registration\" to see your admission ticket, or log in again later to print it.",
-      answerAr: "عند ظهور صفحة \"تمت عملية الدفع\". اضغط \"استكمال عملية التسجيل\" لتظهر بطاقة الدخول، أو ادخل لاحقاً لطباعتها.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-change-language", topic: "qudrat-register",
-      questionEn: "How do I change the language of my Math test?",
-      questionAr: "كيف أغيّر لغة اختبار الرياضيات؟",
-      answerEn: "During the registration period: log in to your account, click \"Edit\", then \"Change Test Language\". Registration for each test closes 10 days before it, so that is your last day to change it.",
-      answerAr: "خلال فترة التسجيل: ادخل إلى حسابك واضغط \"تعديل\" ثم \"تغيير لغة الاختبار\". ويُغلق التسجيل لكل اختبار قبل موعده بعشرة أيام، وهذا آخر يوم للتغيير.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-change-details", topic: "qudrat-register",
-      questionEn: "What is the last day to change my Qudrat test details?",
-      questionAr: "ما هو آخر يوم لتعديل بيانات اختبار القدرات؟",
-      answerEn: "The day registration closes for your test: 10 days before the test date. Until then you can change the Math test language yourself (\"Edit\"). You cannot choose or change the test location. For wrong personal details, email cem.meas@ku.edu.kw or use the \"Help Me\" service. Kuwait University does not say whether you can move to another date after paying {{unconfirmed}}.",
-      answerAr: "يوم إغلاق التسجيل لاختبارك، أي قبل موعد الاختبار بعشرة أيام. وحتى ذلك اليوم يمكنك تغيير لغة اختبار الرياضيات بنفسك (\"تعديل\"). ولا يمكن اختيار مقر الاختبار أو تغييره. ولتصحيح البيانات الشخصية راسل cem.meas@ku.edu.kw أو استخدم \"خدمة ساعدني\". ولم توضح الجامعة إمكانية نقل الاختبار إلى تاريخ آخر بعد الدفع {{unconfirmed}}.",
-      status: "confirmed", sourceLabel: KU_DATES.label, sourceUrl: KU_DATES.url
-    },
-    {
-      id: "qudrat-wrong-info", topic: "qudrat-register",
-      questionEn: "I entered wrong information when I registered for Qudrat. What do I do?",
-      questionAr: "أدخلت بيانات خاطئة عند التسجيل في القدرات، ماذا أفعل؟",
-      answerEn: "Email the Evaluation and Measurement office at cem.meas@ku.edu.kw, or use the \"Help Me\" service on its website.",
-      answerAr: "راسل مكتب التقييم والقياس على cem.meas@ku.edu.kw أو استخدم \"خدمة ساعدني\" في موقعه.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-forgot-password", topic: "qudrat-register",
-      questionEn: "I forgot my Qudrat portal password. How do I get back in?",
-      questionAr: "نسيت كلمة السر لبوابة القدرات، كيف أدخل؟",
-      answerEn: "Click \"Forgot Password\", enter your Civil ID number and email, then click Reset to get a new password. To update your account details, click \"Create New User\" on the registration page and edit your information.",
-      answerAr: "اضغط \"نسيان كلمة السر\" وأدخل الرقم المدني والبريد الإلكتروني ثم اضغط استرجاع كلمة السر. ولتحديث بياناتك اضغط أيقونة \"إنشاء مستخدم جديد\" في صفحة التسجيل وعدّل بياناتك.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-dates-where", topic: "qudrat-register",
-      questionEn: "Where are Qudrat dates announced?",
-      questionAr: "أين يتم الإعلان عن مواعيد القدرات؟",
-      answerEn: "On the Evaluation and Measurement office's Instagram (@cemvpaa) and its dates page. Registration for each test closes 10 days before it. The next dates are on the Qudrat page.",
-      answerAr: "عبر حساب انستقرام مكتب التقييم والقياس (@cemvpaa) وصفحة المواعيد في موقعه. ويُغلق التسجيل لكل اختبار قبل موعده بعشرة أيام. وتجد المواعيد القادمة في صفحة القدرات.",
-      status: "confirmed", sourceLabel: KU_DATES.label, sourceUrl: KU_DATES.url
-    },
-    {
-      id: "qudrat-location", topic: "qudrat-register",
-      questionEn: "Where is my Qudrat test, and can I choose the place?",
-      questionAr: "أين مقر اختبار القدرات؟ وهل يمكنني اختياره؟",
-      answerEn: "Your admission ticket shows the date, time, building and room, with a map link to the building. You cannot choose or change the test location.",
-      answerAr: "تظهر في بطاقة الدخول تفاصيل الاختبار (التاريخ والوقت والمقر ورقم القاعة) مع رابط لموقع المبنى. ولا يمكن اختيار مقر الاختبار أو تغييره.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-arrive", topic: "qudrat-day",
-      questionEn: "When should I arrive for the Qudrat test?",
-      questionAr: "متى يجب أن أصل إلى مقر اختبار القدرات؟",
-      answerEn: "One hour before the test starts. Do not leave the room without the proctor's permission.",
-      answerAr: "قبل بدء الاختبار بساعة. ولا تغادر القاعة دون إذن المسؤول عنها.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-what-to-bring", topic: "qudrat-day",
-      questionEn: "What do I bring to Qudrat, and what is not allowed?",
-      questionAr: "ماذا أحضر لاختبار القدرات؟ وما الممنوع؟",
-      answerEn: "Bring an official ID with a recent photo (Civil ID, passport, driving licence or the Kuwait Mobile ID app) and your admission ticket. Only a pencil and an eraser are allowed in the room. All smart devices are banned (phone, watch, earphones, Wi-Fi devices), and it is best not to bring personal items.",
-      answerAr: "أحضر هوية رسمية أصلية بصورة حديثة (البطاقة المدنية أو جواز السفر أو رخصة القيادة أو تطبيق هويتي) وبطاقة دخول الاختبار. المسموح في القاعة قلم رصاص وممحاة فقط، وجميع الأجهزة الذكية ممنوعة (الهاتف والساعة والسماعة وجهاز الواي فاي)، ويفضّل عدم إحضار أغراض شخصية.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-late", topic: "qudrat-day",
-      questionEn: "What happens if I am late or miss my Qudrat test?",
-      questionAr: "ماذا يحدث إذا تأخرت أو غبت عن اختبار القدرات؟",
-      answerEn: "You will not be let in after the time on your admission ticket, and the test cannot be moved or retaken. The fee is not refunded.",
-      answerAr: "يُمنع دخول المتأخر بعد الموعد المحدد في بطاقة الدخول، ولا يمكن إعادة الاختبار أو تأجيله، ولا تُسترجع الرسوم.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-cheating", topic: "qudrat-day",
-      questionEn: "Can my Qudrat score be cancelled?",
-      questionAr: "هل يمكن إلغاء نتيجتي في القدرات؟",
-      answerEn: "Yes. Any case of cheating cancels the test score.",
-      answerAr: "نعم. جميع حالات الغش تؤدي إلى إلغاء نتيجة الاختبار.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-results-when", topic: "qudrat-results",
-      questionEn: "When are Qudrat results released?",
-      questionAr: "متى تصدر نتائج القدرات؟",
-      answerEn: "Within two weeks of the test date.",
-      answerAr: "خلال أسبوعين من تاريخ الاختبار.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-results-where", topic: "qudrat-results",
-      questionEn: "How do I see my Qudrat results?",
-      questionAr: "كيف أعرف نتيجتي في القدرات؟",
-      answerEn: "In the \"Test results\" section of Kuwait University's Evaluation and Measurement website, or in the Sahel app.",
-      answerAr: "عبر قسم \"نتائج الاختبارات\" في موقع مكتب التقييم والقياس بجامعة الكويت، أو عبر تطبيق سهل.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
-    },
-    {
-      id: "qudrat-appeal", topic: "qudrat-results",
-      questionEn: "Can I appeal my Qudrat score?",
-      questionAr: "هل يمكنني التظلم على نتيجتي في القدرات؟",
-      answerEn: "Yes, but only within one week after the results are published.",
-      answerAr: "نعم، ويفتح باب التظلمات بعد إعلان النتائج لمدة أسبوع واحد فقط.",
-      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    {
+      id: "qudrat-same-as-national-test", topic: "qudrat",
+      questionEn: "Is the Unified National Test the same as Qudrat?",
+      questionAr: "هل الاختبار الوطني الموحد هو نفسه اختبار القدرات؟",
+      answerEn: "Yes. The Unified National Test is the Academic Aptitude Test (Qudrat).",
+      answerAr: "نعم. الاختبار الوطني الموحد هو اختبار القدرات الأكاديمية.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-who-can-take", topic: "qudrat",
+      questionEn: "Who can take Qudrat? Can international-school students take it?",
+      questionAr: "من يحق له دخول اختبار القدرات؟ وهل يحق لطلبة المدارس الأجنبية؟",
+      answerEn: "Grade 12 students (or the equivalent) and high school graduates who want Kuwait University, Abdullah Al Salem University, or a medicine or engineering scholarship (inside or outside Kuwait). International-school students can take it too. Students already enrolled at Kuwait University cannot, except the French test for those who want to major in French.",
+      answerAr: "طلبة الصف الثاني عشر أو ما يعادله وخريجو الثانوية الراغبون في جامعة الكويت أو جامعة عبدالله السالم أو التخصصات الطبية والهندسية في البعثات الداخلية والخارجية. ويحق لطلبة المدارس الأجنبية التقديم. ولا يحق للطالب المقيد في جامعة الكويت التسجيل، إلا في اختبار اللغة الفرنسية لمن يرغب في التخصص فيها.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-pass-mark", topic: "qudrat",
+      questionEn: "What is the passing score in Qudrat?",
+      questionAr: "ما هي نسبة النجاح في اختبارات القدرات؟",
+      answerEn: "60% in the English test. 50% in the Math, Arabic, French and Chemistry tests.",
+      answerAr: "60% في اختبار اللغة الإنجليزية، و50% في اختبارات الرياضيات واللغة العربية واللغة الفرنسية والكيمياء.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-subjects", topic: "qudrat",
+      questionEn: "Which Qudrat tests can I register for?",
+      questionAr: "ما هي اختبارات القدرات المتاحة للتسجيل؟",
+      answerEn: "Math, English and Arabic. French is offered twice a year. Chemistry is only a placement test for students already admitted to Kuwait University programmes that need it.",
+      answerAr: "الرياضيات واللغة الإنجليزية واللغة العربية، واللغة الفرنسية مرتين في السنة. أما الكيمياء فهي اختبار تحديد مستوى فقط للطلبة المقبولين في جامعة الكويت في تخصصات تتطلبه.",
+      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
+    },
+    {
+      id: "qudrat-equivalent-average", topic: "qudrat",
+      questionEn: "What is the equivalent average, and how is it calculated?",
+      questionAr: "ما هو المعدل المكافئ وكيف يُحسب؟",
+      answerEn: "It is your high school percentage combined with your Qudrat scores. Each college uses its own weights. Example from Kuwait University's guide, College of Medicine: 75% of the school grade + 15% of English + 10% of Math. A student with 98% at school, 90% in English and 80% in Math gets 73.5 + 13.5 + 8 = 95%.",
+      answerAr: "هو نسبة الثانوية مضافاً إليها نتائج اختبارات القدرات، ولكل كلية أوزانها. مثال من دليل جامعة الكويت لكلية الطب: 75% من نسبة الثانوية + 15% من اختبار الإنجليزي + 10% من اختبار الرياضيات. طالب نسبته 98% وحصل على 90% في الإنجليزي و80% في الرياضيات: 73.5 + 13.5 + 8 = 95%.",
+      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
+    },
+    {
+      id: "qudrat-samples", topic: "qudrat",
+      questionEn: "Are there sample tests or past papers for Qudrat?",
+      questionAr: "هل توجد نماذج لاختبارات القدرات السابقة؟",
+      answerEn: "Yes. Kuwait University posts the topics and sample tests for Math, English and Arabic in the \"Test Samples\" section of its Evaluation and Measurement website (cem.ku.edu.kw).",
+      answerAr: "نعم. تنشر جامعة الكويت موضوعات الاختبارات ونماذج سابقة للرياضيات والإنجليزي والعربي في قسم \"نماذج اختبارات\" بموقع مكتب التقييم والقياس (cem.ku.edu.kw).",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-courses", topic: "qudrat",
+      questionEn: "Does Kuwait University run Qudrat prep courses?",
+      questionAr: "هل تقدم جامعة الكويت دورات لاختبارات القدرات؟",
+      answerEn: "The Qudrat testing office itself does not run training courses. Kuwait University does announce separate paid prep rounds from time to time; the latest are on the Qudrat page.",
+      answerAr: "مكتب التقييم والقياس نفسه لا يقدم دورات للاختبارات، لكن جامعة الكويت تعلن أحياناً عن دورات تقوية منفصلة برسوم، وتجد آخرها في صفحة القدرات.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-how-register", topic: "qudrat-register",
+      questionEn: "How do I register for Qudrat?",
+      questionAr: "كيف أسجل في اختبار القدرات؟",
+      answerEn: "On Kuwait University's Qudrat portal: log in with your full Civil ID number as the username and its last 5 digits as the password. Check your details (phone, email, school), choose your tests, the Math test language and a date with free seats, accept the rules, then pay by K-Net. After \"Payment Successful\", print your admission ticket. If you see \"No Compatible Tests\", try another date.",
+      answerAr: "عبر بوابة القدرات في جامعة الكويت: ادخل بالرقم المدني كاملاً كاسم مستخدم وآخر 5 أرقام منه ككلمة سر، وتأكد من بياناتك (الهاتف والبريد والمدرسة)، ثم اختر الاختبارات ولغة اختبار الرياضيات وتاريخاً فيه مقاعد، ووافق على الضوابط وادفع عبر كي-نت. بعد ظهور \"تمت عملية الدفع\" اطبع بطاقة الدخول. وإذا ظهرت \"لا توجد اختبارات متوافقة\" جرّب تاريخاً آخر.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-fee-refund", topic: "qudrat-register",
+      questionEn: "How much is Qudrat, and can I cancel and get a refund?",
+      questionAr: "كم رسوم القدرات؟ وهل يمكنني الإلغاء واسترجاع المبلغ؟",
+      answerEn: "10 KWD per test, paid by K-Net only. Once you have paid, you cannot cancel and the fee is not refunded.",
+      answerAr: "10 د.ك لكل اختبار، تُدفع عبر كي-نت فقط. وبعد الدفع لا يمكن إلغاء التسجيل ولا تُسترجع الرسوم.",
+      status: "confirmed", sourceLabel: KU_GUIDE.label, sourceUrl: KU_GUIDE.url
+    },
+    {
+      id: "qudrat-registration-complete", topic: "qudrat-register",
+      questionEn: "How do I know my Qudrat registration is complete?",
+      questionAr: "كيف أعرف أن تسجيلي في القدرات اكتمل؟",
+      answerEn: "When the \"Payment Successful\" page appears. Click \"Continue Registration\" to see your admission ticket, or log in again later to print it.",
+      answerAr: "عند ظهور صفحة \"تمت عملية الدفع\". اضغط \"استكمال عملية التسجيل\" لتظهر بطاقة الدخول، أو ادخل لاحقاً لطباعتها.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-change-language", topic: "qudrat-register",
+      questionEn: "How do I change the language of my Math test?",
+      questionAr: "كيف أغيّر لغة اختبار الرياضيات؟",
+      answerEn: "During the registration period: log in to your account, click \"Edit\", then \"Change Test Language\". Registration for each test closes 10 days before it, so that is your last day to change it.",
+      answerAr: "خلال فترة التسجيل: ادخل إلى حسابك واضغط \"تعديل\" ثم \"تغيير لغة الاختبار\". ويُغلق التسجيل لكل اختبار قبل موعده بعشرة أيام، وهذا آخر يوم للتغيير.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-change-details", topic: "qudrat-register",
+      questionEn: "What is the last day to change my Qudrat test details?",
+      questionAr: "ما هو آخر يوم لتعديل بيانات اختبار القدرات؟",
+      answerEn: "The day registration closes for your test: 10 days before the test date. Until then you can change the Math test language yourself (\"Edit\"). You cannot choose or change the test location. For wrong personal details, email cem.meas@ku.edu.kw or use the \"Help Me\" service. Kuwait University does not say whether you can move to another date after paying {{unconfirmed}}.",
+      answerAr: "يوم إغلاق التسجيل لاختبارك، أي قبل موعد الاختبار بعشرة أيام. وحتى ذلك اليوم يمكنك تغيير لغة اختبار الرياضيات بنفسك (\"تعديل\"). ولا يمكن اختيار مقر الاختبار أو تغييره. ولتصحيح البيانات الشخصية راسل cem.meas@ku.edu.kw أو استخدم \"خدمة ساعدني\". ولم توضح الجامعة إمكانية نقل الاختبار إلى تاريخ آخر بعد الدفع {{unconfirmed}}.",
+      status: "confirmed", sourceLabel: KU_DATES.label, sourceUrl: KU_DATES.url
+    },
+    {
+      id: "qudrat-wrong-info", topic: "qudrat-register",
+      questionEn: "I entered wrong information when I registered for Qudrat. What do I do?",
+      questionAr: "أدخلت بيانات خاطئة عند التسجيل في القدرات، ماذا أفعل؟",
+      answerEn: "Email the Evaluation and Measurement office at cem.meas@ku.edu.kw, or use the \"Help Me\" service on its website.",
+      answerAr: "راسل مكتب التقييم والقياس على cem.meas@ku.edu.kw أو استخدم \"خدمة ساعدني\" في موقعه.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-forgot-password", topic: "qudrat-register",
+      questionEn: "I forgot my Qudrat portal password. How do I get back in?",
+      questionAr: "نسيت كلمة السر لبوابة القدرات، كيف أدخل؟",
+      answerEn: "Click \"Forgot Password\", enter your Civil ID number and email, then click Reset to get a new password. To update your account details, click \"Create New User\" on the registration page and edit your information.",
+      answerAr: "اضغط \"نسيان كلمة السر\" وأدخل الرقم المدني والبريد الإلكتروني ثم اضغط استرجاع كلمة السر. ولتحديث بياناتك اضغط أيقونة \"إنشاء مستخدم جديد\" في صفحة التسجيل وعدّل بياناتك.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-dates-where", topic: "qudrat-register",
+      questionEn: "Where are Qudrat dates announced?",
+      questionAr: "أين يتم الإعلان عن مواعيد القدرات؟",
+      answerEn: "On the Evaluation and Measurement office's Instagram (@cemvpaa) and its dates page. Registration for each test closes 10 days before it. The next dates are on the Qudrat page.",
+      answerAr: "عبر حساب انستقرام مكتب التقييم والقياس (@cemvpaa) وصفحة المواعيد في موقعه. ويُغلق التسجيل لكل اختبار قبل موعده بعشرة أيام. وتجد المواعيد القادمة في صفحة القدرات.",
+      status: "confirmed", sourceLabel: KU_DATES.label, sourceUrl: KU_DATES.url
+    },
+    {
+      id: "qudrat-location", topic: "qudrat-register",
+      questionEn: "Where is my Qudrat test, and can I choose the place?",
+      questionAr: "أين مقر اختبار القدرات؟ وهل يمكنني اختياره؟",
+      answerEn: "Your admission ticket shows the date, time, building and room, with a map link to the building. You cannot choose or change the test location.",
+      answerAr: "تظهر في بطاقة الدخول تفاصيل الاختبار (التاريخ والوقت والمقر ورقم القاعة) مع رابط لموقع المبنى. ولا يمكن اختيار مقر الاختبار أو تغييره.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-arrive", topic: "qudrat-day",
+      questionEn: "When should I arrive for the Qudrat test?",
+      questionAr: "متى يجب أن أصل إلى مقر اختبار القدرات؟",
+      answerEn: "One hour before the test starts. Do not leave the room without the proctor's permission.",
+      answerAr: "قبل بدء الاختبار بساعة. ولا تغادر القاعة دون إذن المسؤول عنها.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-what-to-bring", topic: "qudrat-day",
+      questionEn: "What do I bring to Qudrat, and what is not allowed?",
+      questionAr: "ماذا أحضر لاختبار القدرات؟ وما الممنوع؟",
+      answerEn: "Bring an official ID with a recent photo (Civil ID, passport, driving licence or the Kuwait Mobile ID app) and your admission ticket. Only a pencil and an eraser are allowed in the room. All smart devices are banned (phone, watch, earphones, Wi-Fi devices), and it is best not to bring personal items.",
+      answerAr: "أحضر هوية رسمية أصلية بصورة حديثة (البطاقة المدنية أو جواز السفر أو رخصة القيادة أو تطبيق هويتي) وبطاقة دخول الاختبار. المسموح في القاعة قلم رصاص وممحاة فقط، وجميع الأجهزة الذكية ممنوعة (الهاتف والساعة والسماعة وجهاز الواي فاي)، ويفضّل عدم إحضار أغراض شخصية.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-late", topic: "qudrat-day",
+      questionEn: "What happens if I am late or miss my Qudrat test?",
+      questionAr: "ماذا يحدث إذا تأخرت أو غبت عن اختبار القدرات؟",
+      answerEn: "You will not be let in after the time on your admission ticket, and the test cannot be moved or retaken. The fee is not refunded.",
+      answerAr: "يُمنع دخول المتأخر بعد الموعد المحدد في بطاقة الدخول، ولا يمكن إعادة الاختبار أو تأجيله، ولا تُسترجع الرسوم.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-cheating", topic: "qudrat-day",
+      questionEn: "Can my Qudrat score be cancelled?",
+      questionAr: "هل يمكن إلغاء نتيجتي في القدرات؟",
+      answerEn: "Yes. Any case of cheating cancels the test score.",
+      answerAr: "نعم. جميع حالات الغش تؤدي إلى إلغاء نتيجة الاختبار.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-results-when", topic: "qudrat-results",
+      questionEn: "When are Qudrat results released?",
+      questionAr: "متى تصدر نتائج القدرات؟",
+      answerEn: "Within two weeks of the test date.",
+      answerAr: "خلال أسبوعين من تاريخ الاختبار.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-results-where", topic: "qudrat-results",
+      questionEn: "How do I see my Qudrat results?",
+      questionAr: "كيف أعرف نتيجتي في القدرات؟",
+      answerEn: "In the \"Test results\" section of Kuwait University's Evaluation and Measurement website, or in the Sahel app.",
+      answerAr: "عبر قسم \"نتائج الاختبارات\" في موقع مكتب التقييم والقياس بجامعة الكويت، أو عبر تطبيق سهل.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
+    },
+    {
+      id: "qudrat-appeal", topic: "qudrat-results",
+      questionEn: "Can I appeal my Qudrat score?",
+      questionAr: "هل يمكنني التظلم على نتيجتي في القدرات؟",
+      answerEn: "Yes, but only within one week after the results are published.",
+      answerAr: "نعم، ويفتح باب التظلمات بعد إعلان النتائج لمدة أسبوع واحد فقط.",
+      status: "confirmed", sourceLabel: KU_FAQ.label, sourceUrl: KU_FAQ.url
     },
 
     // ---------------- Merit ----------------
@@ -544,8 +546,8 @@ const CLARIFICATIONS = {
       id: "regular-to-merit", topic: "merit",
       questionEn: "I am on a regular scholarship. Can I switch to merit later?",
       questionAr: "بعثتي عادية، هل يمكنني التحول إلى التميز لاحقاً؟",
-      answerEn: "Yes. If you get an offer from a university or programme on the merit list, your scholarship becomes a merit scholarship from the second semester.",
-      answerAr: "نعم. إذا حصلت على قبول في جامعة أو برنامج من قائمة التميز، تتحول بعثتك إلى بعثة تميز من الفصل الثاني.",
+      answerEn: "Yes. If you get an offer from a university or programme on the merit list, your scholarship becomes a merit scholarship from the next semester.",
+      answerAr: "نعم. إذا حصلت على قبول في جامعة أو برنامج من قائمة التميز، تتحول بعثتك إلى بعثة تميز في الفصل التالي.",
       status: "confirmed", sourceLabel: DECREE_197.label, sourceUrl: DECREE_197.url
     },
 
@@ -718,9 +720,9 @@ const CLARIFICATIONS = {
       questionAr: "هل توجد أحكام خاصة، مثل المرافق، للطلبة من ذوي الإعاقة؟",
       answerEn: "The Ministry's regulation has no specific rule; a separate study-abroad scholarship is run by the Public Authority for Disability Affairs.",
       answerAr: "لا تتضمن لائحة الوزارة حكماً خاصاً؛ وتقدم الهيئة العامة لشؤون ذوي الإعاقة بعثة خارجية مستقلة.",
-      detailsEn: "The Authority's scholarship has its own conditions, such as a valid disability certificate from the Authority, at least 70% in secondary school, age up to 25, and a personal interview. We did not find companion rules for it. Ask the Authority directly.",
-      detailsAr: "لبعثة الهيئة شروطها الخاصة، مثل شهادة إثبات إعاقة سارية من الهيئة، ونسبة لا تقل عن 70% في الثانوية، وألا يزيد العمر عن 25 سنة، واجتياز مقابلة شخصية. ولم نجد أحكاماً بشأن المرافق، لذا يُنصح بمراجعة الهيئة مباشرة.",
-      status: "unconfirmed", sourceLabel: "Kuwait Government Online (e.gov.kw), PADA external scholarship service", sourceUrl: "https://e.gov.kw/sites/kgoarabic/Pages/Services/GODP/Scholerships.aspx"
+      detailsEn: "The Authority's scholarship has its own conditions, such as a valid disability certificate from the Authority, at least 70% in high school, age up to 25, and a personal interview. Once the Authority approves you, you register on the Ministry's website (\"PADA scholarships 2026/2027\" service) with the Authority's approval, your disability certificate, and TOEFL 45 or IELTS 5.5. We did not find companion rules for it. Ask the Authority directly.",
+      detailsAr: "لبعثة الهيئة شروطها الخاصة، مثل شهادة إثبات إعاقة سارية من الهيئة، ونسبة لا تقل عن 70% في الثانوية، وألا يزيد العمر عن 25 سنة، واجتياز مقابلة شخصية. وبعد موافقة الهيئة تسجّل في موقع وزارة التعليم العالي (خدمة \"بعثات الهيئة العامة لشؤون ذوي الإعاقة 2026/2027\") مع قرار موافقة الهيئة وشهادة إثبات الإعاقة ونتيجة توفل 45 أو آيلتس 5.5. ولم نجد أحكاماً بشأن المرافق، لذا يُنصح بمراجعة الهيئة مباشرة.",
+      status: "unconfirmed", sourceLabel: "Kuwait Government Online (e.gov.kw), PADA external scholarship service; Ministry: PADA scholarships 2026/2027 (mohe.edu.kw/site/ar/eServices/ServiceDetails/77)", sourceUrl: "https://e.gov.kw/sites/kgoarabic/Pages/Services/GODP/Scholerships.aspx"
     },
     {
       id: "medical-treatment-abroad", topic: "guardians",
@@ -740,7 +742,7 @@ const CLARIFICATIONS = {
       answerAr: "نعم في العطل الرسمية، بشرط إخطار المكتب الثقافي قبل المغادرة وتقديم موافقة الجامعة.",
       detailsEn: "Unexcused absence over 20% of classes, or over 14 days in a row, is deducted from the allowance (up to 25% a month); official holidays don't count. The regulation does not say the allowance stops during holidays. The UK office warns that leaving without approval may cancel the scholarship.",
       detailsAr: "يُخصم من المخصص عند الغياب دون عذر بما يزيد عن 20% أو أكثر من 14 يوماً متصلة (بنسبة لا تزيد عن 25% شهرياً)، وتُستثنى العطل الرسمية. ولا تنص اللائحة على وقف المخصص في العطل. ويحذر مكتب لندن من أن المغادرة دون موافقة قد تؤدي إلى إلغاء البعثة.",
-      status: "confirmed", sourceLabel: "Decree 197/2025, Articles 4(11) and 25 (item 11 of part two) (official copy on kcouk.org); Kuwait Cultural Office London FAQ", sourceUrl: "https://www.kcouk.org/faqs/"
+      status: "confirmed", sourceLabel: "Decree 197/2025, Articles 4(11) and 25 (section 11) (official copy on kcouk.org); Kuwait Cultural Office London FAQ", sourceUrl: "https://www.kcouk.org/faqs/"
     },
     {
       id: "discipline-and-appeals", topic: "guardians",
@@ -791,7 +793,7 @@ const CLARIFICATIONS = {
       answerAr: "27 وحدة سنوياً بنظام الفصلين، أو 42 وحدة بنظام الفصول الثلاثة، من ضمن الخطة الدراسية.",
       detailsEn: "Missing credits must be made up in summer. If the student neither finishes them nor registers in summer, the whole summer allowance is taken back, at 25% of the monthly allowance from the next year. The same applies to annual-system students who fail the year.",
       detailsAr: "على الطالب استكمال الوحدات الناقصة في فصل الصيف. وإذا لم يكملها ولم يسجل في الصيف، تُسترد منه مخصصات أشهر الصيف كاملة بخصم 25% شهرياً من العام التالي. ويطبق ذلك أيضاً على طالب النظام السنوي الذي لم ينجح في سنته.",
-      status: "confirmed", sourceLabel: "Decree 197/2025, Articles 5(2) and 25 (items 8 and 9 of part two) (official copy on kcouk.org)", sourceUrl: "https://www.kcouk.org/wp-content/uploads/2025/07/MOHE-Rules-Regulations-17-7-2025.pdf"
+      status: "confirmed", sourceLabel: "Decree 197/2025, Articles 5(2) and 25 (sections 8 and 9) (official copy on kcouk.org)", sourceUrl: "https://www.kcouk.org/wp-content/uploads/2025/07/MOHE-Rules-Regulations-17-7-2025.pdf"
     },
     {
       id: "repeat-failed-year", topic: "after-acceptance",
@@ -1911,9 +1913,9 @@ const CLARIFICATIONS = {
       questionAr: "كم يبلغ عدد سكان الإمارات؟",
       answerEn: "The UAE's population was 12.06 million in 2025.",
       answerAr: "بلغ عدد سكان الإمارات 12.06 مليون نسمة في عام 2025.",
-      detailsEn: "This figure is from the Federal Competitiveness and Statistics Centre. The UAE government portal notes that expatriate residents outnumber UAE nationals.",
-      detailsAr: "هذا الرقم صادر عن المركز الاتحادي للتنافسية والإحصاء. وتذكر البوابة الرسمية لحكومة الإمارات أن عدد المقيمين الوافدين يفوق عدد المواطنين.",
-      status: "confirmed", sourceLabel: "Federal Competitiveness and Statistics Centre (FCSC)", sourceUrl: "https://fcsc.gov.ae/"
+      detailsEn: "This figure is credited to the Federal Competitiveness and Statistics Centre, but we could not open its website to re-check it in November 2026. The UAE government portal notes that expatriate residents outnumber UAE nationals.",
+      detailsAr: "يُنسب هذا الرقم إلى المركز الاتحادي للتنافسية والإحصاء، لكننا لم نتمكن من فتح موقعه لإعادة التحقق منه في نوفمبر 2026. وتذكر البوابة الرسمية لحكومة الإمارات أن عدد المقيمين الوافدين يفوق عدد المواطنين.",
+      status: "unconfirmed", sourceLabel: "Federal Competitiveness and Statistics Centre (FCSC)", sourceUrl: "https://fcsc.gov.ae/"
     },
     {
       id: "ae-climate", topic: "living", country: "United Arab Emirates",
@@ -2207,47 +2209,58 @@ const CLARIFICATIONS = {
       status: "confirmed", sourceLabel: "KUNA, 5 May 2025", sourceUrl: "https://www.kuna.net.kw/ArticleDetails.aspx?id=3229010&Language=en"
     },
     // ---------------- Universities abroad (NBAQ) ----------------
-    {
-      id: "university-not-listed", topic: "universities",
-      questionEn: "My university is not on the NBAQ list. Can I appeal or ask for it to be added?",
-      questionAr: "جامعتي غير موجودة في قائمة الجهاز الوطني للاعتماد، هل يمكنني التظلم أو طلب إضافتها؟",
-      answerEn: "Yes, but not directly. NBAQ only studies a request to add a university or programme when it comes from an official body. It then checks it against its criteria, its committees decide, and a ministerial decision adds it. Ask the Ministry or your cultural office to send the request for you {{unconfirmed}}. You can also send a complaint or suggestion to NBAQ at info@nbaq.edu.kw or call +965 22906386 (Sunday to Thursday, 8:00 am to 1:00 pm). Until it is added, Ministry scholarships cannot send you there.",
-      answerAr: "نعم، لكن ليس مباشرة. لا يدرس الجهاز الوطني للاعتماد طلب إضافة جامعة أو برنامج إلا إذا ورد من جهة رسمية، ثم يطبّق عليه معاييره وتصدر لجانه التوصية ويُضاف بقرار وزاري. اطلب من الوزارة أو المكتب الثقافي رفع الطلب عنك {{unconfirmed}}. ويمكنك أيضاً إرسال شكوى أو اقتراح إلى الجهاز على info@nbaq.edu.kw أو الاتصال على 22906386 965+ (من الأحد إلى الخميس، 8 صباحاً حتى 1 ظهراً). وإلى أن تُضاف، لا يمكن الابتعاث إليها.",
-      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
-    },
-    {
-      id: "nbaq-how-chosen", topic: "universities",
-      questionEn: "How does NBAQ decide which universities are recommended?",
-      questionAr: "كيف يحدد الجهاز الوطني للاعتماد الجامعات الموصى بها؟",
-      answerEn: "The university must be accredited in its own country, and its programmes accredited by bodies NBAQ accepts. The programme must rank well on the rankings NBAQ uses. The university needs a published admission and transfer policy and in-person weekly attendance. NBAQ also uses visit reports and cultural office reports.",
-      answerAr: "أن تكون الجامعة معتمدة مؤسسياً في بلدها، وبرامجها معتمدة من هيئات اعتماد برامجي يقبلها الجهاز، وأن يكون مستوى التخصص متميزاً في التصنيفات العالمية التي يعتمدها الجهاز، وأن تكون لها سياسة قبول وتحويل معلنة ونظام حضور منتظم خلال الأسبوع، إضافة إلى تقارير الزيارات الميدانية وتقارير المكاتب الثقافية.",
-      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
-    },
-    {
-      id: "nbaq-check-university", topic: "universities",
-      questionEn: "How do I check if a university or programme is recommended?",
-      questionAr: "كيف أتأكد أن الجامعة أو البرنامج موصى به؟",
-      answerEn: "Use NBAQ's search (nbaq.edu.kw/search). Check that your exact programme and degree level are listed, not only the university's name. For the UK, the Scholarships page on this site lists NBAQ's approved universities for each major.",
-      answerAr: "استخدم محرك بحث الجهاز الوطني للاعتماد (nbaq.edu.kw/search)، وتأكد من وجود برنامجك ودرجتك العلمية تحديداً وليس اسم الجامعة فقط. وللمملكة المتحدة تجد في صفحة البعثات بهذا الموقع الجامعات المعتمدة لكل تخصص.",
-      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
+    {
+      id: "university-not-listed", topic: "universities",
+      questionEn: "My university is not on the NBAQ list. Can I appeal or ask for it to be added?",
+      questionAr: "جامعتي غير موجودة في قائمة الجهاز الوطني للاعتماد، هل يمكنني التظلم أو طلب إضافتها؟",
+      answerEn: "Yes, but not directly. NBAQ only studies a request to add a university or programme when it comes from an official body. It then checks it against its criteria, its committees decide, and a ministerial decision adds it. Ask the Ministry or your cultural office to send the request for you {{unconfirmed}}. You can also send a complaint or suggestion to NBAQ at info@nbaq.edu.kw or call +965 22906386 (Sunday to Thursday, 8:00 am to 1:00 pm). Until it is added, Ministry scholarships cannot send you there.",
+      answerAr: "نعم، لكن ليس مباشرة. لا يدرس الجهاز الوطني للاعتماد طلب إضافة جامعة أو برنامج إلا إذا ورد من جهة رسمية، ثم يطبّق عليه معاييره وتصدر لجانه التوصية ويُضاف بقرار وزاري. اطلب من الوزارة أو المكتب الثقافي رفع الطلب عنك {{unconfirmed}}. ويمكنك أيضاً إرسال شكوى أو اقتراح إلى الجهاز على info@nbaq.edu.kw أو الاتصال على 22906386 965+ (من الأحد إلى الخميس، 8 صباحاً حتى 1 ظهراً). وإلى أن تُضاف، لا يمكن الابتعاث إليها.",
+      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
+    },
+    {
+      id: "nbaq-how-chosen", topic: "universities",
+      questionEn: "How does NBAQ decide which universities are recommended?",
+      questionAr: "كيف يحدد الجهاز الوطني للاعتماد الجامعات الموصى بها؟",
+      answerEn: "The university must be accredited in its own country, and its programmes accredited by bodies NBAQ accepts. The programme must rank well on the rankings NBAQ uses. The university needs a published admission and transfer policy and in-person weekly attendance. NBAQ also uses visit reports and cultural office reports.",
+      answerAr: "أن تكون الجامعة معتمدة مؤسسياً في بلدها، وبرامجها معتمدة من هيئات اعتماد برامجي يقبلها الجهاز، وأن يكون مستوى التخصص متميزاً في التصنيفات العالمية التي يعتمدها الجهاز، وأن تكون لها سياسة قبول وتحويل معلنة ونظام حضور منتظم خلال الأسبوع، إضافة إلى تقارير الزيارات الميدانية وتقارير المكاتب الثقافية.",
+      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
+    },
+    {
+      id: "nbaq-check-university", topic: "universities",
+      questionEn: "How do I check if a university or programme is recommended?",
+      questionAr: "كيف أتأكد أن الجامعة أو البرنامج موصى به؟",
+      answerEn: "Use NBAQ's search (nbaq.edu.kw/search). Check that your exact programme and degree level are listed, not only the university's name. For the UK, the Scholarships page on this site lists NBAQ's approved universities for each major.",
+      answerAr: "استخدم محرك بحث الجهاز الوطني للاعتماد (nbaq.edu.kw/search)، وتأكد من وجود برنامجك ودرجتك العلمية تحديداً وليس اسم الجامعة فقط. وللمملكة المتحدة تجد في صفحة البعثات بهذا الموقع الجامعات المعتمدة لكل تخصص.",
+      status: "confirmed", sourceLabel: NBAQ_FAQ.label, sourceUrl: NBAQ_FAQ.url
+    },
+    {
+      id: "ku-apply-second-semester", topic: "universities",
+      questionEn: "When can I apply to Kuwait University?",
+      questionAr: "متى يمكنني التقديم على جامعة الكويت؟",
+      answerEn: "For the second semester of 2026/2027: online from 16 to 23 December 2026 at portal.ku.edu.kw/admission. Other categories apply in person from 20 to 23 December.",
+      answerAr: "للفصل الدراسي الثاني 2026/2027: إلكترونياً من 16 إلى 23 ديسمبر 2026 عبر portal.ku.edu.kw/admission، وتتقدم الفئات الأخرى حضورياً من 20 إلى 23 ديسمبر.",
+      detailsEn: "The general minimum is 70% for the science stream and 78% for the arts stream. The second-semester minimums are the same as the Fall ones, but Medicine, Dentistry, Pharmacy, Allied Health, Public Health, Architecture and Law do not take new students in the second semester. Most colleges also need Qudrat.",
+      detailsAr: "الحد الأدنى العام 70% للقسم العلمي و78% للقسم الأدبي. والحدود الدنيا للفصل الثاني هي نفسها حدود الفصل الأول، لكن الطب وطب الأسنان والصيدلة والعلوم الطبية المساعدة والصحة العامة والعمارة والحقوق لا تقبل طلبة جدداً في الفصل الثاني. ومعظم الكليات تحتاج أيضاً اختبارات القدرات.",
+      status: "confirmed", sourceLabel: "Kuwait University: second-semester 2026/2027 admission dates (checked 17 Nov 2026)",
+      sourceUrl: "https://www.ku.edu.kw/ar/media-center/news/jamt-alkwyt-tln-mwayd-tqdym-tlbat-alalthaq-llfsl-aldrasy-althany-2026-2027"
     },
 
     // ---------------- Grants ----------------
-    {
-      id: "grant-vs-scholarship", topic: "grants",
-      questionEn: "What is the difference between a grant and a scholarship?",
-      questionAr: "ما الفرق بين المنحة الدراسية والبعثة الدراسية؟",
-      answerEn: "A grant (منحة) is a seat another country offers to Kuwaiti high school graduates; your certificate must be no more than two years old. A scholarship (بعثة) is a seat the Ministry announces at a recommended university outside Kuwait.",
-      answerAr: "المنحة مقعد تقدمه دولة شقيقة أو صديقة للطالب الكويتي الحاصل على الثانوية، بشرط ألا يتجاوز عمر الشهادة عامين. أما البعثة فمقعد تعلن عنه وزارة التعليم العالي في إحدى الجامعات الموصى بها خارج الكويت.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
-    },
-    {
-      id: "grant-countries", topic: "grants",
-      questionEn: "Which countries offer study grants to Kuwaiti students?",
-      questionAr: "ما الدول التي تقدم منحاً دراسية للطلبة الكويتيين؟",
-      answerEn: "The UAE, Saudi Arabia, Bahrain, Qatar, Oman, Jordan and Egypt. For postgraduate study, only Saudi Arabia offers grants, in Islamic studies.",
-      answerAr: "الإمارات والسعودية والبحرين وقطر وعُمان والأردن ومصر. وللدراسات العليا تقدم السعودية وحدها منحاً في التخصصات الإسلامية.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    {
+      id: "grant-vs-scholarship", topic: "grants",
+      questionEn: "What is the difference between a grant and a scholarship?",
+      questionAr: "ما الفرق بين المنحة الدراسية والبعثة الدراسية؟",
+      answerEn: "A grant (منحة) is a seat another country offers to Kuwaiti high school graduates; your certificate must be no more than two years old. A scholarship (بعثة) is a seat the Ministry announces at a recommended university outside Kuwait.",
+      answerAr: "المنحة مقعد تقدمه دولة شقيقة أو صديقة للطالب الكويتي الحاصل على الثانوية، بشرط ألا يتجاوز عمر الشهادة عامين. أما البعثة فمقعد تعلن عنه وزارة التعليم العالي في إحدى الجامعات الموصى بها خارج الكويت.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    },
+    {
+      id: "grant-countries", topic: "grants",
+      questionEn: "Which countries offer study grants to Kuwaiti students?",
+      questionAr: "ما الدول التي تقدم منحاً دراسية للطلبة الكويتيين؟",
+      answerEn: "The UAE, Saudi Arabia, Bahrain, Qatar, Oman, Jordan and Egypt. For postgraduate study, only Saudi Arabia offers grants, in Islamic studies.",
+      answerAr: "الإمارات والسعودية والبحرين وقطر وعُمان والأردن ومصر. وللدراسات العليا تقدم السعودية وحدها منحاً في التخصصات الإسلامية.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
     },
 
     // ---------------- Certificates ----------------
@@ -2267,29 +2280,29 @@ const CLARIFICATIONS = {
       answerAr: "لا. تنهي الوزارة المعادلة خلال 4 إلى 6 أسابيع من رد الجهة المختصة (مثل المكتب الثقافي أو وزارة الخارجية)، وتظهر عبارة القبول في خانة متابعة الطلب عند الانتهاء.",
       status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
     },
-    {
-      id: "equivalency-how-apply", topic: "equivalency",
-      questionEn: "How do I apply for the equivalency of my university degree?",
-      questionAr: "كيف أقدّم طلب معادلة شهادتي الجامعية؟",
-      answerEn: "Create an account on the Dirah platform (certificate equivalency system) and upload the required documents. Then book an appointment on the Mata platform to sign the equivalency form at the Ministry. When it is done, your request's follow-up section shows \"accepted\".",
-      answerAr: "أنشئ حساباً في منظومة الديرة (نظام معادلة الشهادات) وأرفق المستندات المطلوبة، ثم احجز موعداً عبر منصة متى للتوقيع على استمارة المعادلة في الوزارة. وعند الانتهاء تظهر عبارة \"مقبولة\" في خانة المتابعات.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
-    },
-    {
-      id: "equivalency-rejected", topic: "equivalency",
-      questionEn: "My equivalency was rejected or has a mistake. What can I do?",
-      questionAr: "رُفضت معادلتي أو فيها خطأ، ماذا أفعل؟",
-      answerEn: "To appeal a rejection, submit a letter at the Ministry of Higher Education, Mezzanine 3, counter 32 (citizen service). To fix a mistake in the equivalency document, go to the reception on Mezzanine 3.",
-      answerAr: "للتظلم من الرفض قدّم كتاباً في وزارة التعليم العالي، ميزانين 3، كاونتر 32 (خدمة المواطن). ولتصحيح خطأ في وثيقة المعادلة راجع موظف الاستقبال في ميزانين 3.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
-    },
-    {
-      id: "equivalency-from-abroad", topic: "equivalency",
-      questionEn: "I am outside Kuwait. Can someone sign or collect my equivalency for me?",
-      questionAr: "أنا خارج الكويت، هل يمكن لأحد التوقيع أو استلام المعادلة عني؟",
-      answerEn: "Yes, with an official special power of attorney issued by the Ministry of Justice.",
-      answerAr: "نعم، بشرط تقديم توكيل رسمي (خاص) صادر من وزارة العدل.",
-      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    {
+      id: "equivalency-how-apply", topic: "equivalency",
+      questionEn: "How do I apply for the equivalency of my university degree?",
+      questionAr: "كيف أقدّم طلب معادلة شهادتي الجامعية؟",
+      answerEn: "Create an account on the Dirah platform (certificate equivalency system) and upload the required documents. Then book an appointment on the Mata platform to sign the equivalency form at the Ministry. When it is done, your request's follow-up section shows \"accepted\".",
+      answerAr: "أنشئ حساباً في منظومة الديرة (نظام معادلة الشهادات) وأرفق المستندات المطلوبة، ثم احجز موعداً عبر منصة متى للتوقيع على استمارة المعادلة في الوزارة. وعند الانتهاء تظهر عبارة \"مقبولة\" في خانة المتابعات.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    },
+    {
+      id: "equivalency-rejected", topic: "equivalency",
+      questionEn: "My equivalency was rejected or has a mistake. What can I do?",
+      questionAr: "رُفضت معادلتي أو فيها خطأ، ماذا أفعل؟",
+      answerEn: "To appeal a rejection, submit a letter at the Ministry of Higher Education, Mezzanine 3, counter 32 (citizen service). To fix a mistake in the equivalency document, go to the reception on Mezzanine 3.",
+      answerAr: "للتظلم من الرفض قدّم كتاباً في وزارة التعليم العالي، ميزانين 3، كاونتر 32 (خدمة المواطن). ولتصحيح خطأ في وثيقة المعادلة راجع موظف الاستقبال في ميزانين 3.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
+    },
+    {
+      id: "equivalency-from-abroad", topic: "equivalency",
+      questionEn: "I am outside Kuwait. Can someone sign or collect my equivalency for me?",
+      questionAr: "أنا خارج الكويت، هل يمكن لأحد التوقيع أو استلام المعادلة عني؟",
+      answerEn: "Yes, with an official special power of attorney issued by the Ministry of Justice.",
+      answerAr: "نعم، بشرط تقديم توكيل رسمي (خاص) صادر من وزارة العدل.",
+      status: "confirmed", sourceLabel: MOHE_FAQ.label, sourceUrl: MOHE_FAQ.url
     }
   ]
 };
